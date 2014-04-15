@@ -10,7 +10,7 @@
 
 @class PlayerSprite;
 
-@interface BallSprite : NKPrimitiveNode
+@interface BallSprite : NKMeshNode
 
 @property (nonatomic, weak) PlayerSprite *player;
 

@@ -34,7 +34,7 @@ float PARTICLE_SCALE;
 
 @implementation GameScene
 
--(void)setOrientation:(ofQuaternion)orientation {
+-(void)setOrientation:(Q4t)orientation {
     [_pivot setOrientation:orientation];
 }
 
@@ -101,9 +101,7 @@ float PARTICLE_SCALE;
 -(void)setupGameBoard {
     
     NSLog(@"setup gameBoard %f :%f",w,h);
-    
-    
-    
+
     playerSprites = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
     _gameTiles = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
     
@@ -113,11 +111,10 @@ float PARTICLE_SCALE;
     
     [self addChild:_pivot];
     
-    [_pivot setPosition3d:(ofPoint(0,-h*.5,0))];
-    
+    [_pivot setPosition3d:(V3Make(0,-h*.5,0))];
     
     _uxWindow = [[UXWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:.5] size:CGSizeMake(w, h*.15)];
-    [_uxWindow setPosition3d:ofPoint(0,-h*.42,20)];
+    [_uxWindow setPosition3d:V3Make(0,-h*.42,0)];
     _uxWindow.delegate = self;
     [self addChild:_uxWindow];
     
@@ -132,11 +129,11 @@ float PARTICLE_SCALE;
     
     //_boardScroll.userInteractionEnabled = false;
     
-    _gameBoardNode = [[GameBoardNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Background_Field.png"] color:Nil size:CGSizeMake(BOARD_WIDTH*TILE_WIDTH + (TILE_WIDTH*.7), BOARD_LENGTH*TILE_HEIGHT + (TILE_HEIGHT*.5))];
+    _gameBoardNode = [[GameBoardNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Background_Field"] color:Nil size:CGSizeMake(BOARD_WIDTH*TILE_WIDTH + (TILE_WIDTH*.7), BOARD_LENGTH*TILE_HEIGHT + (TILE_HEIGHT*.5))];
     
     [_pivot addChild:_gameBoardNode];
     
-    [_gameBoardNode setPosition3d:ofPoint(0,h*.5,0)];
+    [_gameBoardNode setPosition3d:V3Make(0,h*.5,0)];
     
     _gameBoardNode.userInteractionEnabled = true;
     
@@ -153,19 +150,19 @@ float PARTICLE_SCALE;
             [_gameBoardNode addChild:square];
             [_gameTiles setObject:square forKey:square.location];
             
-            [square setPosition3d:ofPoint((i+.5)*TILE_WIDTH - (TILE_WIDTH*BOARD_WIDTH*.5), ((j+.5)*TILE_HEIGHT) - (TILE_HEIGHT*BOARD_LENGTH*.5),2) ];
+            [square setPosition3d:V3Make((i+.5)*TILE_WIDTH - (TILE_WIDTH*BOARD_WIDTH*.5), ((j+.5)*TILE_HEIGHT) - (TILE_HEIGHT*BOARD_LENGTH*.5),2) ];
         }
     }
     
-    NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer01.png"] color:nil size:_gameBoardNode.size];
+    NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer01"] color:nil size:_gameBoardNode.size];
     
     [_gameBoardNode addChild:lines];
-    [lines setPosition3d:ofPoint(0,0,3)];
+    [lines setPosition3d:V3Make(0,0,3)];
     
-    NKSpriteNode *glow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer02.png"] color:nil size:_gameBoardNode.size];
+    NKSpriteNode *glow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer02"] color:nil size:_gameBoardNode.size];
     
     [_gameBoardNode addChild:glow];
-    [glow setPosition3d:ofPoint(0,0,6)];
+   [glow setPosition3d:V3Make(0,0,6)];
     
     
     //    NKDrawDepthShader* ddepthShader = [[NKDrawDepthShader alloc] initWithNode:self paramBlock:nil];
@@ -187,33 +184,33 @@ float PARTICLE_SCALE;
     //
     
     
-    // [self.camera runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
+    // [self.camera runAction:[NKAction rotate3dToAngle:V3Make(-26, 0,0) duration:2.]];
     
-    [_pivot runAction:[NKAction rotate3dToAngle:ofVec3f(-26, 0,0) duration:2.]];
-    [_pivot runAction:[NKAction move3dTo:ofVec3f(0,-h*.25,0) duration:2.]];
+    [_pivot runAction:[NKAction rotate3dToAngle:V3Make(-26, 0,0) duration:2.]];
+    [_pivot runAction:[NKAction move3dTo:V3Make(0,-h*.25,0) duration:2.]];
 }
 
--(void)startMiniGame {
-    
-    _miniGameNode = [[MiniGameNode alloc] initWithSize:self.size];
-    
-    [self addChild:_miniGameNode];
-    
-    [_miniGameNode startMiniGame];
-    
-    // [self loadShader:[[NKGaussianBlur alloc] initWithNode:self blurSize:4 numPasses:4]];
-    
-}
-
--(void)gameDidFinishWithWin {
-    [_miniGameNode removeFromParent];
-    _miniGameNode = nil;
-}
-
--(void)gameDidFinishWithLose {
-    [_miniGameNode removeFromParent];
-    _miniGameNode = nil;
-}
+//-(void)startMiniGame {
+//    
+//    _miniGameNode = [[MiniGameNode alloc] initWithSize:self.size];
+//    
+//    [self addChild:_miniGameNode];
+//    
+//    [_miniGameNode startMiniGame];
+//    
+//    // [self loadShader:[[NKGaussianBlur alloc] initWithNode:self blurSize:4 numPasses:4]];
+//    
+//}
+//
+//-(void)gameDidFinishWithWin {
+//    [_miniGameNode removeFromParent];
+//    _miniGameNode = nil;
+//}
+//
+//-(void)gameDidFinishWithLose {
+//    [_miniGameNode removeFromParent];
+//    _miniGameNode = nil;
+//}
 
 #pragma mark - UI
 
@@ -642,7 +639,7 @@ float PARTICLE_SCALE;
                 
                 [card removeAllActions];
                 
-                [card runAction:[NKAction move3dTo:ofPoint(0,h*.5,300) duration:CARD_ANIM_DUR] completion:^{
+                [card runAction:[NKAction move3dTo:V3Make(0,h*.5,300) duration:CARD_ANIM_DUR] completion:^{
                   //  [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR*2] completion:^{
                         
                         NKAction *fall = [NKAction move3dByX:0 Y:h*.5 Z:-600 duration:CARD_ANIM_DUR];
@@ -867,14 +864,14 @@ float PARTICLE_SCALE;
         
         NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(600, 200) FontNamed:@"TradeGothicLTStd-BdCn20"];
         bigText.fontSize = 150;
-        bigText.fontColor = [NKColor whiteColor];//[NKColor colorWithRed:.2 green:.2 blue:1. alpha:1.];
+        bigText.fontColor = NKWHITE;
         bigText.text = theText;
         
-        [bigText setOrientationEuler:ofVec3f(0,0,i*10. - 10)];
+        [bigText setOrientationEuler:V3Make(0,0,i*10. - 10)];
         //[bigText setScale:.1];
         [self addChild:bigText];
         
-        //[bigText setPosition3d:ofPoint(0, 0,100)];
+        //[bigText setPosition3d:V3Make(0, 0,100)];
         if (i == 0) {
             [bigText runAction:[NKAction rotateByAngle:-i*20 duration:1.] completion:^{
                 [self fadeOutChild:bigText duration:.5];
@@ -1007,11 +1004,11 @@ float PARTICLE_SCALE;
             newY = tile.position.y - TILE_HEIGHT*10;
         }
         
-        [person setPosition3d:ofPoint(tile.position.x, newY, 200)];
+        [person setPosition3d:V3Make(tile.position.x, newY, 200)];
         [person setXScale:.33];
         
         
-        ofVec3f target = tile.position3d;
+        V3t target = tile.position3d;
         target.z += 2;
         
         [person runAction:[NKAction move3dTo:target duration:.4] completion:^{
@@ -1103,8 +1100,9 @@ float PARTICLE_SCALE;
 
 -(BallSprite*)ballSprite {
     if (!_ballSprite) {
-        _ballSprite = [[BallSprite alloc]init];
-        _ballSprite.texture = [NKTexture textureWithImageNamed:@"ball_Texture.png"];
+//        _ballSprite = [[BallSprite alloc]init];
+//        _ballSprite.texture = [NKTexture textureWithImageNamed:@"ball_Texture.png"];
+        _ballSprite = [[BallSprite alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:nil size:V3Make(50,50,50)];
     }
     if (!_ballSprite.parent) {
         [_gameBoardNode addChild:_ballSprite];
@@ -1328,10 +1326,8 @@ float PARTICLE_SCALE;
 
 #pragma mark - UPDATE CYCLE
 
--(void)updateWithTimeSinceLast:(NSTimeInterval)dt {
+-(void)updateWithTimeSinceLast:(F1t)dt {
     [super updateWithTimeSinceLast:dt];
-    
-    
 }
 
 //-(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {

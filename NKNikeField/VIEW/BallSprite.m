@@ -10,23 +10,8 @@
 
 @implementation BallSprite
 
--(instancetype) init {
-    
-    ofSpherePrimitive *sphere = new ofSpherePrimitive(50,12);
-    
-    self = [super initWith3dPrimitive:sphere fillColor:nil];
-    
-    self.wireFrameColor = NKWHITE;
-    
-    if (self){
-        
-    }
-    
-    return self;
-    
-}
 
--(void)updateWithTimeSinceLast:(NSTimeInterval)dt {
+-(void)updateWithTimeSinceLast:(F1t)dt {
     [super updateWithTimeSinceLast:dt];
     
     if (_player) {

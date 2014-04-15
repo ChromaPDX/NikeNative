@@ -6,9 +6,8 @@
 //
 //
 
-#include "ofApp.h"
 #import "MenuScene.h"
-#import "ofxNodeKitten.h"
+#import "NodeKitten.h"
 
 
 @implementation MenuScene
@@ -25,9 +24,8 @@
         // [_MenuNode startMenu];
         
         
-        char* extensionList = (char*)glGetString(GL_EXTENSIONS);
+     //   char* extensionList = (char*)glGetString(GL_EXTENSIONS);
         
-        ofLogNotice("GL") << string(extensionList);
         
         NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size];
         [self addChild:table];
@@ -37,7 +35,7 @@
         // table.scale = 1.02;  // to correct for image...this needs to be fixed
         table.name = @"table";
         table.delegate = self;
-        //ofVec3f rot =
+        //V3t rot =
         //table.node->setOrientation
         
         NKTexture *image;
@@ -85,7 +83,7 @@
 
         
         // setupCM();
-        //subTable.node->setOrientation(ofVec3f(0,1,0));
+        //subTable.node->setOrientation(V3Make(0,1,0));
         
     }
     return self;

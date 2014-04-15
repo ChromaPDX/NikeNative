@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Structure Sound. All rights reserved.
 //
 
-#import "ofxNodeKitten.h"
+#import "NodeKitten.h"
 
 #import "ButtonSprite.h"
 

@@ -53,12 +53,12 @@
             NKSpriteNode *shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerShadow] color:NKBLACK size:CGSizeMake(w, h)];
             [shadow setAlpha:.2];
             [self addChild:shadow];
-             [shadow setPosition3d:ofPoint(-self.size.width * .03, 0, 4)];
+             [shadow setPosition3d:V3Make(-self.size.width * .03, 0, 4)];
 
             
             NKSpriteNode *triangle = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:CGSizeMake(w, h)];
       
-            [triangle setOrientationEuler:ofVec3f(45,0,0)];
+            [triangle setOrientationEuler:V3Make(45,0,0)];
             
             
             [self addChild:triangle];
@@ -110,7 +110,7 @@
             
             [_posession addChild:_ballTarget];
             
-            [_ballTarget setPosition3d:ofPoint(0, w*.5, 0)];
+            [_ballTarget setPosition3d:V3Make(0, w*.5, 0)];
             
             [self fadeInChild:_posession duration:FAST_ANIM_DUR withCompletion:^{
                 
@@ -143,8 +143,8 @@
         
         [_posession runAction:[NKAction repeatActionForever:
                                [NKAction group:@[
-                                                 [NKAction sequence:@[[NKAction move3dBy:ofVec3f(0,0,h*.33) duration:1.],
-                                                                      [NKAction move3dBy:ofVec3f(0,0,-h*.33) duration:1.]]],
+                                                 [NKAction sequence:@[[NKAction move3dBy:V3Make(0,0,h*.33) duration:1.],
+                                                                      [NKAction move3dBy:V3Make(0,0,-h*.33) duration:1.]]],
                                                  
                                                                       [NKAction rotateByAngle:180 duration:2.]
                                                     ]]]];
@@ -160,7 +160,7 @@
 //    
 //    CGPoint cp = [_posession childLocationIncludingRotation:_ballTarget];
 //    
-//    return ofPoint(self.position3d.x + cp.x, self.position3d.y + cp.y, _posession.position3d.z + self.position3d.z);
+//    return V3Make(self.position3d.x + cp.x, self.position3d.y + cp.y, _posession.position3d.z + self.position3d.z);
 //}
 
 

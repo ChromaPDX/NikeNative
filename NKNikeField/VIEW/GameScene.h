@@ -7,7 +7,6 @@
 //
 
 #import "NKSceneNode.h"
-#import "MiniMaze.h"
 #import "Game.h"
 
 @class GameBoardNode;
@@ -52,7 +51,7 @@
 
 @property (nonatomic) int gameBoardNodeScrollOffset;
 
--(void)setOrientation:(ofQuaternion)orientation;
+-(void)setOrientation:(Q4t)orientation;
 -(void)gameDidFinishWithLose;
 -(void)gameDidFinishWithWin;
 

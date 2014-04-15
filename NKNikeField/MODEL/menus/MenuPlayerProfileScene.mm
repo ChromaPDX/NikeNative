@@ -7,7 +7,7 @@
 //
 
 #import "MenuPlayerProfileScene.h"
-#import "ofxNodeKitten.h"
+#import "NodeKitten.h"
 
 
 @implementation MenuPlayerProfileScene

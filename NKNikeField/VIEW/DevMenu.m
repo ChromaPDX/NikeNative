@@ -6,10 +6,8 @@
 //
 //
 
-#include "ofApp.h"
 #import "DevMenu.h"
-#import "ofxNodeKitten.h"
-#import "MiniGameScene.h"
+#import "NodeKitten.h"
 #import "GameScene.h"
 #import "Menus.h"
 
@@ -68,8 +66,9 @@
     NKSceneNode* newScene;
     
     if ([cell.name isEqualToString:@"ROBBY"]) {
-        newScene = [[MiniGameScene alloc]initWithSize:self.size];
-
+     //   newScene = [[MiniGameScene alloc]initWithSize:self.size];
+        newScene = [[GameScene alloc]initWithSize:self.size];
+        [[(GameScene*)newScene game] startAIGame];
         
     }
     else if ([cell.name isEqualToString:@"ERIC"]) {
@@ -80,16 +79,11 @@
     else if ([cell.name isEqualToString:@"LEIF"]) {
         newScene = [[GameScene alloc]initWithSize:self.size];
         
-        
         [[(GameScene*)newScene game] startSinglePlayerGame];
 
     }
     
-#ifdef OF_BACKED
-    ((ofApp*)ofGetAppPtr())->scene = newScene;
-#else
     self.nkView.scene = newScene;
-#endif
     
 }
 

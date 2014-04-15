@@ -7,7 +7,7 @@
 //
 
 #import "GlobalTypes.h"
-#import "ofxNodeKitten.h"
+#import "NodeKitten.h"
 
 #import "GameBoardNode.h"
 #import "BoardTile.h"
@@ -21,8 +21,7 @@
 #import "BallSprite.h"
 #import "AlertSprite.h"
 
-#import "MiniGames.h"
-#import "menus/Menus.h"
+#import "Menus.h"
 
 // STRINGS
 

@@ -656,7 +656,7 @@
         
         [self addChild:_playerName];
         
-        [_playerName setPosition3d:ofPoint(w,0,2)];
+        [_playerName setPosition3d:V3Make(w,0,2)];
         
         for (Card* c in p.moveDeck.inHand) {
             [self addCard:c];
@@ -715,7 +715,7 @@
     [_cardSprites setObject:newCard forKey:card];
     
     [self addChild:newCard];
-    [newCard setPosition3d:ofPoint(w,0,0)];
+    [newCard setPosition3d:V3Make(w,0,0)];
     
     [_myCards addObject:newCard];
     
@@ -818,22 +818,22 @@
             }
             
             [cs runAction:[NKAction scaleTo:1. duration:CARD_ANIM_DUR]];
-            NKAction *move = [NKAction move3dTo:ofPoint(cs.origin.x, cs.origin.y,2) duration:CARD_ANIM_DUR];
+            NKAction *move = [NKAction move3dTo:V3Make(cs.origin.x, cs.origin.y,2) duration:CARD_ANIM_DUR];
             [move setTimingMode:NKActionTimingEaseIn];
             [cs runAction:move];
-            //           [cs setPosition3d:ofPoint(cs.origin.x, cs.origin.y,2)];
+            //           [cs setPosition3d:V3Make(cs.origin.x, cs.origin.y,2)];
             
         }
         
         else {
-            [cs setPosition3d:ofPoint(cs.origin.x, cs.origin.y,2)];
+            [cs setPosition3d:V3Make(cs.origin.x, cs.origin.y,2)];
         }
         
     }
     
     if (animated) {
         
-    [_playerName runAction:[NKAction move3dTo:ofPoint( (_playerName.size.width * .4) - w*.5, -h*.4, 2) duration:CARD_ANIM_DUR] completion:^{
+    [_playerName runAction:[NKAction move3dTo:V3Make( (_playerName.size.width * .4) - w*.5, -h*.4, 2) duration:CARD_ANIM_DUR] completion:^{
             block();
     }];
 
