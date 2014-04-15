@@ -162,9 +162,7 @@
 
 
 - (UIImage*) drawGradient:(UIColor*)color{
-    
-    float w = self.size.width;
-    float h = self.size.height;
+
     
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(w, h), NO, 0);
     
@@ -178,10 +176,10 @@
     
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
     
-    float components[8];
-    float locations[3] = {0, 1};
+    CGFloat components[8];
+    CGFloat locations[3] = {0, 1};
     
-    float colors[4];
+    CGFloat colors[4];
     
     [color getRed:&colors[0] green:&colors[1] blue:&colors[2] alpha:&colors[3]];
     
@@ -214,9 +212,6 @@
 }
 
 - (UIImage*) drawBorder:(UIColor*)color {
-    
-    float w = self.size.width;
-    float h = self.size.height;
     
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(w, h), NO, 0);
     
