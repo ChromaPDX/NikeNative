@@ -1,0 +1,486 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		61D6E44F18FDAE110017A389 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D6E44E18FDAE110017A389 /* Foundation.framework */; };
+		61D6E45118FDAE110017A389 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D6E45018FDAE110017A389 /* CoreGraphics.framework */; };
+		61D6E45318FDAE110017A389 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D6E45218FDAE110017A389 /* UIKit.framework */; };
+		61D6E45918FDAE110017A389 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E45718FDAE110017A389 /* InfoPlist.strings */; };
+		61D6E45B18FDAE110017A389 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E45A18FDAE110017A389 /* main.m */; };
+		61D6E45F18FDAE110017A389 /* NKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E45E18FDAE110017A389 /* NKAppDelegate.m */; };
+		61D6E46218FDAE110017A389 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E46018FDAE110017A389 /* Main_iPhone.storyboard */; };
+		61D6E46518FDAE110017A389 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E46318FDAE110017A389 /* Main_iPad.storyboard */; };
+		61D6E46818FDAE110017A389 /* NKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E46718FDAE110017A389 /* NKViewController.m */; };
+		61D6E46A18FDAE120017A389 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E46918FDAE120017A389 /* Images.xcassets */; };
+		61D6E47118FDAE120017A389 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D6E47018FDAE120017A389 /* XCTest.framework */; };
+		61D6E47218FDAE120017A389 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D6E44E18FDAE110017A389 /* Foundation.framework */; };
+		61D6E47318FDAE120017A389 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D6E45218FDAE110017A389 /* UIKit.framework */; };
+		61D6E47B18FDAE120017A389 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E47918FDAE120017A389 /* InfoPlist.strings */; };
+		61D6E47D18FDAE120017A389 /* NKNikeFieldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E47C18FDAE120017A389 /* NKNikeFieldTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		61D6E47418FDAE120017A389 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 61D6E44318FDAE110017A389 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 61D6E44A18FDAE110017A389;
+			remoteInfo = NKNikeField;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		61D6E44B18FDAE110017A389 /* NKNikeField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NKNikeField.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		61D6E44E18FDAE110017A389 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		61D6E45018FDAE110017A389 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		61D6E45218FDAE110017A389 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		61D6E45618FDAE110017A389 /* NKNikeField-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NKNikeField-Info.plist"; sourceTree = "<group>"; };
+		61D6E45818FDAE110017A389 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		61D6E45A18FDAE110017A389 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		61D6E45C18FDAE110017A389 /* NKNikeField-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NKNikeField-Prefix.pch"; sourceTree = "<group>"; };
+		61D6E45D18FDAE110017A389 /* NKAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NKAppDelegate.h; sourceTree = "<group>"; };
+		61D6E45E18FDAE110017A389 /* NKAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NKAppDelegate.m; sourceTree = "<group>"; };
+		61D6E46118FDAE110017A389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		61D6E46418FDAE110017A389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		61D6E46618FDAE110017A389 /* NKViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NKViewController.h; sourceTree = "<group>"; };
+		61D6E46718FDAE110017A389 /* NKViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NKViewController.m; sourceTree = "<group>"; };
+		61D6E46918FDAE120017A389 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		61D6E46F18FDAE120017A389 /* NKNikeFieldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NKNikeFieldTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		61D6E47018FDAE120017A389 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		61D6E47818FDAE120017A389 /* NKNikeFieldTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NKNikeFieldTests-Info.plist"; sourceTree = "<group>"; };
+		61D6E47A18FDAE120017A389 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		61D6E47C18FDAE120017A389 /* NKNikeFieldTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NKNikeFieldTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		61D6E44818FDAE110017A389 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61D6E45118FDAE110017A389 /* CoreGraphics.framework in Frameworks */,
+				61D6E45318FDAE110017A389 /* UIKit.framework in Frameworks */,
+				61D6E44F18FDAE110017A389 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61D6E46C18FDAE120017A389 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61D6E47118FDAE120017A389 /* XCTest.framework in Frameworks */,
+				61D6E47318FDAE120017A389 /* UIKit.framework in Frameworks */,
+				61D6E47218FDAE120017A389 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		61D6E44218FDAE110017A389 = {
+			isa = PBXGroup;
+			children = (
+				61D6E45418FDAE110017A389 /* NKNikeField */,
+				61D6E47618FDAE120017A389 /* NKNikeFieldTests */,
+				61D6E44D18FDAE110017A389 /* Frameworks */,
+				61D6E44C18FDAE110017A389 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		61D6E44C18FDAE110017A389 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				61D6E44B18FDAE110017A389 /* NKNikeField.app */,
+				61D6E46F18FDAE120017A389 /* NKNikeFieldTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		61D6E44D18FDAE110017A389 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				61D6E44E18FDAE110017A389 /* Foundation.framework */,
+				61D6E45018FDAE110017A389 /* CoreGraphics.framework */,
+				61D6E45218FDAE110017A389 /* UIKit.framework */,
+				61D6E47018FDAE120017A389 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		61D6E45418FDAE110017A389 /* NKNikeField */ = {
+			isa = PBXGroup;
+			children = (
+				61D6E45D18FDAE110017A389 /* NKAppDelegate.h */,
+				61D6E45E18FDAE110017A389 /* NKAppDelegate.m */,
+				61D6E46018FDAE110017A389 /* Main_iPhone.storyboard */,
+				61D6E46318FDAE110017A389 /* Main_iPad.storyboard */,
+				61D6E46618FDAE110017A389 /* NKViewController.h */,
+				61D6E46718FDAE110017A389 /* NKViewController.m */,
+				61D6E46918FDAE120017A389 /* Images.xcassets */,
+				61D6E45518FDAE110017A389 /* Supporting Files */,
+			);
+			path = NKNikeField;
+			sourceTree = "<group>";
+		};
+		61D6E45518FDAE110017A389 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				61D6E45618FDAE110017A389 /* NKNikeField-Info.plist */,
+				61D6E45718FDAE110017A389 /* InfoPlist.strings */,
+				61D6E45A18FDAE110017A389 /* main.m */,
+				61D6E45C18FDAE110017A389 /* NKNikeField-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		61D6E47618FDAE120017A389 /* NKNikeFieldTests */ = {
+			isa = PBXGroup;
+			children = (
+				61D6E47C18FDAE120017A389 /* NKNikeFieldTests.m */,
+				61D6E47718FDAE120017A389 /* Supporting Files */,
+			);
+			path = NKNikeFieldTests;
+			sourceTree = "<group>";
+		};
+		61D6E47718FDAE120017A389 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				61D6E47818FDAE120017A389 /* NKNikeFieldTests-Info.plist */,
+				61D6E47918FDAE120017A389 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		61D6E44A18FDAE110017A389 /* NKNikeField */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 61D6E48018FDAE120017A389 /* Build configuration list for PBXNativeTarget "NKNikeField" */;
+			buildPhases = (
+				61D6E44718FDAE110017A389 /* Sources */,
+				61D6E44818FDAE110017A389 /* Frameworks */,
+				61D6E44918FDAE110017A389 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NKNikeField;
+			productName = NKNikeField;
+			productReference = 61D6E44B18FDAE110017A389 /* NKNikeField.app */;
+			productType = "com.apple.product-type.application";
+		};
+		61D6E46E18FDAE120017A389 /* NKNikeFieldTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 61D6E48318FDAE120017A389 /* Build configuration list for PBXNativeTarget "NKNikeFieldTests" */;
+			buildPhases = (
+				61D6E46B18FDAE120017A389 /* Sources */,
+				61D6E46C18FDAE120017A389 /* Frameworks */,
+				61D6E46D18FDAE120017A389 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				61D6E47518FDAE120017A389 /* PBXTargetDependency */,
+			);
+			name = NKNikeFieldTests;
+			productName = NKNikeFieldTests;
+			productReference = 61D6E46F18FDAE120017A389 /* NKNikeFieldTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		61D6E44318FDAE110017A389 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = NK;
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Chroma Developer";
+				TargetAttributes = {
+					61D6E46E18FDAE120017A389 = {
+						TestTargetID = 61D6E44A18FDAE110017A389;
+					};
+				};
+			};
+			buildConfigurationList = 61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "NKNikeField" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 61D6E44218FDAE110017A389;
+			productRefGroup = 61D6E44C18FDAE110017A389 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				61D6E44A18FDAE110017A389 /* NKNikeField */,
+				61D6E46E18FDAE120017A389 /* NKNikeFieldTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		61D6E44918FDAE110017A389 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61D6E46518FDAE110017A389 /* Main_iPad.storyboard in Resources */,
+				61D6E46A18FDAE120017A389 /* Images.xcassets in Resources */,
+				61D6E46218FDAE110017A389 /* Main_iPhone.storyboard in Resources */,
+				61D6E45918FDAE110017A389 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61D6E46D18FDAE120017A389 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61D6E47B18FDAE120017A389 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		61D6E44718FDAE110017A389 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61D6E46818FDAE110017A389 /* NKViewController.m in Sources */,
+				61D6E45B18FDAE110017A389 /* main.m in Sources */,
+				61D6E45F18FDAE110017A389 /* NKAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		61D6E46B18FDAE120017A389 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61D6E47D18FDAE120017A389 /* NKNikeFieldTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		61D6E47518FDAE120017A389 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 61D6E44A18FDAE110017A389 /* NKNikeField */;
+			targetProxy = 61D6E47418FDAE120017A389 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		61D6E45718FDAE110017A389 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				61D6E45818FDAE110017A389 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		61D6E46018FDAE110017A389 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				61D6E46118FDAE110017A389 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		61D6E46318FDAE110017A389 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				61D6E46418FDAE110017A389 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		61D6E47918FDAE120017A389 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				61D6E47A18FDAE120017A389 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		61D6E47E18FDAE120017A389 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		61D6E47F18FDAE120017A389 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		61D6E48118FDAE120017A389 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
+				INFOPLIST_FILE = "NKNikeField/NKNikeField-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		61D6E48218FDAE120017A389 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
+				INFOPLIST_FILE = "NKNikeField/NKNikeField-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		61D6E48418FDAE120017A389 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/NKNikeField.app/NKNikeField";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "NKNikeFieldTests/NKNikeFieldTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		61D6E48518FDAE120017A389 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/NKNikeField.app/NKNikeField";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
+				INFOPLIST_FILE = "NKNikeFieldTests/NKNikeFieldTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "NKNikeField" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				61D6E47E18FDAE120017A389 /* Debug */,
+				61D6E47F18FDAE120017A389 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		61D6E48018FDAE120017A389 /* Build configuration list for PBXNativeTarget "NKNikeField" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				61D6E48118FDAE120017A389 /* Debug */,
+				61D6E48218FDAE120017A389 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		61D6E48318FDAE120017A389 /* Build configuration list for PBXNativeTarget "NKNikeFieldTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				61D6E48418FDAE120017A389 /* Debug */,
+				61D6E48518FDAE120017A389 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 61D6E44318FDAE110017A389 /* Project object */;
+}
