@@ -8,7 +8,7 @@
 @class AlertSprite;
 @class UXWindow;
 
-@interface BigCards : NKScrollNode
+@interface BigCards : NKPickerNode
     @property NSMutableArray *cards;
 -(void)addCard:(NKNode*)card;
 @end

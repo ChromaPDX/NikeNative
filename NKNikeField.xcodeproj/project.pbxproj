@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29B84B5918FF03F600469EE0 /* NKPickerNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B84B5818FF03F600469EE0 /* NKPickerNode.m */; };
 		61A257C118FDE998001B7F67 /* NKMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578418FDE998001B7F67 /* NKMaterial.m */; };
 		61A257C218FDE998001B7F67 /* NKMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578618FDE998001B7F67 /* NKMesh.m */; };
 		61A257C318FDE998001B7F67 /* NKStaticDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578918FDE998001B7F67 /* NKStaticDraw.m */; };
@@ -270,6 +271,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		29B84B5718FF03F600469EE0 /* NKPickerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKPickerNode.h; sourceTree = "<group>"; };
+		29B84B5818FF03F600469EE0 /* NKPickerNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKPickerNode.m; sourceTree = "<group>"; };
 		61A2578318FDE998001B7F67 /* NKMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKMaterial.h; sourceTree = "<group>"; };
 		61A2578418FDE998001B7F67 /* NKMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKMaterial.m; sourceTree = "<group>"; };
 		61A2578518FDE998001B7F67 /* NKMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKMesh.h; sourceTree = "<group>"; };
@@ -670,6 +673,8 @@
 				61A257A018FDE998001B7F67 /* NKSceneNode.m */,
 				61A257A118FDE998001B7F67 /* NKScrollNode.h */,
 				61A257A218FDE998001B7F67 /* NKScrollNode.m */,
+				29B84B5718FF03F600469EE0 /* NKPickerNode.h */,
+				29B84B5818FF03F600469EE0 /* NKPickerNode.m */,
 				61A257A318FDE998001B7F67 /* NKShaderNode.h */,
 				61A257A418FDE998001B7F67 /* NKShaderNode.m */,
 				61A257A518FDE998001B7F67 /* NKSpriteNode.h */,
@@ -1516,6 +1521,7 @@
 				61D6E8A718FDB5B70017A389 /* CardSprite.m in Sources */,
 				61A257CC18FDE998001B7F67 /* NKPrimitiveNode.m in Sources */,
 				61D6E45F18FDAE110017A389 /* NKAppDelegate.m in Sources */,
+				29B84B5918FF03F600469EE0 /* NKPickerNode.m in Sources */,
 				61A257D418FDE998001B7F67 /* NKGaussianZ.m in Sources */,
 				61D6E8A818FDB5B70017A389 /* DevMenu.m in Sources */,
 				61D6E89218FDB5B70017A389 /* Player.m in Sources */,
@@ -1678,6 +1684,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
 				INFOPLIST_FILE = "NKNikeField/NKNikeField-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1695,6 +1702,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
 				INFOPLIST_FILE = "NKNikeField/NKNikeField-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

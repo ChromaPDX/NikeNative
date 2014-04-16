@@ -42,8 +42,11 @@
 #import "NKLabelNode.h"
 #import "NKScrollNode.h"
 
-// GEOMETRY + DRAWS
+// SCOLL NODE SUBS
+#import "NKPickerNode.h"
 
+// GEOMETRY + DRAWS
+// #import "NKVectorTypes.h" should be in the PCH
 #import "NKStaticDraw.h"
 #import "NKMesh.h"
 
