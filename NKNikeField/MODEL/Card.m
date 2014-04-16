@@ -310,7 +310,7 @@
     }
     
     NSMutableArray* obstacles = [[self rangeMask] mutableCopy];
-
+    
     // STEP 1:  GET BOARD OBSTACLES
     
     if (self.category == CardCategoryMove || self.category == CardCategoryChallenge) {
@@ -321,14 +321,14 @@
             [obstacles removeObject:[self.game.ball.location copy]];
         }
     }
-
+    
     else if (self.category == CardCategoryKick) {
         for (Player* p in self.deck.player.manager.opponent.players.inGame) {
             [obstacles addObject:[p.location copy]];
         }
     }
     
-
+    
     AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
     NSArray *accessible;
     
@@ -383,8 +383,31 @@
     }
     
     if (!set.count) return nil;
-
+    
     return set;
+}
+
+
+-(NSArray*)validatedPath:(NSArray*)path{
+    NSLog(@"validatedPath, self.range = %d, input.count = %d", [self range], [path count]);
+    if(path){
+        // NSArray* reversedPath = [[path reverseObjectEnumerator] allObjects];
+        // NSArray* reversedPath = [[path reverseObjectEnumerator] allObjects];
+        // for(BoardLocation *l in path){
+        //     NSLog(@"%@", l);
+        // }
+        if([path count] >= [self range]){
+            NSArray *retPath = [path subarrayWithRange:NSMakeRange(0, [self range])];
+            NSLog(@"validatedPath, output.count = %d", [retPath count]);
+            return retPath;
+        }
+        else{
+            return NULL;
+        }
+    }
+    else {
+        return NULL;
+    }
 }
 
 

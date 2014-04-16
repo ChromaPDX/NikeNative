@@ -75,11 +75,16 @@ enum AI_ACTION_TYPE {
 -(EventType)discardAfterEventType;
 -(NSString*) descriptionForCard;
 -(Game*)game;
--(NSArray*)validatedSelectionSet;
--(NSArray*)selectionSet;
 
 -(NSString*)fileNameForBigCard;
 -(NSString*)fileNameForThumbnail;
+
+
+// AI CONVENIENCE
+
+-(NSArray*)validatedSelectionSet;
+-(NSArray*)selectionSet;
+-(NSArray*)validatedPath:(NSArray*)path;
 
 @property (nonatomic, weak) Deck *deck;
 @property (nonatomic, weak) Player *enchantee;

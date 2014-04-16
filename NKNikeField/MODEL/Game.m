@@ -1197,7 +1197,7 @@
 }
 
 -(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
-    NSLog(@"AI is choosing card for Player: %@", p.name);
+    NSLog(@"AI is choosing card for Player: %@ location = %@ ballLocaiton = %@", p.name, p.location, p.manager.game.ball.location);
     
     
     if (p.manager.hasPossesion) {
@@ -1206,7 +1206,7 @@
             // HAS BALL
             Card* kickCard = p.kickDeck.inHand[0];
             Card* moveCard = p.moveDeck.inHand[0];
-            if ([[kickCard validatedSelectionSet] containsObject:kickCard.deck.player.manager.goal]){
+            if ([p isInShootingRange ]){
                 // CAN SHOOT ON GOAL
                 kickCard.aiActionType = SHOOT_ON_GOAL;
                 //[_gameScene AISelectedLocation:kickCard.deck.player.manager.goal];
@@ -1215,27 +1215,28 @@
             }
             else{
                 //CAN NOT SHOOT ON GOAL
-                NSArray *pathToGoal = [p pathToGoal];
-                if([pathToGoal count] <= kickCard.range + moveCard.range){
-                    // CAN MOVE IN SHOOTING RANGE
-                    moveCard.aiActionType = MOVE_TO_GOAL;
-                    [_gameScene AISelectedCard:moveCard];
+                Player *passToPlayer = [p passToAvailablePlayerInShootingRange];
+                if(passToPlayer){
+                    // CAN PASS TO PLAYER IN SHOOTING RANGE
+                    kickCard.aiActionType = PASS_TO_PLAYER_IN_SHOOTING_RANGE;
+                    [_gameScene AISelectedCard:kickCard];
                     return;
                 }
                 else{
-                    //CAN NOT MOVE IN SHOOTING RANGE
-                    Player *passToPlayer = [p passToPlayerInShootingRange];
-                    if(passToPlayer){
-                        // CAN PASS TO PLAYER IN SHOOTING RANGE
-                        kickCard.aiActionType = PASS_TO_PLAYER_IN_SHOOTING_RANGE;
-                        [_gameScene AISelectedCard:kickCard];
+                    // CAN NOT PASS TO PLAYER IN SHOOTING RANGE
+                    NSArray *pathToGoal = [moveCard validatedPath:[p pathToGoal]];
+                    // NSArray *pathToGoal = [p pathToOpenFieldClosestToLocation:p.manager.goal];
+                    if(pathToGoal){
+                        // CAN MOVE IN SHOOTING RANGE
+                        moveCard.aiActionType = MOVE_TO_GOAL;
+                        [_gameScene AISelectedCard:moveCard];
                         return;
                     }
                     else{
-                        // CAN NOT PASS TO PLAYER IN SHOOTING RANGE
-                        NSArray *playersCloserToGoal = [p playersCloserToGoal];
+                        //CAN NOT MOVE IN SHOOTING RANGE
+                        NSArray *playersCloserToGoal = [p playersAvailableInKickRangeCloserToGoal];
                         if(playersCloserToGoal){
-                            // CAN PASS TO PLAYER CLOSER TO GOAL
+                            // CAN PASS TO AVAILABLE PLAYER CLOSER TO GOAL
                             kickCard.aiActionType = PASS_TO_GOAL;
                             [_gameScene AISelectedCard:kickCard];
                             return;
@@ -1246,9 +1247,12 @@
                             [_gameScene AISelectedCard:moveCard];
                             return;
                         }
+                        
                     }
                 }
+                
             }
+            
         }
         else {
             // DOES NOT HAVE BALL
@@ -1263,8 +1267,9 @@
         // DEFENSE
         Card* challengeCard = p.challengeDeck.inHand[0];
         Card* moveCard = p.moveDeck.inHand[0];
-
         
+        NSLog(@"AIChooseCardForPlayer: challengeCard = %@", challengeCard.name);
+        NSLog(@"AIChooseCardForPlayer: challengeCard validatedSelectionSet = %@", [challengeCard validatedSelectionSet]);
         if ([[challengeCard validatedSelectionSet] count]) {
             // CAN CHALLENGE
             challengeCard.aiActionType = CHALLENGE;
@@ -1306,36 +1311,37 @@
     NSArray *pathToBall;
     Player *passToPlayer;
     NSArray *playersCloserToGoal;
+    NSArray* pathToGoalUnverified;
     Player *p = c.deck.player;
-   // NSLog(@"in AIChooseLocationForCard, aiActionType = %d", c.aiActionType);
+    // NSLog(@"in AIChooseLocationForCard, aiActionType = %d", c.aiActionType);
     switch (c.aiActionType){
         case NONE:
             NSLog(@"*********************************************AI: NONE!!!");
             break;
         case MOVE_TO_DEFENDGOAL:  // for now this is the same as move_to_goal
-            NSLog(@"*********************************************AI: DEVEND GOAL");
+            NSLog(@"*********************************************AI: DEFEND GOAL");
         case MOVE_TO_GOAL:
             NSLog(@"*********************************************AI: MOVE TO GOAL");
-            pathToGoal = [c.deck.player pathToGoal];
-            if(pathToGoal){
+            pathToGoalUnverified = [c.deck.player pathToGoal];
+            // NSLog(@"pathToGoalUnverified = ");
+            // for(BoardLocation *loc in pathToGoalUnverified){
+            //     NSLog(@"%@",loc);
+            // }
+            
+            //pathToGoal = [c validatedPath:[c.deck.player pathToGoal]];
+            pathToGoal = [p pathToOpenFieldClosestToLocation:p.manager.goal];
+            
+            // NSLog(@"pathToGoalVerified = ");
+            // for(BoardLocation *loc in pathToGoal){
+            //     NSLog(@"%@",loc);
+            // }
+            NSLog(@"pathToGoal count = %d", [pathToGoal count]);
+            if(pathToGoal && [pathToGoal count]){
                 BoardLocation *newLoc;
-                
-                int maxDist = [pathToGoal count] - 1;
-                
-                int travelDistance = MAX(0,MIN(maxDist, c.range));
-                // NSLog(@"travelDistance = %d", travelDistance);
-                // NSLog(@"path count = %d", [path count]);
-                
-                if(pathToGoal && travelDistance > 0){
-                    newLoc = [pathToGoal objectAtIndex:[pathToGoal count]-travelDistance];
-                    [_gameScene AISelectedLocation:newLoc];
-                    return;
-                }
-                else {
-                    NSLog(@"AI HAS NO VALID MOVE: STAY");
-                    [_gameScene AISelectedLocation:c.deck.player.location];
-                    return;
-                }
+                newLoc = [pathToGoal objectAtIndex:[pathToGoal count] - 1];
+                NSLog(@"MOVE TO GOAL selected %@", newLoc);
+                [_gameScene AISelectedLocation:newLoc];
+                return;
             }
             else {
                 NSLog(@"AI HAS NO VALID MOVE: STAY");
@@ -1350,8 +1356,9 @@
             
         case PASS_TO_PLAYER_IN_SHOOTING_RANGE:
             NSLog(@"*********************************************AI: PASS TO PLAYER IN SHOOTING RANGE");
-            passToPlayer = [c.deck.player passToPlayerInShootingRange];
+            passToPlayer = [c.deck.player passToAvailablePlayerInShootingRange];
             if(passToPlayer){
+                NSLog(@"pass to player: %@", passToPlayer.name);
                 if ([c.validatedSelectionSet containsObject:passToPlayer.location]) {
                     [_gameScene AISelectedLocation:passToPlayer.location];
                 }
@@ -1363,16 +1370,14 @@
             return;
             
         case PASS_TO_GOAL:
-            playersCloserToGoal = [c.deck.player playersCloserToGoal];
+            playersCloserToGoal = [c.deck.player playersAvailableInKickRangeCloserToGoal];
             if(playersCloserToGoal){
                 Player *p = playersCloserToGoal[0];
-                if ([c.validatedSelectionSet containsObject:p.location]) {
-                    NSLog(@"*********************************************AI: PASS TOWARDS GOAL");
-                    [_gameScene AISelectedLocation:p.location];
-                    return;
-                }
+                NSLog(@"*********************************************AI: PASS TOWARDS GOAL");
+                [_gameScene AISelectedLocation:p.location];
+                return;
             }
-
+            
             NSLog(@"AI HAS NO VALID PASS: TRY A MOVE CARD");
             [_gameScene AISelectedCard:c.deck.player.moveDeck.inHand[0]];
             return;
@@ -1384,8 +1389,8 @@
             break;
         case MOVE_TO_CHALLENGE:
             NSLog(@"*********************************************AI: MOVE TO CHALLENGE");
-
-            pathToBall = [p pathToBall];
+            
+            pathToBall = [c validatedPath:[p pathToBall]];
             if(pathToBall){
                 [_gameScene AISelectedLocation:pathToBall[[pathToBall count]-1]];
                 return;
@@ -1398,27 +1403,26 @@
             break;
         case MOVE_TO_BALL:
             NSLog(@"*********************************************AI: MOVE TO BALL");
-            pathToBall = [c.deck.player pathToClosestBoardLocation:_ball.location];
+            //NSArray *pathToBall = [c.deck.player pathToClosestAdjacentBoardLocation:_ball.location];
+            pathToBall = [p pathToOpenFieldClosestToLocation:_ball.location];
+            NSMutableArray *validatedPath = [[NSMutableArray alloc]init];
             if(pathToBall){
-                BoardLocation *newLoc;
-                NSLog(@"pathToBall.count = %d", [pathToBall count]);
-                int maxDist = [pathToBall count] - 1;
+                validatedPath = [[c validatedPath:pathToBall] mutableCopy];
+            }
+            else{
                 
-                int travelDistance = MAX(0,MIN(maxDist, c.range));
-                // NSLog(@"travelDistance = %d", travelDistance);
-                // NSLog(@"path count = %d", [path count]);
-                NSLog(@"travelDistance = %d", travelDistance);
-
-                if(travelDistance > 0){
-                    newLoc = [pathToBall objectAtIndex:[pathToBall count]-travelDistance];
-                    [_gameScene AISelectedLocation:newLoc];
-                    return;
-                }
-                else {
-                    NSLog(@"AI HAS NO VALID MOVE: STAY");
-                    [_gameScene AISelectedLocation:c.deck.player.location];
-                    return;
-                }
+            }
+            // NSLog(@"pathToBall count = %d", [pathToBall count]);
+            // NSLog(@"validatedPath count = %d", [validatedPath count]);
+            //  if([validatedPath objectAtIndex:[validatedPath count]-1] == _ball.location){
+            //     [validatedPath removeLastObject];
+            // }
+            //pathToBall = [c validatedPath:[c.deck.player pathToBall]];
+            if(validatedPath && [validatedPath count]){
+                BoardLocation *newLoc;
+                newLoc = [pathToBall objectAtIndex:[validatedPath count]-1];
+                [_gameScene AISelectedLocation:newLoc];
+                return;
             }
             else {
                 NSLog(@"pathToBall = NULL, AI HAS NO VALID MOVE: STAY");
@@ -1431,67 +1435,6 @@
     [_gameScene AISelectedLocation:c.deck.player.location];
     return;
 }
-
-
-/*
--(void)AIChooseLocationForCard:(Card*) c { // called from UI after card has been selected
-    
-    NSLog(@"AI is choosing a location for card: %@", c.name);
-    
-    if (c.category == CardCategoryMove) { // CALCULATE MOVE CARD
-        
-        NSArray *path;
-        if (c.deck.player.manager.hasPossesion) { // OFFENSE
-            path = [c.deck.player pathToGoal];
-        }
-        else {
-            path = [c.deck.player pathToBall]; // DEFENSE
-        }
-        
-        BoardLocation *newLoc;
-        
-        int maxDist = [path count] - 1;
-        
-        int travelDistance = MAX(0,MIN(maxDist, c.range));
-        // NSLog(@"travelDistance = %d", travelDistance);
-        // NSLog(@"path count = %d", [path count]);
-        
-        if(path && travelDistance > 0){
-            newLoc = [path objectAtIndex:[path count]-travelDistance];
-            [_gameScene AISelectedLocation:newLoc];
-        }
-        else {
-            NSLog(@"AI HAS NO VALID MOVE: STAY");
-            [_gameScene AISelectedLocation:c.deck.player.location];
-        }
-        
-    }
-    
-    else if (c.category == CardCategoryChallenge){
-        [_gameScene AISelectedLocation:_ball.location];
-    }
-    
-    else if (c.category == CardCategoryKick){ // we only got here if kick has a valid set
-        if ([[c validatedSelectionSet] containsObject:c.deck.player.manager.goal]){ // stay on target, stay on target
-            [_gameScene AISelectedLocation:c.deck.player.manager.goal];
-        }
-        else { // pick pass that is closest to goal
-            BoardLocation *closestToGoal = [BoardLocation pX:3 Y:5]; // choose middle of field
-            
-            for (BoardLocation *loc in [c validatedSelectionSet]) {
-                if ([loc distanceToGoalForManager:c.deck.player.manager neighborhoodType:NeighborhoodTypeRook] < [closestToGoal distanceToGoalForManager:c.deck.player.manager neighborhoodType:NeighborhoodTypeRook]) {
-                    closestToGoal = [loc copy];
-                }
-            }
-            
-            [_gameScene AISelectedLocation:closestToGoal];
-            
-        }
-    }
-    
-}
-*/
-
 
 #pragma mark - REPLAY / TURN
 
