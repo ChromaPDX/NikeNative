@@ -43,8 +43,7 @@
     
     _scrollDirectionVertical = true;
     _scrollingEnabled = true;
-    _padding.y = 10;
-    _padding.x = 10;
+    _padding = P2Make(10,10);
     _fdirty = true;
     
     self.userInteractionEnabled = true;
@@ -83,8 +82,7 @@
         }
        
         _scrollingEnabled = false;
-        _padding.x = 0;
-        _padding.y = 0;
+        _padding = P2Make(0,0);
         
         parent->cdirty = true;
         parent.fdirty = true;
@@ -145,36 +143,36 @@
 -(P2t)contentSize {
     if (cdirty) {
         
-        P2t tempSize = P2Make(0,0);
+        contentSize = P2Make(0,0);
         
         for(int i = 0; i < intChildren.count; i++)
         {
             NKScrollNode *child = intChildren[i];
             
-            if (_scrollDirectionVertical) {
-                int temp = child.size.height;
-                
-                tempSize.y += temp + _padding.y;
-            }
-            else {
-                int temp = child.size.width;
-                
-                tempSize.x += temp + _padding.x;
-            }
+            //            if (_scrollDirectionVertical) {
+            //                int temp = child.size.height;
+            //
+            //                tempSize.y += temp + _padding.y;
+            //            }
+            //            else {
+            //                int temp = child.size.width;
+            //
+            //                tempSize.x += temp + _padding.x;
+            //            }
+            
+            P2t cSize = P2Make(child.size.width + _padding.x, child.size.height + _padding.y);
+            contentSize = P2Add(contentSize, cSize);
             
         }
         
-        contentSize = tempSize;
-        
         cdirty = false;
         
-        return tempSize;
         
     }
     
-    else {
-        return contentSize;
-    }
+    
+    return contentSize;
+    
 }
 
 -(P2t)outOfBounds {
@@ -182,7 +180,7 @@
     if (_scrollDirectionVertical) {
         
         if (_scrollPosition.y > _padding.y) {
-            return P2Subtract(_scrollPosition, _padding);
+            return P2Make(0,_scrollPosition.y - _padding.y);
         }
         
         else {
@@ -191,26 +189,21 @@
                 
                 int diff = _scrollPosition.y + self.contentSize.y - self.size.height;
                 if (diff < 0){
-                    
                     return P2Make(0, diff);
-                    
                 }
-                
             }
             else {
                 if (_scrollPosition.y < _padding.y) {
-                    return P2Subtract(_scrollPosition, _padding);
+                    return P2Make(0,_scrollPosition.y - _padding.y);
                 }
             }
-            
         }
-        
     }
     
     else {
         
         if (_scrollPosition.x > _padding.x) {
-            return P2Subtract(_scrollPosition, _padding);
+            return P2Make(_scrollPosition.x - _padding.x,0);
         }
         
         else {
@@ -220,7 +213,7 @@
                 int diff = _scrollPosition.x + self.contentSize.x - self.size.width;
                 if (diff < 0){
                     
-                    return P2Make(0, diff);
+                    return P2Make(diff,0);
                     
                 }
 
@@ -228,7 +221,7 @@
             }
             else {
                 if (_scrollPosition.x < _padding.x) {
-                    return P2Subtract(_scrollPosition, _padding);
+                    return P2Make(_scrollPosition.x - _padding.x,0);
                 }
             }
             
@@ -385,17 +378,17 @@
             
             if (scrollVel != 0 && !P2Bool(self.outOfBounds)) {
                 if (_scrollDirectionVertical) {
-                      [self setScrollPosition:CGPointMake(_scrollPosition.x, _scrollPosition.y + scrollVel)];
+                      [self setScrollPosition:P2Make(_scrollPosition.x, _scrollPosition.y + scrollVel)];
                 }
                 else {
-                    [self setScrollPosition:CGPointMake(_scrollPosition.x + scrollVel, _scrollPosition.y)];
+                    [self setScrollPosition:P2Make(_scrollPosition.x + scrollVel, _scrollPosition.y)];
                 }
               
             }
             
             else {
                 _scrollPhase = ScrollPhaseRestitution;
-                easeIn = 20;
+                easeIn = 20.;
                 easeOut = false;
                 //NSLog(@"start restitution");
             }
@@ -407,17 +400,18 @@
             scrollVel = 0;
             
             if (!easeOut) {
-                if (easeIn > 5) easeIn--;
+                if (easeIn > 5.) easeIn--;
                 else easeOut = true;
             }
             else {
-                if (easeIn < 20) easeIn++;
+                if (easeIn < 20.) easeIn++;
             }
             
             P2t dir = self.outOfBounds;
             
             if (P2Bool(dir)) {
-                [self setScrollPosition:P2DivideFloat(P2Subtract(_scrollPosition ,dir),easeIn)];
+                [self setScrollPosition:P2Subtract(_scrollPosition,P2DivideFloat(dir,easeIn))];
+                NSLog(@"restituting %f, %f", dir.x, dir.y);
             }
             
             else {

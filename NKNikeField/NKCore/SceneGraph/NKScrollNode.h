@@ -68,17 +68,19 @@ typedef enum TransitionStyle {
     bool    clipToBounds;
     bool    isModal;
     
-    int     restitution;
-    int     easeIn;
-    int     state;
-    int     xOrigin;
-    int     yOrigin;
 
+    int     state;
+    
+    int   xOrigin;
+    int   yOrigin;
+
+    F1t   restitution;
+    F1t   easeIn;
+    F1t   scrollVel;
+    F1t   counterVel;
+    F1t   drag;
+    
     P2t   contentSize;
-    float   scrollVel;
-    float   counterVel;
-    float   drag ;
-    float   alpha;
 }
 
 // INIT
