@@ -94,14 +94,12 @@ typedef enum TransitionStyle {
     bool            clipToBounds;
     bool            isModal;
     
-    
-    
-    int             scrollPostion;
-    
-    
+
 }
 
 // INIT
+
+-(NKAction *)scrollTo:(CGFloat)x duration:(F1t)sec;
 
 -(instancetype) initWithParent:(NKScrollNode *)parent autoSizePct:(float)autoSizePct;
 
@@ -124,7 +122,6 @@ typedef enum TransitionStyle {
 @property (nonatomic, strong) UIColor *normalColor;
 @property (nonatomic, strong) UIColor *highlightColor;
 
--(void) setScrollPosition:(int) offset animated:(bool) animated;
 
 // Getter based properties
 @property (nonatomic, readonly) float outOfBounds;

@@ -91,6 +91,8 @@ typedef void (^ActionBlock)(NKNode *node, F1t completion);
 
 // 3D Additions
 
+-(instancetype) initWithDuration:(F1t)duration;
+
 + (NKAction *)move3dByX:(CGFloat)x Y:(CGFloat)y Z:(CGFloat)z duration:(F1t)sec;
 + (NKAction *)move3dBy:(V3t)delta duration:(F1t)sec;
 + (NKAction *)move3dTo:(V3t)location duration:(F1t)sec;

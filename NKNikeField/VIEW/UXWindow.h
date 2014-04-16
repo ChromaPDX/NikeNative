@@ -8,7 +8,12 @@
 @class AlertSprite;
 @class UXWindow;
 
-@interface PlayerHand : NKNode
+@interface BigCards : NKScrollNode
+    @property NSMutableArray *cards;
+-(void)addCard:(NKNode*)card;
+@end
+
+@interface PlayerHand : NKNode <NKTableCellDelegate>
 {
     CGSize cardSize;
 }
@@ -17,6 +22,8 @@
     @property (nonatomic, strong) NSMutableDictionary *cardSprites;
     @property (nonatomic, strong) NSMutableArray *myCards;
     @property (nonatomic, strong) NKLabelNode *playerName;
+
+    @property (nonatomic, strong) BigCards *bigCards;
 
     -(instancetype)initWithPlayer:(Player*)p delegate:(UXWindow*)delegate;
     -(void)addCard:(Card*)card;
@@ -44,6 +51,8 @@
 -(void)cardTouchMoved:(CardSprite*)card atPoint:(CGPoint)point;
 -(void)cardTouchBegan:(CardSprite*)card atPoint:(CGPoint)point;
 -(void)cardTouchEnded:(CardSprite*)card atPoint:(CGPoint)point;
+
+-(void)cardDoubleTap:(CardSprite*)card;
 
 -(BoardLocation*)canPlayCard:(Card*)card atPosition:(CGPoint)pos;
 

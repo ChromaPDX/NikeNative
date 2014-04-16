@@ -10,45 +10,48 @@
 
 @implementation NKScrollNode
 
-
-#pragma ADD Cells
-
-
-
-
--(instancetype) initWithColor:(UIColor *)color size:(CGSize)size {
+-(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size {
     
-    
-    self = [super initWithColor:color size:size];
+    self = [super initWithTexture:texture color:color size:size];
     
     if (self) {
         
         _normalColor = color;
-        _highlightColor = NKWHITE;
-        
-        _scrollDirectionVertical = true;
-        _scrollingEnabled = true;
-        _verticalPadding = 10;
-        _horizontalPadding = 10;
-        _fdirty = true;
-        
-        self.userInteractionEnabled = true;
-        //float nbgColor[4] = {rand()%255/255., rand()%255/255.,rand()%255/255.,1.};
-        
-        //        setBgColor(nbgColor);
-        //
-        //        _xRootOffset = getX();
-        //        _yRootOffset = getY();
-        //
-        //        xTouchOffset = &_xRootOffset;
-        //        yTouchOffset = &_yRootOffset;
-        
-        restitution = 3;
-        drag = 1.5;
+        [self tableInit];
         
     }
     
     return self;
+    
+}
+
+-(instancetype) initWithColor:(UIColor *)color size:(CGSize)size {
+    
+    self = [super initWithColor:color size:size];
+    
+    if (self) {
+        _normalColor = color;
+        [self tableInit];
+    }
+    
+    return self;
+}
+
+-(void)tableInit {
+
+    _highlightColor = NKWHITE;
+    
+    _scrollDirectionVertical = true;
+    _scrollingEnabled = true;
+    _verticalPadding = 10;
+    _horizontalPadding = 10;
+    _fdirty = true;
+    
+    self.userInteractionEnabled = true;
+    
+    restitution = 3;
+    drag = 1.5;
+
 }
 
 -(instancetype) initWithParent:(NKScrollNode *)parent autoSizePct:(float)autoSizePct {
@@ -65,12 +68,12 @@
         size = CGSizeMake(parent.size.width*autoSizePct,parent.size.height);
     }
     
-    self = [super initWithColor:nil size:size];
+    self = [super initWithColor:NKCLEAR size:size];
     
     if (self) {
         
         _autoSizePct = autoSizePct;
-        
+        _scrollingEnabled = false;
         _horizontalPadding = 0;
         _verticalPadding = 0;
         
@@ -317,13 +320,34 @@
     
 }
 
+-(NKAction*)scrollTo:(CGFloat)x duration:(F1t)sec {
+    
+    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    
+    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+        
+        if (action.reset) {
+            action.startPos = V3Make([(NKScrollNode*)node scrollPosition],0,0);
+            action.endPos = V3Make(x, 0, 0);
+            action.reset = false;
+        }
+        
+        V3t p = getTweenPoint(action.startPos, action.endPos, completion );
+        [(NKScrollNode*)node setScrollPosition:p.x];
+        
+    };
+    
+    return action;
+    
+}
+
 -(void)setScrollPosition:(float)scrollPosition {
     [self setScrollPostion:scrollPosition animated:false];
 }
 
--(void)setScrollPostion:(int)offset animated:(bool)animated {
+-(void)setScrollPostion:(float)offset animated:(bool)animated {
     
-    if (_scrollPosition != offset) {
+    if ((int)_scrollPosition != (int)offset) {
         _scrollPosition = offset;
         _fdirty = true;
     }
@@ -423,6 +447,8 @@
 
 -(NKTouchState) touchDown:(CGPoint)location id:(int) touchId
 {
+    
+    NSLog(@"table touch down");
 
      NKTouchState hit = NKTouchNone;
     
@@ -431,10 +457,7 @@
         if  (self.userInteractionEnabled){
             
             if ([self containsPoint:location]) {
-                
-                
-                
-                
+
                 _scrollPhase = ScrollPhaseBegan;
                 
                 xOrigin = location.x;
@@ -520,8 +543,7 @@
                 }
                 
                 else if (_scrollPhase == ScrollPhaseRecognized){
-                    
-                    [self setScrollPostion:_scrollPosition + sDt animated:false];
+                    [self setScrollPosition:_scrollPosition + sDt ];
                     
                 }
                 

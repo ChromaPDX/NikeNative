@@ -152,6 +152,57 @@
 
 }
 
+-(NSString*)bigCardImageString {
+    //Kick_L1a.png
+    
+    switch (_deck.category) {
+        case CardCategoryMove: return @"Move";
+        case CardCategoryKick: return @"Kick";
+        case CardCategoryChallenge: return @"Chal";
+        case CardCategorySpecial:
+            switch (_specialCategory) {
+                case CardCategoryMove: return @"Special";
+                case CardCategoryKick: return @"Special";
+                case CardCategoryChallenge: return @"Special";
+                default: break;
+            }
+            
+        default:
+            break;
+    }
+    return @"NIL";
+}
+
+-(NSString*)thumbnailImageString {
+    switch (_deck.category) {
+        case CardCategoryMove: return @"Move";
+        case CardCategoryKick: return @"Kick";
+        case CardCategoryChallenge: return @"Chal";
+        case CardCategorySpecial:
+            switch (_specialCategory) {
+                case CardCategoryMove: return @"SpecM";
+                case CardCategoryKick: return @"SpecK";
+                case CardCategoryChallenge: return @"SpecC";
+                default: break;
+            }
+            
+        default:
+            break;
+    }
+    return @"NIL";
+}
+
+-(NSString*)fileNameForBigCard {
+    NSString *fileName = [NSString stringWithFormat:@"%@_L%da", [self bigCardImageString], _level];
+    return fileName;
+}
+
+-(NSString*)fileNameForThumbnail {
+    NSString *fileName = [NSString stringWithFormat:@"Card_Icon_%@_L%d", [self thumbnailImageString], _level];
+    return fileName;
+}
+
+
 -(void)play {
     if ([_deck.inHand containsObject:self]){
         [_deck playCardFromHand:self];

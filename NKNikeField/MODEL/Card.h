@@ -78,6 +78,9 @@ enum AI_ACTION_TYPE {
 -(NSArray*)validatedSelectionSet;
 -(NSArray*)selectionSet;
 
+-(NSString*)fileNameForBigCard;
+-(NSString*)fileNameForThumbnail;
+
 @property (nonatomic, weak) Deck *deck;
 @property (nonatomic, weak) Player *enchantee;
 

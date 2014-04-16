@@ -389,7 +389,7 @@ static const GLfloat ZAxis[] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f};
         F1t dt = (CFAbsoluteTimeGetCurrent() - lastTime) * 1000.;
         lastTime = CFAbsoluteTimeGetCurrent();
        // NSLog(@"frame time: %f1.0",dt);
-        [_scene updateWithTimeSinceLast:dt];
+        [_scene updateWithTimeSinceLast:15];
         [_scene draw];
         
         
@@ -474,6 +474,19 @@ static const GLfloat ZAxis[] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f};
 	
 	context = nil;
 	
+}
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    for (UITouch *t in touches) {
+        [_scene touchDown:[t locationInView:self] id:0];
+    }
+    
+}
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    for (UITouch *t in touches) {
+        [_scene touchMoved:[t locationInView:self] id:0];
+    }
+    
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {

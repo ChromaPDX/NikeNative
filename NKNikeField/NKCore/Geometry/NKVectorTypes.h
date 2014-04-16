@@ -173,6 +173,19 @@ static inline M16t M16IdentityMake(){
 
 #pragma mark - Point 2 Type
 
+static inline F1t weightedAverage (F1t src, F1t dst, F1t d){
+    
+    return src == dst ? src : ((src * (1.-d) + dst * d));
+    
+}
+
+static inline V3t getTweenPoint(V3t src, V3t dst, F1t d){
+    return V3Make(weightedAverage(src.x, dst.x, d),
+                  weightedAverage(src.y, dst.y, d),
+                  weightedAverage(src.z, dst.z, d));
+}
+
+
 static inline CGPoint polToCar(CGPoint pol) {
     
     CGPoint car;

@@ -10,11 +10,8 @@
 
 @implementation NKAction
 
-inline F1t weightedAverage (F1t src, F1t dst, F1t d){
-    
-    return src == dst ? src : ((src * (1.-d) + dst * d));
-    
-}
+
+
 
 inline F1t logAverage (F1t src, F1t dst, F1t d){
     
@@ -22,11 +19,6 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     
 }
 
-inline V3t getTweenPoint(V3t src, V3t dst, F1t d){
-    return V3Make(weightedAverage(src.x, dst.x, d),
-                   weightedAverage(src.y, dst.y, d),
-                   weightedAverage(src.z, dst.z, d));
-}
 
 -(instancetype) initWithDuration:(F1t)duration {
     

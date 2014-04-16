@@ -100,7 +100,7 @@ typedef NS_ENUM(U1t, NKCullFaceMode) {
 
 @property (nonatomic, getter = isPaused) BOOL paused;
 @property (nonatomic, getter = isHidden) BOOL hidden;
-@property (nonatomic, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
+@property (nonatomic) bool userInteractionEnabled;
 @property (nonatomic) bool useShaderOnSelfOnly;
 
 @property (nonatomic) NKBlendMode blendMode;
@@ -108,7 +108,7 @@ typedef NS_ENUM(U1t, NKCullFaceMode) {
 
 @property (nonatomic) CGFloat alpha;
 
-@property (nonatomic, readonly) NKNode *parent;
+@property (nonatomic, weak) NKNode *parent;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, weak) NKSceneNode* scene;
 

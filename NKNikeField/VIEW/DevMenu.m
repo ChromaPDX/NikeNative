@@ -29,7 +29,7 @@
     leif.delegate = self;
         
     NKLabelNode* llabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Helvetica"];
-    llabel.text = @"LEIF - FIELD";
+    llabel.text = @"HUMAN GAME";
     [leif addChild:llabel];
     [llabel setZPosition:2];
         
@@ -40,7 +40,7 @@
     robby.delegate = self;
         
     NKLabelNode* rlabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Helvetica"];
-    rlabel.text = @"ROBBY - MINIGAMES";
+    rlabel.text = @"NO";
     [robby addChild:rlabel];
     [rlabel setZPosition:2];
         
@@ -51,7 +51,7 @@
     eric.delegate = self;
         
     NKLabelNode* elabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Helvetica"];
-    elabel.text = @"ERIC - MAIN MENU";
+    elabel.text = @"AI GAME";
     [elabel setZPosition:2];
     [eric addChild:elabel];
     

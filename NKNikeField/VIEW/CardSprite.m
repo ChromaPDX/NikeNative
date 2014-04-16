@@ -165,24 +165,9 @@
     }
 }
 
--(NSString*)cardImageStringForType {
-    switch (_model.deck.category) {
-        case CardCategoryMove: return @"Move";
-        case CardCategoryKick: return @"Kick";
-        case CardCategoryChallenge: return @"Chal";
-        case CardCategorySpecial:
-            switch (_model.specialCategory) {
-                case CardCategoryMove: return @"SpecM";
-                case CardCategoryKick: return @"SpecK";
-                case CardCategoryChallenge: return @"SpecC";
-                default: break;
-            }
-            
-        default:
-            break;
-    }
-    return @"NIL";
-}
+
+
+
 
 -(NKColor*)colorForCategory {
 
@@ -197,8 +182,8 @@
 
 -(void)setCorrectTexture {
     
-    NSString *fileName = [NSString stringWithFormat:@"Card_Icon_%@_L%d", [self cardImageStringForType], _model.level];
-    self.texture = [NKTexture textureWithImageNamed:fileName];
+    
+    self.texture = [NKTexture textureWithImageNamed:[_model fileNameForThumbnail]];
  //   if (!_flipped) {
         
 //        if ([_model isTypePlayer]){ // Player
@@ -289,26 +274,18 @@
 }
 
 
-//-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-//    //   NSLog(@"CardSprite.m : touchesBegan:");
-//    
-//    _touchOffset = [[touches anyObject] locationInNode:self];
-//    [_window cardTouchBegan:self atPoint:[[touches anyObject] locationInNode:self.parent]];
-//    
-//    
-//    
-//}
-//
-//-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-//    
-//    [_window cardTouchMoved:self atPoint:[[touches anyObject] locationInNode:self.parent]];
-//    
-//}
-//
 -(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
     NKTouchState hit = [super touchUp:location id:touchId];
     if (hit == 2) {
-          [_window cardTouchEnded:self atPoint:location];
+        
+        numtouches++;
+        if (numtouches > 1) {
+            numtouches = 0;
+            [_window cardDoubleTap:self];
+        }
+        else {
+            [_window cardTouchEnded:self atPoint:location];
+        }
     }
     return hit;
 }
@@ -324,10 +301,16 @@
 }
 
 
-static inline CGPoint ccp( CGFloat x, CGFloat y )
-{
-    return CGPointMake(x, y);
-}
 
+-(void)updateWithTimeSinceLast:(F1t)dt {
+    
+    touchTimer -= dt;
+    if (touchTimer < 0) {
+        numtouches = 0;
+        touchTimer = 1000.;
+    }
+    
+    [super updateWithTimeSinceLast:dt];
+}
 
 @end

@@ -313,6 +313,8 @@
             [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventPlayCard];
             
             [self performSequence:_currentEventSequence record:YES animate:YES];
+            
+            //
         }
     }
     
@@ -650,6 +652,9 @@
 -(void)endSequence:(GameSequence*)sequence record:(BOOL)shouldRecordSequence animate:(BOOL)animate{
     
     if (shouldRecordSequence){
+        
+        [_gameScene refreshUXWindowForPlayer:nil withCompletionBlock:^{}];
+
         
         [_gameScene cleanUpUIForSequence:sequence];
         

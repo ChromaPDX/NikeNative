@@ -58,11 +58,14 @@
         intChildren = [[NSMutableArray alloc]init];
     }
     
+
     NSMutableArray *temp = [intChildren mutableCopy];
     
     if (![temp containsObject:child]) {
         [temp addObject:child];
         [child setParent:self];
+        
+
     }
     
     intChildren = temp;
@@ -119,11 +122,23 @@
     
 }
 
+-(void)setUserInteractionEnabled:(bool)userInteractionEnabled {
+    
+    _userInteractionEnabled = userInteractionEnabled;
+    
+    if (_userInteractionEnabled && _parent) {
+        [_parent setUserInteractionEnabled:true];
+    }
+    
+    
+}
 -(void)setParent:(NKNode *)parent {
 
     _parent = parent;
     
-    //node->setParent(*parent.node);
+    if (self.userInteractionEnabled && _parent) {
+        [_parent setUserInteractionEnabled:true];
+    }
 }
 
 -(S2t)size {
@@ -148,15 +163,6 @@
     d = _size3d.z;
 }
 
--(void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
-
-    if (userInteractionEnabled && _parent) {
-        [_parent setUserInteractionEnabled:true];
-    }
-    
-     _userInteractionEnabled = userInteractionEnabled;
-    
-}
 
 -(int)numNodes {
     
@@ -566,10 +572,10 @@
     
     //NSLog(@"world coords: %f %f %f", p.x, p.y, p.z);
     
-    R4t d = [self getWorldFrame];
+    R4t r = [self getWorldFrame];
     
     //bool withinArea = false;
-    if ( p.x > d.x && p.x < d.x + d.w && p.y > d.y && p.y < d.y + d.h)
+    if ( p.x > r.x && p.x < r.x + r.w && p.y > r.y && p.y < r.y + r.h)
     {
        // [self logCoords];
         return true;

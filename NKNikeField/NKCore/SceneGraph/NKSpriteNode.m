@@ -51,7 +51,13 @@
 }
 
 - (instancetype)initWithColor:(UIColor*)color size:(CGSize)size {
-    return [self initWithTexture:nil color:color size:size];
+    self = [super initWithPrimitive:NKPrimitiveRect texture:nil color:color size:V3Make(size.width, size.height, 1)];
+    
+    if (self) {
+    }
+    
+    return self;
+
 }
 
 

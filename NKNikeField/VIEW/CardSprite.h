@@ -24,7 +24,8 @@
     NKLabelNode *slash;
     NKLabelNode *save; // goalie only
     NKLabelNode *_doubleName;
-    
+    float touchTimer;
+    int numtouches;
 }
 
 @property (nonatomic) CGPoint touchOffset;
@@ -44,6 +45,7 @@
 @property (nonatomic, strong) NKSpriteNode *art;
 @property (nonatomic,strong) NKSpriteNode *shadow;
 
+-(NSString*)fileNameForBigCard;
 -(NKColor*)colorForCategory;
 
 @end
