@@ -253,14 +253,14 @@
     float dur = FAST_ANIM_DUR;
     
     if (!ph.bigCards) {
-        BigCards* big = [[BigCards alloc]initWithColor:NKCLEAR size:CGSizeMake(w, h*4)];
+        BigCards* big = [[BigCards alloc]initWithColor:NKCLEAR size:CGSizeMake(w, h*5.)];
 
         ph.bigCards = big;
         big.scrollDirectionVertical = false;
         big.name = @"BIG CARD SCROLLER";
         
         for (CardSprite *cs in ph.myCards) {
-            NKScrollNode* node = [[NKScrollNode alloc] initWithParent:ph.bigCards autoSizePct:(2.5/ph.myCards.count)];
+            NKScrollNode* node = [[NKScrollNode alloc] initWithParent:ph.bigCards autoSizePct:(3./ph.myCards.count)];
             [node setTexture:[NKTexture textureWithImageNamed:[cs.model fileNameForBigCard]]];
             [node setColor:NKWHITE];
             [big addCard:node];
@@ -270,17 +270,16 @@
         
         [self runAction:[NKAction resizeToWidth:w height:h*8. duration:dur]];
         
-        [big setPosition3d:V3Make(0, -h*2., 0)];
+        [big setPosition3d:V3Make(0, -h*2.5, 0)];
         [ph addChild:big];
-        [big runAction:[NKAction move3dTo:V3Make(0, h*2, 0) duration:dur]];
+        [big runAction:[NKAction move3dTo:V3Make(0, h*2.5, 0) duration:dur]];
         
         int cardNum = [ph.myCards indexOfObject:[self spriteForCard:card.model]];
-        P2t scroll = P2Make(-[big.cards[cardNum] size].width * (cardNum) + w*.25, 0);
-        [big runAction:[NKAction scrollToPoint:scroll duration:FAST_ANIM_DUR]];
+        [big scrollToChild:cardNum withOffset:.125 duration:FAST_ANIM_DUR];
         
     }
     else {
-        [ph.bigCards runAction:[NKAction move3dTo:V3Make(0, -h*1.5, 0) duration:dur] completion:^{
+        [ph.bigCards runAction:[NKAction move3dTo:V3Make(0, -h*5.5, 0) duration:dur] completion:^{
             ph.bigCards = nil;
             [ph.bigCards removeFromParent];
         }];
@@ -301,11 +300,8 @@
     
     int cardNum = [ph.myCards indexOfObject:[self spriteForCard:selectedCard]];
     
-    if (big) {
-        P2t scroll = P2Make(-[big.cards[cardNum] size].width * (cardNum) + w*.25, 0);
-        [big runAction:[NKAction scrollToPoint:scroll duration:FAST_ANIM_DUR]];
-    }
-    
+    [big scrollToChild:cardNum withOffset:.125 duration:FAST_ANIM_DUR];
+
     _selectedCard = selectedCard;
     
 }

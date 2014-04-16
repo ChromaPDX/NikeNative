@@ -198,6 +198,13 @@ static inline bool P2Bool(P2t a){
     return false;
 }
 
+static inline bool P2GreaterFloat(P2t a, F1t b){
+    if (fabsf(a.x) > b || fabsf(a.y) > b) {
+        return true;
+    }
+    return false;
+}
+
 static inline F1t weightedAverage (F1t src, F1t dst, F1t d){
     
     return src == dst ? src : ((src * (1.-d) + dst * d));

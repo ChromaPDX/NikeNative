@@ -110,5 +110,6 @@ typedef enum TransitionStyle {
 @property (nonatomic, readonly) P2t contentSize;
 @property (nonatomic, readonly) bool shouldCull;
 
+-(void)scrollToChild:(int)child withOffset:(F1t)offsetPct duration:(F1t)duration;
 
 @end

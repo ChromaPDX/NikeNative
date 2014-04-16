@@ -324,23 +324,27 @@
 }
 
 
+-(P2t)scrollPositionForChild:(int)child withOffset:(F1t)offsetPct {
+    
+    if (_scrollDirectionVertical) {
+        return P2Make(0,-([intChildren[child] size].height + _padding.y) * (child) + h*offsetPct);
+    }
+    else {
+        return P2Make(-([intChildren[child] size].width + _padding.x) * (child) + w*offsetPct, 0);
+    }
+    
+    
+}
+
+-(void)scrollToChild:(int)child withOffset:(F1t)offsetPct duration:(F1t)duration {
+    [self runAction:[NKAction scrollToPoint:[self scrollPositionForChild:child withOffset:offsetPct] duration:duration]];
+}
 
 -(void)setScrollPosition:(P2t)scrollPosition {
-    [self setScrollPostion:scrollPosition animated:false];
+    _scrollPosition = scrollPosition;
+    _fdirty = true;
 }
 
--(void)setScrollPostion:(P2t)offset animated:(bool)animated {
-    
-    if ((int)_scrollPosition.x != (int)offset.x) {
-        _scrollPosition.x = offset.x;
-        _fdirty = true;
-    }
-    if ((int)_scrollPosition.y != (int)offset.y) {
-        _scrollPosition.y = offset.y;
-        _fdirty = true;
-    }
-    
-}
 
 #pragma mark - update / draw
 
@@ -388,7 +392,7 @@
             
             else {
                 _scrollPhase = ScrollPhaseRestitution;
-                easeIn = 20.;
+                easeIn = 12.;
                 easeOut = false;
                 //NSLog(@"start restitution");
             }
@@ -400,18 +404,18 @@
             scrollVel = 0;
             
             if (!easeOut) {
-                if (easeIn > 5.) easeIn--;
+                if (easeIn > 4.) easeIn--;
                 else easeOut = true;
             }
             else {
-                if (easeIn < 20.) easeIn++;
+                if (easeIn < 12.) easeIn++;
             }
             
             P2t dir = self.outOfBounds;
             
-            if (P2Bool(dir)) {
+            if (P2GreaterFloat(dir, restitution)) {
                 [self setScrollPosition:P2Subtract(_scrollPosition,P2DivideFloat(dir,easeIn))];
-                NSLog(@"restituting %f, %f", dir.x, dir.y);
+                NSLog(@"restituting %f, %f to scroll p %f ,%f", P2DivideFloat(dir,easeIn).x, P2DivideFloat(dir,easeIn).y,_scrollPosition.x, _scrollPosition.y);
             }
             
             else {
