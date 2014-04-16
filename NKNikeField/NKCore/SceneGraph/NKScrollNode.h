@@ -27,7 +27,6 @@
 
 #import "NKSpriteNode.h"
 
-#define DEFAULT_FONT_STRING "ofxTableViewDefault.ttf"
 #define DEFAULT_FONT_SIZE 16
 
 typedef enum ScrollPhase {
@@ -54,78 +53,60 @@ typedef enum TransitionStyle {
 @class NKScrollNode;
 
 @protocol NKTableCellDelegate
-    
-    -(void)cellWasSelected:(NKScrollNode*)cell;
-    -(void)cellWasDeSelected:(NKScrollNode*)cell;
-    
+
+-(void)cellWasSelected:(NKScrollNode*)cell;
+-(void)cellWasDeSelected:(NKScrollNode*)cell;
+
 
 @end
 
 @interface NKScrollNode : NKSpriteNode
 
 { // private
+    bool    cdirty;
+    bool    easeOut;
+    bool    clipToBounds;
+    bool    isModal;
     
-    int             state;
-    
-    // Touch Handliing
-    
-    
-    bool cdirty;
-    
-    int contentSize;
-    // SCROLLING INTERNAL VARIABLES
-    
-    int restitution;
-    int easeIn;
-    bool easeOut;
-    
-    int xOrigin;
-    int yOrigin;
-    float scrollVel;
-    float counterVel;
-    float drag ;
-    
-    float _scale;
-    
-    float alpha;
-    
-    
-    
-    bool            clipToBounds;
-    bool            isModal;
-    
+    int     restitution;
+    int     easeIn;
+    int     state;
+    int     xOrigin;
+    int     yOrigin;
 
+    P2t   contentSize;
+    float   scrollVel;
+    float   counterVel;
+    float   drag ;
+    float   alpha;
 }
 
 // INIT
 
--(NKAction *)scrollTo:(CGFloat)x duration:(F1t)sec;
-
 -(instancetype) initWithParent:(NKScrollNode *)parent autoSizePct:(float)autoSizePct;
-
-@property (nonatomic, weak) id <NKTableCellDelegate> delegate;
 
 // Scroll
 
-@property    (nonatomic) bool            highlighted;
-@property    (nonatomic) ScrollPhase scrollPhase;
-@property   (nonatomic) float scrollPosition;
-@property   (nonatomic) float autoSizePct;
-@property   (nonatomic)  int displayId;
+@property   (nonatomic) bool            highlighted;
 @property   (nonatomic) bool            scrollDirectionVertical;
 @property   (nonatomic) bool            scrollingEnabled;
 @property   (nonatomic) bool            shouldRasterize;
-@property   (nonatomic)   bool fdirty;
-@property   (nonatomic) int             verticalPadding;
-@property   (nonatomic) int             horizontalPadding;
+@property   (nonatomic) bool            fdirty;
+@property   (nonatomic) ScrollPhase     scrollPhase;
+@property   (nonatomic) int             displayId;
+@property   (nonatomic) P2t             scrollPosition;
+@property   (nonatomic) P2t             autoSizePct;
+@property   (nonatomic) P2t             padding;
 
 @property (nonatomic, strong) UIColor *normalColor;
 @property (nonatomic, strong) UIColor *highlightColor;
-
+@property (nonatomic, weak) NKNode *selectedChild;
+@property (nonatomic, weak) id <NKTableCellDelegate> delegate;
 
 // Getter based properties
-@property (nonatomic, readonly) float outOfBounds;
-@property (nonatomic, readonly) float contentSize;
+@property (nonatomic, readonly) P2t outOfBounds;
+@property (nonatomic, readonly) P2t contentSize;
 @property (nonatomic, readonly) bool shouldCull;
+
 
 @end

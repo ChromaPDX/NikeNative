@@ -173,6 +173,11 @@ typedef void (^ActionBlock)(NKNode *node, F1t completion);
 //
 + (NKAction *)customActionWithDuration:(F1t)seconds actionBlock:(void (^)(NKNode *node, CGFloat elapsedTime))block;
 
+// SCROLL NODE
+
++(NKAction*)scrollToPoint:(P2t)point duration:(F1t)sec;
++(NKAction*)scrollToChild:(NKNode*)child duration:(F1t)sec;
+
 // GL UTILITY
 
 + (NKAction*)panTolookAtNode:(NKNode*)target duration:(F1t)sec;

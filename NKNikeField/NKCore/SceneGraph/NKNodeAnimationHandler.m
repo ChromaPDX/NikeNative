@@ -555,6 +555,52 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     
 }
 
+#pragma mark - SCROLL ACTIONS
+
++(NKAction*)scrollToPoint:(P2t)point duration:(F1t)sec {
+    
+    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    
+    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+        
+        if (action.reset) {
+            P2t p2 = [(NKScrollNode*)node scrollPosition];
+            action.startPos = V3Make(p2.x,p2.y,0);
+            action.endPos = V3Make(point.x, point.y, 0);
+            action.reset = false;
+        }
+        
+        V3t p = getTweenPoint(action.startPos, action.endPos, completion );
+        [(NKScrollNode*)node setScrollPosition:P2Make(p.x,p.y)];
+        
+    };
+    
+    return action;
+    
+}
+
++(NKAction*)scrollToChild:(NKNode*)child duration:(F1t)sec {
+    
+    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    
+    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+        
+        if (action.reset) {
+            P2t p2 = [(NKScrollNode*)node scrollPosition];
+            action.startPos = V3Make(p2.x,p2.y,0);
+            action.endPos = V3Make(child.position.x, child.position.y, 0);
+            action.reset = false;
+        }
+        
+        V3t p = getTweenPoint(action.startPos, action.endPos, completion );
+        [(NKScrollNode*)node setScrollPosition:P2Make(p.x,p.y)];
+        
+    };
+    
+    return action;
+    
+}
+
 #pragma mark - CUSTOM ACTIONS
 
 +(NKAction*)customActionWithDuration:(F1t)seconds actionBlock:(ActionBlock)block {

@@ -173,6 +173,31 @@ static inline M16t M16IdentityMake(){
 
 #pragma mark - Point 2 Type
 
+#define P2Make CGPointMake
+
+static inline P2t P2Add (P2t a, P2t b){
+    return P2Make(a.x + b.x, a.y + b.y);
+}
+
+static inline P2t P2Subtract (P2t a, P2t b){
+    return P2Make(a.x - b.x, a.y - b.y);
+}
+
+static inline P2t P2Divide (P2t a, P2t b){
+    return P2Make(a.x / b.x, a.y / b.y);
+}
+
+static inline P2t P2DivideFloat (P2t a, F1t b){
+    return P2Make(a.x / b, a.y / b);
+}
+
+static inline bool P2Bool(P2t a){
+    if (a.x != 0 || a.y != 0) {
+        return true;
+    }
+    return false;
+}
+
 static inline F1t weightedAverage (F1t src, F1t dst, F1t d){
     
     return src == dst ? src : ((src * (1.-d) + dst * d));

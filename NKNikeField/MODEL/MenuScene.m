@@ -29,8 +29,7 @@
         
         NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size];
         [self addChild:table];
-        [table setVerticalPadding:0];
-        [table setHorizontalPadding:0];
+        [table setPadding:P2Make(0,0)];
         // table.scrollingEnabled = true;
         // table.scale = 1.02;  // to correct for image...this needs to be fixed
         table.name = @"table";

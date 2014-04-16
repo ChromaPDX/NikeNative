@@ -43,8 +43,8 @@
     
     _scrollDirectionVertical = true;
     _scrollingEnabled = true;
-    _verticalPadding = 10;
-    _horizontalPadding = 10;
+    _padding.y = 10;
+    _padding.x = 10;
     _fdirty = true;
     
     self.userInteractionEnabled = true;
@@ -72,10 +72,19 @@
     
     if (self) {
         
-        _autoSizePct = autoSizePct;
+        if (parent.scrollDirectionVertical) {
+             _autoSizePct.y = autoSizePct;
+            _autoSizePct.x = 1.;
+        }
+        else {
+            _autoSizePct.x = autoSizePct;
+            _autoSizePct.y = 1.;
+ 
+        }
+       
         _scrollingEnabled = false;
-        _horizontalPadding = 0;
-        _verticalPadding = 0;
+        _padding.x = 0;
+        _padding.y = 0;
         
         parent->cdirty = true;
         parent.fdirty = true;
@@ -133,10 +142,10 @@
 }
 
 
--(float)contentSize {
+-(P2t)contentSize {
     if (cdirty) {
         
-        int tempSize = 0;
+        P2t tempSize = P2Make(0,0);
         
         for(int i = 0; i < intChildren.count; i++)
         {
@@ -145,11 +154,12 @@
             if (_scrollDirectionVertical) {
                 int temp = child.size.height;
                 
-                tempSize += temp + _verticalPadding;
+                tempSize.y += temp + _padding.y;
             }
             else {
                 int temp = child.size.width;
-                tempSize += temp + _horizontalPadding;
+                
+                tempSize.x += temp + _padding.x;
             }
             
         }
@@ -167,29 +177,29 @@
     }
 }
 
--(float)outOfBounds {
+-(P2t)outOfBounds {
     
     if (_scrollDirectionVertical) {
         
-        if (_scrollPosition > _verticalPadding) {
-            return _scrollPosition - _verticalPadding;
+        if (_scrollPosition.y > _padding.y) {
+            return P2Subtract(_scrollPosition, _padding);
         }
         
         else {
             
-            if (self.contentSize > self.size.height) {
+            if (self.contentSize.y > self.size.height) {
                 
-                int diff = _scrollPosition + self.contentSize - self.size.height;
+                int diff = _scrollPosition.y + self.contentSize.y - self.size.height;
                 if (diff < 0){
                     
-                    return diff;
+                    return P2Make(0, diff);
                     
                 }
                 
             }
             else {
-                if (_scrollPosition < _verticalPadding) {
-                    return _scrollPosition - _verticalPadding;
+                if (_scrollPosition.y < _padding.y) {
+                    return P2Subtract(_scrollPosition, _padding);
                 }
             }
             
@@ -199,26 +209,26 @@
     
     else {
         
-        if (_scrollPosition > _horizontalPadding) {
-            return _scrollPosition - _horizontalPadding;
+        if (_scrollPosition.x > _padding.x) {
+            return P2Subtract(_scrollPosition, _padding);
         }
         
         else {
             
-            if (self.contentSize > self.size.width) {
+            if (self.contentSize.x > self.size.width) {
                 
-                int diff = _scrollPosition + self.contentSize - self.size.width;
-                
+                int diff = _scrollPosition.x + self.contentSize.x - self.size.width;
                 if (diff < 0){
                     
-                    return diff;
+                    return P2Make(0, diff);
                     
                 }
+
                 
             }
             else {
-                if (_scrollPosition < _horizontalPadding) {
-                    return _scrollPosition - _horizontalPadding;
+                if (_scrollPosition.x < _padding.x) {
+                    return P2Subtract(_scrollPosition, _padding);
                 }
             }
             
@@ -227,7 +237,7 @@
         
     }
     
-    return 0;
+    return P2Make(0,0);
     
 }
 
@@ -241,14 +251,14 @@
             for(int i = 0; i < [intChildren indexOfObject:child]; i++)
             {
                 int temp = [intChildren[i] size].height;
-                tempSize += temp + _verticalPadding;
+                tempSize += temp + _padding.y;
             }
             
             CGSize childSize;
             
             if ([child isKindOfClass:[NKScrollNode class]]) {
-                childSize.height = self.size.height * child.autoSizePct;
-                childSize.width = self.size.width-(_horizontalPadding);
+                childSize.height = self.size.height * child.autoSizePct.y;
+                childSize.width = self.size.width-(_padding.x);
                 child.fdirty = true;
                 
             }
@@ -256,7 +266,7 @@
                 childSize = child.size;
             }
             
-            [child setPosition3d:V3Make(0,self.size.height/2. - (tempSize + childSize.height/2.) + _scrollPosition,4)];
+            [child setPosition3d:V3Make(0,self.size.height/2. - (tempSize + childSize.height/2.) + _scrollPosition.y,4)];
             
             [child setSize:childSize];
             
@@ -269,14 +279,14 @@
             for(int i = 0; i < [intChildren indexOfObject:child]; i++)
             {
                 int temp = [intChildren[i] size].width;
-                tempSize += temp + _horizontalPadding;
+                tempSize += temp + _padding.x;
             }
             
             CGSize childSize;
             
             if ([child isKindOfClass:[NKScrollNode class]]) {
-                childSize.width = self.size.width * child.autoSizePct;
-                childSize.height = self.size.height-(_verticalPadding);
+                childSize.width = self.size.width * child.autoSizePct.x;
+                childSize.height = self.size.height-(_padding.y);
                 child.fdirty = true;
                 
             }
@@ -284,7 +294,7 @@
                 childSize = child.size;
             }
             
-            [child setPosition3d:V3Make(tempSize + childSize.width/2. + _scrollPosition - self.size.width/2.,0,4)];
+            [child setPosition3d:V3Make(tempSize + childSize.width/2. + _scrollPosition.x - self.size.width/2.,0,4)];
             
             [child setSize:childSize];
             
@@ -307,48 +317,33 @@
     
     return false;
     
-    R4t d = [self.parent getDrawFrame];
+    R4t r = [self.parent getDrawFrame];
     
-    if ([(NKScrollNode*)self.parent scrollDirectionVertical] && (self.position3d.y + self.size.height/2. < d.y ||
-                                                                 self.position3d.y - self.position3d.y/2. > d.y + self.parent.size.height)) {
+    if ([(NKScrollNode*)self.parent scrollDirectionVertical] && (self.position3d.y + self.size.height/2. < r.y ||
+                                                                 self.position3d.y - self.position3d.y/2. > r.y + self.parent.size.height)) {
         return true;
     }
     
-    else if (self.position3d.x + self.size.width/2. < d.x || self.position3d.x - self.size.width/2. > d.x + d.w) {
+    else if (self.position3d.x + self.size.width/2. < r.x || self.position3d.x - self.size.width/2. > r.x + r.w) {
         return true;
     }
     
 }
 
--(NKAction*)scrollTo:(CGFloat)x duration:(F1t)sec {
-    
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
-    
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
-        
-        if (action.reset) {
-            action.startPos = V3Make([(NKScrollNode*)node scrollPosition],0,0);
-            action.endPos = V3Make(x, 0, 0);
-            action.reset = false;
-        }
-        
-        V3t p = getTweenPoint(action.startPos, action.endPos, completion );
-        [(NKScrollNode*)node setScrollPosition:p.x];
-        
-    };
-    
-    return action;
-    
-}
 
--(void)setScrollPosition:(float)scrollPosition {
+
+-(void)setScrollPosition:(P2t)scrollPosition {
     [self setScrollPostion:scrollPosition animated:false];
 }
 
--(void)setScrollPostion:(float)offset animated:(bool)animated {
+-(void)setScrollPostion:(P2t)offset animated:(bool)animated {
     
-    if ((int)_scrollPosition != (int)offset) {
-        _scrollPosition = offset;
+    if ((int)_scrollPosition.x != (int)offset.x) {
+        _scrollPosition.x = offset.x;
+        _fdirty = true;
+    }
+    if ((int)_scrollPosition.y != (int)offset.y) {
+        _scrollPosition.y = offset.y;
         _fdirty = true;
     }
     
@@ -388,8 +383,14 @@
             
             drag = 1.04;
             
-            if (scrollVel != 0 && !self.outOfBounds) {
-                [self setScrollPosition:_scrollPosition + scrollVel];
+            if (scrollVel != 0 && !P2Bool(self.outOfBounds)) {
+                if (_scrollDirectionVertical) {
+                      [self setScrollPosition:CGPointMake(_scrollPosition.x, _scrollPosition.y + scrollVel)];
+                }
+                else {
+                    [self setScrollPosition:CGPointMake(_scrollPosition.x + scrollVel, _scrollPosition.y)];
+                }
+              
             }
             
             else {
@@ -413,10 +414,10 @@
                 if (easeIn < 20) easeIn++;
             }
             
-            float dir = self.outOfBounds;
+            P2t dir = self.outOfBounds;
             
-            if (dir != 0) {
-                [self setScrollPosition:_scrollPosition - dir / easeIn];
+            if (P2Bool(dir)) {
+                [self setScrollPosition:P2DivideFloat(P2Subtract(_scrollPosition ,dir),easeIn)];
             }
             
             else {
@@ -511,16 +512,20 @@
                 
                 int sDt;
                 int cDt;
+                P2t dt = P2Make(0,0);
                 
                 if (_scrollDirectionVertical) {
                     sDt = (location.y - yOrigin);
                     cDt = (location.x - xOrigin);
+                    dt.y = sDt;
+                    
                 }
                 else {
                     sDt = (location.x - xOrigin);
                     cDt = (location.y - yOrigin);
+                    dt.x = sDt;
                 }
-                
+
                 xOrigin = location.x;
                 yOrigin = location.y;
                 
@@ -543,7 +548,7 @@
                 }
                 
                 else if (_scrollPhase == ScrollPhaseRecognized){
-                    [self setScrollPosition:_scrollPosition + sDt ];
+                    [self setScrollPosition:P2Add(_scrollPosition,dt) ];
                     
                 }
                 

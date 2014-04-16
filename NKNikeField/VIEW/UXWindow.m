@@ -275,8 +275,8 @@
         [big runAction:[NKAction move3dTo:V3Make(0, h*2, 0) duration:dur]];
         
         int cardNum = [ph.myCards indexOfObject:[self spriteForCard:card.model]];
-        float scroll = -[big.cards[cardNum] size].width * (cardNum) + w*.25;
-        [big runAction:[big scrollTo:scroll duration:FAST_ANIM_DUR]];
+        P2t scroll = P2Make(-[big.cards[cardNum] size].width * (cardNum) + w*.25, 0);
+        [big runAction:[NKAction scrollToPoint:scroll duration:FAST_ANIM_DUR]];
         
     }
     else {
@@ -302,9 +302,8 @@
     int cardNum = [ph.myCards indexOfObject:[self spriteForCard:selectedCard]];
     
     if (big) {
-        float scroll = -[big.cards[cardNum] size].width * (cardNum) + w*.25;
-        
-        [big runAction:[big scrollTo:scroll duration:FAST_ANIM_DUR]];
+        P2t scroll = P2Make(-[big.cards[cardNum] size].width * (cardNum) + w*.25, 0);
+        [big runAction:[NKAction scrollToPoint:scroll duration:FAST_ANIM_DUR]];
     }
     
     _selectedCard = selectedCard;
