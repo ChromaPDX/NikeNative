@@ -116,7 +116,7 @@ typedef enum RTMessageType {
 
 @end
 
-@interface Game : NSObject <GKLocalPlayerListener, UIAlertViewDelegate>{
+@interface Game : NSObject <UIAlertViewDelegate>{ // GKLocalPlayerListener, 
     int review;
     BOOL shouldWin;
     BOOL shouldLose;

@@ -74,12 +74,14 @@ typedef enum TransitionStyle {
     int   xOrigin;
     int   yOrigin;
 
+    
     F1t   restitution;
     F1t   easeIn;
     F1t   scrollVel;
     F1t   counterVel;
     F1t   drag;
     
+    P2t   contentOffset;
     P2t   contentSize;
 }
 
@@ -110,6 +112,6 @@ typedef enum TransitionStyle {
 @property (nonatomic, readonly) P2t contentSize;
 @property (nonatomic, readonly) bool shouldCull;
 
--(void)scrollToChild:(int)child withOffset:(F1t)offsetPct duration:(F1t)duration;
-
+-(void)scrollToChild:(int)child duration:(F1t)duration;
+-(void)tableInit;
 @end

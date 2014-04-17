@@ -152,7 +152,7 @@
      V3t p2 = [self s2w:p];
     p2.x *= 1800.;
     p2.y *= 1800.;
-     NSLog(@"world i: %f %f o:%f %f", p.x, p.y, p2.x, p2.y);
+     //NSLog(@"world i: %f %f o:%f %f", p.x, p.y, p2.x, p2.y);
     return CGPointMake(p2.x, p2.y);
     //return CGPointMake(10000, 10000);
 }

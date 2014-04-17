@@ -253,14 +253,14 @@
     float dur = FAST_ANIM_DUR;
     
     if (!ph.bigCards) {
-        BigCards* big = [[BigCards alloc]initWithColor:NKCLEAR size:CGSizeMake(w, h*5.)];
+        BigCards* big = [[BigCards alloc]initWithColor:NKCLEAR size:CGSizeMake(w, h*3.)];
 
         ph.bigCards = big;
         big.scrollDirectionVertical = false;
         big.name = @"BIG CARD SCROLLER";
         
         for (CardSprite *cs in ph.myCards) {
-            NKScrollNode* node = [[NKScrollNode alloc] initWithParent:ph.bigCards autoSizePct:(3./ph.myCards.count)];
+            NKScrollNode* node = [[NKScrollNode alloc] initWithParent:ph.bigCards autoSizePct:(2./ph.myCards.count)];
             [node setTexture:[NKTexture textureWithImageNamed:[cs.model fileNameForBigCard]]];
             [node setColor:NKWHITE];
             [big addCard:node];
@@ -275,7 +275,7 @@
         [big runAction:[NKAction move3dTo:V3Make(0, h*2.5, 0) duration:dur]];
         
         int cardNum = [ph.myCards indexOfObject:[self spriteForCard:card.model]];
-        [big scrollToChild:cardNum withOffset:.125 duration:FAST_ANIM_DUR];
+        [big scrollToChild:cardNum  duration:FAST_ANIM_DUR];
         
     }
     else {
@@ -300,7 +300,7 @@
     
     int cardNum = [ph.myCards indexOfObject:[self spriteForCard:selectedCard]];
     
-    [big scrollToChild:cardNum withOffset:.125 duration:FAST_ANIM_DUR];
+    [big scrollToChild:cardNum duration:FAST_ANIM_DUR];
 
     _selectedCard = selectedCard;
     

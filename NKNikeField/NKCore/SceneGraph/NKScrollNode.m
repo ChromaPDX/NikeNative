@@ -179,7 +179,7 @@
     
     if (_scrollDirectionVertical) {
         
-        if (_scrollPosition.y > _padding.y) {
+        if (_scrollPosition.y > _padding.y + (contentOffset.y*w)) {
             return P2Make(0,_scrollPosition.y - _padding.y);
         }
         
@@ -202,7 +202,7 @@
     
     else {
         
-        if (_scrollPosition.x > _padding.x) {
+        if (_scrollPosition.x > _padding.x + (contentOffset.x*w)) {
             return P2Make(_scrollPosition.x - _padding.x,0);
         }
         
@@ -324,20 +324,20 @@
 }
 
 
--(P2t)scrollPositionForChild:(int)child withOffset:(F1t)offsetPct {
+-(P2t)scrollPositionForChild:(int)child {
     
     if (_scrollDirectionVertical) {
-        return P2Make(0,-([intChildren[child] size].height + _padding.y) * (child) + h*offsetPct);
+        return P2Make(0,-([intChildren[child] size].height + _padding.y) * (child) + h*contentOffset.y);
     }
     else {
-        return P2Make(-([intChildren[child] size].width + _padding.x) * (child) + w*offsetPct, 0);
+        return P2Make(-([intChildren[child] size].width + _padding.x) * (child) + w*contentOffset.x, 0);
     }
     
     
 }
 
--(void)scrollToChild:(int)child withOffset:(F1t)offsetPct duration:(F1t)duration {
-    [self runAction:[NKAction scrollToPoint:[self scrollPositionForChild:child withOffset:offsetPct] duration:duration]];
+-(void)scrollToChild:(int)child duration:(F1t)duration {
+    [self runAction:[NKAction scrollToPoint:[self scrollPositionForChild:child] duration:duration]];
 }
 
 -(void)setScrollPosition:(P2t)scrollPosition {
@@ -378,50 +378,13 @@
         
         if (_scrollPhase == ScrollPhaseEnded) {
             
-            drag = 1.04;
-            
-            if (scrollVel != 0 && !P2Bool(self.outOfBounds)) {
-                if (_scrollDirectionVertical) {
-                      [self setScrollPosition:P2Make(_scrollPosition.x, _scrollPosition.y + scrollVel)];
-                }
-                else {
-                    [self setScrollPosition:P2Make(_scrollPosition.x + scrollVel, _scrollPosition.y)];
-                }
-              
-            }
-            
-            else {
-                _scrollPhase = ScrollPhaseRestitution;
-                easeIn = 12.;
-                easeOut = false;
-                //NSLog(@"start restitution");
-            }
+            [self endScroll];
             
         }
         
         if (_scrollPhase == ScrollPhaseRestitution) {
             
-            scrollVel = 0;
-            
-            if (!easeOut) {
-                if (easeIn > 4.) easeIn--;
-                else easeOut = true;
-            }
-            else {
-                if (easeIn < 12.) easeIn++;
-            }
-            
-            P2t dir = self.outOfBounds;
-            
-            if (P2GreaterFloat(dir, restitution)) {
-                [self setScrollPosition:P2Subtract(_scrollPosition,P2DivideFloat(dir,easeIn))];
-                NSLog(@"restituting %f, %f to scroll p %f ,%f", P2DivideFloat(dir,easeIn).x, P2DivideFloat(dir,easeIn).y,_scrollPosition.x, _scrollPosition.y);
-            }
-            
-            else {
-                //NSLog(@"scroll stopped");
-                _scrollPhase = ScrollPhaseNil;
-            }
+            [self scrollRestitution];
             
         }
         
@@ -439,6 +402,52 @@
     
 }
 
+-(void)endScroll {
+    drag = 1.04;
+    
+    if (scrollVel != 0 && !P2Bool(self.outOfBounds)) {
+        
+        if (_scrollDirectionVertical) {
+            [self setScrollPosition:P2Make(_scrollPosition.x, _scrollPosition.y + scrollVel)];
+        }
+        else {
+            [self setScrollPosition:P2Make(_scrollPosition.x + scrollVel, _scrollPosition.y)];
+        }
+        
+    }
+    
+    else {
+        _scrollPhase = ScrollPhaseRestitution;
+        easeIn = 12.;
+        easeOut = false;
+        //NSLog(@"start restitution");
+    }
+
+}
+
+-(void)scrollRestitution {
+    scrollVel = 0;
+    
+    if (!easeOut) {
+        if (easeIn > 4.) easeIn--;
+        else easeOut = true;
+    }
+    else {
+        if (easeIn < 12.) easeIn++;
+    }
+    
+    P2t dir = self.outOfBounds;
+    
+    if (P2GreaterFloat(dir, restitution)) {
+        [self setScrollPosition:P2Subtract(_scrollPosition,P2DivideFloat(dir,easeIn))];
+       // NSLog(@"restituting %f, %f to scroll p %f ,%f", P2DivideFloat(dir,easeIn).x, P2DivideFloat(dir,easeIn).y,_scrollPosition.x, _scrollPosition.y);
+    }
+    
+    else {
+        //NSLog(@"scroll stopped");
+        _scrollPhase = ScrollPhaseNil;
+    }
+}
 
 #pragma mark - Touch Handling
 
@@ -493,6 +502,10 @@
         
 
     return hit;
+    
+}
+
+-(void)scrollEnded {
     
 }
 
@@ -604,6 +617,7 @@
         else {
             hit = NKTouchIsFirstResponder;
             _scrollPhase = ScrollPhaseEnded;
+            [self scrollEnded];
         }
         
     }

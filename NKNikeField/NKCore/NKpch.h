@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#if TARGET_OS_IPHONE
+#ifdef TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #else
+#ifdef TARGET_OS_MAC
 #import <AppKit/AppKit.h>
+#endif
 #endif
 
 #ifdef __cplusplus

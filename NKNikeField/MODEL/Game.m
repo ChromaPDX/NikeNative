@@ -7,7 +7,7 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
-
+#import <GameKit/GameKit.h>
 #import "ModelHeaders.h"
 
 
@@ -27,13 +27,13 @@
     if(self){
         NSString *path = [[NSBundle mainBundle] pathForResource:@"touch" ofType:@"wav"];
         NSURL *pathURL = [NSURL fileURLWithPath : path];
-        AudioServicesCreateSystemSoundID((__bridge CFURLRef) pathURL, &touchSound);
+       // AudioServicesCreateSystemSoundID((__bridge CFURLRef) pathURL, &touchSound);
     }
     return self;
 }
 
 -(void)playTouchSound{
-    AudioServicesPlaySystemSound(touchSound);
+   // AudioServicesPlaySystemSound(touchSound);
 }
 
 #pragma mark - INITIAL SETUP of THE GAME
@@ -204,7 +204,7 @@
             [_gcController initRealTimeConnection];
         }
         
-        [self replayLastTurn];
+       // [self replayLastTurn];
         
     }];
     
@@ -1832,7 +1832,8 @@
     
 }
 
-#pragma mark - GAME KIT CONVENIENCE
+#pragma mark - TURN REPLAYS
+
 
 -(void)clearSelection {
     _selectedCard = nil;
@@ -1841,49 +1842,12 @@
     _currentEventSequence = nil;
 }
 
--(void)setCurrentManagerFromMatch {
-    
-    NSString *player = _match.currentParticipant.playerID;
-    
-    if ([[GKLocalPlayer localPlayer].playerID isEqualToString:player]) {
-        
-        NSLog(@"Game.m : current Manager is : %@", _me.name);
-        _scoreBoardManager = _me;
-    }
-    else {
-        
-        NSLog(@"Game.m : current Manager is : %@", _opponent.name);
-        _scoreBoardManager = _opponent;
-    }
-    
-    
-}
-
 -(Manager*)managerForTeamSide:(int)teamSide{
     
     if (_me.teamSide == teamSide) {
         return _me;
     }
     return _opponent;
-    
-}
-
--(NSString*)myId {
-    return [GKLocalPlayer localPlayer].playerID;
-}
-
--(NSString*)opponentID {
-    
-    for (GKPlayer *p in _match.participants) {
-        if (![p.playerID isEqualToString:[self myId]]) {
-            if (p.playerID) {
-                return p.playerID;
-            }
-            else return NEWPLAYER;
-        }
-    }
-    
-    return NEWPLAYER;
     
 }
 
@@ -1906,6 +1870,121 @@
     [all removeLastObject];
     return all;
 }
+
+-(NSMutableArray*)allSequencesLinear {
+    
+    NSMutableArray *allSequences = [NSMutableArray array];
+    
+    for (int i = 0; i < _history.count; i++){
+        NSArray* turn = _history[i];
+        for (int i = 0; i < turn.count; i++){
+            [allSequences addObject:turn[i]];
+        }
+        
+    }
+    
+    for (int i = 0; i < _thisTurnSequences.count; i++){
+        [allSequences addObject:_thisTurnSequences[i]];
+    }
+    
+    //NSLog(@"BUILD ACTION ARRAY %d items", allSequences.count);
+    
+    return allSequences;
+    
+}
+
+-(int)totalEvents {
+    
+    int total = 0;
+    for (GameSequence *g in [self allSequencesLinear]) {
+        total += g.GameEvents.count;
+    }
+    
+    return total;
+    
+}
+
+
+#pragma mark GAME KIT
+
+
+-(void)sendSequence:(GameSequence*)sequence perform:(BOOL)perform {
+    
+//    if (_myTurn || perform) {
+//        
+//        
+//        if (_rtmatch) {
+//            
+//            NSMutableData* packet = [[NSMutableData alloc]init];
+//            
+//            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
+//            
+//            int type;
+//            
+//            if (perform) {
+//                type = RTMessagePerformSequence;
+//            }
+//            else {
+//                type = RTMessageShowSequence;
+//            }
+//            
+//            [archiver encodeInt:type forKey:@"type"];
+//            [archiver encodeObject:sequence forKey:@"sequence"];
+//            
+//            [archiver finishEncoding];
+//            
+//            NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
+//            
+//            [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
+//            
+//        }
+//        
+//        
+//    }
+    
+}
+
+
+/*
+-(void)setCurrentManagerFromMatch {
+    
+    NSString *player = _match.currentParticipant.playerID;
+    
+    if ([[GKLocalPlayer localPlayer].playerID isEqualToString:player]) {
+        
+        NSLog(@"Game.m : current Manager is : %@", _me.name);
+        _scoreBoardManager = _me;
+    }
+    else {
+        
+        NSLog(@"Game.m : current Manager is : %@", _opponent.name);
+        _scoreBoardManager = _opponent;
+    }
+    
+    
+}
+
+
+
+-(NSString*)myId {
+    return [GKLocalPlayer localPlayer].playerID;
+}
+
+-(NSString*)opponentID {
+    
+    for (GKPlayer *p in _match.participants) {
+        if (![p.playerID isEqualToString:[self myId]]) {
+            if (p.playerID) {
+                return p.playerID;
+            }
+            else return NEWPLAYER;
+        }
+    }
+    
+    return NEWPLAYER;
+    
+}
+
 
 
 -(void)fetchThisTurnSequences {
@@ -2188,39 +2267,6 @@
     
 }
 
--(NSMutableArray*)allSequencesLinear {
-    
-    NSMutableArray *allSequences = [NSMutableArray array];
-    
-    for (int i = 0; i < _history.count; i++){
-        NSArray* turn = _history[i];
-        for (int i = 0; i < turn.count; i++){
-            [allSequences addObject:turn[i]];
-        }
-        
-    }
-    
-    for (int i = 0; i < _thisTurnSequences.count; i++){
-        [allSequences addObject:_thisTurnSequences[i]];
-    }
-    
-    //NSLog(@"BUILD ACTION ARRAY %d items", allSequences.count);
-    
-    return allSequences;
-    
-}
-
--(int)totalEvents {
-    
-    int total = 0;
-    for (GameSequence *g in [self allSequencesLinear]) {
-        total += g.GameEvents.count;
-    }
-    
-    return total;
-    
-}
-
 
 #pragma mark - TB NETWORK EVENTS
 
@@ -2420,42 +2466,6 @@
 }
 
 
--(void)sendSequence:(GameSequence*)sequence perform:(BOOL)perform {
-    
-    if (_myTurn || perform) {
-        
-        
-        if (_rtmatch) {
-            
-            NSMutableData* packet = [[NSMutableData alloc]init];
-            
-            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
-            
-            int type;
-            
-            if (perform) {
-                type = RTMessagePerformSequence;
-            }
-            else {
-                type = RTMessageShowSequence;
-            }
-            
-            [archiver encodeInt:type forKey:@"type"];
-            [archiver encodeObject:sequence forKey:@"sequence"];
-            
-            [archiver finishEncoding];
-            
-            NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
-            
-            [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
-            
-        }
-        
-        
-    }
-    
-}
-
 
 -(void)sendRTPacketWithType:(RTMessageType)type point:(BoardLocation*)location {
     
@@ -2544,55 +2554,56 @@
     return stype;
     
 }
+*/
 
 #pragma mark - ARCHIVING
 
 - (void)restoreGameWithData:(NSData*)comp {
     
-    NSLog(@"compressed size: %d", comp.length);
-    NSData *data = [comp gzipInflate];
-    
-    //NSData *data = comp;
-    NSLog(@"uncompressed size: %d", data.length);
-    
-    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
-    
-    _matchInfo = [[unarchiver decodeObjectForKey:@"matchInfo"] mutableCopy];
-    
-    [_matchInfo setObject:[NSNumber numberWithInt:_history.count] forKey:@"turns"];
-    
-    _rtmatchid = [[_matchInfo objectForKey:@"rtmatchid"]unsignedIntegerValue];
-    //BOARD_LENGTH = [[_matchInfo objectForKey:@"boardLength"]intValue];
-    
-    NSLog(@"(* (* (* unpack rt id %lu *) *) *)", (unsigned long)_rtmatchid);
-    
-    [self checkRTConnection];
-    
-    for (GKTurnBasedParticipant *p in _match.participants) {
-        if (p.playerID) {
-            
-            if ([p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
-                _me = [unarchiver decodeObjectForKey:[GKLocalPlayer localPlayer].playerID];
-            }
-            
-            else {
-                _opponent = [unarchiver decodeObjectForKey:p.playerID];
-            }
-        }
-        
-    }
-    
-    if (!_opponent) {
-        _opponent = [unarchiver decodeObjectForKey:NEWPLAYER];
-        
-    }
-    
-    else if (!_me) {
-        _me = [unarchiver decodeObjectForKey:NEWPLAYER];
-    }
-    
-    
-    [self loadSequencesFromUnarchiver:unarchiver];
+//    NSLog(@"compressed size: %d", comp.length);
+//    NSData *data = [comp gzipInflate];
+//    
+//    //NSData *data = comp;
+//    NSLog(@"uncompressed size: %d", data.length);
+//    
+//    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
+//    
+//    _matchInfo = [[unarchiver decodeObjectForKey:@"matchInfo"] mutableCopy];
+//    
+//    [_matchInfo setObject:[NSNumber numberWithInt:_history.count] forKey:@"turns"];
+//    
+//    _rtmatchid = [[_matchInfo objectForKey:@"rtmatchid"]unsignedIntegerValue];
+//    //BOARD_LENGTH = [[_matchInfo objectForKey:@"boardLength"]intValue];
+//    
+//    NSLog(@"(* (* (* unpack rt id %lu *) *) *)", (unsigned long)_rtmatchid);
+//    
+//    //[self checkRTConnection];
+//    
+//    for (GKTurnBasedParticipant *p in _match.participants) {
+//        if (p.playerID) {
+//            
+//            if ([p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
+//                _me = [unarchiver decodeObjectForKey:[GKLocalPlayer localPlayer].playerID];
+//            }
+//            
+//            else {
+//                _opponent = [unarchiver decodeObjectForKey:p.playerID];
+//            }
+//        }
+//        
+//    }
+//    
+//    if (!_opponent) {
+//        _opponent = [unarchiver decodeObjectForKey:NEWPLAYER];
+//        
+//    }
+//    
+//    else if (!_me) {
+//        _me = [unarchiver decodeObjectForKey:NEWPLAYER];
+//    }
+//    
+//    
+//    [self loadSequencesFromUnarchiver:unarchiver];
     
     
     
@@ -2650,60 +2661,60 @@
 - (NSData*)saveGameToData {
     
     NSMutableData* data = [[NSMutableData alloc] init];
+//    
+//    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+//    
+//    for (GKTurnBasedParticipant *p in _match.participants) {
+//        
+//        
+//        if ([p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
+//            [archiver encodeObject:_me forKey:[GKLocalPlayer localPlayer].playerID];
+//            [_matchInfo setObject:[self metaDataForManager:_me] forKey:[GKLocalPlayer localPlayer].playerID];
+//            //NSLog(@"archiving %@ me to: %@", key, [NSString stringWithFormat:@"%@%@",key,[GKLocalPlayer localPlayer].playerID]);
+//        }
+//        
+//        else {
+//            if (p.playerID) {
+//                [_matchInfo setObject:[self metaDataForManager:_opponent] forKey:p.playerID];
+//                [_matchInfo removeObjectForKey:NEWPLAYER];
+//                
+//                [archiver encodeObject:_opponent forKey:p.playerID];
+//                // NSLog(@"archiving %@ op to: %@", key, [NSString stringWithFormat:@"%@%@",key,p.playerID]);
+//            }
+//            else {
+//                [_matchInfo setObject:[self metaDataForManager:_opponent] forKey:NEWPLAYER];
+//                [archiver encodeObject:_opponent forKey:NEWPLAYER];
+//                //NSLog(@"archiving %@ op to: %@", key, [NSString stringWithFormat:@"%@%@",key,NEWPLAYER]);
+//            }
+//            
+//        }
+//        
+//    }
+//    
+//    NSLog(@"------ SAVING . . .");
+//    [self logCurrentGameData];
+//    
+//    
+//    [archiver encodeObject:_history forKey:@"history"];
+//    [archiver encodeObject:_thisTurnSequences forKey:@"thisTurnSequences"];
+//    
+//    
+//    
+//    // MATCH DATA
+//    
+//    [_matchInfo setObject:[NSNumber numberWithInt:_history.count] forKey:@"turns"];
+//    
+//    [archiver encodeObject:_matchInfo forKey:@"matchInfo"];
+//    
+//    
+//    
+//    [archiver finishEncoding];
+//    
+//    NSLog(@"match data size: %d", data.length);
+//    
+    return data;
     
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-    
-    for (GKTurnBasedParticipant *p in _match.participants) {
-        
-        
-        if ([p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
-            [archiver encodeObject:_me forKey:[GKLocalPlayer localPlayer].playerID];
-            [_matchInfo setObject:[self metaDataForManager:_me] forKey:[GKLocalPlayer localPlayer].playerID];
-            //NSLog(@"archiving %@ me to: %@", key, [NSString stringWithFormat:@"%@%@",key,[GKLocalPlayer localPlayer].playerID]);
-        }
-        
-        else {
-            if (p.playerID) {
-                [_matchInfo setObject:[self metaDataForManager:_opponent] forKey:p.playerID];
-                [_matchInfo removeObjectForKey:NEWPLAYER];
-                
-                [archiver encodeObject:_opponent forKey:p.playerID];
-                // NSLog(@"archiving %@ op to: %@", key, [NSString stringWithFormat:@"%@%@",key,p.playerID]);
-            }
-            else {
-                [_matchInfo setObject:[self metaDataForManager:_opponent] forKey:NEWPLAYER];
-                [archiver encodeObject:_opponent forKey:NEWPLAYER];
-                //NSLog(@"archiving %@ op to: %@", key, [NSString stringWithFormat:@"%@%@",key,NEWPLAYER]);
-            }
-            
-        }
-        
-    }
-    
-    NSLog(@"------ SAVING . . .");
-    [self logCurrentGameData];
-    
-    
-    [archiver encodeObject:_history forKey:@"history"];
-    [archiver encodeObject:_thisTurnSequences forKey:@"thisTurnSequences"];
-    
-    
-    
-    // MATCH DATA
-    
-    [_matchInfo setObject:[NSNumber numberWithInt:_history.count] forKey:@"turns"];
-    
-    [archiver encodeObject:_matchInfo forKey:@"matchInfo"];
-    
-    
-    
-    [archiver finishEncoding];
-    
-    NSLog(@"match data size: %d", data.length);
-    
-    //return data;
-    
-    return [data gzipDeflate];
+    //return [data gzipDeflate];
     
 }
 
@@ -2753,35 +2764,35 @@
     
     [self prepEndTurn];
     
-    NSUInteger currentIndex = [_match.participants
-                               indexOfObject:_match.currentParticipant];
-    
-    GKTurnBasedParticipant *nextParticipant;
-    
-    nextParticipant = [_match.participants objectAtIndex:
-                       ((currentIndex + 1) % [_match.participants count ])];
-    
-    [_match endTurnWithNextParticipants:@[nextParticipant] turnTimeout:GKTurnTimeoutNone matchData:[self saveGameToData] completionHandler:^(NSError *error) {
-        if (error) {
-            NSLog(@"%@", error);
-        }
-        
-        NSLog(@"Game.m : endTurn : ENDING TURN: NEXT IS: %@", nextParticipant.playerID);
-        NSLog(@"**** ACTIONS: %d EVENTS:%d ****", [self totalGameSequences], [self totalEvents]);
-        
-        _myTurn = NO;
-        [self setCurrentManagerFromMatch];
-        
-        [_gameScene refreshScoreBoard];
-        
-        
-        double delayInSeconds = 1.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self sendRTPacketWithType:RTMessageCheckTurn point:nil];
-        });
-        
-    }];
+//    NSUInteger currentIndex = [_match.participants
+//                               indexOfObject:_match.currentParticipant];
+//    
+//    GKTurnBasedParticipant *nextParticipant;
+//    
+//    nextParticipant = [_match.participants objectAtIndex:
+//                       ((currentIndex + 1) % [_match.participants count ])];
+//    
+//    [_match endTurnWithNextParticipants:@[nextParticipant] turnTimeout:GKTurnTimeoutNone matchData:[self saveGameToData] completionHandler:^(NSError *error) {
+//        if (error) {
+//            NSLog(@"%@", error);
+//        }
+//        
+//        NSLog(@"Game.m : endTurn : ENDING TURN: NEXT IS: %@", nextParticipant.playerID);
+//        NSLog(@"**** ACTIONS: %d EVENTS:%d ****", [self totalGameSequences], [self totalEvents]);
+//        
+//        _myTurn = NO;
+//        [self setCurrentManagerFromMatch];
+//        
+//        [_gameScene refreshScoreBoard];
+//        
+//        
+//        double delayInSeconds = 1.0;
+//        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//            [self sendRTPacketWithType:RTMessageCheckTurn point:nil];
+//        });
+//        
+//    }];
     
 }
 
@@ -2819,69 +2830,69 @@
     
     NSLog(@"game.m : endGame : victory %d", victory);
     
-    // DO GAME CENTER SHIT
-    
-    NSString *opID;
-    GKScore *opScore;
-    
-    for (GKTurnBasedParticipant *p in _match.participants) {
-        if (![p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID ]) { // Opponent
-            opID = p.playerID;
-            
-            opScore = [[GKScore alloc] initWithLeaderboardIdentifier:@"nsfwLeaders" forPlayer:opID];
-            
-            if (victory) {
-                p.matchOutcome = GKTurnBasedMatchOutcomeLost;
-            }
-            else {
-                p.matchOutcome = GKTurnBasedMatchOutcomeWon;
-            }
-            
-        }
-        else { // me
-            if (victory) {
-                p.matchOutcome = GKTurnBasedMatchOutcomeWon;
-            }
-            else {
-                p.matchOutcome = GKTurnBasedMatchOutcomeLost;
-            }
-            
-        }
-    }
-    
-    GKScore *meScore = [[GKScore alloc] initWithLeaderboardIdentifier:@"nsfwLeaders"];
-    
-    
-    if (_me.teamSide) {
-        [meScore setValue:_score.y];
-        [opScore setValue:_score.x];
-    }
-    else {
-        [meScore setValue:_score.x];
-        [opScore setValue:_score.y];
-    }
-    
-    if (opID) {
-        NSLog(@"game.m : endGame : ending without valid Opponent!");
-        [_match endMatchInTurnWithMatchData:[self saveGameToData] scores:@[meScore, opScore] achievements:Nil completionHandler:^(NSError *error){
-            [_match loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error){
-                _myTurn = NO;
-            }];
-            
-        }];
-    }
-    
-    else {
-        NSLog(@"game.m : endGame : ending with valid Opponent!");
-        [_match endMatchInTurnWithMatchData:[self saveGameToData] scores:@[meScore] achievements:Nil completionHandler:^(NSError *error){
-            _myTurn = NO;
-        }];
-    }
-    
-    //#warning lame o work around for game center
-    //UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    // SKViewController *rootViewController = (SKViewController*)window.rootViewController;
-    // [rootViewController performSelector:@selector(showGK) withObject:Nil afterDelay:2.0];
+//    // DO GAME CENTER SHIT
+//    
+//    NSString *opID;
+//    GKScore *opScore;
+//    
+//    for (GKTurnBasedParticipant *p in _match.participants) {
+//        if (![p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID ]) { // Opponent
+//            opID = p.playerID;
+//            
+//            opScore = [[GKScore alloc] initWithLeaderboardIdentifier:@"nsfwLeaders" forPlayer:opID];
+//            
+//            if (victory) {
+//                p.matchOutcome = GKTurnBasedMatchOutcomeLost;
+//            }
+//            else {
+//                p.matchOutcome = GKTurnBasedMatchOutcomeWon;
+//            }
+//            
+//        }
+//        else { // me
+//            if (victory) {
+//                p.matchOutcome = GKTurnBasedMatchOutcomeWon;
+//            }
+//            else {
+//                p.matchOutcome = GKTurnBasedMatchOutcomeLost;
+//            }
+//            
+//        }
+//    }
+//    
+//    GKScore *meScore = [[GKScore alloc] initWithLeaderboardIdentifier:@"nsfwLeaders"];
+//    
+//    
+//    if (_me.teamSide) {
+//        [meScore setValue:_score.y];
+//        [opScore setValue:_score.x];
+//    }
+//    else {
+//        [meScore setValue:_score.x];
+//        [opScore setValue:_score.y];
+//    }
+//    
+//    if (opID) {
+//        NSLog(@"game.m : endGame : ending without valid Opponent!");
+//        [_match endMatchInTurnWithMatchData:[self saveGameToData] scores:@[meScore, opScore] achievements:Nil completionHandler:^(NSError *error){
+//            [_match loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error){
+//                _myTurn = NO;
+//            }];
+//            
+//        }];
+//    }
+//    
+//    else {
+//        NSLog(@"game.m : endGame : ending with valid Opponent!");
+//        [_match endMatchInTurnWithMatchData:[self saveGameToData] scores:@[meScore] achievements:Nil completionHandler:^(NSError *error){
+//            _myTurn = NO;
+//        }];
+//    }
+//    
+//    //#warning lame o work around for game center
+//    //UIWindow *window = [UIApplication sharedApplication].keyWindow;
+//    // SKViewController *rootViewController = (SKViewController*)window.rootViewController;
+//    // [rootViewController performSelector:@selector(showGK) withObject:Nil afterDelay:2.0];
     
 }
 
@@ -2893,79 +2904,79 @@
 
 -(void)getSortedPlayerNames {
     
-    NSMutableArray *ids = [NSMutableArray array];
-    
-    for (GKPlayer *p in _match.participants) {
-        if (p.playerID) {
-            [ids addObject:p.playerID];
-        }
-    }
-    
-    [GKPlayer loadPlayersForIdentifiers:ids withCompletionHandler:^(NSArray *players, NSError *error) {
-        if (error != nil)
-        {
-            NSLog(@"Error receiving player data");
-            // Handle the error.
-        }
-        if (players != nil)
-        {
-            
-            NSString *myName;
-            NSString *opponentName;
-            
-            for (GKPlayer *p in players) {
-                
-                if ([p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
-                    
-                    myName = p.displayName;
-                    
-                }
-            }
-            
-            for (GKPlayer *p in players) {
-                
-                if (![p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
-                    
-                    opponentName = p.displayName;
-                    
-                }
-            }
-            
-            if (_me) {
-                if (!opponentName) opponentName = NEWPLAYER;
-                if (_me.teamSide == 0) {
-                    _playerNames = @[myName, opponentName];
-                }
-                else {
-                    _playerNames = @[opponentName, myName];
-                }
-                
-            }
-            
-            NSLog(@"player names %@", _playerNames);
-            
-        }
-    }];
+//    NSMutableArray *ids = [NSMutableArray array];
+//    
+//    for (GKPlayer *p in _match.participants) {
+//        if (p.playerID) {
+//            [ids addObject:p.playerID];
+//        }
+//    }
+//    
+//    [GKPlayer loadPlayersForIdentifiers:ids withCompletionHandler:^(NSArray *players, NSError *error) {
+//        if (error != nil)
+//        {
+//            NSLog(@"Error receiving player data");
+//            // Handle the error.
+//        }
+//        if (players != nil)
+//        {
+//            
+//            NSString *myName;
+//            NSString *opponentName;
+//            
+//            for (GKPlayer *p in players) {
+//                
+//                if ([p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
+//                    
+//                    myName = p.displayName;
+//                    
+//                }
+//            }
+//            
+//            for (GKPlayer *p in players) {
+//                
+//                if (![p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
+//                    
+//                    opponentName = p.displayName;
+//                    
+//                }
+//            }
+//            
+//            if (_me) {
+//                if (!opponentName) opponentName = NEWPLAYER;
+//                if (_me.teamSide == 0) {
+//                    _playerNames = @[myName, opponentName];
+//                }
+//                else {
+//                    _playerNames = @[opponentName, myName];
+//                }
+//                
+//            }
+//            
+//            NSLog(@"player names %@", _playerNames);
+//            
+//        }
+//    }];
 }
 
--(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    
-    [_gameScene setWaiting:NO];
-    
-    if (buttonIndex) {
-        
-        [self replayGame:YES];
-        
-    }
-    
-    else {
-        
-        [self replayGame:NO];
-        
-        
-    }
-    
-}
+//-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+//    
+//    [_gameScene setWaiting:NO];
+//    
+//    if (buttonIndex) {
+//        
+//        [self replayGame:YES];
+//        
+//    }
+//    
+//    else {
+//        
+//        [self replayGame:NO];
+//        
+//        
+//    }
+//    
+//}
 
 
 @end
