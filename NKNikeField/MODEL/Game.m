@@ -858,11 +858,11 @@
     else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
         
         for (Player* p in event.manager.players.inGame) {
-            [p.moveDeck turnOverNextCardForEvent:event];
-            [p.kickDeck turnOverNextCardForEvent:event];
-            [p.challengeDeck turnOverNextCardForEvent:event];
-            [p.specialDeck turnOverNextCardForEvent:event];
-            [p.specialDeck turnOverNextCardForEvent:event];
+            [p.moveDeck drawNewCardIfEmptyForEvent:event];
+            [p.kickDeck drawNewCardIfEmptyForEvent:event];
+            [p.challengeDeck drawNewCardIfEmptyForEvent:event];
+            [p.specialDeck drawNewCardIfEmptyForEvent:event];
+            [p.specialDeck drawNewCardIfEmptyForEvent:event];
         }
         
         //NSLog(@"Game.m : drawing card %@ for:%@", newCard.name, event.manager.name);
@@ -955,7 +955,9 @@
         
         for (Player *p in event.manager.players.inGame) {
             for (Card* c in [p allCardsInHand]) {
-                [c discard];
+                if (!c.locked) {
+                         [c discard];
+                }
             }
             
         }

@@ -16,7 +16,6 @@
     self = [super initWithTexture:nil color:nil size:size];
     
     if (self) {
-        
 
         self.userInteractionEnabled = YES;
         
@@ -45,7 +44,6 @@
 }
 
 -(void)showShadow:(BOOL)showShadow withCompletionBlock:(void (^)())block {
-    
     
     if (showShadow) {
         
@@ -85,88 +83,17 @@
         
         _model = model;
         
-//        _art = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Player_Male"] color:[NKColor blueColor] size:CGSizeMake(TILE_WIDTH, TILE_WIDTH*1.3)];
-//        
-//        [self addChild:_art];
-        
-        //[_art setPosition:CGPointMake(0, -h*.05)];
-        
-        //        cardName = [self styledLabelNode];
-        //        cardName.fontSize = (int)(h/10.);
-        //        [cardName setPosition:CGPointMake(0, h*.25)];
-        //        cardName.text = [model.name uppercaseString];
-        
-//        _doubleName = [[NKLabelNode alloc]initWithSize:self.size FontNamed:@"TradeGothicLTStd-BdCn20"];
-//        _doubleName.fontSize = 20;
-//        _doubleName.text = _model.name;
-//        
-//        [self addChild:_doubleName];
-        
-//        _doubleName = [self spritenodecontaininglabelsFromStringcontainingnewlines:[[model.name uppercaseString] stringByReplacingOccurrencesOfString:@" " withString:@"\n"]
-//                                                                          fontname:@"TradeGothicLTStd-BdCn20"
-//                                                                         fontcolor:[NKColor blackColor] fontsize:h/12.
-//                                                                    verticalMargin:0 emptylineheight:0];
-        
-//        [self addChild:_doubleName];
-//        [_doubleName setPosition:CGPointMake(-w*.38, h*.32)];
-//        
-//        cost = [self styledLabelNode];
-//        cost.text = [NSString stringWithFormat:@"%d", (int)(_model.actionPointCost)];
-//        cost.position = CGPointMake((int)(w*.33), (int)(h*.23));
-//        
-//        NKSpriteNode *apIcon = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"ActionPointsIconSM"] size:CGSizeMake(w*.07,h*.07)];
-//        apIcon.position = CGPointMake((int)(w*.27), (int)(h*.23));
-//        
-//        [self addChild:apIcon];
-//        [self addChild:cost];
-//        
-//        
-//        actionPoints = [self styledLabelNode];
-//        actionPoints.text = [NSString stringWithFormat:@"%d", (int)(_model.actionPointEarn)];
-//        actionPoints.position = CGPointMake((int)(-w*.38), (int)(-h*.4));
-//        
-//        [self addChild:actionPoints];
-//        
+        if (model.validatedSelectionSet) {
+            self.color = [self colorForCategory];
+        }
+        else {
+             self.color = [NKColor colorWithRed:.5 green:.5 blue:.5 alpha:1.];
+        }
         
         [self setCorrectTexture];
         
-//        if ([_model isTypePlayer]){
-//            
-//            kick = [self styledLabelNode];
-//            kick.text = [NSString stringWithFormat:@"%d / %d", (int)(_model.abilities.kick * 100),  (int)(_model.abilities.handling * 100)];
-//            kick.position = CGPointMake(0, (int)-h*.32);
-//            kick.fontSize = (int)(h/6.);
-//            
-//            //            dribble = [self styledLabelNode];
-//            //            dribble.text = [NSString stringWithFormat:@"%d%%", (int)(_model.abilities.handling * 100)];
-//            //            dribble.position = CGPointMake(w*.2, (int)(-h*.32));
-//            //            dribble.fontSize = (int)(h/6.);
-//            
-//            [self addChild:kick];
-//            //  [self addChild:dribble];
-//            
-//            //            NKSpriteNode *ballIcon = [NKSpriteNode spriteNodeWithTexture:[[_delegate sharedAtlas] textureNamed:@"icon_pass"] size:CGSizeMake(w*.3, w*.3)];
-//            //            NKSpriteNode *passIcon = [NKSpriteNode spriteNodeWithTexture:[[_delegate sharedAtlas] textureNamed:@"icon_ball"] size:CGSizeMake(w*.3, w*.3)];
-//            //            [ballIcon setPosition:CGPointMake(-.25*w, .05*w)];
-//            //            [passIcon setPosition:CGPointMake(-.25*w, -.3*w)];
-//            //            [self addChild:ballIcon];
-//            //            [self addChild:passIcon];
-//            
-//            
-//            //            if (_model.female) {
-//            //                [_art setTexture:[NKTexture textureWithImageNamed:@"Card_Player_Female"]];
-//            //            }
-//            //
-//            //            else {
-//            //                [_art setTexture:[NKTexture textureWithImageNamed:@"Card_Player_Male"]];
-//            //            }
-//            
-//        }
     }
 }
-
-
-
 
 
 -(NKColor*)colorForCategory {
@@ -182,64 +109,10 @@
 
 -(void)setCorrectTexture {
     
-    
     self.texture = [NKTexture textureWithImageNamed:[_model fileNameForThumbnail]];
- //   if (!_flipped) {
-        
-//        if ([_model isTypePlayer]){ // Player
-//            if ([_model.manager isEqual:_delegate.game.me]) {
-//                self.texture = [NKTexture textureWithImageNamed:@"CardPlayerBlue"];
-//                self.color = V2BLUE;
-//            }
-//            else {
-//                
-//                self.texture = [NKTexture textureWithImageNamed:@"CardPlayerRed"];
-//                self.color = V2RED;
-//            }
-//            
-//        }
-
-   //     NKColor *color;
-        
-        
-//        if([_model isTypeSkill]){
-//            self.texture = [NKTexture textureWithImageNamed:@"CardSkill"];
-//            color = V2SKILL;
-//        }
-//        
-//        else if([_model isTypeGear]){
-//            self.texture = [NKTexture textureWithImageNamed:@"CardGear"];
-//            color = V2GEAR;
-//        }
-//        
-//        else if([_model isTypeBoost]){
-//            self.texture = [NKTexture textureWithImageNamed:@"CardBoost"];
-//            color = V2BOOST;
-//        }
-//        
-        
-//        self.color = color;
-//        
-//        
-//        [_art setTexture:[NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Card_%@", [[_model name] stringByReplacingOccurrencesOfString:@" " withString:@"_"]]]];
-//
-//        
-//        [_art setColor:self.color];
-//        [_art setColorBlendFactor:1.];
-        //NSLog(@" setting art color: %@", _art.color);
-        //self.colorBlendFactor = .05;
-        
-        
-//    }
-//    
-//    else {
-//        self.userInteractionEnabled = NO;
-//        self.texture = [NKTexture textureWithImageNamed:@"CardReplay"];
-//    }
-    
-    
-    
-    
+    if (_model.locked) {
+        [self showLocked];
+    }
 }
 -(void)setFlipped:(BOOL)flipped {
     
@@ -295,6 +168,17 @@
     
 }
 
+-(void)showLocked {
+    if (![self childNodeWithName:@"lock"]) {
+        
+    NKSpriteNode *lock =  [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"lock-4"] color:self.color size:CGSizeMake(self.size.width*.5, self.size.width*.5)];
+    [self addChild:lock];
+    [lock setPosition:P2Make(w *.25, h*-.25)];
+    lock.name = @"lock";
+        
+    }
+}
+
 -(void)toggleLocked {
     NSLog(@"lock card");
     
@@ -304,10 +188,7 @@
     }
     else {
         _model.locked = true;
-        NKSpriteNode *lock =  [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"lock-4"] color:self.color size:CGSizeMake(self.size.width*.5, self.size.width*.5)];
-        [self addChild:lock];
-        [lock setPosition:P2Make(w *.25, h*-.25)];
-        lock.name = @"lock";
+        [self showLocked];
     }
 }
 

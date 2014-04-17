@@ -373,13 +373,6 @@
     newCard.model = card;
     newCard.window = _delegate;
     
-    if (card.validatedSelectionSet) {
-        newCard.color = newCard.colorForCategory;
-    }
-    else {
-        newCard.color = [NKColor colorWithRed:.5 green:.5 blue:.5 alpha:1.];
-    }
-    
     [_cardSprites setObject:newCard forKey:card];
     
     [self addChild:newCard];

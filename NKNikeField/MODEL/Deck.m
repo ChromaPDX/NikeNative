@@ -248,6 +248,20 @@
     
 }
 
+-(void)drawNewCardIfEmptyForEvent:(GameEvent*)event {
+    if (_category != CardCategorySpecial) {
+        if (!_inHand.count) {
+            [self turnOverNextCardForEvent:event];
+        }
+    }
+    else {
+        if (_inHand.count < 2) {
+            [self turnOverNextCardForEvent:event];
+        }
+    }
+
+    
+}
 -(Card*)turnOverNextCardForEvent:(GameEvent*)event{
     
     if (!_theDeck.count) {
