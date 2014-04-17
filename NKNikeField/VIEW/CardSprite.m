@@ -273,18 +273,57 @@
     return self;
 }
 
+-(NKTouchState)touchDown:(CGPoint)location id:(int)touchId {
+    NKTouchState hit = [super touchMoved:location id:touchId];
+    
+    cachedPosition = self.position;
+    lastTouch = location;
+    return hit;
+    
+}
+
+-(NKTouchState)touchMoved:(CGPoint)location id:(int)touchId {
+    NKTouchState hit = [super touchMoved:location id:touchId];
+    if (hit == 2) {
+        if (location.y < lastTouch.y) {
+            self.position = P2Make(self.position.x, self.position.y - (lastTouch.y - location.y));
+            lastTouch = location;
+        }
+    }
+    
+    return hit;
+    
+}
+
+-(void)toggleLocked {
+    NSLog(@"lock card");
+    
+    if (_model.locked) {
+        _model.locked = false;
+    }
+    else {
+        _model.locked = true;
+    }
+}
 
 -(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+    
     NKTouchState hit = [super touchUp:location id:touchId];
     if (hit == 2) {
         
-        numtouches++;
-        if (numtouches > 1) {
-            numtouches = 0;
-            [_window cardDoubleTap:self];
+        if (self.position.y < cachedPosition.y - (h*.125)) {
+            [self toggleLocked];
+            [self runAction:[NKAction moveTo:cachedPosition duration:FAST_ANIM_DUR]];
         }
         else {
-            [_window cardTouchEnded:self atPoint:location];
+            numtouches++;
+            if (numtouches > 1) {
+                numtouches = 0;
+                [_window cardDoubleTap:self];
+            }
+            else {
+                [_window cardTouchEnded:self atPoint:location];
+            }
         }
     }
     return hit;
@@ -307,7 +346,7 @@
     touchTimer -= dt;
     if (touchTimer < 0) {
         numtouches = 0;
-        touchTimer = 1000.;
+        touchTimer = 600.;
     }
     
     [super updateWithTimeSinceLast:dt];

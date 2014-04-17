@@ -389,7 +389,7 @@ static const GLfloat ZAxis[] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f};
         F1t dt = (CFAbsoluteTimeGetCurrent() - lastTime) * 1000.;
         lastTime = CFAbsoluteTimeGetCurrent();
        // NSLog(@"frame time: %f1.0",dt);
-        [_scene updateWithTimeSinceLast:15];
+        [_scene updateWithTimeSinceLast:dt];
         [_scene draw];
         
         

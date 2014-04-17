@@ -60,6 +60,8 @@ enum AI_ACTION_TYPE {
 @property (nonatomic) NSInteger actionPointEarn;
 @property (nonatomic) NSInteger level;
 @property (nonatomic) NSInteger range;
+@property (nonatomic) bool locked;
+
 @property (nonatomic) bool AIShouldUse;
 
 @property (nonatomic, strong) BoardLocation *location;

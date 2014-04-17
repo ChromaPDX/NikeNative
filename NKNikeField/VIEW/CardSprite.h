@@ -26,6 +26,8 @@
     NKLabelNode *_doubleName;
     float touchTimer;
     int numtouches;
+    P2t cachedPosition;
+    P2t lastTouch;
 }
 
 @property (nonatomic) CGPoint touchOffset;
