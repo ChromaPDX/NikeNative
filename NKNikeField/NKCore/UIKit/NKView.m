@@ -459,7 +459,10 @@ static const GLfloat ZAxis[] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f};
 }
 
 
-
+-(void)setScene:(NKSceneNode *)scene {
+    _scene = scene;
+    scene.nkView = self;
+}
 
 
 // Stop animating and release resources when they are no longer needed.
