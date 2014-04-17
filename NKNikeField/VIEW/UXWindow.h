@@ -13,8 +13,7 @@
 -(void)addCard:(NKNode*)card;
 @end
 
-@interface PlayerHand : NKNode <NKTableCellDelegate>
-{
+@interface PlayerHand : NKNode <NKTableCellDelegate>{
     CGSize cardSize;
 }
     @property (nonatomic, weak) UXWindow* delegate;
@@ -34,6 +33,7 @@
 @end
 
 @interface UXWindow : NKSpriteNode
+
 
 @property (nonatomic, strong) NSMutableDictionary *playerHands;
 

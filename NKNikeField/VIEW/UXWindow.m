@@ -254,7 +254,8 @@
     
     if (!ph.bigCards) {
         BigCards* big = [[BigCards alloc]initWithColor:NKCLEAR size:CGSizeMake(w, h*3.)];
-
+        big.delegate = ph;
+        
         ph.bigCards = big;
         big.scrollDirectionVertical = false;
         big.name = @"BIG CARD SCROLLER";
@@ -265,7 +266,7 @@
             [node setColor:NKWHITE];
             [big addCard:node];
             node.name = [cs.model fileNameForBigCard];
-            node.userInteractionEnabled = false;
+           // node.userInteractionEnabled = false;
         }
         
         [self runAction:[NKAction resizeToWidth:w height:h*8. duration:dur]];
@@ -279,14 +280,24 @@
         
     }
     else {
-        [ph.bigCards runAction:[NKAction move3dTo:V3Make(0, -h*5.5, 0) duration:dur] completion:^{
-            ph.bigCards = nil;
-            [ph.bigCards removeFromParent];
-        }];
-        [self runAction:[NKAction resizeToWidth:w height:h*.125 duration:dur]];
+      
+        [self hideBigCards];
         
     }
     
+}
+
+-(void)hideBigCards {
+    
+    float dur = CARD_ANIM_DUR;
+    
+    PlayerHand* ph =   [_playerHands objectForKey:_selectedCard.deck.player];
+    
+    [ph.bigCards runAction:[NKAction move3dTo:V3Make(0, -h*5.5, 0) duration:dur] completion:^{
+        ph.bigCards = nil;
+        [ph.bigCards removeFromParent];
+    }];
+    [self runAction:[NKAction resizeToWidth:w height:h*.125 duration:dur]];
 }
 
 -(void)setSelectedCard:(Card *)selectedCard {
@@ -358,6 +369,7 @@
     [[_playerHands objectForKey:_selectedCard.deck.player] sortCards];
     
 }
+
 
 @end
 
@@ -578,6 +590,22 @@
     
 }
 
+#pragma mark - big cards delegate
+
+-(void)cellWasDeSelected:(NKScrollNode *)cell {
+    
+}
+
+-(void)cellWasSelected:(NKScrollNode *)cell {
+    int index = [cell.parent.children indexOfObject:cell];
+    CardSprite* cs = _myCards[index];
+    [_delegate setSelectedCard:cs.model];
+    
+    [_delegate hideBigCards];
+}
+
+
+
 
 
 @end
@@ -591,6 +619,8 @@
     
     [_cards addObject:card];
     [self addChild:card];
+    
+    card.userInteractionEnabled = true;
 }
 
 @end

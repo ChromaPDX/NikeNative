@@ -60,7 +60,7 @@ typedef enum TransitionStyle {
 
 @end
 
-@interface NKScrollNode : NKSpriteNode
+@interface NKScrollNode : NKSpriteNode <NKTableCellDelegate>
 
 { // private
     bool    cdirty;

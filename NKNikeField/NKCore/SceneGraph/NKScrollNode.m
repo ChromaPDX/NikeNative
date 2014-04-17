@@ -84,6 +84,8 @@
         _scrollingEnabled = false;
         _padding = P2Make(0,0);
         
+        _delegate = parent;
+        
         parent->cdirty = true;
         parent.fdirty = true;
         
@@ -106,11 +108,8 @@
         NSLog(@"highlight %@", self.name);
         
         [self setColor:_highlightColor];
-        
-        if (_delegate) {
-            [_delegate cellWasSelected:self];
-        }
-        
+
+        [_delegate cellWasSelected:(NKScrollNode*)self];
     }
     else if (!highlighted && _highlighted){
         
@@ -118,9 +117,8 @@
         
         [self setColor:_normalColor];
         
-        if (_delegate) {
-            [_delegate cellWasDeSelected:self];
-        }
+         [_delegate cellWasDeSelected:(NKScrollNode*)self];
+        
     }
     
     _highlighted = highlighted;
@@ -451,12 +449,20 @@
 
 #pragma mark - Touch Handling
 
+-(void)cellWasSelected:(NKScrollNode *)cell {
+    [_delegate cellWasSelected:cell];
+}
+
+-(void)cellWasDeSelected:(NKScrollNode *)cell {
+    [_delegate cellWasDeSelected:cell];
+}
+
 // TOUCH HANDLING
 
 -(NKTouchState) touchDown:(CGPoint)location id:(int) touchId
 {
     
-    NSLog(@"table touch down");
+  
 
      NKTouchState hit = NKTouchNone;
     
@@ -478,6 +484,7 @@
                 
                 return NKTouchIsFirstResponder;
                 
+                  NSLog(@"table touch down");
             }
             
             
@@ -489,10 +496,12 @@
     }
     
     else {
+        
+        
         hit = [super touchDown:location id:touchId];
         
         if (hit == NKTouchIsFirstResponder) {
-            NSLog(@"highlight yes!");
+            NSLog(@"cell selected");
             [self setHighlighted:true];
         }
         else {
@@ -547,7 +556,7 @@
                     
                     if (fabs(scrollVel) > fabs(counterVel) + (restitution * 2.)){
                         _scrollPhase = ScrollPhaseRecognized;
-                        NSLog(@"Scroll started %f, %f", scrollVel, counterVel);
+                        //NSLog(@"Scroll started %f, %f", scrollVel, counterVel);
                         
                     }
                     
@@ -601,6 +610,7 @@
 
 -(NKTouchState)touchUp:(CGPoint)location id:(int)touchId    {
     
+   
     NKTouchState hit = NKTouchNone;
     
     if (_scrollingEnabled) {
@@ -609,6 +619,9 @@
             for (NKNode *child in intChildren) {
                 if ([child touchUp:location id:touchId ] > 0){
                     hit = NKTouchContainsFirstResponder;
+                    
+                      [_delegate cellWasSelected:(NKScrollNode*)child];
+                    
                 }
             }
             _scrollPhase = ScrollPhaseNil;
@@ -627,6 +640,7 @@
         hit = [super touchUp:location id:touchId];
         
         if (hit == NKTouchIsFirstResponder) {
+          
             [self setHighlighted:true];
         }
         
