@@ -719,6 +719,21 @@
                                 [self AIChoosePlayerForManager:sequence.manager];
                             }
                             
+                            else {
+                                Player* playerToSelect = [sequence.manager playerWithBall];
+                                
+                                if (!playerToSelect || playerToSelect.used) {
+                                    for (Player *p in sequence.manager.players.inGame) {
+                                        if (!p.used) {
+                                            playerToSelect = p;
+                                        }
+                                    }
+                                }
+                                
+                                [_gameScene setSelectedPlayer:playerToSelect];
+        
+                            }
+                            
                             [self saveTurnWithCompletionBlock:^{
                                 
                                 

@@ -343,8 +343,6 @@ float PARTICLE_SCALE;
     
     [self showPlayerSelection:selectedPlayer];
     
-    
-    
     _selectedPlayer = selectedPlayer;
     _game.selectedPlayer = selectedPlayer;
     
@@ -870,8 +868,8 @@ float PARTICLE_SCALE;
     
     for (int i = 0; i < 3; i++){
         
-        NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(600, 200) FontNamed:@"TradeGothicLTStd-BdCn20"];
-        bigText.fontSize = 150;
+        NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(300, 150) FontNamed:@"TradeGothicLTStd-BdCn20"];
+        bigText.fontSize = 75;
         bigText.fontColor = NKWHITE;
         bigText.text = theText;
         
