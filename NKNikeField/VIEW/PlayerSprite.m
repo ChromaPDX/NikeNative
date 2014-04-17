@@ -35,7 +35,8 @@
         return @"PlayerInField_Possesion";
     }
     else {
-        return @"PlayerInField_ON";
+        return @"PlayerInField_Possesion";
+        //return @"PlayerInField_ON";
     }
 }
 
@@ -49,7 +50,7 @@
             [shadow setAlpha:.2];
             shadow.name = @"shadow";
             [self addChild:shadow];
-             [shadow setPosition3d:V3Make(-self.size.width * .03, 0, 4)];
+             [shadow setPosition3d:V3Make(-self.size.width * .03, self.size.width*.03, 4)];
 
             cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:CGSizeMake(w, h)];
       
@@ -57,7 +58,7 @@
         
             [self addChild:cardImg];
            
-            [cardImg setZPosition:h*.33];
+            [cardImg setZPosition:h*.36];
             
             self.name = model.name;
             self.userInteractionEnabled = true;
