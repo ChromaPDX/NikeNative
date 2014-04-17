@@ -41,7 +41,7 @@
     
         
     NKLabelNode* rlabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Helvetica"];
-    rlabel.text = @"NO";
+    rlabel.text = @"AI GAME";
     [robby addChild:rlabel];
     [rlabel setZPosition:2];
         
@@ -52,7 +52,7 @@
 
         
     NKLabelNode* elabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Helvetica"];
-    elabel.text = @"AI GAME";
+    elabel.text = @"AI+MENU";
     [elabel setZPosition:2];
     [eric addChild:elabel];
     
@@ -70,18 +70,14 @@
      //   newScene = [[MiniGameScene alloc]initWithSize:self.size];
         newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startAIGame];
-        
     }
     else if ([cell.name isEqualToString:@"ERIC"]) {
-        newScene = [[GameScene alloc]initWithSize:self.size];
-        [[(GameScene*)newScene game] startAIGame];
-        
+        newScene = [[MenuStartVS alloc]initWithSize:self.size];
+        //[[(GameScene*)newScene game] startAIGame];
     }
     else if ([cell.name isEqualToString:@"LEIF"]) {
         newScene = [[GameScene alloc]initWithSize:self.size];
-        
         [[(GameScene*)newScene game] startSinglePlayerGame];
-
     }
     
     self.nkView.scene = newScene;

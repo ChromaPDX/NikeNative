@@ -1353,7 +1353,7 @@
             NSLog(@"*********************************************AI: SHOOT ON GOAL");
             [_gameScene AISelectedLocation:c.deck.player.manager.goal];
             return;
-            
+            break;
         case PASS_TO_PLAYER_IN_SHOOTING_RANGE:
             NSLog(@"*********************************************AI: PASS TO PLAYER IN SHOOTING RANGE");
             passToPlayer = [c.deck.player passToAvailablePlayerInShootingRange];

@@ -51,7 +51,6 @@
 -(NSArray*)pathToBall;
 -(NSArray*)pathToGoal;
 -(NSArray*)pathToKickRange:(Player*)player;
--(NSArray*)pathToShootingRange;
 -(NSArray*)pathToChallenge:(Player*)player;
 -(NSArray*)pathToOpenFieldClosestToLocation:(BoardLocation*)location;
 -(BoardLocation*)closestLocationInTileSet:(NSArray*)tileSet;

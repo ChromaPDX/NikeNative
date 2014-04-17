@@ -279,11 +279,6 @@
     }
 }
 
--(NSArray *)pathToShootingRange{
-#warning ERIC, this doesn't return anything?
-    return @[];
-}
-
 -(NSArray*)pathToKickRange:(Player *)player{
     NSArray *retPath;
     NSArray *kickPath;

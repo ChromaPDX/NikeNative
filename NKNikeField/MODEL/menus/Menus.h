@@ -7,5 +7,5 @@
 //
 
 // BASE
-#import "MenuScene.h"
+#import "MenuStartVS.h"
 //#import "MenuPlayerProfileScene.h"
