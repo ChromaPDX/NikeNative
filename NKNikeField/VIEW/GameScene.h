@@ -40,6 +40,7 @@
 @property (nonatomic, strong) GameBoardNode *gameBoardNode;
 
 @property (nonatomic, strong) UXWindow *uxWindow;
+@property (nonatomic, strong) UXWindow *uxTopBar;
 
 @property (nonatomic, weak) NKNode *followNode;
 @property (nonatomic, strong) NKSpriteNode *RTSprite;
@@ -63,5 +64,6 @@
 -(void)resetFingerLocation;
 -(BoardLocation*)canPlayCard:(Card*)card atPosition:(CGPoint)pos;
 
+-(void)playerSpriteDidSelectPlayer:(Player*)player;
 
 @end

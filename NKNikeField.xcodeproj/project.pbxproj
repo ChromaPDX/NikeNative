@@ -11,6 +11,8 @@
 		3B2361FC19001E8800056AE2 /* vsscreenbaked_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B2361FB19001E8800056AE2 /* vsscreenbaked_01.png */; };
 		3B2361FF190020FA00056AE2 /* MenuStartVS.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2361FE190020FA00056AE2 /* MenuStartVS.m */; };
 		3B2362011900258600056AE2 /* screens_01_vspagenew.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B2362001900258600056AE2 /* screens_01_vspagenew.png */; };
+		6198A359190068660083EA5D /* UXTopBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6198A358190068660083EA5D /* UXTopBar.m */; };
+		6198A35B1900727C0083EA5D /* lock-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 6198A35A1900727C0083EA5D /* lock-4.png */; };
 		61A257C118FDE998001B7F67 /* NKMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578418FDE998001B7F67 /* NKMaterial.m */; };
 		61A257C218FDE998001B7F67 /* NKMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578618FDE998001B7F67 /* NKMesh.m */; };
 		61A257C318FDE998001B7F67 /* NKStaticDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578918FDE998001B7F67 /* NKStaticDraw.m */; };
@@ -263,6 +265,9 @@
 		3B2361FD190020E500056AE2 /* MenuStartVS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuStartVS.h; sourceTree = "<group>"; };
 		3B2361FE190020FA00056AE2 /* MenuStartVS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuStartVS.m; sourceTree = "<group>"; };
 		3B2362001900258600056AE2 /* screens_01_vspagenew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screens_01_vspagenew.png; sourceTree = "<group>"; };
+		6198A357190068660083EA5D /* UXTopBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UXTopBar.h; sourceTree = "<group>"; };
+		6198A358190068660083EA5D /* UXTopBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UXTopBar.m; sourceTree = "<group>"; };
+		6198A35A1900727C0083EA5D /* lock-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock-4.png"; sourceTree = "<group>"; };
 		61A2578318FDE998001B7F67 /* NKMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKMaterial.h; sourceTree = "<group>"; };
 		61A2578418FDE998001B7F67 /* NKMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKMaterial.m; sourceTree = "<group>"; };
 		61A2578518FDE998001B7F67 /* NKMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKMesh.h; sourceTree = "<group>"; };
@@ -1037,6 +1042,7 @@
 		61D6E77618FDB5B70017A389 /* V2_HUD */ = {
 			isa = PBXGroup;
 			children = (
+				6198A35A1900727C0083EA5D /* lock-4.png */,
 				61D6E77718FDB5B70017A389 /* CardType_PlayerSign.png */,
 			);
 			path = V2_HUD;
@@ -1129,6 +1135,8 @@
 				61D6E7D718FDB5B70017A389 /* PlayerSprite.m */,
 				61D6E7D818FDB5B70017A389 /* UXWindow.h */,
 				61D6E7D918FDB5B70017A389 /* UXWindow.m */,
+				6198A357190068660083EA5D /* UXTopBar.h */,
+				6198A358190068660083EA5D /* UXTopBar.m */,
 			);
 			path = VIEW;
 			sourceTree = "<group>";
@@ -1373,6 +1381,7 @@
 				61A257D818FDE998001B7F67 /* moon.png in Resources */,
 				61A257D618FDE998001B7F67 /* chromeKitten.png in Resources */,
 				61D6E83C18FDB5B70017A389 /* GAMELOGOBig.png in Resources */,
+				6198A35B1900727C0083EA5D /* lock-4.png in Resources */,
 				61D6E86518FDB5B70017A389 /* Card_Icon_SpecM_L2.png in Resources */,
 				61D6E84D18FDB5B70017A389 /* Icon_Enchant.png in Resources */,
 				61D6E84C18FDB5B70017A389 /* Icon_Dribble.png in Resources */,
@@ -1425,6 +1434,7 @@
 				61D6E8AD18FDB5B70017A389 /* UXWindow.m in Sources */,
 				61A257C918FDE998001B7F67 /* NKMeshNode.m in Sources */,
 				61A257C818FDE998001B7F67 /* NKLabelNode.m in Sources */,
+				6198A359190068660083EA5D /* UXTopBar.m in Sources */,
 				61D6E8A518FDB5B70017A389 /* BoardTile.m in Sources */,
 				61A257C318FDE998001B7F67 /* NKStaticDraw.m in Sources */,
 				61D6E8AC18FDB5B70017A389 /* PlayerSprite.m in Sources */,

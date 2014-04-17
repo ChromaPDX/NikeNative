@@ -42,34 +42,57 @@
 -(void)setModel:(Player *)model {
     
     if (model) {
-            _model = model;
-        //        cardName = [self styledLabelNode];
-        //        cardName.fontSize = (int)(h/7.);
-        //        [cardName setPosition:CGPointMake(w*.25 * ((model.manager.teamSide*2)-1), h*.1)];
-        //        cardName.text = [model.name substringToIndex:1];
-        //        [self addChild:cardName];
         
+            _model = model;
 
             NKSpriteNode *shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerShadow] color:NKBLACK size:CGSizeMake(w, h)];
             [shadow setAlpha:.2];
+            shadow.name = @"shadow";
             [self addChild:shadow];
              [shadow setPosition3d:V3Make(-self.size.width * .03, 0, 4)];
 
-            
-            NKSpriteNode *triangle = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:CGSizeMake(w, h)];
+            cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:CGSizeMake(w, h)];
       
-            [triangle setOrientationEuler:V3Make(45,0,0)];
-            
-            
-            [self addChild:triangle];
+            [cardImg setOrientationEuler:V3Make(45,0,0)];
+        
+            [self addChild:cardImg];
            
-            [triangle setZPosition:h*.33];
+            [cardImg setZPosition:h*.33];
             
             self.name = model.name;
             self.userInteractionEnabled = true;
         
     }
     else NSLog(@"CAN'T ASSIGN NIL MODEL TO CARDSPRITE");
+}
+
+-(void)setStateForBar {
+    [self removeChildNamed:@"shadow"];
+    [cardImg removeFromParent];
+    
+    cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:CGSizeMake(w, h)];
+    [self addChild:cardImg];
+    
+    [cardImg setZPosition:2];
+    NSLog(@"add cardImg");
+    
+    if (_model.ball) {
+        
+        if (![self childNodeWithName:@"ball"]) {
+        BallSprite *ballSprite = [[BallSprite alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:nil size:V3Make(w*.25,w*.25,w*.25)];
+        ballSprite.name = @"ball";
+        
+        [self addChild:ballSprite];
+        [ballSprite setPosition:P2Make(w*.25, h*-.25)];
+        [ballSprite repeatAction:[NKAction rotateYByAngle:120 duration:1.]];
+        }
+        
+    }
+    else {
+        [self removeChildNamed:@"ball"];
+    }
+    
+    self.userInteractionEnabled = false;
 }
 
 -(void)setHighlighted:(bool)highlighted {
@@ -182,7 +205,7 @@
     NKTouchState touchState = [super touchUp:location id:touchId];
     
     if (touchState == NKTouchIsFirstResponder){
-            [_delegate setSelectedPlayer:self.model];
+        [_delegate playerSpriteDidSelectPlayer:self.model];
     }
 
     return touchState;

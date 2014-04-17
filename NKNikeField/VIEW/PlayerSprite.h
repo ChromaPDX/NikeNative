@@ -15,7 +15,8 @@
 {
     CGPoint touchOffset;
     CGPoint origin;
-    NKLabelNode *cardName;
+    //NKLabelNode *cardName;
+    NKSpriteNode *cardImg;
 }
 
 @property (nonatomic, strong) NKSpriteNode *posession;
@@ -34,5 +35,9 @@
 -(void)getReadyForPosession:(void (^)())block;
 -(void)stopPosession:(void (^)())block;
 -(void)startPossession;
+
+// FOR UX WINDOW
+
+-(void)setStateForBar;
 
 @end

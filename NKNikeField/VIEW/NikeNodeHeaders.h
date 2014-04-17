@@ -14,6 +14,7 @@
 #import "GameScene.h"
 
 #import "UXWindow.h"
+#import "UXTopBar.h"
 
 #import "PlayerSprite.h"
 #import "CardSprite.h"

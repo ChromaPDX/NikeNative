@@ -300,9 +300,14 @@
     
     if (_model.locked) {
         _model.locked = false;
+        [self removeChildNamed:@"lock"];
     }
     else {
         _model.locked = true;
+        NKSpriteNode *lock =  [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"lock-4"] color:self.color size:CGSizeMake(self.size.width*.5, self.size.width*.5)];
+        [self addChild:lock];
+        [lock setPosition:P2Make(w *.25, h*-.25)];
+        lock.name = @"lock";
     }
 }
 
@@ -316,13 +321,18 @@
             [self runAction:[NKAction moveTo:cachedPosition duration:FAST_ANIM_DUR]];
         }
         else {
-            numtouches++;
-            if (numtouches > 1) {
-                numtouches = 0;
-                [_window cardDoubleTap:self];
-            }
-            else {
-                [_window cardTouchEnded:self atPoint:location];
+            
+            if (!_model.locked) {
+                
+                numtouches++;
+                if (numtouches > 1) {
+                    numtouches = 0;
+                    [_window cardDoubleTap:self];
+                }
+                else {
+                    [_window cardTouchEnded:self atPoint:location];
+                }
+                
             }
         }
     }

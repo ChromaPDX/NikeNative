@@ -254,6 +254,15 @@
     }
 }
 
+-(NKNode*)childNodeWithName:(NSString *)name {
+    for (NKNode *n in intChildren) {
+        if ([n.name isEqualToString:name]) {
+            return n;
+        }
+    }
+    return nil;
+}
+
 - (void)removeFromParent{
     [_parent removeChildrenInArray:@[self]];
 }

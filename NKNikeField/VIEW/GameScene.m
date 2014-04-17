@@ -118,6 +118,11 @@ float PARTICLE_SCALE;
     _uxWindow.delegate = self;
     [self addChild:_uxWindow];
     
+    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:.5] size:CGSizeMake(w, h*.15)];
+    [_uxTopBar setPosition3d:V3Make(0,h*.42,0)];
+    _uxTopBar.delegate = self;
+    [self addChild:_uxTopBar];
+    
     //    NKSpriteNode *logo = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"GAMELOGO.png"] color:nil size:CGSizeMake(TILE_WIDTH*4, TILE_WIDTH*5.2)];
     //    [_pivot addChild:logo];
     //    [logo setZPosition:-3];
@@ -293,19 +298,22 @@ float PARTICLE_SCALE;
     
 }
 
--(void)setSelectedPlayer:(Player *)selectedPlayer {
+-(void)playerSpriteDidSelectPlayer:(Player*)player {
     
     // ABORT IF SELECTING PLAYER AS CARD TARGET
-    BoardTile *tile = [_gameTiles objectForKey:selectedPlayer.location];
+    BoardTile *tile = [_gameTiles objectForKey:player.location];
     
     if (tile.userInteractionEnabled) {
         [self setSelectedBoardTile:tile];
         return;
     }
     
-    // ELSE DO SELECTION IF POSSIBLE
+    [self setSelectedPlayer:player];
+}
+
+-(void)setSelectedPlayer:(Player *)selectedPlayer {
+
     if ([_game canUsePlayer:selectedPlayer]) {
-        
         
         if (_selectedCard) {
             [self setSelectedCard:nil];
@@ -894,9 +902,11 @@ float PARTICLE_SCALE;
 
 -(void)refreshUXWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block {
     
+
     [_uxWindow refreshCardsForPlayer:p WithCompletionBlock:^{
         block();
     }];
+        [_uxTopBar refreshCardsForPlayer:p WithCompletionBlock:^{}];
     
 }
 
