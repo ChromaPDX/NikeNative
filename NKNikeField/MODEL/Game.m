@@ -1274,7 +1274,7 @@
         else {
             // DOES NOT HAVE BALL
             Card* moveCard = p.moveDeck.inHand[0];
-            moveCard.aiActionType = MOVE_TO_GOAL;
+            moveCard.aiActionType = MOVE_TO_GOAL_IN_PASS_RANGE;
             [_gameScene AISelectedCard:moveCard];
             return;
             
@@ -1302,7 +1302,7 @@
                 return;
             }
             else{
-                // CAN NOT MOVE TO CHALLENGE
+                 // CAN NOT MOVE TO CHALLENGE
                 NSArray *pathToGoal = [p pathToGoal];
                 NSArray *pathToBall = [p pathToBall];
                 if([pathToGoal count] > [pathToBall count]){
@@ -1339,7 +1339,7 @@
             NSLog(@"*********************************************AI: DEFEND GOAL");
         case MOVE_TO_GOAL:
             NSLog(@"*********************************************AI: MOVE TO GOAL");
-            pathToGoalUnverified = [c.deck.player pathToGoal];
+           // pathToGoalUnverified = [c.deck.player pathToGoal];
             // NSLog(@"pathToGoalUnverified = ");
             // for(BoardLocation *loc in pathToGoalUnverified){
             //     NSLog(@"%@",loc);
@@ -1352,7 +1352,7 @@
             // for(BoardLocation *loc in pathToGoal){
             //     NSLog(@"%@",loc);
             // }
-            NSLog(@"pathToGoal count = %d", [pathToGoal count]);
+            // NSLog(@"pathToGoal count = %d", [pathToGoal count]);
             if(pathToGoal && [pathToGoal count]){
                 BoardLocation *newLoc;
                 newLoc = [pathToGoal objectAtIndex:[pathToGoal count] - 1];
@@ -1366,6 +1366,23 @@
                 return;
             }
             break;
+        case MOVE_TO_GOAL_IN_PASS_RANGE:
+            NSLog(@"*********************************************AI: MOVE TO GOAL IN PASS RANGE");
+            pathToGoal = [p pathToOpenFieldClosestToLocationInPassRange:p.manager.goal];
+            if(pathToGoal && [pathToGoal count]){
+                BoardLocation *newLoc;
+                newLoc = [pathToGoal objectAtIndex:[pathToGoal count] - 1];
+                NSLog(@"MOVE TO GOAL selected %@", newLoc);
+                [_gameScene AISelectedLocation:newLoc];
+                return;
+            }
+            else {
+                NSLog(@"AI HAS NO VALID MOVE: STAY");
+                [_gameScene AISelectedLocation:c.deck.player.location];
+                return;
+            }
+            break;
+
         case SHOOT_ON_GOAL:
             NSLog(@"*********************************************AI: SHOOT ON GOAL");
             [_gameScene AISelectedLocation:c.deck.player.manager.goal];

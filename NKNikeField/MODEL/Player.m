@@ -337,6 +337,94 @@
     }
 }
 
+-(NSArray*)pathToOpenFieldClosestToLocationInPassRange:(BoardLocation *)location{
+    Card *moveCard = self.moveDeck.inHand[0];
+    if(!moveCard) return NULL;
+    
+    NSArray *moveSet = moveCard.validatedSelectionSet;
+    //NSLog(@"pathToOpenFieldClosestToLocation, moveSet.count = %d", [moveSet count]);
+    if(!moveSet){
+        return NULL;
+    }
+    //int maxSpace = 0;
+    
+    // compute the minimum distances to each temmate
+    // and the minum distances to the location for each player
+    // NSMutableDictionary *minTeammateDistances = [[NSMutableDictionary alloc]init];
+    NSMutableDictionary *locationDistances = [[NSMutableDictionary alloc]init];
+    
+    // get the player with possesions valid kick moves, see if we can stay within that set
+    Player *playerWithBall = [self.manager playerWithBall];
+    NSArray *possesionKickSet = [playerWithBall validatedSelectionSet];
+    NSLog(@"pathToOpenFieldClosestToLocationInPassRange:");
+    for(BoardLocation *thisLoc in moveSet){
+        NSLog(@"examining %@", thisLoc);
+        int distanceToTeammate = [self distanceAfterMoveToClosestTeammate:thisLoc];
+        //   [minTeammateDistances setObject:[NSNumber numberWithInt:distanceToTeammate] forKey:thisLoc];
+        NSArray *pathToTarget = [self pathFromBoardLocationToBoardLocationNoObstacles:thisLoc toLocation:location];
+        //  NSLog(@"disanceToTeammate = %d", distanceToTeammate);
+        if(pathToTarget && distanceToTeammate >= 2){
+            //     NSLog(@"adding %@ to the list with pathToTarget.count = %d", thisLoc, [pathToTarget count]);
+            [locationDistances setObject:[NSNumber numberWithInt:[pathToTarget count]] forKey:thisLoc];
+        }
+        else{
+            //   NSLog(@"removing %@ from location list, below threshold for min distance to teammates", thisLoc);
+        }
+        
+        // NSLog(@"pathToOpenFieldClosestLocation - thisSpace distance = %d", thisSpace);
+        // if(thisSpace > maxSpace){
+        //     retLoc = loc;
+        //     maxSpace = thisSpace;
+        // }
+    }
+    
+    // NSArray *myPathToLoc = [self pathFromBoardLocationToBoardLocationNoObstacles:self.location toLocation:location];
+    
+    BoardLocation *retLoc = NULL;
+    
+    // remove any location that is under our threshold distance for distance to teammates
+    // for(BoardLocation *thisLoc in moveSet){
+    //     int distanceToTeammate = [minTeammateDistances objectForKey:thisLoc];
+    //     if(distanceToTeammate < 2){
+    //         [locationDistances removeObjectForKey:thisLoc];
+    //     }
+    // }
+    
+    int minDistance = 10000;
+    BOOL locFound = FALSE;
+    NSArray *keys = [locationDistances allKeys];
+    for(id key in keys){
+        // BoardLocation *thisLoc = [locationDistances objectForKey:key];
+        int distanceToTarget = [[locationDistances objectForKey:key] intValue];
+        // NSLog(@"distanceToTarget = %d", distanceToTarget);
+        if(distanceToTarget < minDistance && [possesionKickSet containsObject:key]){
+            retLoc = key;
+            minDistance = distanceToTarget;
+            locFound = TRUE;
+        }
+    }
+    
+    if(!locFound){
+        for(id key in keys){
+            // BoardLocation *thisLoc = [locationDistances objectForKey:key];
+            int distanceToTarget = [[locationDistances objectForKey:key] intValue];
+            // NSLog(@"distanceToTarget = %d", distanceToTarget);
+            if(distanceToTarget < minDistance){
+                retLoc = key;
+                minDistance = distanceToTarget;
+                locFound = TRUE;
+            }
+        }
+    }
+    NSArray *retPath = [moveCard validatedPath:[self pathToBoardLocation:retLoc]];
+    if(retPath){
+        return retPath;
+    }
+    else{
+        return NULL;
+    }
+}
+
 
 -(NSArray*)pathToOpenFieldClosestToLocation:(BoardLocation *)location{
     Card *moveCard = self.moveDeck.inHand[0];
