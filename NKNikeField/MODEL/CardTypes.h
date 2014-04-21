@@ -21,6 +21,21 @@ typedef NS_ENUM(int32_t, CardCategory) {
     CardCategorySpecial
 };
 
+typedef NS_ENUM(int32_t, CardMoveCategory) {
+    CardMoveCategoryBishop,
+    CardMoveCategoryQueen,
+    CardMoveCategoryRook,
+    CardMoveCategoryKnight
+};
+
+typedef NS_ENUM(int32_t, CardKickCategory) {
+    CardKickCategoryQueen,
+    CardKickCategoryLob,
+    CardKickCategoryDrop,
+    CardKickCategoryBeckem
+};
+
+
 typedef NS_ENUM(int32_t, EventType) {
     kNullAction,
     // Player Actions

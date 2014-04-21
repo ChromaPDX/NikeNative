@@ -54,6 +54,8 @@ enum AI_ACTION_TYPE {
 // PERSISTENT
 -(CardCategory)category;
 @property (nonatomic) CardCategory specialCategory;
+@property (nonatomic) CardMoveCategory moveCategory;
+@property (nonatomic) CardKickCategory kickCategory;
 
 @property (nonatomic, strong) NSString *name;
 
