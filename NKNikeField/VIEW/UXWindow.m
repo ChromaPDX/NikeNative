@@ -294,6 +294,14 @@
     
 }
 
+-(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+    
+    NKTouchState hit = [super touchUp:location id:touchId];
+    if (hit == 2) {
+        [[_playerHands objectForKey:_selectedCard.deck.player] sortCards];
+    }
+    return hit;
+}
 
 @end
 
