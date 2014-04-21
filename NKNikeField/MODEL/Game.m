@@ -1215,15 +1215,22 @@
 
 -(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
     NSLog(@"AI is choosing card for Player: %@ location = %@ ballLocaiton = %@", p.name, p.location, p.manager.game.ball.location);
+    Card* kickCard = p.kickDeck.inHand[0];
+    Card* moveCard = p.moveDeck.inHand[0];
+
+    // CHECK FOR LOOSE BALL
+    if(![p.manager playerWithBall]){
+        moveCard.aiActionType = MOVE_TO_BALL;
+        [_gameScene AISelectedCard:moveCard];
+        return;
+    }
     
     
     if (p.manager.hasPossesion) {
         // OFFENSE
         if (p.ball) {
             // HAS BALL
-            Card* kickCard = p.kickDeck.inHand[0];
-            Card* moveCard = p.moveDeck.inHand[0];
-            if ([p isInShootingRange ]){
+                      if ([p isInShootingRange ]){
                 // CAN SHOOT ON GOAL
                 kickCard.aiActionType = SHOOT_ON_GOAL;
                 //[_gameScene AISelectedLocation:kickCard.deck.player.manager.goal];
@@ -1287,6 +1294,7 @@
         
         NSLog(@"AIChooseCardForPlayer: challengeCard = %@", challengeCard.name);
         NSLog(@"AIChooseCardForPlayer: challengeCard validatedSelectionSet = %@", [challengeCard validatedSelectionSet]);
+        
         if ([[challengeCard validatedSelectionSet] count]) {
             // CAN CHALLENGE
             challengeCard.aiActionType = CHALLENGE;
