@@ -1034,7 +1034,21 @@
             event.playerPerforming.location = [event.location copy];
             
             // DRIBBLE
-            
+           if (!_ball.enchantee) { // NO ONE HAS BALL, PICK UP IF THERE
+               
+               AStar* star = [[AStar alloc] initWithColumns:7 Rows:10 ObstaclesCells:nil];
+               NSArray *path = [star pathFromAtoB:event.startingLocation B:event.location NeighborhoodType:NeighborhoodTypeRook];
+               
+               if ([path containsObject:_ball.location]) {
+                   [event.playerPerforming setBall:_ball];
+               }
+               
+               if ([event.startingLocation isEqual:_ball.location]) {
+                   [event.playerPerforming setBall:_ball];
+               }
+               
+           }
+           
             if (event.playerPerforming.ball) { // HAVE BALL, BRING IT WITH ME
                 _ball.location = [event.location copy];
             }
@@ -1055,14 +1069,7 @@
             
             // RUN
             
-            if (!_ball.enchantee) { // NO ONE HAS BALL, PICK UP IF THERE
-                
-                if ([_ball.location isEqual:event.location]) {
-                    //NSLog(@"Game.m : performEvent : picking up ball");
-                    [event.playerPerforming setBall:_ball];
-                }
-                
-            }
+
 
             
         }
