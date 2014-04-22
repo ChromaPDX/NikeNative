@@ -76,10 +76,6 @@
     free(parentIndex);
 }
 
--(NSArray*) pathFromAtoBStraight:(BoardLocation*)start B:(BoardLocation*)finish NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE{
-    
-    return NULL;
-}
 
 -(NSArray*) pathFromAtoB:(BoardLocation*)start B:(BoardLocation*)finish NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE
 {
