@@ -30,10 +30,15 @@
         switch (_deck.category) {
             case CardCategoryMove:
                  _level = rand()%2 + 1;
+                _kickCategory = rand()%4 + 1;
+                _moveCategory = CardMoveCategoryNull;
                 break;
                 
             case CardCategoryKick:
                 _level = rand()%3 + 2;
+                _moveCategory = rand()%4 + 1;
+                _kickCategory = CardKickCategoryNull;
+
 #ifdef CHEAT
                 _level = 10;
 #endif

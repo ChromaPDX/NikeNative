@@ -11,6 +11,10 @@ typedef NS_ENUM(int, NeighborhoodType){
     NeighborhoodTypeRook = 0,
     NeighborhoodTypeMoore = 1,
     NeighborhoodTypeQueen = 1,
+    NeighborhoodTypeRookStraight = 2,
+    NeighborhoodTypeQueenStraight = 3,
+    NeighborhoodTypeBishopStraight = 4,
+    NeighborhoodTypeKnightStraight = 5
 };
 
 #import "BoardLocation.h"
@@ -22,8 +26,16 @@ typedef NS_ENUM(int, NeighborhoodType){
 
 -(NSArray*) pathFromAtoB:(BoardLocation*)start B:(BoardLocation*)finish NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE;
 
+-(NSArray*) pathFromAtoBStraight:(BoardLocation*)start B:(BoardLocation*)finish NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE;
+
+-(NSArray*) cellsAccesibleFromStraight:(BoardLocation*)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE;
+
+-(NSArray*) cellsAccesibleFromStraight:(BoardLocation *)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE walkDistance:(int)distance;
+
 -(NSArray*) cellsAccesibleFrom:(BoardLocation*)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE;
 
--(NSArray*)cellsAccesibleFrom:(BoardLocation *)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE walkDistance:(int)distance;
+-(NSArray*) cellsAccesibleFrom:(BoardLocation *)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE walkDistance:(int)distance;
+
+-(NSArray*)rayFromDirection:(BoardLocation *) location inDirection:(Direction)direction;
 
 @end

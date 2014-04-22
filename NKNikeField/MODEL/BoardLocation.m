@@ -143,6 +143,55 @@
     return retPath;
 }
 
+-(BoardLocation*)stepInDirection:(Direction)direction{
+    BoardLocation* retLocation;
+    int newX = 0;
+    int newY = 0;
+    switch (direction) {
+        case N:
+            newX = self.x;
+            newY = self.y+1;
+            break;
+        case NE:
+            newX = self.x+1;
+            newY = self.y+1;
+            break;
+        case E:
+            newX = self.x+1;
+            newY = self.y;
+            break;
+        case SE:
+            newX = self.x+1;
+            newY = self.y-1;
+            break;
+        case S:
+            newX = self.x;
+            newY = self.y-1;
+            break;
+        case SW:
+            newX = self.x-1;
+            newY = self.y-1;
+            break;
+        case W:
+            newX = self.x-1;
+            newY = self.y;
+            break;
+        case NW:
+            newX = self.x-1;
+            newY = self.y+1;
+            break;
+        default:
+            break;
+    }
+    // check to see if we are off the game board.
+    if(newX < 0 || newX > BOARD_WIDTH - 1 || newY < 0 || newY > BOARD_LENGTH - 1){
+        return NULL;
+    }
+    else{
+        retLocation = [retLocation initWithX:newX Y:newY];
+        return retLocation;
+    }
+}
 
 
 

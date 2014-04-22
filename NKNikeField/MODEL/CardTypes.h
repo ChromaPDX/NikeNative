@@ -22,17 +22,19 @@ typedef NS_ENUM(int32_t, CardCategory) {
 };
 
 typedef NS_ENUM(int32_t, CardMoveCategory) {
-    CardMoveCategoryBishop,
-    CardMoveCategoryQueen,
-    CardMoveCategoryRook,
-    CardMoveCategoryKnight
+    CardMoveCategoryNull = 0,
+    CardMoveCategoryBishop = 1,
+    CardMoveCategoryQueen = 2,
+    CardMoveCategoryRook = 3,
+    CardMoveCategoryKnight = 4
 };
 
 typedef NS_ENUM(int32_t, CardKickCategory) {
-    CardKickCategoryQueen,
-    CardKickCategoryLob,
-    CardKickCategoryDrop,
-    CardKickCategoryBeckem
+    CardKickCategoryNull = 0,
+    CardKickCategoryStraight = 1,
+    CardKickCategoryLob = 2,
+    CardKickCategoryDrop = 3,
+    CardKickCategoryBeckem = 4
 };
 
 

@@ -36,10 +36,23 @@ typedef NS_OPTIONS(UInt16, BorderMask) {
     
 };
 
+typedef NS_ENUM(int32_t, Direction) {
+    N = 0,
+    NE = 1,
+    E = 2,
+    SE = 3,
+    S = 4,
+    SW = 5,
+    W = 6,
+    NW = 7
+};
+
+
 @interface BoardLocation : NSObject <NSCopying, NSCoding>
 {
 
 }
+
 @property NSInteger x;
 @property NSInteger y;
 @property BorderMask borderShape;
@@ -52,6 +65,7 @@ typedef NS_OPTIONS(UInt16, BorderMask) {
 -(int)isAdjacentTo:(BoardLocation*)b;
 -(void)setBorderShapeInContext:(NSArray*)arrayOfLocations;
 +(NSArray*)tileSetIntersect:(NSArray*)tileSetA withTileSet:(NSArray*)tileSetB;
+-(BoardLocation*)stepInDirection:(Direction)direction;
 
 -(int)distanceToGoalForManager:(Manager*)m neighborhoodType:(int)type;
 @end
