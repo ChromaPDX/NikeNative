@@ -517,6 +517,9 @@ float PARTICLE_SCALE;
                 
                 if ((event.type == kEventKickPass && event.wasSuccessful)) {
                     
+                    if (receiver) {
+                        
+               
                     // SUCESSFULL PASS
                     
                     [receiver getReadyForPosession:^{
@@ -551,6 +554,25 @@ float PARTICLE_SCALE;
                         }];
                         
                     }];
+                        
+                    }
+                    else { // pass to board square
+                        
+                        CGPoint dest = [[_gameTiles objectForKey:_game.ball.location] position];
+                        
+                        
+                        NKAction *move = [NKAction moveTo:dest duration:BALL_SPEED];
+                        
+                        [move setTimingMode:NKActionTimingEaseOut];
+                        
+                        [self.ballSprite runAction:move completion:^(){
+                            
+                            [self.ballSprite runAction:[NKAction scaleTo:BALL_SCALE_SMALL duration:CARD_ANIM_DUR]];
+                            
+                            block();
+                            
+                        }];
+                    }
                 }
 
                 
@@ -593,10 +615,6 @@ float PARTICLE_SCALE;
                     
                     CGPoint dest = [[_gameTiles objectForKey:_game.ball.location] position];
                     
-                    // [self dollyTowards:[_gameTiles objectForKey:_game.ball.location] duration:CAM_SPEED];
-                    
-                    dest.x -= TILE_WIDTH/3.;
-                    dest.y += TILE_HEIGHT/3.;
                     
                     NKAction *move = [NKAction moveTo:dest duration:BALL_SPEED];
                     

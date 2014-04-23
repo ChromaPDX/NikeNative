@@ -354,9 +354,9 @@
     
     NSArray* accessible = [self selectionSet];
     
-    // IF MOVING WE'RE DONE VALIDATING
+    // IF MOVING / KICK WE'RE DONE VALIDATING
     
-    if (self.category == CardCategoryMove){
+    if (self.category == CardCategoryMove || self.category == CardCategoryKick){
         return accessible;
     }
     
@@ -364,20 +364,22 @@
     
     NSMutableArray* set = [NSMutableArray array];
     
-    if (self.category == CardCategoryKick) {
-        for (Player* p in self.deck.player.manager.players.inGame) {
-            if ([accessible containsObject:p.location]){
-                [set addObject:p.location];
-            }
-        }
-        if ([accessible containsObject:self.deck.player.manager.goal]) {
-            [set addObject:self.deck.player.manager.goal];
-        }
-        
-        [set removeObject:self.deck.player.location];
-    }
+    // KICK NOW SHOWS ALL ACCESSIBLE
     
-    else if (self.category == CardCategoryChallenge) {
+//    if (self.category == CardCategoryKick) {
+//        for (Player* p in self.deck.player.manager.players.inGame) {
+//            if ([accessible containsObject:p.location]){
+//                [set addObject:p.location];
+//            }
+//        }
+//        if ([accessible containsObject:self.deck.player.manager.goal]) {
+//            [set addObject:self.deck.player.manager.goal];
+//        }
+//        
+//        [set removeObject:self.deck.player.location];
+//    }
+    
+    if (self.category == CardCategoryChallenge) {
         for (Player* p in self.deck.player.manager.opponent.players.inGame) {
             if (p.ball) {
                 if ([accessible containsObject:p.location]) {
