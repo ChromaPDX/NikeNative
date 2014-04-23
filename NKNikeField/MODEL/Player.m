@@ -152,7 +152,9 @@
     }
     
     else {
+        _ball.enchantee = Nil;
         _ball = Nil;
+        
     }
     
 }

@@ -1079,9 +1079,7 @@
        else if (event.type == kEventKickPass){ // PASS
            //NSLog(@"pass!");
            [event.playerPerforming setBall:Nil];
-           
-           
-           
+
            event.playerReceiving = [self playerAtLocation:event.location];
            if (event.playerReceiving) {
                Player *p = event.playerReceiving;
