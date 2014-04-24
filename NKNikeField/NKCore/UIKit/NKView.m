@@ -252,28 +252,32 @@ static const GLubyte Indices[] = {
 }
 
 - (void)startAnimation
+
 {
-	animationTimer = [NSTimer scheduledTimerWithTimeInterval:_animationInterval target:self selector:@selector(drawView) userInfo:nil repeats:YES];
-    NSLog(@"start draw, %1.0f fps", 1. / _animationInterval);
+    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawView)];
+    [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+    
+//	animationTimer = [NSTimer scheduledTimerWithTimeInterval:_animationInterval target:self selector:@selector(drawView) userInfo:nil repeats:YES];
+//    NSLog(@"start draw, %1.0f fps", 1. / _animationInterval);
     lastTime = CFAbsoluteTimeGetCurrent();
 }
 
 - (void)stopAnimation
 {
-	[animationTimer invalidate];
-	animationTimer = nil;
+//	[animationTimer invalidate];
+//	animationTimer = nil;
 }
 
-- (void)setAnimationInterval:(NSTimeInterval)interval
-{
-	_animationInterval = interval;
-	
-	if(animationTimer)
-	{
-		[self stopAnimation];
-		[self startAnimation];
-	}
-}
+//- (void)setAnimationInterval:(NSTimeInterval)interval
+//{
+//	_animationInterval = interval;
+//	
+//	if(animationTimer)
+//	{
+//		[self stopAnimation];
+//		[self startAnimation];
+//	}
+//}
 
 
 

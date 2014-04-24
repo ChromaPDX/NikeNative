@@ -829,7 +829,7 @@
 -(BOOL)performEvent:(GameEvent*)event {
     
     
-    if (event.type == kEventChallenge || event.type == kEventKickPass || event.type == kEventKickGoal) {
+    if (event.type == kEventChallenge) {
         event.wasSuccessful = rand() % 100 > 50 ? true : false;
     }
     else {
@@ -977,17 +977,19 @@
         for (int i = 0; i<3; i++) {
             
             Player*p = [self managerForTeamSide:0].players.inGame[i];
-            [p setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+!i]];
+            [p setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+1]];
             
             Player*p2 = [self managerForTeamSide:1].players.inGame[i];
-            [p2 setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-1]];
+            [p2 setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-2]];
             
             if (i == 1) {
                 if (event.manager.teamSide) {
+                    [p setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-1]];
                     p.ball = _ball;
                 }
                 else {
                     p2.ball = _ball;
+                     [p2 setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)]];
                 }
             }
             
@@ -1074,15 +1076,19 @@
             
         }
         
-        else if (event.type == kEventKickPass){ // PASS
-            //NSLog(@"pass!");
-            [event.playerPerforming setBall:Nil];
-            
-            event.playerReceiving = [self playerAtLocation:event.location];
-            
-            Player *p = event.playerReceiving;
-            [p setBall:_ball];
-        }
+       else if (event.type == kEventKickPass){ // PASS
+           //NSLog(@"pass!");
+           [event.playerPerforming setBall:Nil];
+
+           event.playerReceiving = [self playerAtLocation:event.location];
+           if (event.playerReceiving) {
+               Player *p = event.playerReceiving;
+               [p setBall:_ball];
+           }
+           else {
+               [_ball setLocation:event.location];
+           }
+       }
         
         else if (event.type == kEventKickGoal){ // SHOOT
             
@@ -1762,11 +1768,17 @@
     
     for (int i = 0; i<3; i++) {
         
-        GameEvent* spawn = [self addEventToSequence:sequence fromCardOrPlayer:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+!i] withType:kEventAddPlayer];
+        GameEvent* spawn = [self addEventToSequence:sequence fromCardOrPlayer:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+1] withType:kEventAddPlayer];
         spawn.manager = [self managerForTeamSide:0];
         
-        GameEvent* spawn2 = [self addEventToSequence:sequence fromCardOrPlayer:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-1] withType:kEventAddPlayer];
+        GameEvent* spawn2 = [self addEventToSequence:sequence fromCardOrPlayer:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-2] withType:kEventAddPlayer];
         spawn2.manager = [self managerForTeamSide:1];
+        
+        
+        if (i == 1) {
+                [spawn2 setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-1]];
+                //spawn2.ball = _ball;
+        }
         
     }
     

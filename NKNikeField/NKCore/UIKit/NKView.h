@@ -41,7 +41,9 @@
 @property (nonatomic, weak) NKViewController *controller;
 @property (nonatomic, strong) NKSceneNode *scene;
 
-@property (nonatomic) NSTimeInterval animationInterval;
+@property (nonatomic, strong) CADisplayLink* displayLink;
+
+//@property (nonatomic) NSTimeInterval animationInterval;
 
 -(void)startAnimation;
 -(void)stopAnimation;

@@ -28,7 +28,7 @@
         
         self.scene.nkView = self;
       
-        self.animationInterval = 1.0 / 60.;
+        //self.animationInterval = 1.0 / 60.;
         
         [self startAnimation];
         
