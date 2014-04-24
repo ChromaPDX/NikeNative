@@ -14,7 +14,8 @@ typedef NS_ENUM(int, NeighborhoodType){
     NeighborhoodTypeRookStraight = 2,
     NeighborhoodTypeQueenStraight = 3,
     NeighborhoodTypeBishopStraight = 4,
-    NeighborhoodTypeKnightStraight = 5
+    NeighborhoodTypeKnightStraight = 5,
+    NeighborhoodTypeQueenLobStraight = 6
 };
 
 #import "BoardLocation.h"

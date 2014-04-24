@@ -35,8 +35,18 @@
                 _kickCategory = CardKickCategoryNull;
                 break;
             case CardCategoryKick:
-                _level = rand()%3 + 2;
-                _kickCategory = rand()%4 + 1;
+                // _level = rand()%3 + 2;
+                //_kickCategory = rand()%2 + 1;
+                _kickCategory = 2;
+                if(_kickCategory == CardKickCategoryStraight){
+                    _level = 5;
+                }
+                if(_kickCategory == CardKickCategoryLob){
+                    _level = 4;
+                }
+                else{
+                    _level = 2;
+                }
                 _moveCategory = CardMoveCategoryNull;
 #ifdef CHEAT
                 _level = 10;
@@ -307,7 +317,7 @@
 }
 
 -(NSArray*)selectionSet {
-    NSLog(@"selectionSet...");
+   // NSLog(@"selectionSet...");
     
     if (self.category == CardCategoryKick) {
         if (!self.deck.player.ball) {
@@ -345,15 +355,12 @@
     if (self.category == CardCategoryMove){
         switch(self.moveCategory){
             case CardMoveCategoryBishop:
-               // accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:2];
                 accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:2];
                 break;
             case CardMoveCategoryQueen:
-               // accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:2];
                 accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:2];
                 break;
             case CardMoveCategoryRook:
-                //accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:2];
                 accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:2];
                 break;
             case CardMoveCategoryKnight:
@@ -362,13 +369,26 @@
             case CardMoveCategoryNull:
                 accessible = NULL;
                 break;
+            default:
+                accessible = NULL;
+                break;
         }
     }
     else if (self.category == CardCategoryChallenge) {
         accessible = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:_range];
     }
     else if (self.category == CardCategoryKick) {
-        accessible = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRook walkDistance:_range];
+        switch(self.kickCategory){
+            case CardKickCategoryStraight:
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:_range];
+                break;
+            case CardKickCategoryLob:
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenLobStraight walkDistance:_range];
+                break;
+            default:
+                accessible = NULL;
+                break;
+        }
     }
     else{
         accessible = NULL;
@@ -379,7 +399,7 @@
 }
 
 -(NSArray*)validatedSelectionSet {
-    NSLog(@"validatedSelectionSet...");
+  //  NSLog(@"validatedSelectionSet...");
 
     NSArray* accessible = [self selectionSet];
     

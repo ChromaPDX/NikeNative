@@ -15,6 +15,7 @@
 #define MAX_ITERATIONS 10000 // just incase. prevent infinite loop
 
 #import "AStar.h"
+#import "Manager.h"
 
 @interface AStar (){
     int columns;
@@ -296,6 +297,12 @@
 
 -(NSArray*)cellsAccesibleFromStraight:(BoardLocation *)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE walkDistance:(int)distance {
     NSMutableArray *retArray = [[NSMutableArray alloc] init];
+    NSMutableArray *tmpArray = [[NSMutableArray alloc] init];
+
+    int myX = location.x;
+    int myY = location.y;
+    BoardLocation *newLoc = [[BoardLocation alloc] init];
+    int index;
     switch (NEIGHBORHOOD_TYPE){
         case NeighborhoodTypeRookStraight:
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:N walkDistance:distance]];
@@ -324,13 +331,40 @@
             break;
         case NeighborhoodTypeKnightStraight:
             break;
+        case NeighborhoodTypeQueenLobStraight:
+            [retArray addObject:[[newLoc initWithX:myX Y:myY+2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX+1 Y:myY+2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX+2 Y:myY+2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX+2 Y:myY+1] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX+2 Y:myY] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX+2 Y:myY-1] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX+2 Y:myY-2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX+1 Y:myY-2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX Y:myY-2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX-1 Y:myY-2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX-2 Y:myY-2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX-2 Y:myY-1] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX-2 Y:myY] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX-2 Y:myY+1] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX-2 Y:myY+2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX-1 Y:myY+2] copy]];
+            for(newLoc in tmpArray){
+                index = newLoc.x + newLoc.y*columns;
+                if(!(newLoc.x < 0 || newLoc.x > BOARD_WIDTH - 1 || newLoc.y < 0 || newLoc.y > BOARD_LENGTH - 1)){
+                    if(!obstacleCells[index]){
+                        [retArray addObject:newLoc];
+                    }
+                }
+            }
+            return retArray;
+            break;
     }
     return NULL;
  }
 
 
 -(NSArray*)cellsAccesibleFrom:(BoardLocation *)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE walkDistance:(int)distance {
-    if(NEIGHBORHOOD_TYPE == NeighborhoodTypeBishopStraight || NEIGHBORHOOD_TYPE == NeighborhoodTypeKnightStraight || NEIGHBORHOOD_TYPE ==NeighborhoodTypeQueenStraight || NEIGHBORHOOD_TYPE == NeighborhoodTypeRookStraight){
+    if(NEIGHBORHOOD_TYPE == NeighborhoodTypeBishopStraight || NEIGHBORHOOD_TYPE == NeighborhoodTypeKnightStraight || NEIGHBORHOOD_TYPE ==NeighborhoodTypeQueenStraight || NEIGHBORHOOD_TYPE == NeighborhoodTypeRookStraight || NEIGHBORHOOD_TYPE == NeighborhoodTypeQueenLobStraight){
         return [self cellsAccesibleFromStraight:location NeighborhoodType:NEIGHBORHOOD_TYPE walkDistance:distance];
     }
     NSArray* accesibleCells = [self cellsAccesibleFrom:location NeighborhoodType:NEIGHBORHOOD_TYPE];
