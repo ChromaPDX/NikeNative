@@ -12,10 +12,13 @@
 
 @interface UXTopBar : NKSpriteNode {
     CGSize cardSize;
+    NKLabelNode *fuelPoints;
 }
 
 @property (nonatomic, weak) GameScene *delegate;
 @property (nonatomic, weak) Manager *manager;
 @property (nonatomic, strong) NSMutableArray* playerSprites;
+
+@property (nonatomic) int fuel;
 
 @end

@@ -80,6 +80,8 @@
             }
 
         }
+        
+        [NKTextureManager sharedInstance];
     }
     
     return self;

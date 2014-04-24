@@ -30,9 +30,6 @@ typedef NS_OPTIONS(UInt8, NKTextureMapStyle) {
     GLuint		texture[1];
 }
 
-#ifdef OF_BACKED
-@property (nonatomic) ofTexture *texture;
-#endif
 @property (nonatomic) CGSize size;
 @property (nonatomic) bool shouldResizeToTexture;
 @property (nonatomic) NKTextureMapStyle textureMapStyle;
@@ -41,7 +38,10 @@ typedef NS_OPTIONS(UInt8, NKTextureMapStyle) {
 +(instancetype) textureWithImage:(NKImage*)image;
 
 +(instancetype) textureWithString:(NSString *)string ForLabelNode:(NKLabelNode*)node;
-+(instancetype) textureWithString:(NSString *)text fontNamed:(NSString*)name color:(NKColor*)textColor Size:(CGSize)size fontSize:(CGFloat)fontSize;
++(instancetype) textureWithString:(NSString *)string ForLabelNode:(NKLabelNode *)node inBackGroundWithCompletionBlock:(void (^)())block;
+
+//+(instancetype) textureWithString:(NSString *)text fontNamed:(NSString*)name color:(NKColor*)textColor Size:(CGSize)size fontSize:(CGFloat)fontSize completion:(void (^)())block;
+
 
 +(instancetype) textureWithPVRNamed:(NSString*)name size:(CGSize)size;
 
@@ -49,5 +49,9 @@ typedef NS_OPTIONS(UInt8, NKTextureMapStyle) {
 -(void)bind;
 -(void)unbind;
 
++(NKTexture*)blankTexture;
+
+-(GLuint)glTexLocation;
+-(void)setGlTexLocation:(GLuint)loc;
 
 @end

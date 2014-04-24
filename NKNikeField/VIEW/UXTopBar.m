@@ -25,8 +25,40 @@
         cardSize.width = (1. / (6)) * w;
         cardSize.height = (cardSize.width * (100. / 80.));
         
+        NKLabelNode *fuel = [NKLabelNode labelNodeWithFontNamed:@"TradeGothicLTStd-BdCn20"];
+        fuel.fontSize = 36;
+        
+        [self addChild:fuel];
+        
+        [fuel setText:@"FUEL"];
+        [fuel setPosition3d:V3Make(-w*.25, 0, 2)];
+
+        self.fuel = 1000;
     }
     return self;
+}
+
+-(void)setFuel:(int)fuel {
+    
+    if (_fuel != fuel) {
+        
+    
+    if (fuelPoints) {
+        [self fadeOutChild:fuelPoints duration:1. withCompletion:^{
+        }];
+    }
+    
+    fuelPoints = [NKLabelNode labelNodeWithFontNamed:@"TradeGothicLTStd-BdCn20"];
+    fuelPoints.fontSize = 32;
+    fuelPoints.fontColor = V2GREEN;
+    [self fadeInChild:fuelPoints duration:1.];
+    
+    [fuelPoints setText:[NSString stringWithFormat:@"%d", fuel]];
+    [fuelPoints setPosition3d:V3Make(-w*.25, h*-.3, 2)];
+
+    }
+    
+    _fuel = fuel;
 }
 
 -(void)removeCards {

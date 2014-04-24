@@ -75,8 +75,8 @@ typedef void (^ActionBlock)(NKNode *node, F1t completion);
 @property (nonatomic) M16t startMatrix;
 @property (nonatomic) M16t endMatrix;
 
-@property (nonatomic) CGFloat startFloat;
-@property (nonatomic) CGFloat endFloat;
+@property (nonatomic) F1t startFloat;
+@property (nonatomic) F1t endFloat;
 
 @property (nonatomic) bool reset;
 
@@ -140,8 +140,8 @@ typedef void (^ActionBlock)(NKNode *node, F1t completion);
 //
 //+ (NKAction *)fadeInWithDuration:(F1t)sec;
 //+ (NKAction *)fadeOutWithDuration:(F1t)sec;
-+ (NKAction *)fadeAlphaBy:(CGFloat)factor duration:(F1t)sec;
-+ (NKAction *)fadeAlphaTo:(CGFloat)alpha duration:(F1t)sec;
++ (NKAction *)fadeAlphaBy:(F1t)factor duration:(F1t)sec;
++ (NKAction *)fadeAlphaTo:(F1t)alpha duration:(F1t)sec;
 //
 //+ (NKAction *)setTexture:(ofTexture *)texture;
 //+ (NKAction *)animateWithTextures:(NSArray *)textures timePerFrame:(F1t)sec;

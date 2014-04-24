@@ -27,6 +27,7 @@
         
         _anchorPoint3d = V3Make(.5, .5, .5);
         _hidden = false;
+        intAlpha = 1.;
         _alpha = 1.;
         
         _blendMode = NKBlendModeAlpha;
@@ -931,8 +932,28 @@ void ofNode::resetTransform() {
     return CGPointMake(scale.x, scale.y);
 }
 
--(void)setAlpha:(CGFloat)alpha {
-    _alpha = alpha;
+#pragma mark - ALPHA / BLEND
+
+-(void)setAlpha:(F1t)alpha {
+    intAlpha = alpha;
+    [self setRecursiveAlpha];
+}
+
+-(void)setRecursiveAlpha {
+    _alpha = [self recursiveParentAlpha];
+    
+    for (NKNode* n in intChildren) {
+        [n setRecursiveAlpha];
+    }
+}
+
+-(F1t)recursiveParentAlpha{
+    if (!_parent) {
+        return intAlpha;
+    }
+    else {
+        return intAlpha * [_parent recursiveParentAlpha];
+    }
 }
 
 #pragma mark - ACTIONS
