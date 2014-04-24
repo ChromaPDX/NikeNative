@@ -144,7 +144,6 @@
 }
 
 -(BoardLocation*)stepInDirection:(Direction)direction{
-    BoardLocation* retLocation;
     int newX = 0;
     int newY = 0;
     switch (direction) {
@@ -188,6 +187,7 @@
         return NULL;
     }
     else{
+        BoardLocation* retLocation = [[BoardLocation alloc] init];
         retLocation = [retLocation initWithX:newX Y:newY];
         return retLocation;
     }

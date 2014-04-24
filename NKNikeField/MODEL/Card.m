@@ -29,16 +29,25 @@
         _aiActionType = NONE;
         switch (_deck.category) {
             case CardCategoryMove:
-                 _level = rand()%2 + 1;
-                _kickCategory = rand()%4 + 1;
-                _moveCategory = CardMoveCategoryNull;
-                break;
-                
-            case CardCategoryKick:
-                _level = rand()%3 + 2;
-                _moveCategory = rand()%4 + 1;
+                // _level = rand()%2 + 1;
+                _level = 2;
+                _moveCategory = rand()%3 + 1;
                 _kickCategory = CardKickCategoryNull;
-
+                break;
+            case CardCategoryKick:
+                // _level = rand()%3 + 2;
+                //_kickCategory = rand()%2 + 1;
+                _kickCategory = 2;
+                if(_kickCategory == CardKickCategoryStraight){
+                    _level = 5;
+                }
+                if(_kickCategory == CardKickCategoryLob){
+                    _level = 4;
+                }
+                else{
+                    _level = 2;
+                }
+                _moveCategory = CardMoveCategoryNull;
 #ifdef CHEAT
                 _level = 10;
 #endif
@@ -74,8 +83,8 @@
             }
         }
         
-                _range = _level;
-            if (_level > 3) _level = 3;
+        _range = _level;
+        if (_level > 3) _level = 3;
         
     }
     return self;
@@ -302,11 +311,13 @@
         
     }
     
+    
     return obstacles;
     
 }
 
 -(NSArray*)selectionSet {
+   // NSLog(@"selectionSet...");
     
     if (self.category == CardCategoryKick) {
         if (!self.deck.player.ball) {
@@ -315,6 +326,8 @@
     }
     
     NSMutableArray* obstacles = [[self rangeMask] mutableCopy];
+   // NSMutableArray* obstacles = [[NSMutableArray alloc] init];
+    
     
     // STEP 1:  GET BOARD OBSTACLES
     
@@ -339,11 +352,46 @@
     
     // STEP 2: CALCULATE ACCESSIBLE WITH RANGE
     
-    if (self.category == CardCategoryMove || self.category == CardCategoryChallenge) {
+    if (self.category == CardCategoryMove){
+        switch(self.moveCategory){
+            case CardMoveCategoryBishop:
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:2];
+                break;
+            case CardMoveCategoryQueen:
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:2];
+                break;
+            case CardMoveCategoryRook:
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:2];
+                break;
+            case CardMoveCategoryKnight:
+                accessible = NULL;
+                break;
+            case CardMoveCategoryNull:
+                accessible = NULL;
+                break;
+            default:
+                accessible = NULL;
+                break;
+        }
+    }
+    else if (self.category == CardCategoryChallenge) {
         accessible = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:_range];
     }
     else if (self.category == CardCategoryKick) {
-        accessible = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRook walkDistance:_range];
+        switch(self.kickCategory){
+            case CardKickCategoryStraight:
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:_range];
+                break;
+            case CardKickCategoryLob:
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenLobStraight walkDistance:_range];
+                break;
+            default:
+                accessible = NULL;
+                break;
+        }
+    }
+    else{
+        accessible = NULL;
     }
     
     return accessible;
@@ -351,7 +399,8 @@
 }
 
 -(NSArray*)validatedSelectionSet {
-    
+  //  NSLog(@"validatedSelectionSet...");
+
     NSArray* accessible = [self selectionSet];
     
     // IF MOVING / KICK WE'RE DONE VALIDATING
