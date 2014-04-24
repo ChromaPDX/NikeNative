@@ -809,9 +809,11 @@ float PARTICLE_SCALE;
         NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"TradeGothicLTStd-BdCn20"];
         bigText.fontSize = 75;
         bigText.fontColor = NKWHITE;
-
+ 
         [bigText loadAsyncText:theText completion:^{
 
+               [bigText setScale:1.5];
+            
             for (int i = 0; i<2; i++) {
                 NKLabelNode *bigText2 = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"TradeGothicLTStd-BdCn20"];
                 bigText2.fontSize = 75;
@@ -820,6 +822,8 @@ float PARTICLE_SCALE;
                 [bigText2 setOrientationEuler:V3Make(0,0,10 * (i*2 - 1))];
                 
                 [bigText addChild:bigText2];
+                
+                  // [bigText2 setScale:2.];
             }
             
             [self fadeInChild:bigText duration:.2 withCompletion:^{
