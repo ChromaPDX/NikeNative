@@ -190,18 +190,21 @@
 
 -(NSArray*) cellsAccesibleFromStraight:(BoardLocation *)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE{
     NSMutableArray *retArray = [[NSMutableArray alloc] init];
+    NSLog(@"cellsAccessibleFromStraight, neighborhoodType = %d", NEIGHBORHOOD_TYPE);
     switch (NEIGHBORHOOD_TYPE){
         case NeighborhoodTypeRookStraight:
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:N]];
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:E]];
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:S]];
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:W]];
+            return retArray;
             break;
         case NeighborhoodTypeBishopStraight:
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NE]];
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SE]];
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SW]];
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NW]];
+            return retArray;
             break;
         case NeighborhoodTypeQueenStraight:
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:N]];
@@ -212,6 +215,7 @@
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SE]];
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SW]];
             [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NW]];
+            return retArray;
             break;
         case NeighborhoodTypeKnightStraight:
             break;
@@ -290,17 +294,36 @@
     return nil;
 }
 
--(NSArray*)cellsAccesibleFromStraight:(BoardLocation *)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE :
-    (int)distance {
-    NSArray* accesibleCells = [self cellsAccesibleFrom:location NeighborhoodType:NEIGHBORHOOD_TYPE];
-    
-    NSMutableArray* inRange = [NSMutableArray array];
-    
-    for (BoardLocation* loc in accesibleCells) {
-        NSArray *path = [self pathFromAtoB:location B:loc NeighborhoodType:NEIGHBORHOOD_TYPE];
-        if (path.count <= distance) {
-            [inRange addObject:loc];
-        }
+-(NSArray*)cellsAccesibleFromStraight:(BoardLocation *)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE walkDistance:(int)distance {
+    NSMutableArray *retArray = [[NSMutableArray alloc] init];
+    switch (NEIGHBORHOOD_TYPE){
+        case NeighborhoodTypeRookStraight:
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:N walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:E walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:S walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:W walkDistance:distance]];
+            return retArray;
+            break;
+        case NeighborhoodTypeBishopStraight:
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NE walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SE walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SW walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NW walkDistance:distance]];
+            return retArray;
+            break;
+        case NeighborhoodTypeQueenStraight:
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:N walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:E walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:S walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:W walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NE walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SE walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SW walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NW walkDistance:distance]];
+            return retArray;
+            break;
+        case NeighborhoodTypeKnightStraight:
+            break;
     }
     return NULL;
  }
@@ -339,6 +362,22 @@
     return retArray;
 }
 
+// returns a list of locations from self in a given direction.
+-(NSArray*)rayFromLocation:(BoardLocation*)location inDirection:(Direction)direction walkDistance:(int)distance{
+    int stepsTaken = 0;
+    NSMutableArray *retArray = [[NSMutableArray alloc] init];
+    BoardLocation *newLoc = [location stepInDirection:direction];
+    if(!newLoc) return NULL;
+    int index = newLoc.x + newLoc.y*columns;
+    if(obstacleCells[index]) return NULL;
+    while(newLoc && !obstacleCells[index] && stepsTaken < distance){
+        [retArray addObject:newLoc];
+        stepsTaken++;
+        newLoc = [newLoc stepInDirection:direction];
+        index = newLoc.x + newLoc.y*columns;
+    }
+    return retArray;
+}
 
 
 
