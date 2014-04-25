@@ -354,13 +354,13 @@
     if (self.category == CardCategoryMove){
         switch(self.moveCategory){
             case CardMoveCategoryBishop:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:2];
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range];
                 break;
             case CardMoveCategoryQueen:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:2];
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:_range];
                 break;
             case CardMoveCategoryRook:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:2];
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range];
                 break;
             case CardMoveCategoryKnight:
                 accessible = NULL;

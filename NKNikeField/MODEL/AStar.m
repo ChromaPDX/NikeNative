@@ -330,9 +330,10 @@
             return retArray;
             break;
         case NeighborhoodTypeKnightStraight:
+            return NULL;
             break;
         case NeighborhoodTypeQueenLobStraight:
-            [retArray addObject:[[newLoc initWithX:myX Y:myY+2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX Y:myY+2] copy]];
             [tmpArray addObject:[[newLoc initWithX:myX+1 Y:myY+2] copy]];
             [tmpArray addObject:[[newLoc initWithX:myX+2 Y:myY+2] copy]];
             [tmpArray addObject:[[newLoc initWithX:myX+2 Y:myY+1] copy]];
