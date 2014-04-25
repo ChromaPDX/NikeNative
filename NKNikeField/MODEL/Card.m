@@ -36,8 +36,7 @@
                 break;
             case CardCategoryKick:
                 // _level = rand()%3 + 2;
-                //_kickCategory = rand()%2 + 1;
-                _kickCategory = 2;
+                _kickCategory = rand()%2 + 1;
                 if(_kickCategory == CardKickCategoryStraight){
                     _level = 5;
                 }
