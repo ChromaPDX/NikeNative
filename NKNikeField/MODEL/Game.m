@@ -1232,7 +1232,7 @@
     Card* moveCard = p.moveDeck.inHand[0];
 
     // CHECK FOR LOOSE BALL
-    if(![p.manager playerWithBall]){
+    if(![p.manager playerWithBall] && ![p.manager.opponent playerWithBall]){
         moveCard.aiActionType = MOVE_TO_BALL;
         [_gameScene AISelectedCard:moveCard];
         return;
