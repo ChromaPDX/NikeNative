@@ -29,15 +29,13 @@
         _aiActionType = NONE;
         switch (_deck.category) {
             case CardCategoryMove:
-                // _level = rand()%2 + 1;
                 _level = 2;
-                _moveCategory = rand()%3 + 1;
+                _moveCategory = rand()%4 + 1;
                 _kickCategory = CardKickCategoryNull;
                 break;
             case CardCategoryKick:
-                // _level = rand()%3 + 2;
-                //_kickCategory = rand()%2 + 1;
-                _kickCategory = 2;
+                _kickCategory = rand()%3 + 1;
+                //_kickCategory = 3;
                 if(_kickCategory == CardKickCategoryStraight){
                     _level = 5;
                 }
@@ -355,16 +353,16 @@
     if (self.category == CardCategoryMove){
         switch(self.moveCategory){
             case CardMoveCategoryBishop:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:2];
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range];
                 break;
             case CardMoveCategoryQueen:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:2];
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:_range];
                 break;
             case CardMoveCategoryRook:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:2];
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range];
                 break;
             case CardMoveCategoryKnight:
-                accessible = NULL;
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeKnightStraight walkDistance:_range];
                 break;
             case CardMoveCategoryNull:
                 accessible = NULL;
@@ -384,6 +382,9 @@
                 break;
             case CardKickCategoryLob:
                 accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenLobStraight walkDistance:_range];
+                break;
+            case CardKickCategoryBeckem:
+                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeKnightStraight walkDistance:_range];
                 break;
             default:
                 accessible = NULL;

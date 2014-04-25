@@ -189,41 +189,6 @@
     return nil;
 }
 
--(NSArray*) cellsAccesibleFromStraight:(BoardLocation *)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE{
-    NSMutableArray *retArray = [[NSMutableArray alloc] init];
-    NSLog(@"cellsAccessibleFromStraight, neighborhoodType = %d", NEIGHBORHOOD_TYPE);
-    switch (NEIGHBORHOOD_TYPE){
-        case NeighborhoodTypeRookStraight:
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:N]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:E]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:S]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:W]];
-            return retArray;
-            break;
-        case NeighborhoodTypeBishopStraight:
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NE]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SE]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SW]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NW]];
-            return retArray;
-            break;
-        case NeighborhoodTypeQueenStraight:
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:N]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:E]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:S]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:W]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NE]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SE]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SW]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NW]];
-            return retArray;
-            break;
-        case NeighborhoodTypeKnightStraight:
-            break;
-    }
-    return NULL;
-}
-
 -(NSArray*) cellsAccesibleFrom:(BoardLocation*)location NeighborhoodType:(NeighborhoodType)NEIGHBORHOOD_TYPE{
     
     int A = location.x + location.y*columns;
@@ -330,9 +295,26 @@
             return retArray;
             break;
         case NeighborhoodTypeKnightStraight:
+            [tmpArray addObject:[[newLoc initWithX:myX+1 Y:myY+2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX+2 Y:myY+1] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX+2 Y:myY-1] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX+1 Y:myY-2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX-1 Y:myY-2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX-2 Y:myY-1] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX-2 Y:myY+1] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX-1 Y:myY+2] copy]];
+            for(newLoc in tmpArray){
+                index = newLoc.x + newLoc.y*columns;
+                if(!(newLoc.x < 0 || newLoc.x > BOARD_WIDTH - 1 || newLoc.y < 0 || newLoc.y > BOARD_LENGTH - 1)){
+                    if(!obstacleCells[index]){
+                        [retArray addObject:newLoc];
+                    }
+                }
+            }
+            return retArray;
             break;
         case NeighborhoodTypeQueenLobStraight:
-            [retArray addObject:[[newLoc initWithX:myX Y:myY+2] copy]];
+            [tmpArray addObject:[[newLoc initWithX:myX Y:myY+2] copy]];
             [tmpArray addObject:[[newLoc initWithX:myX+1 Y:myY+2] copy]];
             [tmpArray addObject:[[newLoc initWithX:myX+2 Y:myY+2] copy]];
             [tmpArray addObject:[[newLoc initWithX:myX+2 Y:myY+1] copy]];
