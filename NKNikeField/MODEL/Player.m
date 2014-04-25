@@ -343,7 +343,7 @@
     Card *moveCard = self.moveDeck.inHand[0];
     if(!moveCard) return NULL;
     
-    NSArray *moveSet = moveCard.validatedSelectionSet;
+    NSArray *moveSet = [moveCard validatedSelectionSet];
     //NSLog(@"pathToOpenFieldClosestToLocation, moveSet.count = %d", [moveSet count]);
     if(!moveSet){
         return NULL;
@@ -360,7 +360,7 @@
     NSArray *possesionKickSet = [playerWithBall validatedSelectionSet];
     NSLog(@"pathToOpenFieldClosestToLocationInPassRange:");
     for(BoardLocation *thisLoc in moveSet){
-        NSLog(@"examining %@", thisLoc);
+        //NSLog(@"examining %@", thisLoc);
         int distanceToTeammate = [self distanceAfterMoveToClosestTeammate:thisLoc];
         //   [minTeammateDistances setObject:[NSNumber numberWithInt:distanceToTeammate] forKey:thisLoc];
         NSArray *pathToTarget = [self pathFromBoardLocationToBoardLocationNoObstacles:thisLoc toLocation:location];
@@ -532,9 +532,9 @@
     NSMutableArray* retPlayers = [NSMutableArray array];
     NSArray* players = [self.manager playersClosestToBall];
     Card *passCard = self.kickDeck.inHand[0];
+    NSArray *selSet = [passCard validatedSelectionSet];
     for(Player *p in players){
-        NSArray *pathToPlayer = [self pathToBoardLocation:p.location];
-        if(p != self && [pathToPlayer count] <= passCard.range){
+        if([selSet containsObject:p.location]){
             [retPlayers addObject:p];
         }
     }
