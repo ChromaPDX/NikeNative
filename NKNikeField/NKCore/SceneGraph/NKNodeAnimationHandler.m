@@ -534,7 +534,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
 #pragma mark - ALPHA
 
-+ (NKAction *)fadeAlphaTo:(CGFloat)alpha duration:(F1t)sec {
++ (NKAction *)fadeAlphaTo:(F1t)alpha duration:(F1t)sec {
     
     NKAction * action = [[NKAction alloc] initWithDuration:sec];
     

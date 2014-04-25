@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		297E6C2519097F4F00369BDF /* blank_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 297E6C2419097F4F00369BDF /* blank_texture.png */; };
 		29B84B5918FF03F600469EE0 /* NKPickerNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B84B5818FF03F600469EE0 /* NKPickerNode.m */; };
 		3B2361FC19001E8800056AE2 /* vsscreenbaked_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B2361FB19001E8800056AE2 /* vsscreenbaked_01.png */; };
 		3B2361FF190020FA00056AE2 /* MenuStartVS.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2361FE190020FA00056AE2 /* MenuStartVS.m */; };
@@ -259,6 +260,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		297E6C2419097F4F00369BDF /* blank_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank_texture.png; sourceTree = "<group>"; };
 		29B84B5718FF03F600469EE0 /* NKPickerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKPickerNode.h; sourceTree = "<group>"; };
 		29B84B5818FF03F600469EE0 /* NKPickerNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKPickerNode.m; sourceTree = "<group>"; };
 		3B2361FB19001E8800056AE2 /* vsscreenbaked_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vsscreenbaked_01.png; sourceTree = "<group>"; };
@@ -670,6 +672,7 @@
 		61A257B318FDE998001B7F67 /* Texture */ = {
 			isa = PBXGroup;
 			children = (
+				297E6C2419097F4F00369BDF /* blank_texture.png */,
 				61A257B418FDE998001B7F67 /* chromeKitten.png */,
 				61A257B518FDE998001B7F67 /* chromeKittenSmall.png */,
 				61A257B618FDE998001B7F67 /* moon.png */,
@@ -1276,6 +1279,7 @@
 				61D6E80118FDB5B70017A389 /* tile_left.png in Resources */,
 				61D6E7FC18FDB5B70017A389 /* tile_all.png in Resources */,
 				61D6E82718FDB5B70017A389 /* CardPlayerOffense.png in Resources */,
+				297E6C2519097F4F00369BDF /* blank_texture.png in Resources */,
 				61D6E82C18FDB5B70017A389 /* BoostBarEmpty.png in Resources */,
 				61D6E81B18FDB5B70017A389 /* Card_Adrenal_Boost.png in Resources */,
 				61D6E87918FDB5B70017A389 /* Field_Layer02.png in Resources */,

@@ -34,6 +34,8 @@ typedef NS_ENUM(NSInteger, NKLabelHorizontalAlignmentMode) {
 
 - (instancetype)initWithSize:(CGSize)size FontNamed:(NSString *)fontName;
 
+- (void)loadAsyncText:(NSString*)text completion:(void (^)())block;
+
 @property (nonatomic) NKLabelHorizontalAlignmentMode horizontalAlignmentMode;
 @property (nonatomic) NKLabelVerticalAlignmentMode verticalAlignmentMode;
 

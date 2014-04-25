@@ -86,6 +86,9 @@ typedef NS_ENUM(U1t, NKCullFaceMode) {
     F1t w;
     F1t h;
     F1t d;
+    
+    // CACHED PROPS
+    F1t intAlpha;
 }
 
 @property (nonatomic, strong) NSArray *children;
@@ -106,7 +109,8 @@ typedef NS_ENUM(U1t, NKCullFaceMode) {
 @property (nonatomic) NKBlendMode blendMode;
 @property (nonatomic) NKCullFaceMode cullFace;
 
-@property (nonatomic) CGFloat alpha;
+@property (nonatomic) F1t alpha;
+-(void)setRecursiveAlpha;
 
 @property (nonatomic, weak) NKNode *parent;
 @property (nonatomic, copy) NSString *name;

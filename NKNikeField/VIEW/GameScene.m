@@ -113,15 +113,17 @@ float PARTICLE_SCALE;
     
     [_pivot setPosition3d:(V3Make(0,-h*.5,0))];
     
-    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:.5] size:CGSizeMake(w, h*.15)];
-    [_uxWindow setPosition3d:V3Make(0,-h*.42,0)];
+    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:0/255. green:0/255. blue:0/255. alpha:.7] size:CGSizeMake(w, h*.15)];
+    [_uxWindow setPosition3d:V3Make(0,-h*.42,30)];
     _uxWindow.delegate = self;
     [self addChild:_uxWindow];
+    [_uxWindow setAlpha:0];
     
-    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:[NKColor colorWithRed:45/255. green:45/255. blue:45/255. alpha:.5] size:CGSizeMake(w, h*.15)];
-    [_uxTopBar setPosition3d:V3Make(0,h*.42,0)];
+    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:[NKColor colorWithRed:0/255. green:0/255. blue:0/255. alpha:.7] size:CGSizeMake(w, h*.15)];
+    [_uxTopBar setPosition3d:V3Make(0,h*.42,30)];
     _uxTopBar.delegate = self;
     [self addChild:_uxTopBar];
+    [_uxTopBar setAlpha:0];
     
     //    NKSpriteNode *logo = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"GAMELOGO.png"] color:nil size:CGSizeMake(TILE_WIDTH*4, TILE_WIDTH*5.2)];
     //    [_pivot addChild:logo];
@@ -168,28 +170,7 @@ float PARTICLE_SCALE;
     
     [_gameBoardNode addChild:glow];
    [glow setPosition3d:V3Make(0,0,6)];
-    
-    
-    //    NKDrawDepthShader* ddepthShader = [[NKDrawDepthShader alloc] initWithNode:self paramBlock:nil];
-    //    //ddepthShader.useColor = true;
-    //    ddepthShader.shouldInvert= true;
-    
-    // [self loadShader:ddepthShader];
-    
-    //
-    
-    //    [_pivot runAction:[NKAction repeatActionForever:[NKAction sequence:@[[NKAction moveByX:100 y:0 duration:1.] ,
-    //                                                                         [NKAction moveByX:-100 y:0 duration:1.] ,
-    //                                                                         [NKAction moveByX:0 y:100 duration:1.] ,
-    //                                                                         [NKAction moveByX:0 y:-100 duration:1.] ,
-    //
-    //                                                                         ]
-    //
-    //                                                     ]]];
-    //
-    
-    
-    // [self.camera runAction:[NKAction rotate3dToAngle:V3Make(-26, 0,0) duration:2.]];
+  
     
     [_pivot runAction:[NKAction rotate3dToAngle:V3Make(-26, 0,0) duration:2.]];
     [_pivot runAction:[NKAction move3dTo:V3Make(0,-h*.25,0) duration:2.]];
@@ -281,7 +262,7 @@ float PARTICLE_SCALE;
         
         p  = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:path]];
         [_gameBoardNode removeAllActions];
-        [_gameBoardNode runAction:[NKAction moveTo:CGPointMake(0, -p.y + h/4.) duration:1.]];
+        [_gameBoardNode runAction:[NKAction moveTo:CGPointMake(0, -p.y + h/3.) duration:1.]];
     }
     
 //    else {
@@ -291,11 +272,7 @@ float PARTICLE_SCALE;
 //            [_gameBoardNode runAction:[NKAction moveTo:CGPointMake(0, -p.y + h/4.) duration:1.]];
 //        }
 //    }
-    
 
-    
-
-    
 }
 
 -(void)playerSpriteDidSelectPlayer:(Player*)player {
@@ -515,45 +492,22 @@ float PARTICLE_SCALE;
             
             [player stopPosession:^{
                 
+                // SUCCESSFUL PASS
                 if ((event.type == kEventKickPass && event.wasSuccessful)) {
-                    
                     if (receiver) {
-                        
-               
-                    // SUCESSFULL PASS
-                    
-                    [receiver getReadyForPosession:^{
-                        
-                        // [self dollyTowards:receiver duration:CAM_SPEED*.25];
-                        
-                        NKAction *move = [NKAction move3dTo:[receiver.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED];
-                        
-                        [move setTimingMode:NKActionTimingEaseOut];
-                        
-                        [self.ballSprite runAction:move completion:^(){
+                        [receiver getReadyForPosession:^{
+                            NKAction *move = [NKAction move3dTo:[receiver.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED];
+                            [move setTimingMode:NKActionTimingEaseOut];
                             
-                            
-                            [receiver startPossession];
-                            
-                            
-                            //                            else if (event.type == kGoaliePass) {
-                            //
-                            
-                            //
-                            //                            }
-                            
-                            [enchant runAction:[NKAction scaleTo:.01 duration:CARD_ANIM_DUR*2] completion:^{
-                                [enchant removeFromParent];
-                                block();
-                                
+                            [self.ballSprite runAction:move completion:^(){
+                                [receiver startPossession];
+                                [enchant runAction:[NKAction scaleTo:.01 duration:CARD_ANIM_DUR*2] completion:^{
+                                    [enchant removeFromParent];
+                                    block();
+                                }];
                             }];
                             
-                            
-                            
-                            
                         }];
-                        
-                    }];
                         
                     }
                     else { // pass to board square
@@ -574,47 +528,23 @@ float PARTICLE_SCALE;
                         }];
                     }
                 }
-
                 
+                // SUCCESSFUL GOAL
                 else if (event.type == kEventKickGoal && event.wasSuccessful) {
-                    
-                    // SUCCESSFUL GOAL
-                    
-                    
                     CGPoint dest = [[_gameTiles objectForKey:event.location] position];
-                    
                     NKAction *move = [NKAction moveTo:dest duration:.3];
-                    
                     [move setTimingMode:NKActionTimingEaseOut];
                     
                     [self.ballSprite runAction:move completion:^(){
-                        
                         NSLog(@"GameScene.m : animateEvent : GOAL");
-                        
                         [self animateBigText:@"GOAL !!!" withCompletionBlock:^{
-                            
                             block();
-                            
-                            //[self fadeOutChild:self.ballSprite duration:.3];
-                            
-                            
                         }];
-                        
-                        
                     }];
-                    
-                    
-                    
-                    
-                    
-                    
                 }
                 
                 else { // FAILED PASS OR FAILED GOAL
-                    
-                    
                     CGPoint dest = [[_gameTiles objectForKey:_game.ball.location] position];
-                    
                     
                     NKAction *move = [NKAction moveTo:dest duration:BALL_SPEED];
                     
@@ -623,21 +553,13 @@ float PARTICLE_SCALE;
                     [self.ballSprite runAction:move completion:^(){
                         
                         [self.ballSprite runAction:[NKAction scaleTo:BALL_SCALE_SMALL duration:CARD_ANIM_DUR]];
-
+                        
                         block();
                         
                     }];
-                    
-                    
-                    
-                    
                 }
-                
-                
             }];
-            
         }];
-        
     }
     
     
@@ -830,7 +752,7 @@ float PARTICLE_SCALE;
     }
     
     else if (event.type == kEventKickoff){
-        [self animateBigText:@"GAME ON !!!" withCompletionBlock:^{
+        [self animateBigText:@"GAME ON !!" withCompletionBlock:^{
             block();
         }];
     }
@@ -883,41 +805,45 @@ float PARTICLE_SCALE;
 }
 
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block {
-    
-    for (int i = 0; i < 3; i++){
-        
-        NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(300, 150) FontNamed:@"TradeGothicLTStd-BdCn20"];
+
+        NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"TradeGothicLTStd-BdCn20"];
         bigText.fontSize = 75;
         bigText.fontColor = NKWHITE;
-        bigText.text = theText;
-        
-        [bigText setOrientationEuler:V3Make(0,0,i*10. - 10)];
-        //[bigText setScale:.1];
-        [self addChild:bigText];
-        
-        //[bigText setPosition3d:V3Make(0, 0,100)];
-        if (i == 0) {
-            [bigText runAction:[NKAction rotateByAngle:-i*20 duration:1.] completion:^{
-                [self fadeOutChild:bigText duration:.5];
-                block();
+ 
+        [bigText loadAsyncText:theText completion:^{
+
+               [bigText setScale:1.5];
+            
+            for (int i = 0; i<2; i++) {
+                NKLabelNode *bigText2 = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"TradeGothicLTStd-BdCn20"];
+                bigText2.fontSize = 75;
+                bigText2.fontColor = NKWHITE;
+                bigText2.text = theText;
+                [bigText2 setOrientationEuler:V3Make(0,0,10 * (i*2 - 1))];
+                
+                [bigText addChild:bigText2];
+                
+                  // [bigText2 setScale:2.];
+            }
+            
+            [self fadeInChild:bigText duration:.2 withCompletion:^{
+                [bigText runAction:[NKAction rotateByAngle:20 duration:1.] completion:^{
+                    [self fadeOutChild:bigText duration:.2 withCompletion:^{
+                          block();
+                    }];
+                }];
             }];
-        }
-        else {
-            [bigText runAction:[NKAction rotateByAngle:-i*20 duration:1.]  completion:^{
-                [self fadeOutChild:bigText duration:.5];
-            }];
-        }
-        
-        
-    }
-    
-    
-    
+
+        }];
 }
 
 
 -(void)refreshUXWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block {
     
+    if (!_uxWindow.alpha) {
+        [_uxWindow runAction:[NKAction fadeAlphaTo:1. duration:.5]];
+        [_uxTopBar runAction:[NKAction fadeAlphaTo:1. duration:.5]];
+    }
 
     [_uxWindow refreshCardsForPlayer:p WithCompletionBlock:^{
         block();

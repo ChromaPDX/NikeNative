@@ -60,32 +60,32 @@
     _intColor = [self glColor];
 }
 
--(void)setAlpha:(CGFloat)alpha {
-    
-    [super setAlpha:alpha];
-    _intColor = [self glColor];
-}
+//-(void)setAlpha:(CGFloat)alpha {
+//    [super setAlpha:alpha];
+//    _intColor = [self glColor];
+//}
 
--(NKColor*)textureColorForSprite {
-    
-    if (_color) {
-        float col[4];
-        
-        [_color getRed:&col[0] green:&col[1] blue:&col[2] alpha:&col[3]];
-        
-        col[3] *= self.alpha;
-        
-        return [NKColor colorWithRed:cblend(col[0],self.colorBlendFactor) green:cblend(col[1], self.colorBlendFactor) blue:cblend(col[2], self.colorBlendFactor) alpha:col[3]];
-    }
-    
-    return NKWHITE;
-    
+-(void)setRecursiveAlpha {
+    [super setRecursiveAlpha];
+    _intColor = [self glColor];
 }
 
 -(C4t)glColor {
     C4t col;
     if (_texture) {
-            [[self textureColorForSprite] getRed:&col.r green:&col.g blue:&col.b alpha:&col.a];
+        
+        [_color getRed:&col.r green:&col.g blue:&col.b alpha:&col.a];
+        
+        col.a *= self.alpha;
+        
+        if (self.colorBlendFactor) {
+            F1t colBlend = self.colorBlendFactor;
+            col.r =cblend(col.r,colBlend);
+            col.g =cblend(col.g,colBlend);
+            col.b =cblend(col.b,colBlend);
+        }
+        
+        //  [[self textureColorForSprite] getRed:&col.r green:&col.g blue:&col.b alpha:&col.a];
     }
     else {
         [_color getRed:&col.r green:&col.g blue:&col.b alpha:&col.a];

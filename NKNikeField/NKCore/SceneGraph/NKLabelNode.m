@@ -55,6 +55,22 @@
     return self;
 }
 
+- (void)loadAsyncText:(NSString*)text completion:(void (^)())block{
+    
+    if (!text) {
+        [self setTexture:nil];
+        _text = text;
+    }
+    
+    else if (_text != text){
+        _text = text;
+        [self setTexture:[NKTexture textureWithString:text ForLabelNode:self inBackGroundWithCompletionBlock:^{block();}]];
+        return;
+    }
+    
+    block();
+}
+
 - (void)setText:(NSString *)text {
     if (_text != text){
         [self setTexture:[NKTexture textureWithString:text ForLabelNode:self]];
