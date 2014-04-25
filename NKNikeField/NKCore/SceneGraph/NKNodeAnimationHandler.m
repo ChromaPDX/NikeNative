@@ -50,15 +50,10 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 -(void)removeAction:(NKAction*)action {
     
     if (_actions.count) {
-        
         [_actions removeObject:action];
-
         if (!_actions.count) {
-            
-            [self complete];
-            
+            [self completeOrRepeat];
         }
-        
     }
     
 }
@@ -77,27 +72,35 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     
 }
 
-
--(void)complete {
-    
+-(bool)completeOrRepeat {
     if (_repeats == 0) {
         
         if (_completionBlock) {
-           
             [self.handler runCompletionBlockForAction:self];
             //_completionBlock();
         }
         
         [_parentAction removeAction:self];
-        
+        return 0;
     }
     
     else {
         
-        [self sharedReset];
-            if (_repeats > 0){
-                _repeats -= 1;
+        
+        if (_repeats > 0){
+            _repeats -= 1;
         }
+        [self sharedReset];
+        return 1;
+ 
+    }
+
+}
+
+-(void)completeWithTimeSinceLast:(F1t)dt forNode:(NKNode*)node {
+    
+    if ([self completeOrRepeat]) {
+        [self updateWithTimeSinceLast:dt forNode:node];
     }
     
 }
@@ -707,11 +710,10 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
             }
             
             if (!action.actions.count) {
-                [action complete];
+                [action completeWithTimeSinceLast:dt forNode:_node];
             }
             
         }
-        
 
     }
     
@@ -720,7 +722,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         bool complete = [action updateWithTimeSinceLast:dt forNode:_node];
         
         if (complete){
-            [action complete];
+            [action completeWithTimeSinceLast:dt forNode:_node];
         }
         
     }

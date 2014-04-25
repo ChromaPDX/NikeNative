@@ -539,6 +539,10 @@ float PARTICLE_SCALE;
                         NSLog(@"GameScene.m : animateEvent : GOAL");
                         [self animateBigText:@"GOAL !!!" withCompletionBlock:^{
                             block();
+                            [self runAction:[NKAction fadeAlphaTo:0 duration:2.5] completion:^{
+                                [_game endGame];
+                                [self.nkView setScene:[[MenuStartVS alloc] initWithSize:self.size]];
+                            }];
                         }];
                     }];
                 }

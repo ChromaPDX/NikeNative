@@ -8,6 +8,7 @@
 
 #import "NikeNodeHeaders.h"
 #import "ModelHeaders.h"
+#import "GameStatsViewController.h"
 
 @implementation UXTopBar
 
@@ -25,16 +26,17 @@
         cardSize.width = (1. / (6)) * w;
         cardSize.height = (cardSize.width * (100. / 80.));
         
-        NKLabelNode *fuel = [NKLabelNode labelNodeWithFontNamed:@"TradeGothicLTStd-BdCn20"];
-        fuel.fontSize = 36;
+        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"TradeGothicLTStd-BdCn20"];
+        fuelLabel.fontSize = 36;
         
-        [self addChild:fuel];
+        [self addChild:fuelLabel];
         
-        [fuel setText:@"FUEL"];
-        [fuel setPosition3d:V3Make(-w*.25, 0, 2)];
+        [fuelLabel setText:@"FUEL"];
+        [fuelLabel setPosition3d:V3Make(-w*.25, 0, 2)];
 
         self.fuel = 1000;
     }
+    
     return self;
 }
 
@@ -144,6 +146,13 @@
                 _delegate.selectedPlayer = ps.model;
             }
         }
+    }
+    
+    if ([fuelLabel containsPoint:location]) {
+        GameStatsViewController *stats = [[GameStatsViewController alloc]initWithGame:_delegate.game style:UITableViewStyleGrouped];
+        [_delegate.nkView.controller presentViewController:stats animated:YES completion:^{
+            
+        }];
     }
     
     return hit;

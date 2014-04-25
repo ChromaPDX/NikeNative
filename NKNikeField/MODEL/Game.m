@@ -2862,7 +2862,6 @@
 
 -(void)endGame{
     
-    
     // CHECK VICTORY
     [self prepEndTurn];
     

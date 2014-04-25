@@ -10,6 +10,7 @@
 #import "NodeKitten.h"
 #import "GameScene.h"
 #import "Menus.h"
+#import "SyncScene.h"
 
 @implementation DevMenu 
 
@@ -41,7 +42,7 @@
     
         
     NKLabelNode* rlabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Helvetica"];
-    rlabel.text = @"AI GAME";
+    rlabel.text = @"FUEL / SYNC";
     [robby addChild:rlabel];
     [rlabel setZPosition:2];
         
@@ -68,8 +69,9 @@
     
     if ([cell.name isEqualToString:@"ROBBY"]) {
      //   newScene = [[MiniGameScene alloc]initWithSize:self.size];
-        newScene = [[GameScene alloc]initWithSize:self.size];
-        [[(GameScene*)newScene game] startAIGame];
+     //   newScene = [[GameScene alloc]initWithSize:self.size];
+      //  [[(GameScene*)newScene game] startAIGame];
+        newScene = [[SyncScene alloc]initWithSize:self.size];
     }
     else if ([cell.name isEqualToString:@"ERIC"]) {
         newScene = [[MenuStartVS alloc]initWithSize:self.size];

@@ -9,6 +9,25 @@
 /* Begin PBXBuildFile section */
 		297E6C2519097F4F00369BDF /* blank_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 297E6C2419097F4F00369BDF /* blank_texture.png */; };
 		29B84B5918FF03F600469EE0 /* NKPickerNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B84B5818FF03F600469EE0 /* NKPickerNode.m */; };
+		29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D89246190AA5CB008FBD5F /* GameStatsViewController.m */; };
+		29D89266190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D8924A190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m */; };
+		29D89267190AA65E008FBD5F /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D8924C190AA65E008FBD5F /* adler32.c */; };
+		29D89268190AA65E008FBD5F /* compress.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D8924D190AA65E008FBD5F /* compress.c */; };
+		29D89269190AA65E008FBD5F /* crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D8924E190AA65E008FBD5F /* crc32.c */; };
+		29D8926A190AA65E008FBD5F /* deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D89250190AA65E008FBD5F /* deflate.c */; };
+		29D8926B190AA65E008FBD5F /* gzclose.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D89252190AA65E008FBD5F /* gzclose.c */; };
+		29D8926C190AA65E008FBD5F /* gzlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D89254190AA65E008FBD5F /* gzlib.c */; };
+		29D8926D190AA65E008FBD5F /* gzread.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D89255190AA65E008FBD5F /* gzread.c */; };
+		29D8926E190AA65E008FBD5F /* gzwrite.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D89256190AA65E008FBD5F /* gzwrite.c */; };
+		29D8926F190AA65E008FBD5F /* infback.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D89257190AA65E008FBD5F /* infback.c */; };
+		29D89270190AA65E008FBD5F /* inffast.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D89258190AA65E008FBD5F /* inffast.c */; };
+		29D89271190AA65E008FBD5F /* inflate.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D8925B190AA65E008FBD5F /* inflate.c */; };
+		29D89272190AA65E008FBD5F /* inftrees.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D8925D190AA65E008FBD5F /* inftrees.c */; };
+		29D89273190AA65E008FBD5F /* trees.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D8925F190AA65E008FBD5F /* trees.c */; };
+		29D89274190AA65E008FBD5F /* uncompr.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D89261190AA65E008FBD5F /* uncompr.c */; };
+		29D89275190AA65E008FBD5F /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D89264190AA65E008FBD5F /* zutil.c */; };
+		29D89278190AAB42008FBD5F /* NKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D89277190AAB42008FBD5F /* NKViewController.m */; };
+		29D8927B190AAD28008FBD5F /* SyncScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D8927A190AAD28008FBD5F /* SyncScene.m */; };
 		3B2361FC19001E8800056AE2 /* vsscreenbaked_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B2361FB19001E8800056AE2 /* vsscreenbaked_01.png */; };
 		3B2361FF190020FA00056AE2 /* MenuStartVS.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2361FE190020FA00056AE2 /* MenuStartVS.m */; };
 		3B2362011900258600056AE2 /* screens_01_vspagenew.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B2362001900258600056AE2 /* screens_01_vspagenew.png */; };
@@ -234,7 +253,7 @@
 		61D6E88818FDB5B70017A389 /* Game.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E78C18FDB5B70017A389 /* Game.m */; };
 		61D6E88918FDB5B70017A389 /* GameEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E78E18FDB5B70017A389 /* GameEvent.m */; };
 		61D6E88C18FDB5B70017A389 /* Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E79418FDB5B70017A389 /* Manager.m */; };
-		61D6E88E18FDB5B70017A389 /* MenuPlayerProfileScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E79918FDB5B70017A389 /* MenuPlayerProfileScene.mm */; };
+		61D6E88E18FDB5B70017A389 /* MenuPlayerProfileScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E79918FDB5B70017A389 /* MenuPlayerProfileScene.m */; };
 		61D6E88F18FDB5B70017A389 /* MenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E79C18FDB5B70017A389 /* MenuScene.m */; };
 		61D6E89218FDB5B70017A389 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E7A318FDB5B70017A389 /* Player.m */; };
 		61D6E8A318FDB5B70017A389 /* AlertSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E7C418FDB5B70017A389 /* AlertSprite.m */; };
@@ -263,6 +282,40 @@
 		297E6C2419097F4F00369BDF /* blank_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank_texture.png; sourceTree = "<group>"; };
 		29B84B5718FF03F600469EE0 /* NKPickerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKPickerNode.h; sourceTree = "<group>"; };
 		29B84B5818FF03F600469EE0 /* NKPickerNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKPickerNode.m; sourceTree = "<group>"; };
+		29D89245190AA5CB008FBD5F /* GameStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStatsViewController.h; sourceTree = "<group>"; };
+		29D89246190AA5CB008FBD5F /* GameStatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameStatsViewController.m; sourceTree = "<group>"; };
+		29D89249190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CocoaDevUsersAdditions.h"; sourceTree = "<group>"; };
+		29D8924A190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+CocoaDevUsersAdditions.m"; sourceTree = "<group>"; };
+		29D8924C190AA65E008FBD5F /* adler32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = adler32.c; sourceTree = "<group>"; };
+		29D8924D190AA65E008FBD5F /* compress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = compress.c; sourceTree = "<group>"; };
+		29D8924E190AA65E008FBD5F /* crc32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = crc32.c; sourceTree = "<group>"; };
+		29D8924F190AA65E008FBD5F /* crc32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crc32.h; sourceTree = "<group>"; };
+		29D89250190AA65E008FBD5F /* deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = deflate.c; sourceTree = "<group>"; };
+		29D89251190AA65E008FBD5F /* deflate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = deflate.h; sourceTree = "<group>"; };
+		29D89252190AA65E008FBD5F /* gzclose.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gzclose.c; sourceTree = "<group>"; };
+		29D89253190AA65E008FBD5F /* gzguts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gzguts.h; sourceTree = "<group>"; };
+		29D89254190AA65E008FBD5F /* gzlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gzlib.c; sourceTree = "<group>"; };
+		29D89255190AA65E008FBD5F /* gzread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gzread.c; sourceTree = "<group>"; };
+		29D89256190AA65E008FBD5F /* gzwrite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gzwrite.c; sourceTree = "<group>"; };
+		29D89257190AA65E008FBD5F /* infback.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = infback.c; sourceTree = "<group>"; };
+		29D89258190AA65E008FBD5F /* inffast.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = inffast.c; sourceTree = "<group>"; };
+		29D89259190AA65E008FBD5F /* inffast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inffast.h; sourceTree = "<group>"; };
+		29D8925A190AA65E008FBD5F /* inffixed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inffixed.h; sourceTree = "<group>"; };
+		29D8925B190AA65E008FBD5F /* inflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = inflate.c; sourceTree = "<group>"; };
+		29D8925C190AA65E008FBD5F /* inflate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inflate.h; sourceTree = "<group>"; };
+		29D8925D190AA65E008FBD5F /* inftrees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = inftrees.c; sourceTree = "<group>"; };
+		29D8925E190AA65E008FBD5F /* inftrees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inftrees.h; sourceTree = "<group>"; };
+		29D8925F190AA65E008FBD5F /* trees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = trees.c; sourceTree = "<group>"; };
+		29D89260190AA65E008FBD5F /* trees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trees.h; sourceTree = "<group>"; };
+		29D89261190AA65E008FBD5F /* uncompr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = uncompr.c; sourceTree = "<group>"; };
+		29D89262190AA65E008FBD5F /* zconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zconf.h; sourceTree = "<group>"; };
+		29D89263190AA65E008FBD5F /* zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zlib.h; sourceTree = "<group>"; };
+		29D89264190AA65E008FBD5F /* zutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zutil.c; sourceTree = "<group>"; };
+		29D89265190AA65E008FBD5F /* zutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zutil.h; sourceTree = "<group>"; };
+		29D89276190AAB42008FBD5F /* NKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKViewController.h; sourceTree = "<group>"; };
+		29D89277190AAB42008FBD5F /* NKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKViewController.m; sourceTree = "<group>"; };
+		29D89279190AAD28008FBD5F /* SyncScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncScene.h; sourceTree = "<group>"; };
+		29D8927A190AAD28008FBD5F /* SyncScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncScene.m; sourceTree = "<group>"; };
 		3B2361FB19001E8800056AE2 /* vsscreenbaked_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vsscreenbaked_01.png; sourceTree = "<group>"; };
 		3B2361FD190020E500056AE2 /* MenuStartVS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuStartVS.h; sourceTree = "<group>"; };
 		3B2361FE190020FA00056AE2 /* MenuStartVS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuStartVS.m; sourceTree = "<group>"; };
@@ -534,7 +587,7 @@
 		61D6E79318FDB5B70017A389 /* Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Manager.h; sourceTree = "<group>"; };
 		61D6E79418FDB5B70017A389 /* Manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Manager.m; sourceTree = "<group>"; };
 		61D6E79818FDB5B70017A389 /* MenuPlayerProfileScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuPlayerProfileScene.h; sourceTree = "<group>"; };
-		61D6E79918FDB5B70017A389 /* MenuPlayerProfileScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MenuPlayerProfileScene.mm; sourceTree = "<group>"; };
+		61D6E79918FDB5B70017A389 /* MenuPlayerProfileScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuPlayerProfileScene.m; sourceTree = "<group>"; };
 		61D6E79A18FDB5B70017A389 /* Menus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menus.h; sourceTree = "<group>"; };
 		61D6E79B18FDB5B70017A389 /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		61D6E79C18FDB5B70017A389 /* MenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuScene.m; sourceTree = "<group>"; };
@@ -551,8 +604,8 @@
 		61D6E7CA18FDB5B70017A389 /* ButtonSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonSprite.m; sourceTree = "<group>"; };
 		61D6E7CB18FDB5B70017A389 /* CardSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardSprite.h; sourceTree = "<group>"; };
 		61D6E7CC18FDB5B70017A389 /* CardSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardSprite.m; sourceTree = "<group>"; };
-		61D6E7CD18FDB5B70017A389 /* DevMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevMenu.h; sourceTree = "<group>"; };
-		61D6E7CE18FDB5B70017A389 /* DevMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevMenu.m; sourceTree = "<group>"; };
+		61D6E7CD18FDB5B70017A389 /* DevMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DevMenu.h; path = ../../VIEW/DevMenu.h; sourceTree = "<group>"; };
+		61D6E7CE18FDB5B70017A389 /* DevMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DevMenu.m; path = ../../VIEW/DevMenu.m; sourceTree = "<group>"; };
 		61D6E7CF18FDB5B70017A389 /* GameBoardNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameBoardNode.h; sourceTree = "<group>"; };
 		61D6E7D018FDB5B70017A389 /* GameBoardNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameBoardNode.m; sourceTree = "<group>"; };
 		61D6E7D118FDB5B70017A389 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
@@ -588,7 +641,63 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		61A2578118FDE998001B7F67 /* NKCore */ = {
+		29D89244190AA572008FBD5F /* APP */ = {
+			isa = PBXGroup;
+			children = (
+				61D6E6C318FDAF8C0017A389 /* View.h */,
+				61D6E6C418FDAF8C0017A389 /* View.m */,
+				61D6E45D18FDAE110017A389 /* NKAppDelegate.h */,
+				61D6E45E18FDAE110017A389 /* NKAppDelegate.m */,
+				61D6E46018FDAE110017A389 /* Main_iPhone.storyboard */,
+				61D6E46318FDAE110017A389 /* Main_iPad.storyboard */,
+			);
+			name = APP;
+			sourceTree = "<group>";
+		};
+		29D89248190AA65E008FBD5F /* utility */ = {
+			isa = PBXGroup;
+			children = (
+				29D89249190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.h */,
+				29D8924A190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m */,
+				29D8924B190AA65E008FBD5F /* ZLib */,
+			);
+			path = utility;
+			sourceTree = "<group>";
+		};
+		29D8924B190AA65E008FBD5F /* ZLib */ = {
+			isa = PBXGroup;
+			children = (
+				29D8924C190AA65E008FBD5F /* adler32.c */,
+				29D8924D190AA65E008FBD5F /* compress.c */,
+				29D8924E190AA65E008FBD5F /* crc32.c */,
+				29D8924F190AA65E008FBD5F /* crc32.h */,
+				29D89250190AA65E008FBD5F /* deflate.c */,
+				29D89251190AA65E008FBD5F /* deflate.h */,
+				29D89252190AA65E008FBD5F /* gzclose.c */,
+				29D89253190AA65E008FBD5F /* gzguts.h */,
+				29D89254190AA65E008FBD5F /* gzlib.c */,
+				29D89255190AA65E008FBD5F /* gzread.c */,
+				29D89256190AA65E008FBD5F /* gzwrite.c */,
+				29D89257190AA65E008FBD5F /* infback.c */,
+				29D89258190AA65E008FBD5F /* inffast.c */,
+				29D89259190AA65E008FBD5F /* inffast.h */,
+				29D8925A190AA65E008FBD5F /* inffixed.h */,
+				29D8925B190AA65E008FBD5F /* inflate.c */,
+				29D8925C190AA65E008FBD5F /* inflate.h */,
+				29D8925D190AA65E008FBD5F /* inftrees.c */,
+				29D8925E190AA65E008FBD5F /* inftrees.h */,
+				29D8925F190AA65E008FBD5F /* trees.c */,
+				29D89260190AA65E008FBD5F /* trees.h */,
+				29D89261190AA65E008FBD5F /* uncompr.c */,
+				29D89262190AA65E008FBD5F /* zconf.h */,
+				29D89263190AA65E008FBD5F /* zlib.h */,
+				29D89264190AA65E008FBD5F /* zutil.c */,
+				29D89265190AA65E008FBD5F /* zutil.h */,
+			);
+			path = ZLib;
+			sourceTree = "<group>";
+		};
+		61A2578118FDE998001B7F67 /* NodeKitten */ = {
 			isa = PBXGroup;
 			children = (
 				61A2578218FDE998001B7F67 /* Geometry */,
@@ -599,6 +708,7 @@
 				61A257B318FDE998001B7F67 /* Texture */,
 				61A257BE18FDE998001B7F67 /* UIKit */,
 			);
+			name = NodeKitten;
 			path = NKCore;
 			sourceTree = "<group>";
 		};
@@ -692,6 +802,8 @@
 			children = (
 				61A257BF18FDE998001B7F67 /* NKView.h */,
 				61A257C018FDE998001B7F67 /* NKView.m */,
+				29D89276190AAB42008FBD5F /* NKViewController.h */,
+				29D89277190AAB42008FBD5F /* NKViewController.m */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -729,18 +841,14 @@
 		61D6E45418FDAE110017A389 /* NKNikeField */ = {
 			isa = PBXGroup;
 			children = (
-				61A2578118FDE998001B7F67 /* NKCore */,
+				61A2578118FDE998001B7F67 /* NodeKitten */,
+				29D89244190AA572008FBD5F /* APP */,
+				61D6E79518FDB5B70017A389 /* MENU + META */,
 				61D6E6C818FDB5B70017A389 /* ASSETS */,
-				61D6E78118FDB5B70017A389 /* MODEL */,
-				61D6E7A418FDB5B70017A389 /* utility */,
-				61D6E7C218FDB5B70017A389 /* VIEW */,
-				61D6E6C318FDAF8C0017A389 /* View.h */,
-				61D6E6C418FDAF8C0017A389 /* View.m */,
-				61D6E45D18FDAE110017A389 /* NKAppDelegate.h */,
-				61D6E45E18FDAE110017A389 /* NKAppDelegate.m */,
-				61D6E46018FDAE110017A389 /* Main_iPhone.storyboard */,
-				61D6E46318FDAE110017A389 /* Main_iPad.storyboard */,
+				61D6E78118FDB5B70017A389 /* FIELD MODEL */,
+				61D6E7C218FDB5B70017A389 /* FIELD SCENE */,
 				61D6E46918FDAE120017A389 /* Images.xcassets */,
+				29D89248190AA65E008FBD5F /* utility */,
 				61D6E45518FDAE110017A389 /* Supporting Files */,
 			);
 			path = NKNikeField;
@@ -1066,7 +1174,7 @@
 			path = V2_PLAYER;
 			sourceTree = "<group>";
 		};
-		61D6E78118FDB5B70017A389 /* MODEL */ = {
+		61D6E78118FDB5B70017A389 /* FIELD MODEL */ = {
 			isa = PBXGroup;
 			children = (
 				61D6E78218FDB5B70017A389 /* AStar.h */,
@@ -1085,36 +1193,36 @@
 				61D6E78F18FDB5B70017A389 /* GlobalTypes.h */,
 				61D6E79318FDB5B70017A389 /* Manager.h */,
 				61D6E79418FDB5B70017A389 /* Manager.m */,
-				61D6E79518FDB5B70017A389 /* menus */,
 				61D6E79B18FDB5B70017A389 /* MenuScene.h */,
 				61D6E79C18FDB5B70017A389 /* MenuScene.m */,
 				61D6E79D18FDB5B70017A389 /* ModelHeaders.h */,
 				61D6E7A218FDB5B70017A389 /* Player.h */,
 				61D6E7A318FDB5B70017A389 /* Player.m */,
 			);
+			name = "FIELD MODEL";
 			path = MODEL;
 			sourceTree = "<group>";
 		};
-		61D6E79518FDB5B70017A389 /* menus */ = {
+		61D6E79518FDB5B70017A389 /* MENU + META */ = {
 			isa = PBXGroup;
 			children = (
+				29D89245190AA5CB008FBD5F /* GameStatsViewController.h */,
+				29D89246190AA5CB008FBD5F /* GameStatsViewController.m */,
 				3B2361FD190020E500056AE2 /* MenuStartVS.h */,
 				3B2361FE190020FA00056AE2 /* MenuStartVS.m */,
 				61D6E79818FDB5B70017A389 /* MenuPlayerProfileScene.h */,
-				61D6E79918FDB5B70017A389 /* MenuPlayerProfileScene.mm */,
+				61D6E79918FDB5B70017A389 /* MenuPlayerProfileScene.m */,
 				61D6E79A18FDB5B70017A389 /* Menus.h */,
+				61D6E7CD18FDB5B70017A389 /* DevMenu.h */,
+				61D6E7CE18FDB5B70017A389 /* DevMenu.m */,
+				29D89279190AAD28008FBD5F /* SyncScene.h */,
+				29D8927A190AAD28008FBD5F /* SyncScene.m */,
 			);
-			path = menus;
+			name = "MENU + META";
+			path = MODEL/menus;
 			sourceTree = "<group>";
 		};
-		61D6E7A418FDB5B70017A389 /* utility */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = utility;
-			sourceTree = "<group>";
-		};
-		61D6E7C218FDB5B70017A389 /* VIEW */ = {
+		61D6E7C218FDB5B70017A389 /* FIELD SCENE */ = {
 			isa = PBXGroup;
 			children = (
 				61D6E7C318FDB5B70017A389 /* AlertSprite.h */,
@@ -1127,8 +1235,6 @@
 				61D6E7CA18FDB5B70017A389 /* ButtonSprite.m */,
 				61D6E7CB18FDB5B70017A389 /* CardSprite.h */,
 				61D6E7CC18FDB5B70017A389 /* CardSprite.m */,
-				61D6E7CD18FDB5B70017A389 /* DevMenu.h */,
-				61D6E7CE18FDB5B70017A389 /* DevMenu.m */,
 				61D6E7CF18FDB5B70017A389 /* GameBoardNode.h */,
 				61D6E7D018FDB5B70017A389 /* GameBoardNode.m */,
 				61D6E7D118FDB5B70017A389 /* GameScene.h */,
@@ -1141,6 +1247,7 @@
 				6198A357190068660083EA5D /* UXTopBar.h */,
 				6198A358190068660083EA5D /* UXTopBar.m */,
 			);
+			name = "FIELD SCENE";
 			path = VIEW;
 			sourceTree = "<group>";
 		};
@@ -1421,20 +1528,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				61D6E88918FDB5B70017A389 /* GameEvent.m in Sources */,
+				29D8926E190AA65E008FBD5F /* gzwrite.c in Sources */,
 				61D6E45B18FDAE110017A389 /* main.m in Sources */,
+				29D8926D190AA65E008FBD5F /* gzread.c in Sources */,
 				61A257D318FDE998001B7F67 /* NKGaussianBlur.m in Sources */,
 				61A257CB18FDE998001B7F67 /* NKNodeAnimationHandler.m in Sources */,
+				29D89268190AA65E008FBD5F /* compress.c in Sources */,
+				29D89269190AA65E008FBD5F /* crc32.c in Sources */,
+				29D8926C190AA65E008FBD5F /* gzlib.c in Sources */,
+				29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */,
+				29D8926A190AA65E008FBD5F /* deflate.c in Sources */,
 				61A257C218FDE998001B7F67 /* NKMesh.m in Sources */,
 				61A257C718FDE998001B7F67 /* NKEmitterNode.m in Sources */,
 				61D6E88F18FDB5B70017A389 /* MenuScene.m in Sources */,
 				61D6E8A618FDB5B70017A389 /* ButtonSprite.m in Sources */,
-				61D6E88E18FDB5B70017A389 /* MenuPlayerProfileScene.mm in Sources */,
+				61D6E88E18FDB5B70017A389 /* MenuPlayerProfileScene.m in Sources */,
 				61D6E88C18FDB5B70017A389 /* Manager.m in Sources */,
 				61A257D018FDE998001B7F67 /* NKSpriteNode.m in Sources */,
+				29D89278190AAB42008FBD5F /* NKViewController.m in Sources */,
 				61D6E8AA18FDB5B70017A389 /* GameScene.m in Sources */,
+				29D89274190AA65E008FBD5F /* uncompr.c in Sources */,
 				61A257CA18FDE998001B7F67 /* NKNode.m in Sources */,
+				29D89272190AA65E008FBD5F /* inftrees.c in Sources */,
 				61A257DB18FDE998001B7F67 /* NKTextureManager.m in Sources */,
 				61A257DD18FDE998001B7F67 /* NKView.m in Sources */,
+				29D8927B190AAD28008FBD5F /* SyncScene.m in Sources */,
 				61D6E8AD18FDB5B70017A389 /* UXWindow.m in Sources */,
 				61A257C918FDE998001B7F67 /* NKMeshNode.m in Sources */,
 				61A257C818FDE998001B7F67 /* NKLabelNode.m in Sources */,
@@ -1445,6 +1563,8 @@
 				61D6E8A918FDB5B70017A389 /* GameBoardNode.m in Sources */,
 				61A257CD18FDE998001B7F67 /* NKSceneNode.m in Sources */,
 				61D6E88418FDB5B70017A389 /* AStar.m in Sources */,
+				29D89273190AA65E008FBD5F /* trees.c in Sources */,
+				29D8926F190AA65E008FBD5F /* infback.c in Sources */,
 				61A257D218FDE998001B7F67 /* NKDrawDepthShader.m in Sources */,
 				61A257D918FDE998001B7F67 /* NKFbo.m in Sources */,
 				61D6E88818FDB5B70017A389 /* Game.m in Sources */,
@@ -1456,6 +1576,7 @@
 				61D6E8A818FDB5B70017A389 /* DevMenu.m in Sources */,
 				61D6E89218FDB5B70017A389 /* Player.m in Sources */,
 				61A257DA18FDE998001B7F67 /* NKTexture.m in Sources */,
+				29D89266190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m in Sources */,
 				61D6E88718FDB5B70017A389 /* Deck.m in Sources */,
 				61A257D518FDE998001B7F67 /* NKZBlur.m in Sources */,
 				61A257C118FDE998001B7F67 /* NKMaterial.m in Sources */,
@@ -1464,11 +1585,16 @@
 				61A257C618FDE998001B7F67 /* NKCoreTextNode.m in Sources */,
 				61D6E6C618FDAF8C0017A389 /* View.m in Sources */,
 				61A257D118FDE998001B7F67 /* NKBlendShader.m in Sources */,
+				29D89270190AA65E008FBD5F /* inffast.c in Sources */,
+				29D8926B190AA65E008FBD5F /* gzclose.c in Sources */,
 				61A257CF18FDE998001B7F67 /* NKShaderNode.m in Sources */,
+				29D89267190AA65E008FBD5F /* adler32.c in Sources */,
 				61A257C518FDE998001B7F67 /* NKCamera.m in Sources */,
 				61A257CE18FDE998001B7F67 /* NKScrollNode.m in Sources */,
 				3B2361FF190020FA00056AE2 /* MenuStartVS.m in Sources */,
 				61A257C418FDE998001B7F67 /* NKVectorTypes.m in Sources */,
+				29D89275190AA65E008FBD5F /* zutil.c in Sources */,
+				29D89271190AA65E008FBD5F /* inflate.c in Sources */,
 				61D6E8A318FDB5B70017A389 /* AlertSprite.m in Sources */,
 				61D6E88618FDB5B70017A389 /* Card.m in Sources */,
 			);

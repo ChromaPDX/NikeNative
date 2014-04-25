@@ -13,6 +13,7 @@
 @interface UXTopBar : NKSpriteNode {
     CGSize cardSize;
     NKLabelNode *fuelPoints;
+    NKLabelNode *fuelLabel;
 }
 
 @property (nonatomic, weak) GameScene *delegate;

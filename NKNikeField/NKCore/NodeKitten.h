@@ -67,6 +67,7 @@
 
 // UIKIT EXTENSIONS
 
+#import "NKViewController.h"
 #import "NKView.h"
 
 
