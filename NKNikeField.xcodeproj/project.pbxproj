@@ -28,6 +28,28 @@
 		29D89275190AA65E008FBD5F /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D89264190AA65E008FBD5F /* zutil.c */; };
 		29D89278190AAB42008FBD5F /* NKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D89277190AAB42008FBD5F /* NKViewController.m */; };
 		29D8927B190AAD28008FBD5F /* SyncScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D8927A190AAD28008FBD5F /* SyncScene.m */; };
+		29D89291190AC3B0008FBD5F /* diagonals.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D8927D190AC3B0008FBD5F /* diagonals.png */; };
+		29D89292190AC3B0008FBD5F /* diagonals@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D8927E190AC3B0008FBD5F /* diagonals@2x.png */; };
+		29D89293190AC3B0008FBD5F /* GraphScreens.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D89280190AC3B0008FBD5F /* GraphScreens.m */; };
+		29D89294190AC3B0008FBD5F /* HEADER_WEB.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D89281190AC3B0008FBD5F /* HEADER_WEB.png */; };
+		29D89295190AC3B0008FBD5F /* libNike.1.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D89282190AC3B0008FBD5F /* libNike.1.1.a */; };
+		29D89296190AC3B0008FBD5F /* LineGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D89284190AC3B0008FBD5F /* LineGraph.m */; };
+		29D89297190AC3B0008FBD5F /* nike.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 29D89286190AC3B0008FBD5F /* nike.sqlite */; };
+		29D89298190AC3B0008FBD5F /* NikeConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D89288190AC3B0008FBD5F /* NikeConnect.m */; };
+		29D89299190AC3B0008FBD5F /* NikeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D8928B190AC3B0008FBD5F /* NikeViewController.m */; };
+		29D892A8190AC559008FBD5F /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D8929E190AC559008FBD5F /* FacebookSDK.framework */; };
+		29D892A9190AC559008FBD5F /* PAPCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892A0190AC559008FBD5F /* PAPCache.m */; };
+		29D892AA190AC559008FBD5F /* PAPConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892A2190AC559008FBD5F /* PAPConstants.m */; };
+		29D892AB190AC559008FBD5F /* PAPUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892A4190AC559008FBD5F /* PAPUtility.m */; };
+		29D892AC190AC559008FBD5F /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D892A5190AC559008FBD5F /* Parse.framework */; };
+		29D892AD190AC559008FBD5F /* ParseController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892A7190AC559008FBD5F /* ParseController.m */; };
+		29D892B0190AC625008FBD5F /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892AF190AC625008FBD5F /* Reachability.m */; };
+		29D892B3190AC679008FBD5F /* PAPLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892B2190AC679008FBD5F /* PAPLogInViewController.m */; };
+		29D892BC190AC6C1008FBD5F /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892B5190AC6C1008FBD5F /* UIImage+Alpha.m */; };
+		29D892BD190AC6C1008FBD5F /* UIImage+AlphaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892B7190AC6C1008FBD5F /* UIImage+AlphaAdditions.m */; };
+		29D892BE190AC6C1008FBD5F /* UIImage+ResizeAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892B9190AC6C1008FBD5F /* UIImage+ResizeAdditions.m */; };
+		29D892BF190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892BB190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.m */; };
+		29D892C1190AC707008FBD5F /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D892C0190AC707008FBD5F /* libsqlite3.0.dylib */; };
 		3B2361FC19001E8800056AE2 /* vsscreenbaked_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B2361FB19001E8800056AE2 /* vsscreenbaked_01.png */; };
 		3B2361FF190020FA00056AE2 /* MenuStartVS.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2361FE190020FA00056AE2 /* MenuStartVS.m */; };
 		3B2362011900258600056AE2 /* screens_01_vspagenew.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B2362001900258600056AE2 /* screens_01_vspagenew.png */; };
@@ -67,7 +89,7 @@
 		61D6E45318FDAE110017A389 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D6E45218FDAE110017A389 /* UIKit.framework */; };
 		61D6E45918FDAE110017A389 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E45718FDAE110017A389 /* InfoPlist.strings */; };
 		61D6E45B18FDAE110017A389 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E45A18FDAE110017A389 /* main.m */; };
-		61D6E45F18FDAE110017A389 /* NKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E45E18FDAE110017A389 /* NKAppDelegate.m */; };
+		61D6E45F18FDAE110017A389 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E45E18FDAE110017A389 /* AppDelegate.m */; };
 		61D6E46218FDAE110017A389 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E46018FDAE110017A389 /* Main_iPhone.storyboard */; };
 		61D6E46518FDAE110017A389 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E46318FDAE110017A389 /* Main_iPad.storyboard */; };
 		61D6E46A18FDAE120017A389 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E46918FDAE120017A389 /* Images.xcassets */; };
@@ -316,6 +338,44 @@
 		29D89277190AAB42008FBD5F /* NKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKViewController.m; sourceTree = "<group>"; };
 		29D89279190AAD28008FBD5F /* SyncScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncScene.h; sourceTree = "<group>"; };
 		29D8927A190AAD28008FBD5F /* SyncScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncScene.m; sourceTree = "<group>"; };
+		29D8927D190AC3B0008FBD5F /* diagonals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diagonals.png; sourceTree = "<group>"; };
+		29D8927E190AC3B0008FBD5F /* diagonals@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "diagonals@2x.png"; sourceTree = "<group>"; };
+		29D8927F190AC3B0008FBD5F /* GraphScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphScreens.h; sourceTree = "<group>"; };
+		29D89280190AC3B0008FBD5F /* GraphScreens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphScreens.m; sourceTree = "<group>"; };
+		29D89281190AC3B0008FBD5F /* HEADER_WEB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HEADER_WEB.png; sourceTree = "<group>"; };
+		29D89282190AC3B0008FBD5F /* libNike.1.1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libNike.1.1.a; sourceTree = "<group>"; };
+		29D89283190AC3B0008FBD5F /* LineGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineGraph.h; sourceTree = "<group>"; };
+		29D89284190AC3B0008FBD5F /* LineGraph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineGraph.m; sourceTree = "<group>"; };
+		29D89285190AC3B0008FBD5F /* Nike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nike.h; sourceTree = "<group>"; };
+		29D89286190AC3B0008FBD5F /* nike.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = nike.sqlite; sourceTree = "<group>"; };
+		29D89287190AC3B0008FBD5F /* NikeConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NikeConnect.h; sourceTree = "<group>"; };
+		29D89288190AC3B0008FBD5F /* NikeConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NikeConnect.m; sourceTree = "<group>"; };
+		29D89289190AC3B0008FBD5F /* NIKECredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKECredential.h; sourceTree = "<group>"; };
+		29D8928A190AC3B0008FBD5F /* NikeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NikeViewController.h; sourceTree = "<group>"; };
+		29D8928B190AC3B0008FBD5F /* NikeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NikeViewController.m; sourceTree = "<group>"; };
+		29D8929E190AC559008FBD5F /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		29D8929F190AC559008FBD5F /* PAPCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAPCache.h; sourceTree = "<group>"; };
+		29D892A0190AC559008FBD5F /* PAPCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAPCache.m; sourceTree = "<group>"; };
+		29D892A1190AC559008FBD5F /* PAPConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAPConstants.h; sourceTree = "<group>"; };
+		29D892A2190AC559008FBD5F /* PAPConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAPConstants.m; sourceTree = "<group>"; };
+		29D892A3190AC559008FBD5F /* PAPUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAPUtility.h; sourceTree = "<group>"; };
+		29D892A4190AC559008FBD5F /* PAPUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAPUtility.m; sourceTree = "<group>"; };
+		29D892A5190AC559008FBD5F /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		29D892A6190AC559008FBD5F /* ParseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParseController.h; sourceTree = "<group>"; };
+		29D892A7190AC559008FBD5F /* ParseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParseController.m; sourceTree = "<group>"; };
+		29D892AE190AC625008FBD5F /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		29D892AF190AC625008FBD5F /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		29D892B1190AC679008FBD5F /* PAPLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAPLogInViewController.h; sourceTree = "<group>"; };
+		29D892B2190AC679008FBD5F /* PAPLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAPLogInViewController.m; sourceTree = "<group>"; };
+		29D892B4190AC6C1008FBD5F /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
+		29D892B5190AC6C1008FBD5F /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
+		29D892B6190AC6C1008FBD5F /* UIImage+AlphaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AlphaAdditions.h"; sourceTree = "<group>"; };
+		29D892B7190AC6C1008FBD5F /* UIImage+AlphaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AlphaAdditions.m"; sourceTree = "<group>"; };
+		29D892B8190AC6C1008FBD5F /* UIImage+ResizeAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ResizeAdditions.h"; sourceTree = "<group>"; };
+		29D892B9190AC6C1008FBD5F /* UIImage+ResizeAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ResizeAdditions.m"; sourceTree = "<group>"; };
+		29D892BA190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCornerAdditions.h"; sourceTree = "<group>"; };
+		29D892BB190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCornerAdditions.m"; sourceTree = "<group>"; };
+		29D892C0190AC707008FBD5F /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		3B2361FB19001E8800056AE2 /* vsscreenbaked_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vsscreenbaked_01.png; sourceTree = "<group>"; };
 		3B2361FD190020E500056AE2 /* MenuStartVS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuStartVS.h; sourceTree = "<group>"; };
 		3B2361FE190020FA00056AE2 /* MenuStartVS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuStartVS.m; sourceTree = "<group>"; };
@@ -389,8 +449,8 @@
 		61D6E45818FDAE110017A389 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		61D6E45A18FDAE110017A389 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		61D6E45C18FDAE110017A389 /* NKNikeField-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NKNikeField-Prefix.pch"; sourceTree = "<group>"; };
-		61D6E45D18FDAE110017A389 /* NKAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NKAppDelegate.h; sourceTree = "<group>"; };
-		61D6E45E18FDAE110017A389 /* NKAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NKAppDelegate.m; sourceTree = "<group>"; };
+		61D6E45D18FDAE110017A389 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		61D6E45E18FDAE110017A389 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		61D6E46118FDAE110017A389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		61D6E46418FDAE110017A389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		61D6E46918FDAE120017A389 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -622,8 +682,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29D892C1190AC707008FBD5F /* libsqlite3.0.dylib in Frameworks */,
+				29D89295190AC3B0008FBD5F /* libNike.1.1.a in Frameworks */,
+				29D892A8190AC559008FBD5F /* FacebookSDK.framework in Frameworks */,
 				61D6E45118FDAE110017A389 /* CoreGraphics.framework in Frameworks */,
 				61D6E45318FDAE110017A389 /* UIKit.framework in Frameworks */,
+				29D892AC190AC559008FBD5F /* Parse.framework in Frameworks */,
 				61D6E44F18FDAE110017A389 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -646,8 +710,8 @@
 			children = (
 				61D6E6C318FDAF8C0017A389 /* View.h */,
 				61D6E6C418FDAF8C0017A389 /* View.m */,
-				61D6E45D18FDAE110017A389 /* NKAppDelegate.h */,
-				61D6E45E18FDAE110017A389 /* NKAppDelegate.m */,
+				61D6E45D18FDAE110017A389 /* AppDelegate.h */,
+				61D6E45E18FDAE110017A389 /* AppDelegate.m */,
 				61D6E46018FDAE110017A389 /* Main_iPhone.storyboard */,
 				61D6E46318FDAE110017A389 /* Main_iPad.storyboard */,
 			);
@@ -657,6 +721,14 @@
 		29D89248190AA65E008FBD5F /* utility */ = {
 			isa = PBXGroup;
 			children = (
+				29D892B4190AC6C1008FBD5F /* UIImage+Alpha.h */,
+				29D892B5190AC6C1008FBD5F /* UIImage+Alpha.m */,
+				29D892B6190AC6C1008FBD5F /* UIImage+AlphaAdditions.h */,
+				29D892B7190AC6C1008FBD5F /* UIImage+AlphaAdditions.m */,
+				29D892B8190AC6C1008FBD5F /* UIImage+ResizeAdditions.h */,
+				29D892B9190AC6C1008FBD5F /* UIImage+ResizeAdditions.m */,
+				29D892BA190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.h */,
+				29D892BB190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.m */,
 				29D89249190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.h */,
 				29D8924A190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m */,
 				29D8924B190AA65E008FBD5F /* ZLib */,
@@ -695,6 +767,49 @@
 				29D89265190AA65E008FBD5F /* zutil.h */,
 			);
 			path = ZLib;
+			sourceTree = "<group>";
+		};
+		29D8927C190AC3B0008FBD5F /* NIKE */ = {
+			isa = PBXGroup;
+			children = (
+				29D8927D190AC3B0008FBD5F /* diagonals.png */,
+				29D8927E190AC3B0008FBD5F /* diagonals@2x.png */,
+				29D8927F190AC3B0008FBD5F /* GraphScreens.h */,
+				29D89280190AC3B0008FBD5F /* GraphScreens.m */,
+				29D89281190AC3B0008FBD5F /* HEADER_WEB.png */,
+				29D89282190AC3B0008FBD5F /* libNike.1.1.a */,
+				29D89283190AC3B0008FBD5F /* LineGraph.h */,
+				29D89284190AC3B0008FBD5F /* LineGraph.m */,
+				29D89285190AC3B0008FBD5F /* Nike.h */,
+				29D89286190AC3B0008FBD5F /* nike.sqlite */,
+				29D89287190AC3B0008FBD5F /* NikeConnect.h */,
+				29D89288190AC3B0008FBD5F /* NikeConnect.m */,
+				29D89289190AC3B0008FBD5F /* NIKECredential.h */,
+				29D8928A190AC3B0008FBD5F /* NikeViewController.h */,
+				29D8928B190AC3B0008FBD5F /* NikeViewController.m */,
+			);
+			path = NIKE;
+			sourceTree = "<group>";
+		};
+		29D8929D190AC559008FBD5F /* PARSE+FB */ = {
+			isa = PBXGroup;
+			children = (
+				29D892B1190AC679008FBD5F /* PAPLogInViewController.h */,
+				29D892B2190AC679008FBD5F /* PAPLogInViewController.m */,
+				29D892AE190AC625008FBD5F /* Reachability.h */,
+				29D892AF190AC625008FBD5F /* Reachability.m */,
+				29D8929E190AC559008FBD5F /* FacebookSDK.framework */,
+				29D8929F190AC559008FBD5F /* PAPCache.h */,
+				29D892A0190AC559008FBD5F /* PAPCache.m */,
+				29D892A1190AC559008FBD5F /* PAPConstants.h */,
+				29D892A2190AC559008FBD5F /* PAPConstants.m */,
+				29D892A3190AC559008FBD5F /* PAPUtility.h */,
+				29D892A4190AC559008FBD5F /* PAPUtility.m */,
+				29D892A5190AC559008FBD5F /* Parse.framework */,
+				29D892A6190AC559008FBD5F /* ParseController.h */,
+				29D892A7190AC559008FBD5F /* ParseController.m */,
+			);
+			path = "PARSE+FB";
 			sourceTree = "<group>";
 		};
 		61A2578118FDE998001B7F67 /* NodeKitten */ = {
@@ -830,6 +945,7 @@
 		61D6E44D18FDAE110017A389 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				29D892C0190AC707008FBD5F /* libsqlite3.0.dylib */,
 				61D6E44E18FDAE110017A389 /* Foundation.framework */,
 				61D6E45018FDAE110017A389 /* CoreGraphics.framework */,
 				61D6E45218FDAE110017A389 /* UIKit.framework */,
@@ -848,6 +964,8 @@
 				61D6E78118FDB5B70017A389 /* FIELD MODEL */,
 				61D6E7C218FDB5B70017A389 /* FIELD SCENE */,
 				61D6E46918FDAE120017A389 /* Images.xcassets */,
+				29D8929D190AC559008FBD5F /* PARSE+FB */,
+				29D8927C190AC3B0008FBD5F /* NIKE */,
 				29D89248190AA65E008FBD5F /* utility */,
 				61D6E45518FDAE110017A389 /* Supporting Files */,
 			);
@@ -1342,6 +1460,7 @@
 				61D6E81D18FDB5B70017A389 /* Card_Captains_Band.png in Resources */,
 				61D6E7E418FDB5B70017A389 /* flag_Bolivia.1.png in Resources */,
 				61D6E7E518FDB5B70017A389 /* Flag_of_Chile.1.png in Resources */,
+				29D89291190AC3B0008FBD5F /* diagonals.png in Resources */,
 				61D6E83B18FDB5B70017A389 /* GAMELOGO.png in Resources */,
 				61D6E88018FDB5B70017A389 /* PlayerIndicator_PlayerSHADOW.png in Resources */,
 				61D6E84518FDB5B70017A389 /* LogIn_Noticebox_.png in Resources */,
@@ -1363,6 +1482,7 @@
 				61D6E86618FDB5B70017A389 /* Card_Icon_SpecM_L3.png in Resources */,
 				61D6E7F818FDB5B70017A389 /* tile_3bottom.png in Resources */,
 				61D6E87618FDB5B70017A389 /* CardType_HUD.png in Resources */,
+				29D89292190AC3B0008FBD5F /* diagonals@2x.png in Resources */,
 				61D6E82A18FDB5B70017A389 /* CardReplay.png in Resources */,
 				61D6E86418FDB5B70017A389 /* Card_Icon_SpecM_L1.png in Resources */,
 				61D6E7F418FDB5B70017A389 /* Special_L2a.1.png in Resources */,
@@ -1461,11 +1581,13 @@
 				61D6E7F118FDB5B70017A389 /* Move_L3a.1.png in Resources */,
 				61D6E7FE18FDB5B70017A389 /* tile_bottomleft.png in Resources */,
 				61D6E7FB18FDB5B70017A389 /* tile_3top.png in Resources */,
+				29D89294190AC3B0008FBD5F /* HEADER_WEB.png in Resources */,
 				61D6E84618FDB5B70017A389 /* LogIn_Noticebox_Cheat_.png in Resources */,
 				61D6E7E818FDB5B70017A389 /* Kick_L2a.1.png in Resources */,
 				61D6E85418FDB5B70017A389 /* Icons_Skill.png in Resources */,
 				61D6E84318FDB5B70017A389 /* LogIn_ButtonSyncOff.png in Resources */,
 				61D6E88218FDB5B70017A389 /* PlayerInField_ON.png in Resources */,
+				29D89297190AC3B0008FBD5F /* nike.sqlite in Resources */,
 				61D6E83718FDB5B70017A389 /* Halo_Marks_glow.png in Resources */,
 				61D6E85A18FDB5B70017A389 /* Card_Icon_Kick_L3.png in Resources */,
 				3B2362011900258600056AE2 /* screens_01_vspagenew.png in Resources */,
@@ -1529,6 +1651,9 @@
 			files = (
 				61D6E88918FDB5B70017A389 /* GameEvent.m in Sources */,
 				29D8926E190AA65E008FBD5F /* gzwrite.c in Sources */,
+				29D892BC190AC6C1008FBD5F /* UIImage+Alpha.m in Sources */,
+				29D892B0190AC625008FBD5F /* Reachability.m in Sources */,
+				29D89298190AC3B0008FBD5F /* NikeConnect.m in Sources */,
 				61D6E45B18FDAE110017A389 /* main.m in Sources */,
 				29D8926D190AA65E008FBD5F /* gzread.c in Sources */,
 				61A257D318FDE998001B7F67 /* NKGaussianBlur.m in Sources */,
@@ -1536,6 +1661,7 @@
 				29D89268190AA65E008FBD5F /* compress.c in Sources */,
 				29D89269190AA65E008FBD5F /* crc32.c in Sources */,
 				29D8926C190AA65E008FBD5F /* gzlib.c in Sources */,
+				29D892BD190AC6C1008FBD5F /* UIImage+AlphaAdditions.m in Sources */,
 				29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */,
 				29D8926A190AA65E008FBD5F /* deflate.c in Sources */,
 				61A257C218FDE998001B7F67 /* NKMesh.m in Sources */,
@@ -1543,7 +1669,10 @@
 				61D6E88F18FDB5B70017A389 /* MenuScene.m in Sources */,
 				61D6E8A618FDB5B70017A389 /* ButtonSprite.m in Sources */,
 				61D6E88E18FDB5B70017A389 /* MenuPlayerProfileScene.m in Sources */,
+				29D892AD190AC559008FBD5F /* ParseController.m in Sources */,
+				29D89296190AC3B0008FBD5F /* LineGraph.m in Sources */,
 				61D6E88C18FDB5B70017A389 /* Manager.m in Sources */,
+				29D89299190AC3B0008FBD5F /* NikeViewController.m in Sources */,
 				61A257D018FDE998001B7F67 /* NKSpriteNode.m in Sources */,
 				29D89278190AAB42008FBD5F /* NKViewController.m in Sources */,
 				61D6E8AA18FDB5B70017A389 /* GameScene.m in Sources */,
@@ -1563,16 +1692,19 @@
 				61D6E8A918FDB5B70017A389 /* GameBoardNode.m in Sources */,
 				61A257CD18FDE998001B7F67 /* NKSceneNode.m in Sources */,
 				61D6E88418FDB5B70017A389 /* AStar.m in Sources */,
+				29D892A9190AC559008FBD5F /* PAPCache.m in Sources */,
 				29D89273190AA65E008FBD5F /* trees.c in Sources */,
 				29D8926F190AA65E008FBD5F /* infback.c in Sources */,
+				29D892B3190AC679008FBD5F /* PAPLogInViewController.m in Sources */,
 				61A257D218FDE998001B7F67 /* NKDrawDepthShader.m in Sources */,
 				61A257D918FDE998001B7F67 /* NKFbo.m in Sources */,
 				61D6E88818FDB5B70017A389 /* Game.m in Sources */,
 				61D6E8A718FDB5B70017A389 /* CardSprite.m in Sources */,
 				61A257CC18FDE998001B7F67 /* NKPrimitiveNode.m in Sources */,
-				61D6E45F18FDAE110017A389 /* NKAppDelegate.m in Sources */,
+				61D6E45F18FDAE110017A389 /* AppDelegate.m in Sources */,
 				29B84B5918FF03F600469EE0 /* NKPickerNode.m in Sources */,
 				61A257D418FDE998001B7F67 /* NKGaussianZ.m in Sources */,
+				29D892BE190AC6C1008FBD5F /* UIImage+ResizeAdditions.m in Sources */,
 				61D6E8A818FDB5B70017A389 /* DevMenu.m in Sources */,
 				61D6E89218FDB5B70017A389 /* Player.m in Sources */,
 				61A257DA18FDE998001B7F67 /* NKTexture.m in Sources */,
@@ -1585,8 +1717,11 @@
 				61A257C618FDE998001B7F67 /* NKCoreTextNode.m in Sources */,
 				61D6E6C618FDAF8C0017A389 /* View.m in Sources */,
 				61A257D118FDE998001B7F67 /* NKBlendShader.m in Sources */,
+				29D892AB190AC559008FBD5F /* PAPUtility.m in Sources */,
 				29D89270190AA65E008FBD5F /* inffast.c in Sources */,
+				29D892AA190AC559008FBD5F /* PAPConstants.m in Sources */,
 				29D8926B190AA65E008FBD5F /* gzclose.c in Sources */,
+				29D892BF190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.m in Sources */,
 				61A257CF18FDE998001B7F67 /* NKShaderNode.m in Sources */,
 				29D89267190AA65E008FBD5F /* adler32.c in Sources */,
 				61A257C518FDE998001B7F67 /* NKCamera.m in Sources */,
@@ -1595,6 +1730,7 @@
 				61A257C418FDE998001B7F67 /* NKVectorTypes.m in Sources */,
 				29D89275190AA65E008FBD5F /* zutil.c in Sources */,
 				29D89271190AA65E008FBD5F /* inflate.c in Sources */,
+				29D89293190AC3B0008FBD5F /* GraphScreens.m in Sources */,
 				61D6E8A318FDB5B70017A389 /* AlertSprite.m in Sources */,
 				61D6E88618FDB5B70017A389 /* Card.m in Sources */,
 			);
@@ -1735,10 +1871,18 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/NKNikeField/PARSE+FB",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
 				INFOPLIST_FILE = "NKNikeField/NKNikeField-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/NKNikeField/NIKE",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1753,10 +1897,18 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/NKNikeField/PARSE+FB",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
 				INFOPLIST_FILE = "NKNikeField/NKNikeField-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/NKNikeField/NIKE",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

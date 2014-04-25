@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME}</string>
+	<string>Nike Cup</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
@@ -49,5 +49,41 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>Nike</key>
+	<dict>
+		<key>appId</key>
+		<string>com.chroma.jumpbots</string>
+		<key>clientId</key>
+		<string>32ae5928881388e72a37bbe06d3c3fc8</string>
+		<key>loginUrlScheme</key>
+		<string>nsfw</string>
+		<key>servicesUrl</key>
+		<string>https://api.nike.com</string>
+	</dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string></string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>nsfw</string>
+				<string>fb274442572706946</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>274442572706946</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>scoreboard.ttf</string>
+		<string>TradeGothicLTStd-BdCn20.otf</string>
+	</array>
 </dict>
 </plist>
