@@ -14,6 +14,7 @@
     self = [super initWithDeck:m.players];
     if (self) {
         _manager = m;
+        _faction = rand()%4 + 1;
     }
     return self;
 }

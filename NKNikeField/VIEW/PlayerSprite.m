@@ -28,15 +28,34 @@
 }
 
 -(NSString*)imageString {
+    
+    NSString *base = @"Faction_";
+    switch (_model.faction) {
+        case FactionKinforce:
+            base = [base stringByAppendingString:@"Kinforce_"];
+            break;
+            
+        case FactionGenmod:
+            base = [base stringByAppendingString:@"Genmod_"];
+            break;
+            
+        case FactionPsyke:
+            base = [base stringByAppendingString:@"Psyke_"];
+            break;
+            
+        case FactionSention:
+            base = [base stringByAppendingString:@"Sention_"];
+            break;
+            
+        default:
+            base = [base stringByAppendingString:@"Kinforce_"];
+            break;
+    }
+    
     if (_model.used) {
-        return @"PlayerInField_OFF";
-    }
-    else if (_model.ball) {
-        return @"PlayerInField_Possesion";
-    }
-    else {
-        return @"PlayerInField_Possesion";
-        //return @"PlayerInField_ON";
+        return [base stringByAppendingString:@"OFF"];
+    }else{
+        return [base stringByAppendingString:@"ON"];
     }
 }
 
