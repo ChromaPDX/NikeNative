@@ -1232,7 +1232,7 @@
     Card* moveCard = p.moveDeck.inHand[0];
 
     // CHECK FOR LOOSE BALL
-    if(![p.manager playerWithBall]){
+    if(![p.manager playerWithBall] && ![p.manager.opponent playerWithBall]){
         moveCard.aiActionType = MOVE_TO_BALL;
         [_gameScene AISelectedCard:moveCard];
         return;
@@ -1243,7 +1243,7 @@
         // OFFENSE
         if (p.ball) {
             // HAS BALL
-                      if ([p isInShootingRange ]){
+            if ([p isInShootingRange ]){
                 // CAN SHOOT ON GOAL
                 kickCard.aiActionType = SHOOT_ON_GOAL;
                 //[_gameScene AISelectedLocation:kickCard.deck.player.manager.goal];
@@ -1439,13 +1439,14 @@
             
             break;
         case CHALLENGE:
+            NSLog(@"*********************************************AI: CHALLENGE");
             [_gameScene AISelectedLocation: _ball.location];
             return;
             break;
         case MOVE_TO_CHALLENGE:
             NSLog(@"*********************************************AI: MOVE TO CHALLENGE");
             
-            pathToBall = [c validatedPath:[p pathToBall]];
+            pathToBall = [p pathToBall];
             if(pathToBall){
                 [_gameScene AISelectedLocation:pathToBall[[pathToBall count]-1]];
                 return;
@@ -1460,22 +1461,10 @@
             NSLog(@"*********************************************AI: MOVE TO BALL");
             //NSArray *pathToBall = [c.deck.player pathToClosestAdjacentBoardLocation:_ball.location];
             pathToBall = [p pathToOpenFieldClosestToLocation:_ball.location];
-            NSMutableArray *validatedPath = [[NSMutableArray alloc]init];
-            if(pathToBall){
-                validatedPath = [[c validatedPath:pathToBall] mutableCopy];
-            }
-            else{
-                
-            }
-            // NSLog(@"pathToBall count = %d", [pathToBall count]);
-            // NSLog(@"validatedPath count = %d", [validatedPath count]);
-            //  if([validatedPath objectAtIndex:[validatedPath count]-1] == _ball.location){
-            //     [validatedPath removeLastObject];
-            // }
-            //pathToBall = [c validatedPath:[c.deck.player pathToBall]];
-            if(validatedPath && [validatedPath count]){
+        
+            if(pathToBall && [pathToBall count]){
                 BoardLocation *newLoc;
-                newLoc = [pathToBall objectAtIndex:[validatedPath count]-1];
+                newLoc = [pathToBall objectAtIndex:[pathToBall count]-1];
                 [_gameScene AISelectedLocation:newLoc];
                 return;
             }

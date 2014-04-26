@@ -365,7 +365,7 @@
         //   [minTeammateDistances setObject:[NSNumber numberWithInt:distanceToTeammate] forKey:thisLoc];
         NSArray *pathToTarget = [self pathFromBoardLocationToBoardLocationNoObstacles:thisLoc toLocation:location];
         //  NSLog(@"disanceToTeammate = %d", distanceToTeammate);
-        if(pathToTarget && distanceToTeammate >= 2){
+        if(pathToTarget){ // && distanceToTeammate >= 2){
             //     NSLog(@"adding %@ to the list with pathToTarget.count = %d", thisLoc, [pathToTarget count]);
             [locationDistances setObject:[NSNumber numberWithInt:[pathToTarget count]] forKey:thisLoc];
         }
@@ -418,7 +418,7 @@
             }
         }
     }
-    NSArray *retPath = [moveCard validatedPath:[self pathToBoardLocation:retLoc]];
+    NSArray *retPath = [self pathToBoardLocation:retLoc];
     if(retPath){
         return retPath;
     }
@@ -449,7 +449,7 @@
         //   [minTeammateDistances setObject:[NSNumber numberWithInt:distanceToTeammate] forKey:thisLoc];
         NSArray *pathToTarget = [self pathFromBoardLocationToBoardLocationNoObstacles:thisLoc toLocation:location];
         //  NSLog(@"distanceToTeammate = %d", distanceToTeammate);
-        if(pathToTarget && distanceToTeammate >= 2){
+        if(pathToTarget && distanceToTeammate){ // >= 2){
             //     NSLog(@"adding %@ to the list with pathToTarget.count = %d", thisLoc, [pathToTarget count]);
             [locationDistances setObject:[NSNumber numberWithInt:[pathToTarget count]] forKey:thisLoc];
         }
@@ -457,24 +457,11 @@
             //   NSLog(@"removing %@ from location list, below threshold for min distance to teammates", thisLoc);
         }
         
-        // NSLog(@"pathToOpenFieldClosestLocation - thisSpace distance = %d", thisSpace);
-        // if(thisSpace > maxSpace){
-        //     retLoc = loc;
-        //     maxSpace = thisSpace;
-        // }
     }
     
     // NSArray *myPathToLoc = [self pathFromBoardLocationToBoardLocationNoObstacles:self.location toLocation:location];
     
     BoardLocation *retLoc = NULL;
-    
-    // remove any location that is under our threshold distance for distance to teammates
-    // for(BoardLocation *thisLoc in moveSet){
-    //     int distanceToTeammate = [minTeammateDistances objectForKey:thisLoc];
-    //     if(distanceToTeammate < 2){
-    //         [locationDistances removeObjectForKey:thisLoc];
-    //     }
-    // }
     
     int minDistance = 10000;
     NSArray *keys = [locationDistances allKeys];
@@ -488,7 +475,7 @@
         }
     }
     
-    NSArray *retPath = [moveCard validatedPath:[self pathToBoardLocation:retLoc]];
+    NSArray *retPath = [self pathToBoardLocation:retLoc];
     if(retPath){
         return retPath;
     }
@@ -588,11 +575,8 @@
     if(!pathToChallenge){
         return FALSE;
     }
-    if([moveCard validatedPath:pathToChallenge]){
-        return TRUE;
-    }
     else{
-        return FALSE;
+        return TRUE;
     }
 }
 
