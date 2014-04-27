@@ -69,7 +69,7 @@
             [shadow setAlpha:.2];
             shadow.name = @"shadow";
             [self addChild:shadow];
-             [shadow setPosition3d:V3Make(-self.size.width * .03, self.size.width*.03, 4)];
+             [shadow setPosition3d:V3Make(-self.size.width * .03, self.size.width*.03, -1)];
 
             cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:CGSizeMake(w, h)];
       
@@ -77,7 +77,7 @@
         
             [self addChild:cardImg];
            
-            [cardImg setZPosition:h*.36];
+            [cardImg setZPosition:h*.34];
             
             self.name = model.name;
             self.userInteractionEnabled = true;
@@ -117,8 +117,10 @@
 
 -(void)setHighlighted:(bool)highlighted {
     
+    [cardImg setTexture:[NKTexture textureWithImageNamed:[self imageString]]];
+    
     if (highlighted && !_highlighted) {
-        NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:CGSizeMake(w, h)];
+        NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:CGSizeMake(TILE_WIDTH, TILE_HEIGHT)];
         crosshairs.name = @"crosshairs";
         [self addChild:crosshairs];
         [crosshairs setZPosition:6];
@@ -126,6 +128,7 @@
     
     else if (!highlighted && _highlighted){
         [self removeChildNamed:@"crosshairs"];
+        
     }
     
     _highlighted = highlighted;

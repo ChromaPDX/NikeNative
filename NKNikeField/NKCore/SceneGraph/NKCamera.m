@@ -58,7 +58,7 @@
     glEnable(GL_DEPTH_TEST);
     
     glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, .1);
+    glAlphaFunc(GL_GREATER, .02);
     
     glEnable(GL_BLEND);
     

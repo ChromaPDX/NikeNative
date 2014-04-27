@@ -25,7 +25,8 @@
         self.shouldRasterize = false;
         useShader = false;
         self.userInteractionEnabled = true;
-        self.blendMode = NKBlendModeNone;
+        self.blendMode = -1;
+        self.cullFace = -1;
         
         _camera = [[NKCamera alloc]initWithScene:self];
 

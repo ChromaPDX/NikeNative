@@ -370,7 +370,10 @@
                 accessible = NULL;
                 break;
         }
+        
+        accessible = [accessible arrayByAddingObject:[self.deck.player.location copy]];
     }
+    
     else if (self.category == CardCategoryChallenge) {
         accessible = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:_range];
     }

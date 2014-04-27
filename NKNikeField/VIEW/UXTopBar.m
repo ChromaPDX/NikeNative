@@ -24,7 +24,7 @@
         self.userInteractionEnabled = true;
         
         cardSize.width = (1. / (6)) * w;
-        cardSize.height = (cardSize.width * (100. / 80.));
+        cardSize.height = (cardSize.width * (67. / 65.));
         
         fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"TradeGothicLTStd-BdCn20"];
         fuelLabel.fontSize = 36;

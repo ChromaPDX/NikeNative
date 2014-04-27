@@ -100,6 +100,11 @@ float PARTICLE_SCALE;
 
 -(void)setupGameBoard {
     
+    NKSpriteNode* bg = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"Background_Field"] size:CGSizeMake(w*2, h*2)];
+    [self addChild:bg];
+    [bg setZPosition:-1000];
+    
+    
     NSLog(@"setup gameBoard %f :%f",w,h);
 
     playerSprites = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
@@ -136,15 +141,24 @@ float PARTICLE_SCALE;
     
     //_boardScroll.userInteractionEnabled = false;
     
-    _gameBoardNode = [[GameBoardNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Background_Field"] color:Nil size:CGSizeMake(BOARD_WIDTH*TILE_WIDTH + (TILE_WIDTH*.7), BOARD_LENGTH*TILE_HEIGHT + (TILE_HEIGHT*.5))];
+    _gameBoardNode = [[GameBoardNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer01"] color:NKWHITE size:CGSizeMake(BOARD_WIDTH*TILE_WIDTH + (TILE_WIDTH*.7), BOARD_LENGTH*TILE_HEIGHT + (TILE_HEIGHT*.5))];
     
     [_pivot addChild:_gameBoardNode];
+    
+
     
     [_gameBoardNode setPosition3d:V3Make(0,h*.5,0)];
     
     _gameBoardNode.userInteractionEnabled = true;
     
     _gameBoardNode.name = @"Game Board";
+    
+    NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer02"] color:NKWHITE size:_gameBoardNode.size];
+    
+    [lines setBlendMode:NKBlendModeAdd];
+    
+    [_gameBoardNode addChild:lines];
+    [lines setPosition3d:V3Make(0,0,2)];
     
     for(int i = 0; i < BOARD_WIDTH; i++){
         for(int j = 0; j < BOARD_LENGTH; j++){
@@ -157,20 +171,18 @@ float PARTICLE_SCALE;
             [_gameBoardNode addChild:square];
             [_gameTiles setObject:square forKey:square.location];
             
-            [square setPosition3d:V3Make((i+.5)*TILE_WIDTH - (TILE_WIDTH*BOARD_WIDTH*.5), ((j+.5)*TILE_HEIGHT) - (TILE_HEIGHT*BOARD_LENGTH*.5),2) ];
+            [square setPosition3d:V3Make((i+.5)*TILE_WIDTH - (TILE_WIDTH*BOARD_WIDTH*.5), ((j+.5)*TILE_HEIGHT) - (TILE_HEIGHT*BOARD_LENGTH*.5),6) ];
         }
     }
     
-    NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer01"] color:nil size:_gameBoardNode.size];
+    NKNode* playerLayer = [[NKNode alloc]init];
+    playerLayer.name = @"playerLayer";
+    [_gameBoardNode addChild:playerLayer];
     
-    [_gameBoardNode addChild:lines];
-    [lines setPosition3d:V3Make(0,0,3)];
-    
-    NKSpriteNode *glow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer02"] color:nil size:_gameBoardNode.size];
-    
+    NKSpriteNode *glow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer03"] color:NKWHITE size:_gameBoardNode.size];
+    [glow setBlendMode:NKBlendModeAdd];
     [_gameBoardNode addChild:glow];
-   [glow setPosition3d:V3Make(0,0,6)];
-  
+    [glow setPosition3d:V3Make(0,0,4)];
     
     [_pivot runAction:[NKAction rotate3dToAngle:V3Make(-26, 0,0) duration:2.]];
     [_pivot runAction:[NKAction move3dTo:V3Make(0,-h*.25,0) duration:2.]];
@@ -478,7 +490,6 @@ float PARTICLE_SCALE;
         NKEmitterNode *enchant = [[NKEmitterNode alloc] init];
         
         [self.ballSprite addChild:enchant];
-        [enchant setZPosition:Z_INDEX_FX];
         [enchant setScale:.01];
         
         PlayerSprite* receiver = [playerSprites objectForKey:event.playerReceiving];
@@ -659,7 +670,6 @@ float PARTICLE_SCALE;
         
         [enchant setScale:2];
         [_gameBoardNode addChild:enchant];
-        [enchant setZPosition:Z_INDEX_FX];
         [enchant setPosition:[[_gameTiles objectForKey:event.location] position]];
         [enchant runAction:[NKAction fadeAlphaTo:.9 duration:CARD_ANIM_DUR] completion:^{
             
@@ -930,7 +940,7 @@ float PARTICLE_SCALE;
 
 -(void)addPlayerToBoardScene:(Player *)player animated:(BOOL)animated withCompletionBlock:(void (^)())block{
     
-    PlayerSprite *person = [[PlayerSprite alloc] initWithTexture: Nil color:nil size:CGSizeMake(TILE_WIDTH, TILE_HEIGHT)];
+    PlayerSprite *person = [[PlayerSprite alloc] initWithTexture: Nil color:nil size:CGSizeMake(TILE_WIDTH, TILE_WIDTH * (67./65.))];
     
     person.delegate = self;
     
@@ -940,7 +950,7 @@ float PARTICLE_SCALE;
     
     BoardTile* tile = [_gameTiles objectForKey:player.location];
     
-    [_gameBoardNode addChild:person];
+    [[_gameBoardNode childNodeWithName:@"playerLayer" ] addChild:person];
     
     person.userInteractionEnabled = true;
     
@@ -976,7 +986,6 @@ float PARTICLE_SCALE;
             
             [person addChild:enchant];
             
-            [enchant setZPosition:Z_INDEX_FX];
             [enchant setScale:PARTICLE_SCALE];
             
             [enchant runAction:[NKAction fadeAlphaTo:0.01 duration:CARD_ANIM_DUR*2] completion:^{
