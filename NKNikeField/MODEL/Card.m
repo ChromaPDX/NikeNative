@@ -19,6 +19,27 @@
     return self;
 }
 
+-(void)getRandomKickAttributes {
+    _kickCategory = rand()%3 + 1;
+    if(_kickCategory == CardKickCategoryStraight){
+        _level = 5;
+    }
+    if(_kickCategory == CardKickCategoryLob){
+        _level = 4;
+    }
+    else{
+        _level = 2;
+    }
+    _moveCategory = CardMoveCategoryNull;
+    
+}
+
+-(void)getRandomMoveAttributes {
+    _level = 2;
+    _moveCategory = rand()%4 + 1;
+    _kickCategory = CardKickCategoryNull;
+}
+
 -(id)initWithDeck:(Deck*)deck {
     self = [super init];
     if(self){
@@ -29,25 +50,10 @@
         _aiActionType = NONE;
         switch (_deck.category) {
             case CardCategoryMove:
-                _level = 2;
-                _moveCategory = rand()%4 + 1;
-                _kickCategory = CardKickCategoryNull;
+                [self getRandomMoveAttributes];
                 break;
             case CardCategoryKick:
-                _kickCategory = rand()%3 + 1;
-                if(_kickCategory == CardKickCategoryStraight){
-                    _level = 5;
-                }
-                if(_kickCategory == CardKickCategoryLob){
-                    _level = 4;
-                }
-                else{
-                    _level = 2;
-                }
-                _moveCategory = CardMoveCategoryNull;
-#ifdef CHEAT
-                _level = 10;
-#endif
+                [self getRandomKickAttributes];
                 break;
             
             case CardCategoryChallenge:
@@ -63,11 +69,11 @@
             switch (special) {
                 case 0:
                     self.specialCategory = CardCategoryMove;
-                            _level = rand()%2 + 1;
+                     [self getRandomMoveAttributes];
                     break;
                 case 1:
                     self.specialCategory = CardCategoryKick;
-                            _level = rand()%3 + 2;
+                     [self getRandomKickAttributes];
                     break;
                 case 2:
                     self.specialCategory = CardCategoryChallenge;

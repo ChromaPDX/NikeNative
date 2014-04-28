@@ -613,10 +613,10 @@ float PARTICLE_SCALE;
 
                         [card runAction:fall completion:^{
                             [card removeAllActions];
-                            [card runAction:[NKAction fadeAlphaTo:0 duration:FAST_ANIM_DUR]completion:^{
+                            [card runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]completion:^{
                                 [card removeFromParent];
-                                block();
                             }];
+                            block();
                         
                         }];
 
