@@ -193,11 +193,11 @@
            // node.userInteractionEnabled = false;
         }
         
-        [self runAction:[NKAction resizeToWidth:w height:h*8. duration:dur]];
+        [self runAction:[NKAction resizeToWidth:w height:h*7.5 duration:dur]];
         
         [big setPosition3d:V3Make(0, -h*2.5, 0)];
         [ph addChild:big];
-        [big runAction:[NKAction move3dTo:V3Make(0, h*2.5, 0) duration:dur]];
+        [big runAction:[NKAction move3dTo:V3Make(0, h*2.15, 0) duration:dur]];
         
         int cardNum = [ph.myCards indexOfObject:[self spriteForCard:card.model]];
         [big scrollToChild:cardNum  duration:FAST_ANIM_DUR];
@@ -217,11 +217,14 @@
     
     PlayerHand* ph =   [_playerHands objectForKey:_selectedCard.deck.player];
     
-    [ph.bigCards runAction:[NKAction move3dTo:V3Make(0, -h*5.5, 0) duration:dur] completion:^{
+    NKAction *fadeLower = [NKAction group:@[[NKAction fadeAlphaTo:0. duration:dur],
+                                            [NKAction move3dBy:V3Make(0, -h*.5, 0) duration:dur]]];
+    
+    [ph.bigCards runAction:fadeLower completion:^{
+         [ph.bigCards removeFromParent];
         ph.bigCards = nil;
-        [ph.bigCards removeFromParent];
     }];
-    [self runAction:[NKAction resizeToWidth:w height:h*.125 duration:dur]];
+    [self runAction:[NKAction resizeToWidth:w height:_delegate.size.height*.15 duration:dur]];
 }
 
 -(void)setSelectedCard:(Card *)selectedCard {
@@ -525,6 +528,7 @@
     int index = [cell.parent.children indexOfObject:cell];
     CardSprite* cs = _myCards[index];
     [_delegate setSelectedCard:cs.model];
+    [_delegate.delegate setSelectedCard:cs.model];
     
     [_delegate hideBigCards];
 }
