@@ -326,7 +326,7 @@
         cardSize.width = (1. / (p.cardSlots+2)) * w;
         cardSize.height = (cardSize.width * (100. / 70.));
         
-        _playerName = [[NKLabelNode alloc]initWithSize:CGSizeMake(cardSize.width*2., cardSize.height) FontNamed:@"Helvetica"];
+        _playerName = [[NKLabelNode alloc]initWithSize:CGSizeMake(cardSize.width*2., cardSize.height) FontNamed:@"Arial Black.ttf"];
         _playerName.fontSize = 20;
         _playerName.text = p.name;
         

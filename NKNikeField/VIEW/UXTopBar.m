@@ -26,15 +26,15 @@
         cardSize.width = (1. / (7)) * w;
         cardSize.height = (cardSize.width * (67. / 65.));
         
-        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial-Black"];
-        fuelLabel.fontSize = 36;
-        
-        [self addChild:fuelLabel];
-        
-        [fuelLabel setText:@"FUEL"];
-        [fuelLabel setPosition3d:V3Make(-w*.25, 0, 2)];
-
-        self.fuel = 1000;
+//        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
+//        fuelLabel.fontSize = 36;
+//        
+//        [self addChild:fuelLabel];
+//        
+//        [fuelLabel setText:@"FUEL"];
+//        [fuelLabel setPosition3d:V3Make(-w*.25, 0, 2)];
+//
+//        self.fuel = 1000;
     }
     
     return self;
@@ -50,7 +50,7 @@
         }];
     }
     
-    fuelPoints = [NKLabelNode labelNodeWithFontNamed:@"Arial-Black"];
+    fuelPoints = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
     fuelPoints.fontSize = 32;
     fuelPoints.fontColor = V2GREEN;
     [self fadeInChild:fuelPoints duration:1.];

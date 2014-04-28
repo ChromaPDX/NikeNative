@@ -81,9 +81,6 @@
 		<string>remote-notification</string>
 	</array>
 	<key>UIAppFonts</key>
-	<array>
-		<string>scoreboard.ttf</string>
-		<string>Arial-Black.otf</string>
-	</array>
+	<array/>
 </dict>
 </plist>

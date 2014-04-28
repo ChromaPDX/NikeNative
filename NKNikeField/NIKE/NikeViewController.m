@@ -54,7 +54,7 @@
     
     [_loginButton setBackgroundColor:V2GREEN];
     
-    [_loginButton.titleLabel setFont:[UIFont fontWithName:@"Arial-Black" size:20]];
+    [_loginButton.titleLabel setFont:[UIFont fontWithName:@"Arial Black.ttf" size:20]];
     [_loginButton.titleLabel setTextColor:[UIColor blackColor]];
     [_loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_loginButton addTarget:self action:@selector(logOutInPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -72,7 +72,7 @@
 //    
 //    [backButton setTitle:@"BACK" forState:UIControlStateNormal];
 //    
-//    [backButton.titleLabel setFont:[UIFont fontWithName:@"Arial-Black" size:20]];
+//    [backButton.titleLabel setFont:[UIFont fontWithName:@"Arial Black.ttf" size:20]];
 //    [backButton.titleLabel setTextColor:[UIColor blackColor]];
 //    [backButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 //    

@@ -39,11 +39,14 @@
         [self setSize:size];
         
         if (!fontName) {
-            _fontName = @"HelveticaNeue";
+            _fontName = @"Arial-BoldMT";
         }
         else{
-            _fontName = fontName;
+            //_fontName = fontName;
+            _fontName = @"Arial-BoldMT";
         }
+        
+        //NSLog(@"labelnode with fontnamed: %@", _fontName);
         
         _fontSize = size.width < size.height ? size.width/4. : size.height/4.;
         

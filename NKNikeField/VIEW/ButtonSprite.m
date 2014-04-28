@@ -31,7 +31,7 @@
     button.type = type;
     button.stateLabels = names;
     button.stateColors = colors;
-    button.label = [NKLabelNode labelNodeWithFontNamed:@"Arial-Black"];
+    button.label = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
     button.label.fontSize = 16;
     button.label.fontColor = [NKColor blackColor];
     button.state = ButtonStateOff;

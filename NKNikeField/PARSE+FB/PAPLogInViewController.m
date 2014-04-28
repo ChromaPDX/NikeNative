@@ -23,9 +23,9 @@
     }
     
     NSString *text = @"Sign in to start building your Nike Cup player";
-    CGSize textSize = [text sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:18.0f] constrainedToSize:CGSizeMake( 255.0f, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize textSize = [text sizeWithFont:[UIFont fontWithName:@"Arial Black.ttfNeue-Medium" size:18.0f] constrainedToSize:CGSizeMake( 255.0f, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake( ([UIScreen mainScreen].bounds.size.width - textSize.width)/2.0f, 160.0f, textSize.width, textSize.height)];
-    [textLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:18.0f]];
+    [textLabel setFont:[UIFont fontWithName:@"Arial Black.ttfNeue-Medium" size:18.0f]];
     [textLabel setLineBreakMode:UILineBreakModeWordWrap];
     [textLabel setNumberOfLines:0];
     [textLabel setText:text];

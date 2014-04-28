@@ -106,26 +106,26 @@ float PARTICLE_SCALE;
     
     
     NSLog(@"setup gameBoard %f :%f",w,h);
-
+    
     playerSprites = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
     _gameTiles = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
     
     _pivot = [[NKNode alloc]init];
-
+    
     
     _pivot.name = @"PIVOT";
     
     [self addChild:_pivot];
     [_pivot setPosition3d:(V3Make(0,-h*.5,0))];
-   
     
-    _uxWindow = [[UXWindow alloc] initWithTexture:[NKTexture textureWithImageNamed:@"bottom_bar"] color:NKWHITE size:CGSizeMake(w, h*.15)];
+    
+    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:NKBLACK size:CGSizeMake(w, h*.15)];
     [_uxWindow setPosition3d:V3Make(0,-h*.42,30)];
     _uxWindow.delegate = self;
     [self addChild:_uxWindow];
     [_uxWindow setAlpha:0];
     
-    _uxTopBar = [[UXTopBar alloc] initWithTexture:[NKTexture textureWithImageNamed:@"top_bar"] color:NKWHITE size:CGSizeMake(w, h*.125)];
+    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:NKBLACK size:CGSizeMake(w, h*.125)];
     [_uxTopBar setPosition3d:V3Make(0,h*.44,30)];
     _uxTopBar.delegate = self;
     [self addChild:_uxTopBar];
@@ -185,15 +185,15 @@ float PARTICLE_SCALE;
 }
 
 //-(void)startMiniGame {
-//    
+//
 //    _miniGameNode = [[MiniGameNode alloc] initWithSize:self.size];
-//    
+//
 //    [self addChild:_miniGameNode];
-//    
+//
 //    [_miniGameNode startMiniGame];
-//    
+//
 //    // [self loadShader:[[NKGaussianBlur alloc] initWithNode:self blurSize:4 numPasses:4]];
-//    
+//
 //}
 //
 //-(void)gameDidFinishWithWin {
@@ -273,14 +273,14 @@ float PARTICLE_SCALE;
         [_gameBoardNode runAction:[NKAction moveTo:CGPointMake(0, -p.y + h/3.) duration:1.]];
     }
     
-//    else {
-//        p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:[_game allPlayerLocations]]];
-//        if ((-p.y + h/4.) > _gameBoardNode.position.y+100 || (-p.y + h/4.) < _gameBoardNode.position.y-100) { // filter out subtle moves
-//            [_gameBoardNode removeAllActions];
-//            [_gameBoardNode runAction:[NKAction moveTo:CGPointMake(0, -p.y + h/4.) duration:1.]];
-//        }
-//    }
-
+    //    else {
+    //        p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:[_game allPlayerLocations]]];
+    //        if ((-p.y + h/4.) > _gameBoardNode.position.y+100 || (-p.y + h/4.) < _gameBoardNode.position.y-100) { // filter out subtle moves
+    //            [_gameBoardNode removeAllActions];
+    //            [_gameBoardNode runAction:[NKAction moveTo:CGPointMake(0, -p.y + h/4.) duration:1.]];
+    //        }
+    //    }
+    
 }
 
 -(void)playerSpriteDidSelectPlayer:(Player*)player {
@@ -297,7 +297,7 @@ float PARTICLE_SCALE;
 }
 
 -(void)setSelectedPlayer:(Player *)selectedPlayer {
-
+    
     if ([_game canUsePlayer:selectedPlayer]) {
         
         if (_selectedCard) {
@@ -340,7 +340,7 @@ float PARTICLE_SCALE;
     }
     
     [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{
-          [_game AIChooseCardForPlayer:selectedPlayer];
+        [_game AIChooseCardForPlayer:selectedPlayer];
     }];
     
     
@@ -449,7 +449,7 @@ float PARTICLE_SCALE;
     else if (event.type == kEventChallenge) {
         
         PlayerSprite* receiver = [playerSprites objectForKey:event.playerReceiving];
-
+        
         if (!event.playerReceiving) {
             NSLog(@"null receiver");
         }
@@ -457,28 +457,28 @@ float PARTICLE_SCALE;
         [player runAction:[NKAction moveTo:[[_gameTiles objectForKey:event.location] position] duration:MOVE_SPEED] completion:^{
             
             if (event.wasSuccessful) {
-                    [receiver stopPosession:^{
+                [receiver stopPosession:^{
                     [receiver runAction:[NKAction moveTo:[[_gameTiles objectForKey:event.startingLocation] position] duration:MOVE_SPEED]];
-
+                    
                     [player getReadyForPosession:^{
                         [player startPossession];
-                           block();
+                        block();
                     }];
                     
                 }];
                 
             }
-
+            
             else {
                 [player runAction:[NKAction moveTo:[[_gameTiles objectForKey:event.startingLocation] position] duration:MOVE_SPEED] completion:^{
-
+                    
                     block();
                 }];
-
+                
             }
             
         }];
-
+        
     }
     
     else if (event.type == kEventKickPass || event.type == kEventKickGoal) {
@@ -593,25 +593,35 @@ float PARTICLE_SCALE;
             
             if (card) {
                 
-                
                 [card removeAllActions];
                 
-                [card runAction:[NKAction move3dTo:V3Make(0,h*.5,300) duration:CARD_ANIM_DUR] completion:^{
-                  //  [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR*2] completion:^{
-                        
-                        NKAction *fall = [NKAction move3dByX:0 Y:h*.5 Z:-600 duration:CARD_ANIM_DUR];
-                        [card runAction:fall completion:^{
-                            block();
-                            [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR] completion:^{
-                                [_uxWindow fadeOutChild:card duration:FAST_ANIM_DUR];
-                            }];
-                        }];
-                        
-                  //  }];
+                V3t dest = [[_gameTiles objectForKey:event.location] getGlobalPosition];
+                
+                NKAction *grow = [NKAction group:@[
+                                                   [NKAction move3dTo:V3Make(dest.x, dest.y - _uxWindow.position.y, 0) duration:CARD_ANIM_DUR],
+                                                   [NKAction scaleTo:1.5 duration:CARD_ANIM_DUR]]];
+                
+                [card runAction:grow completion:^{
                     
+                    [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR] completion:^{
+                        
+                        NKAction *fall = [NKAction group:@[
+                                                           [NKAction move3dTo:V3Make(dest.x, dest.y - _uxWindow.position.y, dest.z) duration:CARD_ANIM_DUR],
+                                                           [NKAction rotate3dByAngle:V3Make(-45, 0, 0) duration:CARD_ANIM_DUR],
+                                                           [NKAction scaleTo:1. duration:CARD_ANIM_DUR],
+                                                           ]];
+
+                        [card runAction:fall completion:^{
+                            [card runAction:[NKAction fadeAlphaTo:0 duration:FAST_ANIM_DUR]completion:^{
+                                [card removeFromParent];
+                                block();
+                            }];
+                        
+                        }];
+
+                    }];
                     
                 }];
-                
             }
             
             else { // WERE USING AN AI CARD WITH NO GRAPHICS
@@ -791,10 +801,10 @@ float PARTICLE_SCALE;
 };
 
 -(void)finishSequenceWithCompletionBlock:(void (^)())block {
-//    NSLog(@"GameScene.m : finished actions, return camera to . . .");
-//    [self cameraShouldFollowSprite:Nil withCompletionBlock:^{
-//        block();
-//    }];
+    //    NSLog(@"GameScene.m : finished actions, return camera to . . .");
+    //    [self cameraShouldFollowSprite:Nil withCompletionBlock:^{
+    //        block();
+    //    }];
     block();
 }
 
@@ -815,36 +825,36 @@ float PARTICLE_SCALE;
 }
 
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block {
-
-        NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"Arial-Black"];
-        bigText.fontSize = 75;
-        bigText.fontColor = NKWHITE;
- 
-        [bigText loadAsyncText:theText completion:^{
-
-               [bigText setScale:1.5];
+    
+    NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"Arial Black.ttf"];
+    bigText.fontSize = 75;
+    bigText.fontColor = NKWHITE;
+    
+    [bigText loadAsyncText:theText completion:^{
+        
+        [bigText setScale:1.5];
+        
+        for (int i = 0; i<2; i++) {
+            NKLabelNode *bigText2 = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"Arial Black.ttf"];
+            bigText2.fontSize = 75;
+            bigText2.fontColor = NKWHITE;
+            bigText2.text = theText;
+            [bigText2 setOrientationEuler:V3Make(0,0,10 * (i*2 - 1))];
             
-            for (int i = 0; i<2; i++) {
-                NKLabelNode *bigText2 = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"Arial-Black"];
-                bigText2.fontSize = 75;
-                bigText2.fontColor = NKWHITE;
-                bigText2.text = theText;
-                [bigText2 setOrientationEuler:V3Make(0,0,10 * (i*2 - 1))];
-                
-                [bigText addChild:bigText2];
-                
-                  // [bigText2 setScale:2.];
-            }
+            [bigText addChild:bigText2];
             
-            [self fadeInChild:bigText duration:.2 withCompletion:^{
-                [bigText runAction:[NKAction rotateByAngle:20 duration:1.] completion:^{
-                    [self fadeOutChild:bigText duration:.2 withCompletion:^{
-                          block();
-                    }];
+            // [bigText2 setScale:2.];
+        }
+        
+        [self fadeInChild:bigText duration:.2 withCompletion:^{
+            [bigText runAction:[NKAction rotateByAngle:20 duration:1.] completion:^{
+                [self fadeOutChild:bigText duration:.2 withCompletion:^{
+                    block();
                 }];
             }];
-
         }];
+        
+    }];
 }
 
 
@@ -854,11 +864,11 @@ float PARTICLE_SCALE;
         [_uxWindow runAction:[NKAction fadeAlphaTo:1. duration:.5]];
         [_uxTopBar runAction:[NKAction fadeAlphaTo:1. duration:.5]];
     }
-
+    
     [_uxWindow refreshCardsForPlayer:p WithCompletionBlock:^{
         block();
     }];
-        [_uxTopBar refreshCardsForPlayer:p WithCompletionBlock:^{}];
+    [_uxTopBar refreshCardsForPlayer:p WithCompletionBlock:^{}];
     
 }
 
@@ -1061,8 +1071,8 @@ float PARTICLE_SCALE;
 
 -(BallSprite*)ballSprite {
     if (!_ballSprite) {
-//        _ballSprite = [[BallSprite alloc]init];
-//        _ballSprite.texture = [NKTexture textureWithImageNamed:@"ball_Texture.png"];
+        //        _ballSprite = [[BallSprite alloc]init];
+        //        _ballSprite.texture = [NKTexture textureWithImageNamed:@"ball_Texture.png"];
         _ballSprite = [[BallSprite alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:nil size:V3Make(50,50,50)];
     }
     if (!_ballSprite.parent) {
@@ -1102,14 +1112,14 @@ float PARTICLE_SCALE;
 
 //-(void)cameraShouldFollowSprite:(NKSpriteNode*)sprite withCompletionBlock:(void (^)())block {
 //    if (MOVE_CAMERA) {
-//        
+//
 //        if (!sprite) {
-//            
+//
 //            _followNode = Nil;
 //            [_gameBoardNode removeAllActions];
-//            
+//
 //            if (_gameBoardNode.position.x != [self camPosNormal].x) {
-//                
+//
 //                //[_gameBoardNode runAction:[NKAction scaleTo:1. duration:1.]];
 //                NKAction *move = [NKAction moveTo:[self camPosNormal] duration:.5];
 //                // boardScale = 1.;
@@ -1117,13 +1127,13 @@ float PARTICLE_SCALE;
 //                [_gameBoardNode runAction:move completion:^{
 //                    block();
 //                }];
-//                
+//
 //            }
-//            
+//
 //            else {
 //                block();
 //            }
-//            
+//
 //        }
 //        else {
 //            [_gameBoardNode removeAllActions];
@@ -1134,53 +1144,53 @@ float PARTICLE_SCALE;
 //                block();
 //            }];
 //        }
-//        
+//
 //    }
-//    
+//
 //    else {
-//        
+//
 //        [_gameBoardNode runAction:[NKAction scaleTo:1. duration:.05]];
 //        NKAction *move = [NKAction moveTo:[self camPosNormal] duration:.5];
 //        [move setTimingMode:NKActionTimingEaseIn];
 //        [_gameBoardNode runAction:move completion:^{
 //            block();
 //        }];
-//        
+//
 //    }
 //}
 //
 //-(void)zoomTowards:(NKSpriteNode*)sprite withCompletionBlock:(void (^)())block {
-//    
+//
 //    [_gameBoardNode removeAllActions];
-//    
+//
 //    [_gameBoardNode runAction:[NKAction scaleTo:1.2 duration:.5]];
 //    boardScale = 1.2;
 //    NKAction *move = [NKAction moveTo:[self boardPosForSprite:sprite] duration:.5];
 //    [move setTimingMode:NKActionTimingEaseIn];
-//    
+//
 //    [_gameBoardNode runAction:move completion:^{
-//        
+//
 //    }];
-//    
+//
 //    block();
-//    
+//
 //}
 //
 //
 //-(void)dollyTowards:(NKSpriteNode*)sprite duration:(float)duration{
-//    
+//
 //    [_gameBoardNode removeAllActions];
-//    
-//    
+//
+//
 //    NKAction *move = [NKAction moveTo:[self camPosHalfTrack:sprite] duration:duration];
-//    
+//
 //    [move setTimingMode:NKActionTimingEaseOut];
-//    
-//    
+//
+//
 //    [_gameBoardNode runAction:move completion:^{
 //    }];
-//    
-//    
+//
+//
 //}
 
 
@@ -1301,7 +1311,7 @@ float PARTICLE_SCALE;
 //    };
 //
 //    return NKTouchNone;
-//    
+//
 //}
 
 @end

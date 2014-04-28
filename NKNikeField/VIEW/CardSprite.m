@@ -26,7 +26,7 @@
 
 //-(NKLabelNode*)styledLabelNode {
 //    
-//    NKLabelNode *node = [NKLabelNode labelNodeWithFontNamed:@"Arial-Black"];
+//    NKLabelNode *node = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
 //    node.verticalAlignmentMode = NKLabelVerticalAlignmentModeCenter;
 //    
 //    node.fontColor = [NKColor blackColor];

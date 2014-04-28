@@ -20,6 +20,7 @@
 		29090EEC190ED98B00BE6B92 /* Halo_Marks_glow.png in Resources */ = {isa = PBXBuildFile; fileRef = 29090EE9190ED98B00BE6B92 /* Halo_Marks_glow.png */; };
 		29090EED190ED98B00BE6B92 /* Halo_Marks.png in Resources */ = {isa = PBXBuildFile; fileRef = 29090EEA190ED98B00BE6B92 /* Halo_Marks.png */; };
 		29090EEE190ED98B00BE6B92 /* Halo.png in Resources */ = {isa = PBXBuildFile; fileRef = 29090EEB190ED98B00BE6B92 /* Halo.png */; };
+		29090EF1190EEC4200BE6B92 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 29090EF0190EEC4200BE6B92 /* Arial Black.ttf */; };
 		297E6C2519097F4F00369BDF /* blank_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 297E6C2419097F4F00369BDF /* blank_texture.png */; };
 		29B84B5918FF03F600469EE0 /* NKPickerNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B84B5818FF03F600469EE0 /* NKPickerNode.m */; };
 		29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D89246190AA5CB008FBD5F /* GameStatsViewController.m */; };
@@ -254,6 +255,7 @@
 		29090EE9190ED98B00BE6B92 /* Halo_Marks_glow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Halo_Marks_glow.png; sourceTree = "<group>"; };
 		29090EEA190ED98B00BE6B92 /* Halo_Marks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Halo_Marks.png; sourceTree = "<group>"; };
 		29090EEB190ED98B00BE6B92 /* Halo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Halo.png; sourceTree = "<group>"; };
+		29090EF0190EEC4200BE6B92 /* Arial Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Black.ttf"; sourceTree = "<group>"; };
 		297E6C2419097F4F00369BDF /* blank_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank_texture.png; sourceTree = "<group>"; };
 		29B84B5718FF03F600469EE0 /* NKPickerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKPickerNode.h; sourceTree = "<group>"; };
 		29B84B5818FF03F600469EE0 /* NKPickerNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKPickerNode.m; sourceTree = "<group>"; };
@@ -587,6 +589,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		29090EEF190EE90C00BE6B92 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				29090EF0190EEC4200BE6B92 /* Arial Black.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		29D89244190AA572008FBD5F /* APP */ = {
 			isa = PBXGroup;
 			children = (
@@ -886,6 +896,7 @@
 		61D6E6C818FDB5B70017A389 /* ASSETS */ = {
 			isa = PBXGroup;
 			children = (
+				29090EEF190EE90C00BE6B92 /* Fonts */,
 				61D6E6C918FDB5B70017A389 /* Menus */,
 				61D6E6E718FDB5B70017A389 /* SFX_BOARD */,
 				61D6E6E918FDB5B70017A389 /* TILE_HIGHLIGHT */,
@@ -1327,6 +1338,7 @@
 				61D6E86518FDB5B70017A389 /* Card_Icon_SpecM_L2.png in Resources */,
 				2902A06D190C7BAE008D0092 /* Faction_Genmod_ON.png in Resources */,
 				61D6E46A18FDAE120017A389 /* Images.xcassets in Resources */,
+				29090EF1190EEC4200BE6B92 /* Arial Black.ttf in Resources */,
 				61D6E86718FDB5B70017A389 /* Challenge_L1a.png in Resources */,
 				61D6E7DD18FDB5B70017A389 /* card.0001.png in Resources */,
 				61D6E80618FDB5B70017A389 /* tile_topright.png in Resources */,

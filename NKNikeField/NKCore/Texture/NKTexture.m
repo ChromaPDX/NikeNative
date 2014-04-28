@@ -65,6 +65,88 @@
     return [[NKTextureManager labelCache] objectForKey:string];
 }
 
++(instancetype) textureWithString:(NSString *)text fontNamed:(NSString*)name color:(NKColor*)textColor Size:(CGSize)size fontSize:(CGFloat)fontSize completion:(void (^)())block{
+    
+    if (!textColor) {
+        textColor = NKWHITE;
+    }
+    
+    NKTexture *texture = [[NKTexture alloc] initForBackThreadWithSize:size];
+    
+    [texture setGlTexLocation:[NKTextureManager defaultTextureLocation]];
+    
+    dispatch_async([NKTextureManager textureThread], ^{
+        
+        CGContextRef ctx = [NKTexture newRGBAContext:size];
+        
+        //Prepare our view for drawing
+        
+        CGContextSetTextMatrix(ctx, CGAffineTransformIdentity);
+        
+        CGContextTranslateCTM(ctx, 0, size.height );
+        CGContextScaleCTM(ctx, 1.0, -1.0);
+        
+        CGColorRef color = textColor.CGColor;
+        
+        CTFontRef font = CTFontCreateWithName((CFStringRef) name, fontSize, NULL);
+        
+        CTTextAlignment theAlignment = kCTCenterTextAlignment;
+        
+        CFIndex theNumberOfSettings = 1;
+        CTParagraphStyleSetting theSettings[1] =
+        {
+            { kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment),
+                &theAlignment }
+        };
+        
+        CTParagraphStyleRef paragraphStyle = CTParagraphStyleCreate(theSettings, theNumberOfSettings);
+        
+        NSDictionary *attributesDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        (__bridge id)(font), kCTFontAttributeName,
+                                        color, kCTForegroundColorAttributeName,
+                                        paragraphStyle, kCTParagraphStyleAttributeName,
+                                        nil];
+        
+        
+        NSAttributedString *stringToDraw = [[NSAttributedString alloc] initWithString:text attributes:attributesDict];
+        
+        CFAttributedStringRef ref = (__bridge CFAttributedStringRef)(stringToDraw);
+        
+        CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(ref);
+        
+        //Create Frame
+        CGMutablePathRef path = CGPathCreateMutable();
+        
+        CGPathAddRect(path, NULL, CGRectMake(0, 0, size.width, size.height));
+        
+        CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
+        
+        //Draw Frame
+        
+        //	CTFrameDraw(frame, ctx);
+        //
+        //    CGContextSetRGBFillColor(ctx, 1., 0., .5, 1.);
+        //    CGContextFillRect(ctx, CGRectMake(0, 0, size.width, size.height));
+        
+        CTFrameDraw(frame, ctx);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [texture loadTexFromCGContext:ctx size:size];
+            if (block) {
+                block();
+            }
+        });
+        //NKTexture *texture = [[NKTexture alloc] initWithTexture:[NKTexture texFromImage:UIGraphicsGetImageFromCurrentImageContext()]];
+        
+        NSLog(@"Creating texture with font %@, font named %@", font, name);
+        
+        
+    });
+    
+    return texture;
+    
+}
+
 -(instancetype) initWithImageNamed:(NSString*)name {
     self = [super init];
     
@@ -191,87 +273,7 @@
     
 }
 
-+(instancetype) textureWithString:(NSString *)text fontNamed:(NSString*)name color:(NKColor*)textColor Size:(CGSize)size fontSize:(CGFloat)fontSize completion:(void (^)())block{
-    
-    if (!textColor) {
-        textColor = NKWHITE;
-    }
-    
-    NKTexture *texture = [[NKTexture alloc] initForBackThreadWithSize:size];
-    
-    [texture setGlTexLocation:[NKTextureManager defaultTextureLocation]];
-    
-    dispatch_async([NKTextureManager textureThread], ^{
-        
-        CGContextRef ctx = [NKTexture newRGBAContext:size];
-        
-        //Prepare our view for drawing
-        
-        CGContextSetTextMatrix(ctx, CGAffineTransformIdentity);
-        
-        CGContextTranslateCTM(ctx, 0, size.height );
-        CGContextScaleCTM(ctx, 1.0, -1.0);
-        
-        CGColorRef color = textColor.CGColor;
-        
-        CTFontRef font = CTFontCreateWithName((CFStringRef) name, fontSize, NULL);
-        
-        CTTextAlignment theAlignment = kCTCenterTextAlignment;
-        
-        CFIndex theNumberOfSettings = 1;
-        CTParagraphStyleSetting theSettings[1] =
-        {
-            { kCTParagraphStyleSpecifierAlignment, sizeof(CTTextAlignment),
-                &theAlignment }
-        };
-        
-        CTParagraphStyleRef paragraphStyle = CTParagraphStyleCreate(theSettings, theNumberOfSettings);
-        
-        NSDictionary *attributesDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        (__bridge id)(font), kCTFontAttributeName,
-                                        color, kCTForegroundColorAttributeName,
-                                        paragraphStyle, kCTParagraphStyleAttributeName,
-                                        nil];
-        
-        
-        NSAttributedString *stringToDraw = [[NSAttributedString alloc] initWithString:text attributes:attributesDict];
-        
-        CFAttributedStringRef ref = (__bridge CFAttributedStringRef)(stringToDraw);
-        
-        CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(ref);
-        
-        //Create Frame
-        CGMutablePathRef path = CGPathCreateMutable();
-        
-        CGPathAddRect(path, NULL, CGRectMake(0, 0, size.width, size.height));
-        
-        CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
-        
-        //Draw Frame
-        
-        //	CTFrameDraw(frame, ctx);
-        //
-        //    CGContextSetRGBFillColor(ctx, 1., 0., .5, 1.);
-        //    CGContextFillRect(ctx, CGRectMake(0, 0, size.width, size.height));
-        
-        CTFrameDraw(frame, ctx);
-        
-         dispatch_async(dispatch_get_main_queue(), ^{
-             [texture loadTexFromCGContext:ctx size:size];
-             if (block) {
-                 block();
-             }
-         });
-        //NKTexture *texture = [[NKTexture alloc] initWithTexture:[NKTexture texFromImage:UIGraphicsGetImageFromCurrentImageContext()]];
-        
-        //NSLog(@"Creating texture with font %@, for string %@", font, text);
-        
-        
-    });
-    
-    return texture;
-    
-}
+
 
 +(NKTexture*)blankTexture {
     return [NKTexture textureWithImageNamed:@"blank_texture"];

@@ -30,7 +30,7 @@
     leif.name = @"LEIF";
 
         
-    NKLabelNode* llabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Helvetica"];
+    NKLabelNode* llabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Arial Black.ttf"];
     llabel.text = @"HUMAN GAME";
     [leif addChild:llabel];
     [llabel setZPosition:2];
@@ -41,7 +41,7 @@
     robby.name = @"ROBBY";
     
         
-    NKLabelNode* rlabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Helvetica"];
+    NKLabelNode* rlabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Arial Black.ttf"];
     rlabel.text = @"FUEL / SYNC";
     [robby addChild:rlabel];
     [rlabel setZPosition:2];
@@ -52,7 +52,7 @@
     eric.name = @"ERIC";
 
         
-    NKLabelNode* elabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Helvetica"];
+    NKLabelNode* elabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Arial Black.ttf"];
     elabel.text = @"AI+MENU";
     [elabel setZPosition:2];
     [eric addChild:elabel];
