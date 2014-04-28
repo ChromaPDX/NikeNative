@@ -54,11 +54,18 @@
     NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
     CGRect syncButtonRect = CGRectMake(101, 301, 120, 50);
     CGRect startButtonRect = CGRectMake(101, 367, 120, 50);
+    CGRect HiddenAIButtonRect = CGRectMake(135, 115, 50, 50);
     if(CGRectContainsPoint(syncButtonRect, location)){
         NSLog(@"*NSYNC!");
     }
     else if(CGRectContainsPoint(startButtonRect, location)){
         NSLog(@"start button pressed, starting game...");
+        NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
+        [[(GameScene*)newScene game] startSinglePlayerGame];
+        self.nkView.scene = newScene;
+    }
+    else if(CGRectContainsPoint(HiddenAIButtonRect, location)){
+        NSLog(@"AI button pressed, starting game...");
         NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startAIGame];
         self.nkView.scene = newScene;

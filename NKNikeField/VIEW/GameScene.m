@@ -541,7 +541,7 @@ float PARTICLE_SCALE;
                             block();
                             [self runAction:[NKAction fadeAlphaTo:0 duration:2.5] completion:^{
                                 [_game endGame];
-                                [self.nkView setScene:[[MainMenu alloc] initWithSize:self.size]];
+                                [self.nkView setScene:[[RecapMenu alloc] initWithSize:self.size]];
                             }];
                         }];
                     }];

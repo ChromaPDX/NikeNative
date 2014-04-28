@@ -55,6 +55,8 @@
 		3B2362011900258600056AE2 /* screens_01_vspagenew.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B2362001900258600056AE2 /* screens_01_vspagenew.png */; };
 		3B41EE0C190C0FD500837DC0 /* main_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B41EE0B190C0FD500837DC0 /* main_menu.png */; };
 		3B41EE0F190C0FFC00837DC0 /* MainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B41EE0E190C0FFC00837DC0 /* MainMenu.m */; };
+		3B6BF238190D420F0082628E /* recap_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF237190D420F0082628E /* recap_menu.png */; };
+		3B6BF23B190E854F0082628E /* RecapMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6BF23A190E854F0082628E /* RecapMenu.m */; };
 		6198A359190068660083EA5D /* UXTopBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6198A358190068660083EA5D /* UXTopBar.m */; };
 		6198A35B1900727C0083EA5D /* lock-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 6198A35A1900727C0083EA5D /* lock-4.png */; };
 		61A257C118FDE998001B7F67 /* NKMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578418FDE998001B7F67 /* NKMaterial.m */; };
@@ -385,6 +387,9 @@
 		3B41EE0B190C0FD500837DC0 /* main_menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_menu.png; sourceTree = "<group>"; };
 		3B41EE0D190C0FF200837DC0 /* MainMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenu.h; sourceTree = "<group>"; };
 		3B41EE0E190C0FFC00837DC0 /* MainMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenu.m; sourceTree = "<group>"; };
+		3B6BF237190D420F0082628E /* recap_menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recap_menu.png; sourceTree = "<group>"; };
+		3B6BF239190E85410082628E /* RecapMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecapMenu.h; sourceTree = "<group>"; };
+		3B6BF23A190E854F0082628E /* RecapMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecapMenu.m; sourceTree = "<group>"; };
 		6198A357190068660083EA5D /* UXTopBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UXTopBar.h; sourceTree = "<group>"; };
 		6198A358190068660083EA5D /* UXTopBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UXTopBar.m; sourceTree = "<group>"; };
 		6198A35A1900727C0083EA5D /* lock-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock-4.png"; sourceTree = "<group>"; };
@@ -1055,6 +1060,7 @@
 				61D6E6E018FDB5B70017A389 /* Move_L2a.1.png */,
 				61D6E6E118FDB5B70017A389 /* Move_L3a.1.png */,
 				61D6E6E218FDB5B70017A389 /* proto_char_card.1.png */,
+				3B6BF237190D420F0082628E /* recap_menu.png */,
 				61D6E6E318FDB5B70017A389 /* Special_L1a.1.png */,
 				61D6E6E418FDB5B70017A389 /* Special_L2a.1.png */,
 				61D6E6E518FDB5B70017A389 /* Special_L3a.1.png */,
@@ -1334,6 +1340,8 @@
 				29D89246190AA5CB008FBD5F /* GameStatsViewController.m */,
 				3B41EE0D190C0FF200837DC0 /* MainMenu.h */,
 				3B41EE0E190C0FFC00837DC0 /* MainMenu.m */,
+				3B6BF239190E85410082628E /* RecapMenu.h */,
+				3B6BF23A190E854F0082628E /* RecapMenu.m */,
 				3B2361FD190020E500056AE2 /* MenuStartVS.h */,
 				3B2361FE190020FA00056AE2 /* MenuStartVS.m */,
 				61D6E79818FDB5B70017A389 /* MenuPlayerProfileScene.h */,
@@ -1509,6 +1517,7 @@
 				61D6E7EE18FDB5B70017A389 /* menu1_d.png in Resources */,
 				61D6E81A18FDB5B70017A389 /* Button_Success.png in Resources */,
 				61D6E87818FDB5B70017A389 /* Field_Layer01.png in Resources */,
+				3B6BF238190D420F0082628E /* recap_menu.png in Resources */,
 				61D6E84918FDB5B70017A389 /* icon_ball.png in Resources */,
 				61D6E82D18FDB5B70017A389 /* BoostBarFull.png in Resources */,
 				61D6E80118FDB5B70017A389 /* tile_left.png in Resources */,
@@ -1670,6 +1679,7 @@
 				29D89268190AA65E008FBD5F /* compress.c in Sources */,
 				29D89269190AA65E008FBD5F /* crc32.c in Sources */,
 				29D8926C190AA65E008FBD5F /* gzlib.c in Sources */,
+				3B6BF23B190E854F0082628E /* RecapMenu.m in Sources */,
 				29D892BD190AC6C1008FBD5F /* UIImage+AlphaAdditions.m in Sources */,
 				29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */,
 				29D8926A190AA65E008FBD5F /* deflate.c in Sources */,
