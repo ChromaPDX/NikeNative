@@ -98,13 +98,14 @@
 
 -(NKColor*)colorForCategory {
 
-    switch (_model.category) {
-        case CardCategoryKick: return V2PURPLE;
-        case CardCategoryChallenge: return V2MAGENTA;
-        case CardCategoryMove: return V2BLUE;
-        default: return NKWHITE;
-            break;
-    }
+//    switch (_model.category) {
+//        case CardCategoryKick: return V2PURPLE;
+//        case CardCategoryChallenge: return V2MAGENTA;
+//        case CardCategoryMove: return V2BLUE;
+//        default: return NKWHITE;
+//            break;
+//    }
+    return V2YELLOW;
 }
 
 -(void)setCorrectTexture {

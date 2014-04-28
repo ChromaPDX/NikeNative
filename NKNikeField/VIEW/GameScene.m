@@ -119,13 +119,13 @@ float PARTICLE_SCALE;
     [_pivot setPosition3d:(V3Make(0,-h*.5,0))];
     
     
-    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:NKBLACK size:CGSizeMake(w, h*.15)];
+    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:0. green:0. blue:0. alpha:.8] size:CGSizeMake(w, h*.15)];
     [_uxWindow setPosition3d:V3Make(0,-h*.42,30)];
     _uxWindow.delegate = self;
     [self addChild:_uxWindow];
     [_uxWindow setAlpha:0];
     
-    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:NKBLACK size:CGSizeMake(w, h*.125)];
+    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:[NKColor colorWithRed:0. green:0. blue:0. alpha:.8]  size:CGSizeMake(w, h*.125)];
     [_uxTopBar setPosition3d:V3Make(0,h*.44,30)];
     _uxTopBar.delegate = self;
     [self addChild:_uxTopBar];
@@ -607,11 +607,12 @@ float PARTICLE_SCALE;
                         
                         NKAction *fall = [NKAction group:@[
                                                            [NKAction move3dTo:V3Make(dest.x, dest.y - _uxWindow.position.y, dest.z) duration:CARD_ANIM_DUR],
-                                                           [NKAction rotate3dByAngle:V3Make(-45, 0, 0) duration:CARD_ANIM_DUR],
+                                                           [NKAction rotate3dByAngle:V3Make(-26, 0, 0) duration:CARD_ANIM_DUR],
                                                            [NKAction scaleTo:1. duration:CARD_ANIM_DUR],
                                                            ]];
 
                         [card runAction:fall completion:^{
+                            [card removeAllActions];
                             [card runAction:[NKAction fadeAlphaTo:0 duration:FAST_ANIM_DUR]completion:^{
                                 [card removeFromParent];
                                 block();
