@@ -285,7 +285,7 @@
 {
     if (blurRadius < 1)
     {
-        return nkImagePassthroughFragmentShaderString;
+        return nkDefaultTextureFragmentShader;
     }
     
     // First, generate the normal Gaussian weights for a given sigma

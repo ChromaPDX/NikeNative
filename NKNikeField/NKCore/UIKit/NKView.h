@@ -11,10 +11,32 @@
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 
-#define GLESVERSION 1
+#define NK_GL_VERSION 1
 
 @class NKViewController;
 @class NKSceneNode;
+
+// Uniform index.
+enum
+{
+    UNIFORM_MODELVIEWPROJECTION_MATRIX,
+    UNIFORM_NORMAL_MATRIX,
+    NUM_UNIFORMS
+};
+GLint uniforms[NUM_UNIFORMS];
+
+// Attribute index.
+enum
+{
+    ATTRIB_POSITION,
+    ATTRIB_NORMAL,
+    ATTRIB_COLOR,
+    ATTRIB_TEX_COORD_0,
+    ATTRIB_TEX_COORD_1,
+    NUM_ATTRIBUTES
+};
+
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 @interface NKView : UIView
 {
@@ -23,8 +45,7 @@
 	GLuint frameBuffer, colorRenderbuffer,depthRenderbuffer;
     GLint bufferWidth, bufferHeight;
 
-    GLuint _vertexArray;
-    GLuint _vertexBuffer;
+
     
 	NSTimer *animationTimer;
     NSTimeInterval lastTime;
@@ -32,8 +53,17 @@
     
     
     // 2.0 stuff
+    GLuint _program;
+    
+    M16t _modelViewProjectionMatrix;
+    M16t _normalMatrix;
+    float _rotation;
+    
+    GLuint _vertexArray;
+    GLuint _vertexBuffer;
     
     GLuint _positionSlot;
+    GLuint _normalSlot;
     GLuint _colorSlot;
 
 }
@@ -54,3 +84,5 @@
 - (void)destroyFramebuffer;
 
 @end
+
+

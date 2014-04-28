@@ -88,54 +88,64 @@ static NSString *const nkImageVertexShaderString = SHADER_STRING
 
 static NSString *const nkVertexHeader = SHADER_STRING
 (
- attribute vec4 position; \n
- attribute vec2 texcoord; \n
- attribute vec4 color; \n
+ attribute vec4 position;
+ attribute vec4 inputTextureCoordinate;
+ attribute vec4 color;
+ 
+ varying vec2 textureCoordinate;
+ 
+ uniform mat4 modelViewProjMatrix;
  );
 
 static NSString *const nkFragmentColorHeader = SHADER_STRING
 (
- precision highp float;\n
- varying vec4 color_varying; \n
+ precision highp float;
+ varying vec4 color_varying;
  );
 
 static NSString *const nkFragmentTextureHeader = SHADER_STRING
 (
- \n
- precision highp float;\n
- uniform sampler2D tex0;\n
- varying highp vec2 texCoord_varying;\n
- );
-
-static NSString *const nkImagePassthroughFragmentShaderString = SHADER_STRING
-(
  varying highp vec2 textureCoordinate;
- uniform sampler2D inputImageTexture;
- 
- void main()
- {
-     gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
- }
+ uniform sampler2D texture;
  );
 
-#else
 
-static NSString *const nkVertexHeader = SHADER_STRING
+static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
 (
- varying vec2 textureCoordinate; \n
- uniform sampler2D inputImageTexture; \n
- );
-
-static NSString *const nkImagePassthroughFragmentShaderString = SHADER_STRING
-(
- varying vec2 textureCoordinate;
+ //precision highp float;
  
- uniform sampler2D inputImageTexture;
+ attribute vec4 position;
+ attribute vec3 normal;
+ attribute vec4 color;
+ 
+ varying lowp vec4 colorVarying;
+ 
+ uniform mat4 modelViewProjectionMatrix;
+ uniform mat3 normalMatrix;
  
  void main()
- {
-     gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
- }
+{
+    vec3 eyeNormal = normalize(normalMatrix * normal);
+    vec3 lightPosition = vec3(0.0, 0.0, 1.0);
+    vec4 diffuseColor = vec4(0.4, 0.4, 1.0, 1.0);
+    
+    float nDotVP = max(0.0, dot(eyeNormal, normalize(lightPosition)));
+    
+    colorVarying = diffuseColor;// * nDotVP;
+    
+    gl_Position = modelViewProjectionMatrix * position;
+}
+ 
+);
+
+static NSString *const nkDefaultTextureFragmentShader = SHADER_STRING
+(
+ varying lowp vec4 colorVarying;
+ 
+ void main()
+{
+    gl_FragColor = colorVarying;
+}
  );
 
 #endif

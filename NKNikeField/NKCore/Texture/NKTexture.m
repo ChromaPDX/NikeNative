@@ -315,6 +315,32 @@
     int glFormat = GL_RGBA;
     int glType = GL_UNSIGNED_BYTE;
 
+    if (NK_GL_VERSION == 2) {
+        glActiveTexture(GL_TEXTURE0);
+        glGenTextures(1, (GLuint *)&texture[0]);
+        glBindTexture(GL_TEXTURE_2D, texture[0]);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // This is necessary for non-power-of-two textures
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+       // glActiveTexture(GL_TEXTURE1);
+       // glGenFramebuffers(1, &defaultFramebuffer);
+       // glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
+        
+        glBindTexture(GL_TEXTURE_2D, texture[0]);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char *)CGBitmapContextGetData(context));
+        //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[0], 0);
+        
+        //        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        //
+        //        NSAssert(status == GL_FRAMEBUFFER_COMPLETE, @"Incomplete filter FBO: %d", status);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    
+    else {
     GLuint texTarget = GL_TEXTURE_2D;
     
     // GENERATE / BIND
@@ -342,6 +368,8 @@
     }
     else {
         NSLog(@"loaded GL tex %d , %lu bytes size: %lu %lu", texture[0],h * CGBitmapContextGetBytesPerRow(context),CGBitmapContextGetWidth(context) ,CGBitmapContextGetHeight(context) );
+    }
+        
     }
     
     CGContextRelease(context);

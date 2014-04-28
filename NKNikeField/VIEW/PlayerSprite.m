@@ -117,19 +117,21 @@
 
 -(void)setHighlighted:(bool)highlighted {
     
-    [cardImg setTexture:[NKTexture textureWithImageNamed:[self imageString]]];
+   
     
     if (highlighted && !_highlighted) {
         NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:CGSizeMake(TILE_WIDTH, TILE_HEIGHT)];
         crosshairs.name = @"crosshairs";
         [self addChild:crosshairs];
-        [crosshairs setZPosition:6];
+        [crosshairs setZPosition:2];
     }
     
     else if (!highlighted && _highlighted){
         [self removeChildNamed:@"crosshairs"];
         
     }
+    
+     [cardImg setTexture:[NKTexture textureWithImageNamed:[self imageString]]];
     
     _highlighted = highlighted;
     

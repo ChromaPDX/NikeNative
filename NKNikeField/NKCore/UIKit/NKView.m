@@ -11,6 +11,53 @@
 #import <OpenGLES/ES2/gl.h>
 #import "NodeKitten.h"
 
+GLfloat gCubeVertexData[216] =
+{
+    // Data layout for each line below is:
+    // positionX, positionY, positionZ,     normalX, normalY, normalZ,
+    0.5f, -0.5f, -0.5f,        1.0f, 0.0f, 0.0f,
+    0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,
+    0.5f, 0.5f, -0.5f,          1.0f, 0.0f, 0.0f,
+    0.5f, 0.5f, 0.5f,         1.0f, 0.0f, 0.0f,
+    
+    0.5f, 0.5f, -0.5f,         0.0f, 1.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,
+    0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,
+    0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f,         0.0f, 1.0f, 0.0f,
+    
+    -0.5f, 0.5f, -0.5f,        -1.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f,        -1.0f, 0.0f, 0.0f,
+    
+    -0.5f, -0.5f, -0.5f,       0.0f, -1.0f, 0.0f,
+    0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,
+    0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f,         0.0f, -1.0f, 0.0f,
+    
+    0.5f, 0.5f, 0.5f,          0.0f, 0.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
+    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
+    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f, 0.5f,        0.0f, 0.0f, 1.0f,
+    
+    0.5f, -0.5f, -0.5f,        0.0f, 0.0f, -1.0f,
+    -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,
+    0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,
+    0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,
+    -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,
+    -0.5f, 0.5f, -0.5f,        0.0f, 0.0f, -1.0f
+};
+
 @implementation NKView
 
 + (Class) layerClass
@@ -55,7 +102,7 @@
                                         [NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
         
         
-        if (GLESVERSION == 2){
+        if (NK_GL_VERSION == 2){
         context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
         }
         else {
@@ -74,9 +121,10 @@
             NSLog(@"GLES Context && Frame Buffer loaded!");
           
             
-            if (GLESVERSION == 2) {
+            if (NK_GL_VERSION == 2) {
                 [self setupVBOs];
-                [self compileShaders];
+                [self loadShaders];
+     
             }
 
         }
@@ -236,6 +284,20 @@ static const GLubyte Indices[] = {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
     
+//    glGenVertexArraysOES(1, &_vertexArray);
+//    glBindVertexArrayOES(_vertexArray);
+//    
+//    glGenBuffers(1, &_vertexBuffer);
+//    glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
+//    glBufferData(GL_ARRAY_BUFFER, sizeof(gCubeVertexData), gCubeVertexData, GL_STATIC_DRAW);
+    
+//    glEnableVertexAttribArray(_positionSlot);
+//    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));
+//    glEnableVertexAttribArray(_normalSlot);
+//    glVertexAttribPointer(_normalSlot, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));
+//    
+//    glBindVertexArrayOES(0);
+    
 }
 
 // Clean up any buffers we have allocated.
@@ -281,27 +343,157 @@ static const GLubyte Indices[] = {
 //	}
 //}
 
+#pragma mark -  OpenGL ES 2 shader compilation
 
+- (BOOL)loadShaders
+{
+    GLuint vertShader, fragShader;
 
--(GLuint)compileShader:(NSString*)shaderName withType:(GLenum)shaderType {
+    // Create shader program.
+    _program = glCreateProgram();
     
-    // 1
-    NSString* shaderPath = [[NSBundle mainBundle] pathForResource:shaderName
-                                                           ofType:@"glsl"];
-    NSError* error;
-    NSString* shaderString = [NSString stringWithContentsOfFile:shaderPath
-                                                       encoding:NSUTF8StringEncoding error:&error];
-    if (!shaderString) {
-        NSLog(@"Error loading shader: %@", error.localizedDescription);
-        exit(1);
+//    // Create and compile vertex shader.
+//    vertShaderPathname = [[NSBundle mainBundle] pathForResource:@"Shader" ofType:@"vsh"];
+//    if (![self compileShader:&vertShader type:GL_VERTEX_SHADER file:vertShaderPathname]) {
+//        NSLog(@"Failed to compile vertex shader");
+//        return NO;
+//    }
+//    
+//    // Create and compile fragment shader.
+//    fragShaderPathname = [[NSBundle mainBundle] pathForResource:@"Shader" ofType:@"fsh"];
+//    if (![self compileShader:&fragShader type:GL_FRAGMENT_SHADER file:fragShaderPathname]) {
+//        NSLog(@"Failed to compile fragment shader");
+//        return NO;
+//    }
+    
+    vertShader = [self compileShaderSource:nkDefaultTextureVertexShader withType:GL_VERTEX_SHADER];
+    fragShader = [self compileShaderSource:nkDefaultTextureFragmentShader withType:GL_FRAGMENT_SHADER];
+    
+    // Attach vertex shader to program.
+    glAttachShader(_program, vertShader);
+    
+    // Attach fragment shader to program.
+    glAttachShader(_program, fragShader);
+    
+    // Bind attribute locations.
+    
+    // Get attribute
+//    _positionSlot = glGetAttribLocation(_program, "position");
+//    _normalSlot = glGetAttribLocation(_program, "normal");
+    
+    _positionSlot = ATTRIB_POSITION;
+    _normalSlot = ATTRIB_NORMAL;
+    _colorSlot = ATTRIB_COLOR;
+    
+    NSLog(@"position slot %d", _positionSlot);
+    NSLog(@"normal slot %d", _normalSlot);
+    NSLog(@"color slot %d", _colorSlot);
+    
+    glEnableVertexAttribArray(_positionSlot);
+    glEnableVertexAttribArray(_colorSlot);
+
+    // This needs to be done prior to linking.
+    glBindAttribLocation(_program, _positionSlot, "position");
+    glBindAttribLocation(_program, _normalSlot, "normal");
+    glBindAttribLocation(_program, _colorSlot, "color");
+    
+    
+    // Link program.
+    if (![self linkProgram:_program]) {
+        NSLog(@"Failed to link program: %d", _program);
+        
+        if (vertShader) {
+            glDeleteShader(vertShader);
+            vertShader = 0;
+        }
+        if (fragShader) {
+            glDeleteShader(fragShader);
+            fragShader = 0;
+        }
+        if (_program) {
+            glDeleteProgram(_program);
+            _program = 0;
+        }
+        
+        return NO;
     }
+    else {
+        NSLog(@"Program Successfully linked");
+    }
+    
+
+    
+    // Get uniform locations.
+    uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = glGetUniformLocation(_program, "modelViewProjectionMatrix");
+    uniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(_program, "normalMatrix");
+    
+    // Release vertex and fragment shaders.
+    if (vertShader) {
+        glDetachShader(_program, vertShader);
+        glDeleteShader(vertShader);
+    }
+    if (fragShader) {
+        glDetachShader(_program, fragShader);
+        glDeleteShader(fragShader);
+    }
+    
+    return YES;
+}
+
+- (BOOL)linkProgram:(GLuint)prog
+{
+    GLint status;
+    glLinkProgram(prog);
+    
+#if defined(DEBUG)
+    GLint logLength;
+    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
+    if (logLength > 0) {
+        GLchar *log = (GLchar *)malloc(logLength);
+        glGetProgramInfoLog(prog, logLength, &logLength, log);
+        NSLog(@"Program link log:\n%s", log);
+        free(log);
+    }
+#endif
+    
+    glGetProgramiv(prog, GL_LINK_STATUS, &status);
+    if (status == 0) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)validateProgram:(GLuint)prog
+{
+    GLint logLength, status;
+    
+    glValidateProgram(prog);
+    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
+    if (logLength > 0) {
+        GLchar *log = (GLchar *)malloc(logLength);
+        glGetProgramInfoLog(prog, logLength, &logLength, log);
+        NSLog(@"Program validate log:\n%s", log);
+        free(log);
+    }
+    
+    glGetProgramiv(prog, GL_VALIDATE_STATUS, &status);
+    if (status == 0) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+
+-(GLuint)compileShaderSource:(NSString*)shaderSource withType:(GLenum)shaderType {
     
     // 2
     GLuint shaderHandle = glCreateShader(shaderType);
     
     // 3
-    const char * shaderStringUTF8 = [shaderString UTF8String];
-    int shaderStringLength = [shaderString length];
+    const char * shaderStringUTF8 = [shaderSource UTF8String];
+    int shaderStringLength = [shaderSource length];
     glShaderSource(shaderHandle, 1, &shaderStringUTF8, &shaderStringLength);
     
     // 4
@@ -322,39 +514,21 @@ static const GLubyte Indices[] = {
     
 }
 
-- (void)compileShaders {
+-(GLuint)compileShader:(NSString*)shaderName withType:(GLenum)shaderType {
     
     // 1
-    GLuint vertexShader = [self compileShader:@"SimpleVertex"
-                                     withType:GL_VERTEX_SHADER];
-    GLuint fragmentShader = [self compileShader:@"SimpleFragment"
-                                       withType:GL_FRAGMENT_SHADER];
-    
-    // 2
-    GLuint programHandle = glCreateProgram();
-    glAttachShader(programHandle, vertexShader);
-    glAttachShader(programHandle, fragmentShader);
-    glLinkProgram(programHandle);
-    
-    // 3
-    GLint linkSuccess;
-    glGetProgramiv(programHandle, GL_LINK_STATUS, &linkSuccess);
-    if (linkSuccess == GL_FALSE) {
-        GLchar messages[256];
-        glGetProgramInfoLog(programHandle, sizeof(messages), 0, &messages[0]);
-        NSString *messageString = [NSString stringWithUTF8String:messages];
-        NSLog(@"%@", messageString);
+    NSString* shaderPath = [[NSBundle mainBundle] pathForResource:shaderName
+                                                           ofType:@"glsl"];
+    NSError* error;
+    NSString* shaderString = [NSString stringWithContentsOfFile:shaderPath
+                                                       encoding:NSUTF8StringEncoding error:&error];
+    if (!shaderString) {
+        NSLog(@"Error loading shader: %@", error.localizedDescription);
         exit(1);
     }
     
-    // 4
-    glUseProgram(programHandle);
+    return [self compileShaderSource:shaderString withType:shaderType];
     
-    // 5
-    _positionSlot = glGetAttribLocation(programHandle, "Position");
-    _colorSlot = glGetAttribLocation(programHandle, "SourceColor");
-    glEnableVertexAttribArray(_positionSlot);
-    glEnableVertexAttribArray(_colorSlot);
 }
 
 static const GLfloat XAxis[] = {-1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f};
@@ -372,21 +546,33 @@ static const GLfloat ZAxis[] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f};
 
     glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
     
-    if (GLESVERSION == 2) {
+    if (NK_GL_VERSION == 2) {
         
-    // 1
-    glViewport(0, 0, self.frame.size.width, self.frame.size.height);
-    
-    // 2
+        _modelViewProjectionMatrix = M16IdentityMake();
+        M16SetV3Translation(&_modelViewProjectionMatrix, V3Make(.5, .5, .5));
+        _normalMatrix = M16IdentityMake();
         
-    glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE,
-                          sizeof(Vertex), 0);
-    glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE,
-                          sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
-    
-    // 3
-    glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]),
-                   GL_UNSIGNED_BYTE, 0);
+        glUseProgram(_program);
+        
+        glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _modelViewProjectionMatrix.m);
+        glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _normalMatrix.m);
+        
+        // 1
+        glViewport(0, 0, self.frame.size.width, self.frame.size.height);
+        
+        // 2
+        
+        glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE,
+                              sizeof(Vertex), 0);
+        glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE,
+                              sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
+        
+        // 3
+        
+      //  glDrawArrays(GL_TRIANGLES, 0, 36);
+        
+        glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]),
+                       GL_UNSIGNED_BYTE, 0);
         
     }
     
@@ -506,3 +692,5 @@ static const GLfloat ZAxis[] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f};
 }
 
 @end
+
+

@@ -71,7 +71,3 @@
 #import "NKView.h"
 
 
-inline float getScreenScale(){
-    return [[UIScreen mainScreen]scale];
-}
-
