@@ -111,20 +111,24 @@ float PARTICLE_SCALE;
     _gameTiles = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
     
     _pivot = [[NKNode alloc]init];
+    _fieldBackground = [[NKNode alloc]init];
     
     _pivot.name = @"PIVOT";
     
     [self addChild:_pivot];
+    [self addChild:_fieldBackground];
     
     [_pivot setPosition3d:(V3Make(0,-h*.5,0))];
+    [_fieldBackground setPosition3d:(V3Make(0,-h*.5,0))];
+
     
-    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:0/255. green:0/255. blue:0/255. alpha:.7] size:CGSizeMake(w, h*.15)];
+    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:0/255. green:0/255. blue:0/255. alpha:0] size:CGSizeMake(w, h*.15)];
     [_uxWindow setPosition3d:V3Make(0,-h*.42,30)];
     _uxWindow.delegate = self;
     [self addChild:_uxWindow];
     [_uxWindow setAlpha:0];
     
-    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:[NKColor colorWithRed:0/255. green:0/255. blue:0/255. alpha:.7] size:CGSizeMake(w, h*.15)];
+    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:[NKColor colorWithRed:0/255. green:0/255. blue:0/255. alpha:0] size:CGSizeMake(w, h*.15)];
     [_uxTopBar setPosition3d:V3Make(0,h*.42,30)];
     _uxTopBar.delegate = self;
     [self addChild:_uxTopBar];
@@ -144,10 +148,13 @@ float PARTICLE_SCALE;
     _gameBoardNode = [[GameBoardNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer01"] color:NKWHITE size:CGSizeMake(BOARD_WIDTH*TILE_WIDTH + (TILE_WIDTH*.7), BOARD_LENGTH*TILE_HEIGHT + (TILE_HEIGHT*.5))];
     
     [_pivot addChild:_gameBoardNode];
+    [_fieldBackground addChild:_fieldBackgroundNode];
     
 
     
     [_gameBoardNode setPosition3d:V3Make(0,h*.5,0)];
+    [_fieldBackgroundNode setPosition3d:V3Make(0,h*.5,-1000)];
+    [_fieldBackgroundNode setScale3d:V3Make(2.02,2.02,1)];
     
     _gameBoardNode.userInteractionEnabled = true;
     
@@ -552,7 +559,7 @@ float PARTICLE_SCALE;
                             block();
                             [self runAction:[NKAction fadeAlphaTo:0 duration:2.5] completion:^{
                                 [_game endGame];
-                                [self.nkView setScene:[[MainMenu alloc] initWithSize:self.size]];
+                                [self.nkView setScene:[[RecapMenu alloc] initWithSize:self.size]];
                             }];
                         }];
                     }];
