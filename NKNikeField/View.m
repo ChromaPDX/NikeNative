@@ -9,6 +9,7 @@
 #import "View.h"
 #import "DevMenu.h"
 #import "GameScene.h"
+#import "MainMenu.h"
 
 @implementation View
 
@@ -20,7 +21,7 @@
         // Initialization code
         float scale = [[UIScreen mainScreen] scale];
         
-        self.scene = [[DevMenu alloc]initWithSize:CGSizeMake(self.frame.size.width*scale, self.frame.size.height*scale)];
+        self.scene = [[MainMenu alloc]initWithSize:CGSizeMake(self.frame.size.width*scale, self.frame.size.height*scale)];
         //GameScene *scene = [[GameScene alloc]initWithSize:CGSizeMake(self.frame.size.width*scale, self.frame.size.height*scale)];
         //self.scene = scene;
         
