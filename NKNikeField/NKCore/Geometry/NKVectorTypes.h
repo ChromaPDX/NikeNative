@@ -1263,9 +1263,17 @@ static inline M16t M16Multiply(M16t m1, M16t m2)
 
 static inline V3t V3MultiplyM16(M16t matrixLeft, V3t vectorRight)
 {
-    Q4t Q4 = Q4MultiplyM16(matrixLeft, Q4Make(vectorRight.x, vectorRight.y, vectorRight.y, 0.0f));
+    Q4t Q4 = Q4MultiplyM16(matrixLeft, Q4Make(vectorRight.x, vectorRight.y,vectorRight.z, 0));
     return V3Make(Q4.x, Q4.y, Q4.z);
 }
+
+static inline V3t EulerMultiplyM16(M16t matrixLeft, V3t vectorRight)
+
+{
+    Q4t Q4 = Q4MultiplyM16(matrixLeft, Q4FromV3(vectorRight));
+    return V3Make(Q4.x, Q4.y, Q4.z);
+}
+
 
 // from http://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions
 

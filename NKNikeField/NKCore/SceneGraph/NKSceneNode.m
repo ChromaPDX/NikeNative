@@ -160,7 +160,7 @@
 
     CGPoint p = [_camera screenToWorld:location];
     
-       NSLog(@"touch : %f %f", p.x, p.y);
+    NSLog(@"touch : %f %f", p.x, p.y);
     
     return [super touchUp:p id:touchId];
 }

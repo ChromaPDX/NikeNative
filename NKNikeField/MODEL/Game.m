@@ -1334,7 +1334,7 @@
                 }
                 else{
                     // IS CLOSER TO GOAL THAN BALL
-                    moveCard.aiActionType = MOVE_TO_GOAL;
+                    moveCard.aiActionType = MOVE_TO_DEFENDGOAL;
                     [_gameScene AISelectedCard:moveCard];
                     return;
                 }
@@ -1356,8 +1356,29 @@
         case NONE:
             NSLog(@"*********************************************AI: NONE!!!");
             break;
-        case MOVE_TO_DEFENDGOAL:  // for now this is the same as move_to_goal
+        case MOVE_TO_DEFENDGOAL:  // Eric I put this stuff in basically move to goal, but opponent's goal
             NSLog(@"*********************************************AI: DEFEND GOAL");
+            pathToGoal = [p pathToOpenFieldClosestToLocation:p.manager.opponent.goal];
+            
+            // NSLog(@"pathToGoalVerified = ");
+            // for(BoardLocation *loc in pathToGoal){
+            //     NSLog(@"%@",loc);
+            // }
+            // NSLog(@"pathToGoal count = %d", [pathToGoal count]);
+            if(pathToGoal && [pathToGoal count]){
+                BoardLocation *newLoc;
+                newLoc = [pathToGoal objectAtIndex:[pathToGoal count] - 1];
+                NSLog(@"MOVE TO GOAL selected %@", newLoc);
+                [_gameScene AISelectedLocation:newLoc];
+                return;
+            }
+            else {
+                NSLog(@"AI HAS NO VALID MOVE: STAY");
+                [_gameScene AISelectedLocation:c.deck.player.location];
+                return;
+            }
+
+            break;
         case MOVE_TO_GOAL:
             NSLog(@"*********************************************AI: MOVE TO GOAL");
            // pathToGoalUnverified = [c.deck.player pathToGoal];

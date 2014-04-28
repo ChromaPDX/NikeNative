@@ -576,9 +576,25 @@
 
 #pragma mark - GEOMETRY
 
+// this sucks, needs work
+//-(CGPoint)transformedPoint:(CGPoint)location {
+//    
+//    M16t inverse = M16InvertColumnMajor([self getGlobalTransformMatrix], NULL);
+//    //M16t inverse = [self getGlobalTransformMatrix];
+//    
+//    V3t transformed = V3MultiplyM16(inverse, V3Make(location.x, location.y, V3GetM16Translation(inverse).z));
+//    
+//    CGPoint p = CGPointMake(transformed.x / 100., transformed.y / 100.);
+//
+//    NSLog(@"%f %f node transformed %f, %f", location.x, location.y, p.x, p.y);
+//    
+//    return p;
+//}
+
 -(bool)containsPoint:(CGPoint)location {
     
     CGPoint p = location;
+    //CGPoint p = [self transformedPoint:location];
     
     //NSLog(@"world coords: %f %f %f", p.x, p.y, p.z);
     

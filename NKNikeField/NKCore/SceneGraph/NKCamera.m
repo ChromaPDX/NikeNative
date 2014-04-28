@@ -157,4 +157,26 @@
     //return CGPointMake(10000, 10000);
 }
 
+-(CGPoint)screenPoint:(CGPoint)p InNode:(NKNode*)node {
+    
+    V3t CameraXYZ;
+    CameraXYZ.x = 1.0f * (p.x - viewPort.x) / viewPort.w - 1.0f;
+    CameraXYZ.y = 1.0f - 1.0f*(p.y - viewPort.y) / viewPort.h;
+    //CameraXYZ.z = ScreenXYZ.z;
+    
+    //get inverse camera matrix
+    M16t inverseCamera = M16InvertColumnMajor([node getGlobalTransformMatrix], NULL);
+    
+    //convert camera to world
+    
+    V3t p2 = V3MultiplyM16(inverseCamera, CameraXYZ);
+
+    p2.x *= 1850.;
+    p2.y *= 1850.;
+    
+    //NSLog(@"world i: %f %f o:%f %f", p.x, p.y, p2.x, p2.y);
+    return CGPointMake(p2.x, p2.y);
+    
+}
+
 @end
