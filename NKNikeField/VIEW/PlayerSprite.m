@@ -21,7 +21,7 @@
 //}
 
 -(NKLabelNode*)styledLabelNode {
-    NKLabelNode *node = [NKLabelNode labelNodeWithFontNamed:@"TradeGothicLTStd-BdCn20"];
+    NKLabelNode *node = [NKLabelNode labelNodeWithFontNamed:@"Arial-Black"];
     node.fontColor = _model.manager.color;
     node.fontSize = h/8.;
     return node;

@@ -169,7 +169,7 @@
     switch (_deck.category) {
         case CardCategoryMove: return @"Move";
         case CardCategoryKick: return @"Kick";
-        case CardCategoryChallenge: return @"Chal";
+        case CardCategoryChallenge: return @"Challenge";
         case CardCategorySpecial:
             switch (_specialCategory) {
                 case CardCategoryMove: return @"Special";

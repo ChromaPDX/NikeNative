@@ -119,14 +119,14 @@ float PARTICLE_SCALE;
     [_pivot setPosition3d:(V3Make(0,-h*.5,0))];
    
     
-    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:0/255. green:0/255. blue:0/255. alpha:0] size:CGSizeMake(w, h*.15)];
+    _uxWindow = [[UXWindow alloc] initWithTexture:[NKTexture textureWithImageNamed:@"bottom_bar"] color:NKWHITE size:CGSizeMake(w, h*.15)];
     [_uxWindow setPosition3d:V3Make(0,-h*.42,30)];
     _uxWindow.delegate = self;
     [self addChild:_uxWindow];
     [_uxWindow setAlpha:0];
     
-    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:[NKColor colorWithRed:0/255. green:0/255. blue:0/255. alpha:0] size:CGSizeMake(w, h*.15)];
-    [_uxTopBar setPosition3d:V3Make(0,h*.42,30)];
+    _uxTopBar = [[UXTopBar alloc] initWithTexture:[NKTexture textureWithImageNamed:@"top_bar"] color:NKWHITE size:CGSizeMake(w, h*.125)];
+    [_uxTopBar setPosition3d:V3Make(0,h*.44,30)];
     _uxTopBar.delegate = self;
     [self addChild:_uxTopBar];
     [_uxTopBar setAlpha:0];
@@ -816,7 +816,7 @@ float PARTICLE_SCALE;
 
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block {
 
-        NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"TradeGothicLTStd-BdCn20"];
+        NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"Arial-Black"];
         bigText.fontSize = 75;
         bigText.fontColor = NKWHITE;
  
@@ -825,7 +825,7 @@ float PARTICLE_SCALE;
                [bigText setScale:1.5];
             
             for (int i = 0; i<2; i++) {
-                NKLabelNode *bigText2 = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"TradeGothicLTStd-BdCn20"];
+                NKLabelNode *bigText2 = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"Arial-Black"];
                 bigText2.fontSize = 75;
                 bigText2.fontColor = NKWHITE;
                 bigText2.text = theText;

@@ -23,10 +23,10 @@
         
         self.userInteractionEnabled = true;
         
-        cardSize.width = (1. / (6)) * w;
+        cardSize.width = (1. / (7)) * w;
         cardSize.height = (cardSize.width * (67. / 65.));
         
-        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"TradeGothicLTStd-BdCn20"];
+        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial-Black"];
         fuelLabel.fontSize = 36;
         
         [self addChild:fuelLabel];
@@ -50,7 +50,7 @@
         }];
     }
     
-    fuelPoints = [NKLabelNode labelNodeWithFontNamed:@"TradeGothicLTStd-BdCn20"];
+    fuelPoints = [NKLabelNode labelNodeWithFontNamed:@"Arial-Black"];
     fuelPoints.fontSize = 32;
     fuelPoints.fontColor = V2GREEN;
     [self fadeInChild:fuelPoints duration:1.];

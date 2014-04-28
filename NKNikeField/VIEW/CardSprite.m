@@ -26,7 +26,7 @@
 
 //-(NKLabelNode*)styledLabelNode {
 //    
-//    NKLabelNode *node = [NKLabelNode labelNodeWithFontNamed:@"TradeGothicLTStd-BdCn20"];
+//    NKLabelNode *node = [NKLabelNode labelNodeWithFontNamed:@"Arial-Black"];
 //    node.verticalAlignmentMode = NKLabelVerticalAlignmentModeCenter;
 //    
 //    node.fontColor = [NKColor blackColor];

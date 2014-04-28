@@ -83,7 +83,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>scoreboard.ttf</string>
-		<string>TradeGothicLTStd-BdCn20.otf</string>
+		<string>Arial-Black.otf</string>
 	</array>
 </dict>
 </plist>
