@@ -36,8 +36,10 @@
 // UI NODES / SPRITES
 
 @property (nonatomic,strong) NKNode* pivot;
-@property (nonatomic,strong) NKScrollNode* boardScroll;
+@property (nonatomic,strong) NKNode* fieldBackground;
+@property (nonatomic, strong) GameBoardNode *fieldBackgroundNode;
 @property (nonatomic, strong) GameBoardNode *gameBoardNode;
+@property (nonatomic,strong) NKScrollNode* boardScroll;
 
 @property (nonatomic, strong) UXWindow *uxWindow;
 @property (nonatomic, strong) UXWindow *uxTopBar;
