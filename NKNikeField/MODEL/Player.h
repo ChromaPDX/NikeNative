@@ -9,6 +9,14 @@
 #import "Card.h"
 @class Deck;
 
+typedef NS_ENUM(int32_t, FactionType) {
+    FactionNone,
+    FactionKinforce,
+    FactionPsyke,
+    FactionSention,
+    FactionGenmod
+};
+
 @interface Player : Card
 
 -(id) initWithManager:(Manager*)m;
@@ -21,6 +29,7 @@
 @property (nonatomic, strong) Deck *moveDeck;
 @property (nonatomic, strong) Deck *specialDeck;
 
+@property (nonatomic) FactionType faction;
 @property (nonatomic) int cardSlots;
 @property (nonatomic) BOOL female;
 
