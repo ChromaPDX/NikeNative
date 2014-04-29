@@ -125,8 +125,8 @@ float PARTICLE_SCALE;
     [self addChild:_uxWindow];
     [_uxWindow setAlpha:0];
     
-    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:[NKColor colorWithRed:0. green:0. blue:0. alpha:.8]  size:CGSizeMake(w, h*.125)];
-    [_uxTopBar setPosition3d:V3Make(0,h*.44,30)];
+    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:[NKColor colorWithRed:0. green:0. blue:0. alpha:.8]  size:CGSizeMake(w, h*.08)];
+    [_uxTopBar setPosition3d:V3Make(0,h*.45,30)];
     _uxTopBar.delegate = self;
     [self addChild:_uxTopBar];
     [_uxTopBar setAlpha:0];
@@ -773,9 +773,12 @@ float PARTICLE_SCALE;
     }
     
     else if (event.type == kEventKickoff){
-        [self animateBigText:@"GAME ON !!" withCompletionBlock:^{
-            block();
+        [self animateBigText:@"KICK OFF" withCompletionBlock:^{
+            [self animateBigText:@"GAME ON" withCompletionBlock:^{
+                block();
+            }];
         }];
+        
     }
     
     
@@ -827,35 +830,37 @@ float PARTICLE_SCALE;
 
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block {
     
-    NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"Arial Black.ttf"];
-    bigText.fontSize = 75;
+    NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(300, 60) FontNamed:@"Arial-BoldMT"];
+    bigText.fontSize = 40;
     bigText.fontColor = NKWHITE;
     
     [bigText loadAsyncText:theText completion:^{
         
-        [bigText setScale:1.5];
-        
-        for (int i = 0; i<2; i++) {
-            NKLabelNode *bigText2 = [[NKLabelNode alloc]initWithSize:CGSizeMake(500, 150) FontNamed:@"Arial Black.ttf"];
-            bigText2.fontSize = 75;
+        //[bigText setScale:1.5];
+        float alpha = 1;
+        for (int i = 0; i<6; i++) {
+            NKLabelNode *bigText2 = [[NKLabelNode alloc]initWithSize:CGSizeMake(300, 60) FontNamed:@"Arial-BoldMT"];
+            bigText2.fontSize = 40;
             bigText2.fontColor = NKWHITE;
             bigText2.text = theText;
-            [bigText2 setOrientationEuler:V3Make(0,0,10 * (i*2 - 1))];
+            bigText2.alpha = alpha/2;
+            alpha = bigText2.alpha;
+            [bigText2 setOrientationEuler:V3Make(0,0,15*i)];
             
             [bigText addChild:bigText2];
             
             // [bigText2 setScale:2.];
         }
-        
-        [self fadeInChild:bigText duration:.2 withCompletion:^{
-            [bigText runAction:[NKAction rotateByAngle:20 duration:1.] completion:^{
-                [self fadeOutChild:bigText duration:.2 withCompletion:^{
+        float animateDuration = 1.1;
+        [self fadeInChild:bigText duration:.1 withCompletion:^{
+            [bigText runAction:[NKAction group: @[[NKAction rotateByAngle:-90 duration:animateDuration],[NKAction scaleBy:10 duration:animateDuration],[NKAction fadeAlphaTo:0. duration:animateDuration]]] completion:^{
+                [self fadeOutChild:bigText duration:.05 withCompletion:^{
                     block();
                 }];
             }];
         }];
-        
     }];
+    
 }
 
 

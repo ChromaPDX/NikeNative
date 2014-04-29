@@ -63,24 +63,30 @@
     
     if (model) {
         
-            _model = model;
-
-            NKSpriteNode *shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerShadow] color:NKBLACK size:CGSizeMake(w, h)];
-            [shadow setAlpha:.2];
-            shadow.name = @"shadow";
-            [self addChild:shadow];
-             [shadow setPosition3d:V3Make(-self.size.width * .03, self.size.width*.03, -1)];
-
-            cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:CGSizeMake(w, h)];
-      
-            [cardImg setOrientationEuler:V3Make(45,0,0)];
+        _model = model;
         
-            [self addChild:cardImg];
-           
-            [cardImg setZPosition:h*.34];
-            
-            self.name = model.name;
-            self.userInteractionEnabled = true;
+        NKSpriteNode *shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerShadow] color:NKBLACK size:CGSizeMake(w, h)];
+        [shadow setAlpha:.2];
+        shadow.name = @"shadow";
+        
+        [self addChild:shadow];
+        [shadow setPosition3d:V3Make(-self.size.width * .03, self.size.width*.03, -1)];
+        
+        cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:CGSizeMake(w, h)];
+        
+        [cardImg setOrientationEuler:V3Make(45,0,0)];
+        float cardOffset = -20;
+        float cardScale = .8;
+        [shadow setPosition3d:V3Make(0,cardOffset, 0)];
+        [cardImg setPosition3d:V3Make(0,cardOffset, 0)];
+        [shadow setScale3d:V3Make(cardScale, cardScale, 1)];
+        [cardImg setScale3d:V3Make(cardScale, cardScale, 1)];
+        [self addChild:cardImg];
+        
+        [cardImg setZPosition:h*.34];
+        
+        self.name = model.name;
+        self.userInteractionEnabled = true;
         
     }
     else NSLog(@"CAN'T ASSIGN NIL MODEL TO CARDSPRITE");
@@ -120,10 +126,11 @@
    
     
     if (highlighted && !_highlighted) {
-        NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:CGSizeMake(TILE_WIDTH, TILE_HEIGHT)];
+       // NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:CGSizeMake(TILE_WIDTH, TILE_HEIGHT)];
+        NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:CGSizeMake(self.size.width + 6, self.size.height + 22)];
         crosshairs.name = @"crosshairs";
         [self addChild:crosshairs];
-        [crosshairs setZPosition:2];
+        [crosshairs setZPosition: 1];
     }
     
     else if (!highlighted && _highlighted){

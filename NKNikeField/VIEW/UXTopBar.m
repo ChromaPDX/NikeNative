@@ -23,8 +23,8 @@
         
         self.userInteractionEnabled = true;
         
-        cardSize.width = (1. / (7)) * w;
-        cardSize.height = (cardSize.width * (67. / 65.));
+        cardSize.width =  55; //(1. / (7)) * w;
+        cardSize.height = 55; //(cardSize.width * (67. / 65.));
         
 //        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
 //        fuelLabel.fontSize = 36;
@@ -133,7 +133,7 @@
 
 -(void)sortPlayers {
     for (int i = 0; i < 3; i++){
-        [_playerSprites[i] setPosition:P2Make(i*(cardSize.width+10), 0)];
+        [_playerSprites[i] setPosition:P2Make(110 + i*(cardSize.width+25), 0)];
     }
 }
 
