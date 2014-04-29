@@ -102,6 +102,7 @@
 		3B41EE0F190C0FFC00837DC0 /* MainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B41EE0E190C0FFC00837DC0 /* MainMenu.m */; };
 		3B6BF238190D420F0082628E /* recap_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF237190D420F0082628E /* recap_menu.png */; };
 		3B6BF23B190E854F0082628E /* RecapMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6BF23A190E854F0082628E /* RecapMenu.m */; };
+		3B6BF23D191016200082628E /* fuelbar_fuel.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF23C191016200082628E /* fuelbar_fuel.png */; };
 		6198A359190068660083EA5D /* UXTopBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6198A358190068660083EA5D /* UXTopBar.m */; };
 		6198A35B1900727C0083EA5D /* lock-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 6198A35A1900727C0083EA5D /* lock-4.png */; };
 		61A257C118FDE998001B7F67 /* NKMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578418FDE998001B7F67 /* NKMaterial.m */; };
@@ -402,6 +403,7 @@
 		3B6BF237190D420F0082628E /* recap_menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recap_menu.png; sourceTree = "<group>"; };
 		3B6BF239190E85410082628E /* RecapMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecapMenu.h; sourceTree = "<group>"; };
 		3B6BF23A190E854F0082628E /* RecapMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecapMenu.m; sourceTree = "<group>"; };
+		3B6BF23C191016200082628E /* fuelbar_fuel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fuelbar_fuel.png; sourceTree = "<group>"; };
 		6198A357190068660083EA5D /* UXTopBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UXTopBar.h; sourceTree = "<group>"; };
 		6198A358190068660083EA5D /* UXTopBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UXTopBar.m; sourceTree = "<group>"; };
 		6198A35A1900727C0083EA5D /* lock-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock-4.png"; sourceTree = "<group>"; };
@@ -1294,6 +1296,7 @@
 			isa = PBXGroup;
 			children = (
 				6198A35A1900727C0083EA5D /* lock-4.png */,
+				3B6BF23C191016200082628E /* fuelbar_fuel.png */,
 				61D6E77718FDB5B70017A389 /* CardType_PlayerSign.png */,
 			);
 			path = V2_HUD;
@@ -1500,6 +1503,7 @@
 				61D6E7E018FDB5B70017A389 /* Challenge_L3a.1.png in Resources */,
 				290BF2B5190F28A100B4C0DC /* Androyd-Agitake-42.wav in Resources */,
 				61D6E86B18FDB5B70017A389 /* Kick_L2a.png in Resources */,
+				3B6BF23D191016200082628E /* fuelbar_fuel.png in Resources */,
 				290BF2B2190F28A100B4C0DC /* anomaly_19.wav in Resources */,
 				61D6E85718FDB5B70017A389 /* Card_Icon_Chal_L3.png in Resources */,
 				290BF2AB190F28A100B4C0DC /* 06 Track 6.mp3 in Resources */,

@@ -125,7 +125,7 @@ float PARTICLE_SCALE;
     [self addChild:_uxWindow];
     [_uxWindow setAlpha:0];
     
-    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:[NKColor colorWithRed:0. green:0. blue:0. alpha:.8]  size:CGSizeMake(w, h*.08)];
+    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:[NKColor colorWithRed:0. green:0. blue:0. alpha:0]  size:CGSizeMake(w, h*.08)];
     [_uxTopBar setPosition3d:V3Make(0,h*.45,30)];
     _uxTopBar.delegate = self;
     [self addChild:_uxTopBar];

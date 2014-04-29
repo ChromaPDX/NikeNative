@@ -26,7 +26,20 @@
         cardSize.width =  55; //(1. / (7)) * w;
         cardSize.height = 55; //(cardSize.width * (67. / 65.));
         
-//        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
+        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"fuelbar_fuel.png"]];
+        NKSpriteNode* fuel = [[NKSpriteNode alloc] initWithTexture:image];
+        [fuel setPosition:CGPointMake(-134, 10)];
+        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
+        fuelLabel.fontSize = 22;
+        [fuelLabel setColor:V2YELLOW];
+        [fuelLabel setText:@"ENERGY"];
+        [fuelLabel setPosition:CGPointMake(-234, -50)];
+        [self addChild:fuel];
+        [self addChild:fuelLabel];
+        
+        
+       
+        //        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
 //        fuelLabel.fontSize = 36;
 //        
 //        [self addChild:fuelLabel];
