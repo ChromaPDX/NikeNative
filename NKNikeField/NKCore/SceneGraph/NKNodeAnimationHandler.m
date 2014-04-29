@@ -105,6 +105,8 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     
 }
 
+#pragma mark - Grouping
+
 + (NKAction *)group:(NSArray *)actions {
     
     NKAction * action = [[NKAction alloc] init];
@@ -124,6 +126,21 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     
     NKAction * action = [NKAction group:actions];
     action.serial = true;
+    return action;
+    
+}
+
++ (NKAction *)delayFor:(F1t)sec {
+    
+    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    
+    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+        
+        if (action.reset) {
+            action.reset = false;
+            //NSLog(@"action end %f %f %f",action.endPos.x,action.endPos.y,action.endPos.z);
+        }
+    };
     return action;
     
 }

@@ -171,8 +171,8 @@
     
     V3t p2 = V3MultiplyM16(inverseCamera, CameraXYZ);
 
-    p2.x *= 1850.;
-    p2.y *= 1850.;
+    p2.x *= 1820.;
+    p2.y *= 1820.;
     
     //NSLog(@"world i: %f %f o:%f %f", p.x, p.y, p2.x, p2.y);
     return CGPointMake(p2.x, p2.y);

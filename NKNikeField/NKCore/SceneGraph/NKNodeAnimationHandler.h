@@ -131,9 +131,8 @@ typedef void (^ActionBlock)(NKNode *node, F1t completion);
 + (NKAction *)scaleYTo:(CGFloat)scale duration:(F1t)sec;
 
 + (NKAction *)sequence:(NSArray *)actions;
-
 + (NKAction *)group:(NSArray *)actions;
-
++ (NKAction *)delayFor:(F1t)sec;
 
 + (NKAction *)repeatAction:(NKAction *)action count:(NSUInteger)count;
 + (NKAction *)repeatActionForever:(NKAction *)action;
