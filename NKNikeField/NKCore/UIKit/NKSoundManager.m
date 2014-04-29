@@ -62,7 +62,7 @@ static NKSoundManager *sharedObject = nil;
         if (isMusic) {
 
             if (manager.currentPlayingMusic) {
-                [manager.currentPlayingMusic runAction:[NKAction fadeOutSoundWithDuration:4.]];
+                [manager.currentPlayingMusic runAction:[NKAction fadeOutSoundWithDuration:8.]];
                 [soundPlayer runAction:[NKAction fadeInSoundWithDuration:2.] completion:^{
                     manager.currentPlayingMusic = soundPlayer;
                 }];
@@ -70,7 +70,7 @@ static NKSoundManager *sharedObject = nil;
         
             else {
                 manager.currentPlayingMusic = soundPlayer;
-                [soundPlayer runAction:[NKAction fadeInSoundWithDuration:10.]];
+                [soundPlayer runAction:[NKAction fadeInSoundWithDuration:6.]];
             }
             
         }
