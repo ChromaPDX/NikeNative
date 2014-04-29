@@ -773,11 +773,12 @@ float PARTICLE_SCALE;
     }
     
     else if (event.type == kEventKickoff){
-        [self animateBigText:@"KICK OFF" withCompletionBlock:^{
-            [self animateBigText:@"GAME ON" withCompletionBlock:^{
-                block();
-            }];
-        }];
+        block();
+        //[self animateBigText:@"KICK OFF" withCompletionBlock:^{
+        //    [self animateBigText:@"GAME ON" withCompletionBlock:^{
+        //        block();
+        //    }];
+        //}];
         
     }
     
@@ -837,6 +838,7 @@ float PARTICLE_SCALE;
     
     [bigText loadAsyncText:theText completion:^{
         
+        /*
         //[bigText setScale:1.5];
         float alpha = 1;
         for (int i = 0; i<6; i++) {
@@ -852,6 +854,7 @@ float PARTICLE_SCALE;
             
             // [bigText2 setScale:2.];
         }
+         
         float animateDuration = 1.1;
         [self fadeInChild:bigText duration:.1 withCompletion:^{
             [bigText runAction:[NKAction group: @[[NKAction rotateByAngle:-90 duration:animateDuration],[NKAction scaleBy:10 duration:animateDuration],[NKAction fadeAlphaTo:0. duration:animateDuration]]] completion:^{
@@ -860,6 +863,16 @@ float PARTICLE_SCALE;
                 }];
             }];
         }];
+         */
+        float animateDuration = 2;
+        [self fadeInChild:bigText duration:.1 withCompletion:^{
+            [bigText runAction:[NKAction group: @[[NKAction scaleBy:2 duration:animateDuration],[NKAction fadeAlphaTo:0. duration:animateDuration]]] completion:^{
+                [self fadeOutChild:bigText duration:.05 withCompletion:^{
+                    block();
+                }];
+            }];
+        }];
+
     }];
     
 }
