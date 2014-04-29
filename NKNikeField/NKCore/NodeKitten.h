@@ -65,9 +65,14 @@
 
 #import "NKNodeAnimationHandler.h"
 
+// SOUND
+
+#import "NKSoundManager.h"
+
 // UIKIT EXTENSIONS
 
 #import "NKViewController.h"
 #import "NKView.h"
+
 
 

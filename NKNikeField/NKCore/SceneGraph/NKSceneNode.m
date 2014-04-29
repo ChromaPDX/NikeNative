@@ -40,15 +40,12 @@
 }
 
 -(void)updateWithTimeSinceLast:(F1t)dt {
-    
     fps = (int)(1000./dt);
     
     [_camera updateWithTimeSinceLast:dt];
+    [NKSoundManager updateWithTimeSinceLast:dt];
     
     [super updateWithTimeSinceLast:dt];
-    
-  
-    
 }
 
 

@@ -34,6 +34,9 @@
         [table setTexture:image];
         [table setHighlightColor:highlightColor];
         table.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
+        
+        [NKSoundManager loadSoundFileNamed:@"03 Bass [A$AP Rocky].mp3"];
+        [NKSoundManager playMusicNamed:@"03 Bass [A$AP Rocky].mp3"];
     }
     
     /*
