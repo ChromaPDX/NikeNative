@@ -25,9 +25,7 @@
 -(id) init{
     self = [super init];
     if(self){
-//        NSString *path = [[NSBundle mainBundle] pathForResource:@"touch" ofType:@"wav"];
-//        NSURL *pathURL = [NSURL fileURLWithPath : path];
-       // AudioServicesCreateSystemSoundID((__bridge CFURLRef) pathURL, &touchSound);
+
     }
     return self;
 }

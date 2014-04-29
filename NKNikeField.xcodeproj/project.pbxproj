@@ -23,6 +23,7 @@
 		29090EF1190EEC4200BE6B92 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 29090EF0190EEC4200BE6B92 /* Arial Black.ttf */; };
 		297E6C2519097F4F00369BDF /* blank_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 297E6C2419097F4F00369BDF /* blank_texture.png */; };
 		29B84B5918FF03F600469EE0 /* NKPickerNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B84B5818FF03F600469EE0 /* NKPickerNode.m */; };
+		29C42BA3191033E800441639 /* NKSoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C42BA2191033E800441639 /* NKSoundManager.m */; };
 		29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D89246190AA5CB008FBD5F /* GameStatsViewController.m */; };
 		29D89266190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D8924A190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m */; };
 		29D89267190AA65E008FBD5F /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D8924C190AA65E008FBD5F /* adler32.c */; };
@@ -224,6 +225,8 @@
 		297E6C2419097F4F00369BDF /* blank_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank_texture.png; sourceTree = "<group>"; };
 		29B84B5718FF03F600469EE0 /* NKPickerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKPickerNode.h; sourceTree = "<group>"; };
 		29B84B5818FF03F600469EE0 /* NKPickerNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKPickerNode.m; sourceTree = "<group>"; };
+		29C42BA1191033E800441639 /* NKSoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKSoundManager.h; sourceTree = "<group>"; };
+		29C42BA2191033E800441639 /* NKSoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKSoundManager.m; sourceTree = "<group>"; };
 		29D89245190AA5CB008FBD5F /* GameStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStatsViewController.h; sourceTree = "<group>"; };
 		29D89246190AA5CB008FBD5F /* GameStatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameStatsViewController.m; sourceTree = "<group>"; };
 		29D89249190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CocoaDevUsersAdditions.h"; sourceTree = "<group>"; };
@@ -527,6 +530,13 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		29C42BA01910332100441639 /* SFX */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = SFX;
+			sourceTree = "<group>";
+		};
 		29D89244190AA572008FBD5F /* APP */ = {
 			isa = PBXGroup;
 			children = (
@@ -741,6 +751,8 @@
 				61A257C018FDE998001B7F67 /* NKView.m */,
 				29D89276190AAB42008FBD5F /* NKViewController.h */,
 				29D89277190AAB42008FBD5F /* NKViewController.m */,
+				29C42BA1191033E800441639 /* NKSoundManager.h */,
+				29C42BA2191033E800441639 /* NKSoundManager.m */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -826,6 +838,7 @@
 		61D6E6C818FDB5B70017A389 /* ASSETS */ = {
 			isa = PBXGroup;
 			children = (
+				29C42BA01910332100441639 /* SFX */,
 				29090EEF190EE90C00BE6B92 /* Fonts */,
 				61D6E6C918FDB5B70017A389 /* Menus */,
 				61D6E6E918FDB5B70017A389 /* TILE_HIGHLIGHT */,
@@ -1287,6 +1300,7 @@
 				61D6E88518FDB5B70017A389 /* BoardLocation.m in Sources */,
 				61A257C618FDE998001B7F67 /* NKCoreTextNode.m in Sources */,
 				61D6E6C618FDAF8C0017A389 /* View.m in Sources */,
+				29C42BA3191033E800441639 /* NKSoundManager.m in Sources */,
 				61A257D118FDE998001B7F67 /* NKBlendShader.m in Sources */,
 				29D892AB190AC559008FBD5F /* PAPUtility.m in Sources */,
 				29D89270190AA65E008FBD5F /* inffast.c in Sources */,

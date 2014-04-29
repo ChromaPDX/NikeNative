@@ -15,8 +15,8 @@
     NSMutableDictionary *imageCache;
     NSMutableDictionary *labelCache;
     dispatch_queue_t _textureThread;
-
 }
+
 + (NKTextureManager *)sharedInstance;
 + (NSMutableDictionary*) imageCache;
 + (NSMutableDictionary*) labelCache;
