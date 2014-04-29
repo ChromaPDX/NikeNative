@@ -1,0 +1,29 @@
+
+
+DONE
+player drops
+tap on team player
+tap on enemy player
+kick ball
+lock card
+wrong button sound
+double tap card contract
+Menu tap
+tap card
+move player
+card slide in
+kickoff text spin (CHANGE THIS, LOOKS UGLY)
+challenge ball - success
+challenge ball - fail
+car carousel swipe
+play card
+GOOOOOAAAALLL (CHNAGE TEXT, LOOKS UGLY)
+double tap card expand
+double tap card contract
+Menu song
+Field song
+
+
+
+
+

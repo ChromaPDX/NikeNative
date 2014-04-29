@@ -548,14 +548,14 @@ static const GLfloat ZAxis[] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f};
     
     if (NK_GL_VERSION == 2) {
         
-        _modelViewProjectionMatrix = M16IdentityMake();
-        M16SetV3Translation(&_modelViewProjectionMatrix, V3Make(.5, .5, .5));
+        _modelViewProjectionMatrix = M16MakeRotate(Q4FromV3(V3Make(0, sinf(lastTime)*20., 0)));
+        //M16SetV3Translation(&_modelViewProjectionMatrix, V3Make(.5, .5, .5));
         _normalMatrix = M16IdentityMake();
         
         glUseProgram(_program);
         
         glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _modelViewProjectionMatrix.m);
-        glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _normalMatrix.m);
+        //glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _normalMatrix.m);
         
         // 1
         glViewport(0, 0, self.frame.size.width, self.frame.size.height);

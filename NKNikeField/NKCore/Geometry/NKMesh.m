@@ -349,6 +349,17 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
 
 -(void) drawWithTexture:(NKTexture*)texture color:(C4t)color {
     
+    if (NK_GL_VERSION == 2) {
+//        
+//        glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE,
+//                              sizeof(Vertex), 0);
+//        glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE,
+//                              sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
+//        glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]),
+//                       GL_UNSIGNED_BYTE, 0);
+
+    }
+    else {
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
@@ -427,7 +438,7 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
     
-
+    }
     
 }
 

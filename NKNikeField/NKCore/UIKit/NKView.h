@@ -11,7 +11,7 @@
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 
-#define NK_GL_VERSION 1
+#define NK_GL_VERSION 2
 
 @class NKViewController;
 @class NKSceneNode;
