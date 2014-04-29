@@ -603,7 +603,7 @@ float PARTICLE_SCALE;
                 
                 [card runAction:grow completion:^{
                     
-                    [card runAction:[NKAction moveBy:CGVectorMake(0, 0) duration:CARD_ANIM_DUR] completion:^{
+                    [card runAction:[NKAction delayFor:CARD_ANIM_DUR] completion:^{
                         
                         NKAction *fall = [NKAction group:@[
                                                            [NKAction move3dTo:V3Make(dest.x, dest.y - _uxWindow.position.y, dest.z) duration:CARD_ANIM_DUR],
