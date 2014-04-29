@@ -833,6 +833,7 @@ float PARTICLE_SCALE;
     NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(300, 60) FontNamed:@"Arial-BoldMT"];
     bigText.fontSize = 40;
     bigText.fontColor = NKWHITE;
+    [bigText setZPosition:400];
     
     [bigText loadAsyncText:theText completion:^{
         
