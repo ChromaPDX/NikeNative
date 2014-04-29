@@ -654,6 +654,7 @@ static const GLfloat ZAxis[] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f};
 -(void)setScene:(NKSceneNode *)scene {
     _scene = scene;
     scene.nkView = self;
+    lastTime = CFAbsoluteTimeGetCurrent();
 }
 
 

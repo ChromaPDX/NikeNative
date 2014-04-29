@@ -56,6 +56,11 @@ typedef NS_ENUM(U1t, NKCullFaceMode) {
     NKCullFaceBoth
 } NS_ENUM_AVAILABLE(10_9, 7_0);
 
+@class NKNode;
+
+typedef void (^ActionBlock)(NKNode *node, F1t completion);
+typedef void (^CompletionBlock)(void);
+
 @interface NKNode : NSObject
 {
 

@@ -45,8 +45,6 @@ static inline F1t weightedAverage (F1t src, F1t dst, F1t d);
 static inline F1t logAverage (F1t src, F1t dst, F1t d);
 static inline V3t getTweenPoint(V3t src, V3t dst, F1t d);
 
-typedef void (^ActionBlock)(NKNode *node, F1t completion);
-
 @interface NKAction : NSObject
 
 //@property (nonatomic,weak) NKNode *node;

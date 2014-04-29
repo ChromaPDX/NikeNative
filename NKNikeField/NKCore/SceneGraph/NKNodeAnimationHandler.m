@@ -677,7 +677,6 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     self = [super init];
     
     if (self){
-        
         _node = node;
         actions = [[NSMutableArray alloc]init];
     }

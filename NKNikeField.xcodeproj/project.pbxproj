@@ -24,6 +24,8 @@
 		297E6C2519097F4F00369BDF /* blank_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 297E6C2419097F4F00369BDF /* blank_texture.png */; };
 		29B84B5918FF03F600469EE0 /* NKPickerNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B84B5818FF03F600469EE0 /* NKPickerNode.m */; };
 		29C42BA3191033E800441639 /* NKSoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C42BA2191033E800441639 /* NKSoundManager.m */; };
+		29C42BA51910384800441639 /* 30 PWSteal.Ldpinch.D.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BA41910384800441639 /* 30 PWSteal.Ldpinch.D.mp3 */; };
+		29C42BA7191053B000441639 /* 03 Bass [A$AP Rocky].mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BA6191053B000441639 /* 03 Bass [A$AP Rocky].mp3 */; };
 		29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D89246190AA5CB008FBD5F /* GameStatsViewController.m */; };
 		29D89266190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D8924A190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m */; };
 		29D89267190AA65E008FBD5F /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D8924C190AA65E008FBD5F /* adler32.c */; };
@@ -227,6 +229,8 @@
 		29B84B5818FF03F600469EE0 /* NKPickerNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKPickerNode.m; sourceTree = "<group>"; };
 		29C42BA1191033E800441639 /* NKSoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKSoundManager.h; sourceTree = "<group>"; };
 		29C42BA2191033E800441639 /* NKSoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKSoundManager.m; sourceTree = "<group>"; };
+		29C42BA41910384800441639 /* 30 PWSteal.Ldpinch.D.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "30 PWSteal.Ldpinch.D.mp3"; path = "SFX/field song/30 PWSteal.Ldpinch.D.mp3"; sourceTree = "<group>"; };
+		29C42BA6191053B000441639 /* 03 Bass [A$AP Rocky].mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "03 Bass [A$AP Rocky].mp3"; path = "SFX/menu song/03 Bass [A$AP Rocky].mp3"; sourceTree = "<group>"; };
 		29D89245190AA5CB008FBD5F /* GameStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStatsViewController.h; sourceTree = "<group>"; };
 		29D89246190AA5CB008FBD5F /* GameStatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameStatsViewController.m; sourceTree = "<group>"; };
 		29D89249190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CocoaDevUsersAdditions.h"; sourceTree = "<group>"; };
@@ -533,6 +537,8 @@
 		29C42BA01910332100441639 /* SFX */ = {
 			isa = PBXGroup;
 			children = (
+				29C42BA6191053B000441639 /* 03 Bass [A$AP Rocky].mp3 */,
+				29C42BA41910384800441639 /* 30 PWSteal.Ldpinch.D.mp3 */,
 			);
 			name = SFX;
 			sourceTree = "<group>";
@@ -1206,12 +1212,14 @@
 				29090EED190ED98B00BE6B92 /* Halo_Marks.png in Resources */,
 				61D6E86518FDB5B70017A389 /* Card_Icon_SpecM_L2.png in Resources */,
 				2902A06D190C7BAE008D0092 /* Faction_Genmod_ON.png in Resources */,
+				29C42BA51910384800441639 /* 30 PWSteal.Ldpinch.D.mp3 in Resources */,
 				61D6E46A18FDAE120017A389 /* Images.xcassets in Resources */,
 				29090EF1190EEC4200BE6B92 /* Arial Black.ttf in Resources */,
 				61D6E86718FDB5B70017A389 /* Challenge_L1a.png in Resources */,
 				61D6E80618FDB5B70017A389 /* tile_topright.png in Resources */,
 				61D6E46218FDAE110017A389 /* Main_iPhone.storyboard in Resources */,
 				2902A06F190C7BAE008D0092 /* Faction_Kinforce_OFF.png in Resources */,
+				29C42BA7191053B000441639 /* 03 Bass [A$AP Rocky].mp3 in Resources */,
 				61D6E87418FDB5B70017A389 /* Background_Field.png in Resources */,
 				61D6E45918FDAE110017A389 /* InfoPlist.strings in Resources */,
 			);
