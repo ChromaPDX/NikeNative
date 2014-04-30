@@ -104,7 +104,7 @@
         CTParagraphStyleRef paragraphStyle = CTParagraphStyleCreate(theSettings, theNumberOfSettings);
         
         NSDictionary *attributesDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        (__bridge id)(font), kCTFontAttributeName,
+                                        (__bridge id)(font), (NSString *)kCTFontAttributeName,
                                         color, kCTForegroundColorAttributeName,
                                         paragraphStyle, kCTParagraphStyleAttributeName,
                                         nil];

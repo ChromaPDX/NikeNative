@@ -550,6 +550,8 @@ float PARTICLE_SCALE;
                     NKAction *move = [NKAction moveTo:dest duration:.3];
                     [move setTimingMode:NKActionTimingEaseOut];
                     
+                    
+                    /*
                     [self.ballSprite runAction:move completion:^(){
                         NSLog(@"GameScene.m : animateEvent : GOAL");
                         [self animateBigText:@"GOAL !!!" withCompletionBlock:^{
@@ -558,6 +560,17 @@ float PARTICLE_SCALE;
                                 [_game endGame];
                                 [self.nkView setScene:[[RecapMenu alloc] initWithSize:self.size]];
                             }];
+                        }];
+                     }];
+                     */
+                    [self.ballSprite runAction:move completion:^(){
+                        NSLog(@"GameScene.m : animateEvent : GOAL");
+                        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"GOAL_text.png"]];
+                        NKSpriteNode* goal = [[NKSpriteNode alloc] initWithTexture:image];
+                        [self addChild:goal];
+                        [self runAction:[NKAction fadeAlphaTo:0 duration:2.5] completion:^{
+                            [_game endGame];
+                            [self.nkView setScene:[[RecapMenu alloc] initWithSize:self.size]];
                         }];
                     }];
                 }
@@ -781,11 +794,12 @@ float PARTICLE_SCALE;
     }
     
     else if (event.type == kEventKickoff){
-        [self animateBigText:@"KICK OFF" withCompletionBlock:^{
-            [self animateBigText:@"GAME ON" withCompletionBlock:^{
-                block();
-            }];
-        }];
+        block();
+       // [self animateBigText:@"KICK OFF" withCompletionBlock:^{
+        //    [self animateBigText:@"GAME ON" withCompletionBlock:^{
+       //        block();
+        //    }];
+       // }];
         
     }
     
@@ -838,13 +852,14 @@ float PARTICLE_SCALE;
 
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block {
     
-    NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(300, 60) FontNamed:@"Arial-BoldMT"];
+    NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(300, 60) FontNamed:@"Coe"];
     bigText.fontSize = 40;
     bigText.fontColor = NKWHITE;
     [bigText setZPosition:400];
     
     [bigText loadAsyncText:theText completion:^{
         
+        /*
         //[bigText setScale:1.5];
         float alpha = 1;
         for (int i = 0; i<6; i++) {
@@ -860,6 +875,7 @@ float PARTICLE_SCALE;
             
             // [bigText2 setScale:2.];
         }
+         
         float animateDuration = 1.1;
         [self fadeInChild:bigText duration:.1 withCompletion:^{
             [bigText runAction:[NKAction group: @[[NKAction rotateByAngle:-90 duration:animateDuration],[NKAction scaleBy:10 duration:animateDuration],[NKAction fadeAlphaTo:0. duration:animateDuration]]] completion:^{
@@ -868,8 +884,25 @@ float PARTICLE_SCALE;
                 }];
             }];
         }];
+         */
+        /*
+        float animateDuration = 2;
+        [self fadeInChild:bigText duration:.1 withCompletion:^{
+            [bigText runAction:[NKAction group: @[[NKAction scaleBy:2 duration:animateDuration],[NKAction fadeAlphaTo:0. duration:animateDuration]]] completion:^{
+                [self fadeOutChild:bigText duration:.05 withCompletion:^{
+                    block();
+                }];
+            }];
+        }];
+         */
+        [self fadeInChild:bigText duration:.25 withCompletion:^{
+            [bigText runAction:[NKAction delayFor:2.5] completion:^{
+                [self fadeOutChild:bigText duration:.25 withCompletion:^{
+                    block();
+                }];
+            }];
+        }];
     }];
-    
 }
 
 

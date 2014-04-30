@@ -360,27 +360,32 @@
     Player *playerWithBall = [self.manager playerWithBall];
     NSArray *possesionKickSet = [playerWithBall validatedSelectionSet];
     NSLog(@"pathToOpenFieldClosestToLocationInPassRange:");
-    for(BoardLocation *thisLoc in moveSet){
-        //NSLog(@"examining %@", thisLoc);
-        int distanceToTeammate = [self distanceAfterMoveToClosestTeammate:thisLoc];
-        //   [minTeammateDistances setObject:[NSNumber numberWithInt:distanceToTeammate] forKey:thisLoc];
-        NSArray *pathToTarget = [self pathFromBoardLocationToBoardLocationNoObstacles:thisLoc toLocation:location];
-        //  NSLog(@"disanceToTeammate = %d", distanceToTeammate);
-        if(pathToTarget){ // && distanceToTeammate >= 2){
-            //     NSLog(@"adding %@ to the list with pathToTarget.count = %d", thisLoc, [pathToTarget count]);
-            [locationDistances setObject:[NSNumber numberWithInt:[pathToTarget count]] forKey:thisLoc];
+    BOOL found = FALSE;
+    int teammateDistance = 2;
+    while(!found && teammateDistance >= 0){
+        for(BoardLocation *thisLoc in moveSet){
+            //NSLog(@"examining %@", thisLoc);
+            int distanceToTeammate = [self distanceAfterMoveToClosestTeammate:thisLoc];
+            //   [minTeammateDistances setObject:[NSNumber numberWithInt:distanceToTeammate] forKey:thisLoc];
+            NSArray *pathToTarget = [self pathFromBoardLocationToBoardLocationNoObstacles:thisLoc toLocation:location];
+            //  NSLog(@"disanceToTeammate = %d", distanceToTeammate);
+            if(pathToTarget && distanceToTeammate >= teammateDistance){
+                found = TRUE;
+                //     NSLog(@"adding %@ to the list with pathToTarget.count = %d", thisLoc, [pathToTarget count]);
+                [locationDistances setObject:[NSNumber numberWithInt:[pathToTarget count]] forKey:thisLoc];
+            }
+            else{
+                //   NSLog(@"removing %@ from location list, below threshold for min distance to teammates", thisLoc);
+            }
+            
+            // NSLog(@"pathToOpenFieldClosestLocation - thisSpace distance = %d", thisSpace);
+            // if(thisSpace > maxSpace){
+            //     retLoc = loc;
+            //     maxSpace = thisSpace;
+            // }
         }
-        else{
-            //   NSLog(@"removing %@ from location list, below threshold for min distance to teammates", thisLoc);
-        }
-        
-        // NSLog(@"pathToOpenFieldClosestLocation - thisSpace distance = %d", thisSpace);
-        // if(thisSpace > maxSpace){
-        //     retLoc = loc;
-        //     maxSpace = thisSpace;
-        // }
+        teammateDistance--;
     }
-    
     // NSArray *myPathToLoc = [self pathFromBoardLocationToBoardLocationNoObstacles:self.location toLocation:location];
     
     BoardLocation *retLoc = NULL;
