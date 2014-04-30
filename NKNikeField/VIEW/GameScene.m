@@ -70,11 +70,32 @@ float PARTICLE_SCALE;
 
         boardScale = 1.;
         
-        _soundFiles = @{@"gameMusic":@"30 PWSteal.Ldpinch.D.mp3",
+        _soundFiles = @{@"fieldSong":@"30 PWSteal.Ldpinch.D.mp3",
+                        
                         @"cardTap":@"Androyd-Uck-41.wav",
                         @"cardLock":@"lock.aiff",
-                        @"cardPlay":@"DotMatrix-Pang-84.wav"
+                        @"cardPlay":@"DotMatrix-Pang-84.wav",
+                        @"cardSlideIn":@"swish.aiff",
+                        @"cardExpand":@"expand.aiff",
+                        @"cardContract":@"contract.aiff",
+                        @"cardSwipe":@"PlucknWiggleA#1.wav",
+                        
+                        @"playerTap":@"Androyd-Alert-84.wav",
+                        @"enemyTap":@"Androyd-Agitake-42.wav",
+                        @"playerMove":@"KnifeMachine-MindEraser-42.wav",
+                        @"playerPass":@"slope-rattle.wav",
+                        @"playerShoot":@"slope-rattle.wav",
+                        
+                        @"goal":@"goal.aiff"
+                        
                         };
+        
+        _soundVolumes = @{@"fieldSong": @.5,
+                          @"cardExpand":@.5,
+                          @"cardContract":@.5,
+                          };
+        
+        [NKSoundManager loadMultipleSoundFiles:_soundFiles.allValues];
         
         //
         //        _scoreBoard = [[ScoreBoard alloc] initWithTexture:nil color:nil size:CGSizeMake(WINDOW_WIDTH*2., WINDOW_WIDTH*.5)];
@@ -189,7 +210,7 @@ float PARTICLE_SCALE;
     [_pivot runAction:[NKAction rotate3dToAngle:V3Make(-26, 0,0) duration:2.]];
     [_pivot runAction:[NKAction move3dTo:V3Make(0,-h*.25,0) duration:2.]];
     
-    [NKSoundManager loadAndPlayMusicNamed:[_soundFiles objectForKey:@"gameMusic"]];
+    [self playMusicWithKey:@"fieldSong"];
 }
 
 //-(void)startMiniGame {
@@ -306,11 +327,17 @@ float PARTICLE_SCALE;
 
 -(void)setSelectedPlayer:(Player *)selectedPlayer {
     
+    if (![selectedPlayer.manager isEqual:_game.me]) {
+        [self playSoundWithKey:@"enemyTap"];
+    }
+    
     if ([_game canUsePlayer:selectedPlayer]) {
         
         if (_selectedCard) {
             [self setSelectedCard:nil];
         }
+        
+          [self playSoundWithKey:@"playerTap"];
         
         [self showPlayerSelection:selectedPlayer];
         
@@ -449,7 +476,7 @@ float PARTICLE_SCALE;
             }
         }];
         
-        
+        [self playSoundWithKey:@"playerMove"];
         
         
     }
@@ -509,6 +536,9 @@ float PARTICLE_SCALE;
                 
                 // SUCCESSFUL PASS
                 if ((event.type == kEventKickPass && event.wasSuccessful)) {
+                    
+                    [self playSoundWithKey:@"playerPass"];
+                    
                     if (receiver) {
                         [receiver getReadyForPosession:^{
                             NKAction *move = [NKAction move3dTo:[receiver.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED];
@@ -546,6 +576,9 @@ float PARTICLE_SCALE;
                 
                 // SUCCESSFUL GOAL
                 else if (event.type == kEventKickGoal && event.wasSuccessful) {
+                    
+                    [self playSoundWithKey:@"playerShoot"];
+                    
                     CGPoint dest = [[_gameTiles objectForKey:event.location] position];
                     NKAction *move = [NKAction moveTo:dest duration:.3];
                     [move setTimingMode:NKActionTimingEaseOut];
@@ -568,6 +601,9 @@ float PARTICLE_SCALE;
                         NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"GOAL_text.png"]];
                         NKSpriteNode* goal = [[NKSpriteNode alloc] initWithTexture:image];
                         [self addChild:goal];
+                        
+                        [self playSoundWithKey:@"goal"];
+                        
                         [self runAction:[NKAction fadeAlphaTo:0 duration:2.5] completion:^{
                             [_game endGame];
                             [self.nkView setScene:[[RecapMenu alloc] initWithSize:self.size]];
@@ -623,6 +659,8 @@ float PARTICLE_SCALE;
                                                    [NKAction scaleTo:1.5 duration:CARD_ANIM_DUR]]];
                 
                 [card runAction:grow completion:^{
+                    
+                    [self playSoundWithKey:@"cardPlay"];
                     
                     [card runAction:[NKAction delayFor:CARD_ANIM_DUR] completion:^{
                         
@@ -1142,7 +1180,21 @@ float PARTICLE_SCALE;
     
 }
 
+#pragma mark - SOUND
 
+-(void)playMusicWithKey:(NSString*)key {
+    [NKSoundManager playMusicNamed:[_soundFiles objectForKey:key]];
+    if ([_soundVolumes objectForKey:key]) {
+        [NKSoundManager setVolume:[[_soundVolumes objectForKey:key]floatValue] forSoundNamed:[_soundFiles objectForKey:key]];
+    }
+}
+
+-(void)playSoundWithKey:(NSString*)key {
+    [NKSoundManager playSoundNamed:[_soundFiles objectForKey:key]];
+    if ([_soundVolumes objectForKey:key]) {
+        [NKSoundManager setVolume:[[_soundVolumes objectForKey:key]floatValue] forSoundNamed:[_soundFiles objectForKey:key]];
+    }
+}
 
 #pragma mark - POSITION FUNCTIONS
 

@@ -190,6 +190,8 @@
     else {
         _model.locked = true;
         [self showLocked];
+        
+        [(GameScene*)self.scene playSoundWithKey:@"cardLock"];
     }
 }
 
@@ -213,6 +215,7 @@
                 }
                 else {
                     [_window cardTouchEnded:self atPoint:location];
+                    [(GameScene*)self.scene playSoundWithKey:@"cardTap"];
                 }
                 
             }

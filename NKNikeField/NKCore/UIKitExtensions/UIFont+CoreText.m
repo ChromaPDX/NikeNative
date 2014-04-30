@@ -31,7 +31,7 @@
     return result;
     }
     
-    NSLog(@"CoreText: Error loading Font from Bundle");
+    NSLog(@"CoreText: Error loading Font from Bundle named %@", name);
     return CTFontCreateWithName((CFStringRef) @"Helvetica", size, NULL);
 }
 

@@ -415,6 +415,8 @@
     }
     
     else {
+        [self shouldBeginRestitution];
+        
         _scrollPhase = ScrollPhaseRestitution;
         easeIn = 12.;
         easeOut = false;
@@ -444,7 +446,20 @@
     else {
         //NSLog(@"scroll stopped");
         _scrollPhase = ScrollPhaseNil;
+        [self scrollDidEnd];
     }
+}
+
+-(bool)scrollShouldStart {
+    return true;
+}
+
+-(void)shouldBeginRestitution {
+    
+}
+
+-(void)scrollDidEnd {
+    
 }
 
 #pragma mark - Touch Handling
@@ -555,7 +570,10 @@
                 if (_scrollPhase <= ScrollPhaseBegan){
                     
                     if (fabs(scrollVel) > fabs(counterVel) + (restitution * 2.)){
-                        _scrollPhase = ScrollPhaseRecognized;
+                  
+                        if ([self scrollShouldStart]) {
+                                  _scrollPhase = ScrollPhaseRecognized;
+                        };
                         //NSLog(@"Scroll started %f, %f", scrollVel, counterVel);
                         
                     }

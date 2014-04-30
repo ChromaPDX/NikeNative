@@ -201,10 +201,11 @@
         
         int cardNum = [ph.myCards indexOfObject:[self spriteForCard:card.model]];
         [big scrollToChild:cardNum  duration:FAST_ANIM_DUR];
+        [(GameScene*)self.scene playSoundWithKey:@"cardExpand"];
         
     }
     else {
-      
+
         [self hideBigCards];
         
     }
@@ -225,6 +226,8 @@
         ph.bigCards = nil;
     }];
     [self runAction:[NKAction resizeToWidth:w height:_delegate.size.height*.15 duration:dur]];
+    
+    [(GameScene*)self.scene playSoundWithKey:@"cardContract"];
 }
 
 -(void)setSelectedCard:(Card *)selectedCard {
@@ -551,6 +554,21 @@
     
     card.userInteractionEnabled = true;
 }
+
+-(void)scrollToChild:(int)child duration:(F1t)duration {
+    [super scrollToChild:child duration:duration];
+    //[(GameScene*)self.scene playSoundWithKey:@"cardSwipe"];
+}
+
+-(bool)scrollShouldStart {
+    [(GameScene*)self.scene playSoundWithKey:@"cardSwipe"];
+    return [super scrollShouldStart];
+}
+
+-(void)shouldBeginRestitution {
+    [super shouldBeginRestitution];
+}
+
 
 @end
 

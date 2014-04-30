@@ -18,8 +18,6 @@
 
 #define AI_SPEED .75
 
-
-
 @interface GameScene : NKSceneNode <GameSceneProtocol>
 
 {
@@ -34,6 +32,7 @@
 
 @property (nonatomic, strong) NSMutableDictionary *gameTiles;  //objects:game tiles, key:location
 @property (nonatomic, strong) NSDictionary *soundFiles;
+@property (nonatomic, strong) NSDictionary *soundVolumes;
 // UI NODES / SPRITES
 
 @property (nonatomic,strong) NKNode* pivot;
@@ -61,6 +60,8 @@
 
 // INTER NODE / DELEGATE
 
+-(void)playSoundWithKey:(NSString*)key;
+-(void)playMusicWithKey:(NSString*)key;
 
 -(void)shouldPerformCurrentAction;
 -(BOOL)requestActionWithPlayer:(PlayerSprite*)player;

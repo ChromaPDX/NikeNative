@@ -65,8 +65,11 @@ static NKSoundManager *sharedObject = nil;
         
         if (isMusic) {
 
+            soundPlayer.autoRepeat = true;
+            
             if (manager.currentPlayingMusic) {
                 [manager.currentPlayingMusic runAction:[NKAction fadeOutSoundWithDuration:8.]];
+                
                 [soundPlayer runAction:[NKAction fadeInSoundWithDuration:2.] completion:^{
                     manager.currentPlayingMusic = soundPlayer;
                 }];
@@ -108,6 +111,11 @@ static NKSoundManager *sharedObject = nil;
     }
 }
 
++(void)setVolume:(F1t)volume forSoundNamed:(NSString*)name {
+    NKSoundManager *manager = [NKSoundManager sharedInstance];
+    [[manager.cachedSounds objectForKey:name] setMaxVolume:volume];
+}
+
 @end
 
 @implementation NKSoundNode
@@ -124,6 +132,7 @@ static NKSoundManager *sharedObject = nil;
     
     if (self) {
         self.name = name;
+        _maxVolume = 1.;
         
         NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:nil];
         if (path) {
@@ -152,9 +161,15 @@ static NKSoundManager *sharedObject = nil;
 }
 
 -(bool)play {
-    if ([player play]) {
-        NSLog(@"--NKSoundNode playing: %@",self.name);
+    if (player.isPlaying) {
+        [player setCurrentTime:0];
         return 1;
+    }
+    else {
+    if ([player play]) {
+        //NSLog(@"--NKSoundNode playing: %@",self.name);
+        return 1;
+    }
     }
     return 0;
 }
@@ -171,10 +186,25 @@ static NKSoundManager *sharedObject = nil;
     return player.isPlaying;
 }
 
--(void)setVolume:(F1t)volume {
-    [player setVolume:volume];
+-(void)setMaxVolume:(F1t)volume {
+    _maxVolume = volume;
+    if (player.volume > _maxVolume) {
+        [player setVolume:player.volume * _maxVolume];
+    }
 }
 
+-(void)setVolume:(F1t)volume {
+    [player setVolume:player.volume];
+}
+
+-(void)setAutoRepeat:(bool)autoRepeat {
+    if (autoRepeat) {
+        [player setNumberOfLoops:-1];
+    }
+    else {
+        [player setNumberOfLoops:0];
+    }
+}
 //-(void)updateWithTimeSinceLast:(F1t)dt {
 //    if (player.isPlaying) {
 //        [super updateWithTimeSinceLast:dt];
@@ -216,7 +246,7 @@ static NKSoundManager *sharedObject = nil;
         
        // NSLog(@"fade sound to %1.2f", completion);
         
-        [(NKSoundNode*)node setVolume:completion];
+        [(NKSoundNode*)node setVolume:completion * [(NKSoundNode*)node maxVolume]];
         
     };
     
@@ -232,7 +262,7 @@ static NKSoundManager *sharedObject = nil;
             action.reset = false;
         }
         
-        [(NKSoundNode*)node setVolume:1. - completion];
+        [(NKSoundNode*)node setVolume:(1. - completion) * [(NKSoundNode*)node maxVolume]];
         
         if (completion) {
                [(NKSoundNode*)node stop];

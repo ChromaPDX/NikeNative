@@ -20,6 +20,8 @@
 +(void)playSoundNamed:(NSString*)name;
 +(void)playMusicNamed:(NSString*)name;
 
++(void)setVolume:(F1t)volume forSoundNamed:(NSString*)name;
+
 + (NKSoundManager *)sharedInstance;
 + (void)updateWithTimeSinceLast:(F1t)dt;
 
@@ -36,6 +38,8 @@
 }
 
 +(instancetype)soundWithName:(NSString*)name;
+@property (nonatomic) F1t maxVolume;
+@property (nonatomic) bool autoRepeat;
 
 -(void)stop;
 -(bool)play;
