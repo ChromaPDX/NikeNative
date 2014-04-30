@@ -545,6 +545,8 @@ float PARTICLE_SCALE;
                     NKAction *move = [NKAction moveTo:dest duration:.3];
                     [move setTimingMode:NKActionTimingEaseOut];
                     
+                    
+                    /*
                     [self.ballSprite runAction:move completion:^(){
                         NSLog(@"GameScene.m : animateEvent : GOAL");
                         [self animateBigText:@"GOAL !!!" withCompletionBlock:^{
@@ -553,6 +555,17 @@ float PARTICLE_SCALE;
                                 [_game endGame];
                                 [self.nkView setScene:[[RecapMenu alloc] initWithSize:self.size]];
                             }];
+                        }];
+                     }];
+                     */
+                    [self.ballSprite runAction:move completion:^(){
+                        NSLog(@"GameScene.m : animateEvent : GOAL");
+                        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"GOAL_text.png"]];
+                        NKSpriteNode* goal = [[NKSpriteNode alloc] initWithTexture:image];
+                        [self addChild:goal];
+                        [self runAction:[NKAction fadeAlphaTo:0 duration:2.5] completion:^{
+                            [_game endGame];
+                            [self.nkView setScene:[[RecapMenu alloc] initWithSize:self.size]];
                         }];
                     }];
                 }

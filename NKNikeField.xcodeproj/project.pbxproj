@@ -75,6 +75,7 @@
 		3B6BF2411911371F0082628E /* screen_recap.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF23F1911371F0082628E /* screen_recap.png */; };
 		3B6BF2441911416C0082628E /* LOGO_Icon_Bola.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF2431911416C0082628E /* LOGO_Icon_Bola.png */; };
 		3B6BF246191144280082628E /* LOGO_Icon_Bola_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF245191144280082628E /* LOGO_Icon_Bola_small.png */; };
+		3B6BF248191149A70082628E /* GOAL_text.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF247191149A70082628E /* GOAL_text.png */; };
 		6198A359190068660083EA5D /* UXTopBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6198A358190068660083EA5D /* UXTopBar.m */; };
 		6198A35B1900727C0083EA5D /* lock-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 6198A35A1900727C0083EA5D /* lock-4.png */; };
 		61A257C118FDE998001B7F67 /* NKMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578418FDE998001B7F67 /* NKMaterial.m */; };
@@ -317,6 +318,7 @@
 		3B6BF2421911396E0082628E /* Coe.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Coe.otf; sourceTree = "<group>"; };
 		3B6BF2431911416C0082628E /* LOGO_Icon_Bola.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LOGO_Icon_Bola.png; sourceTree = "<group>"; };
 		3B6BF245191144280082628E /* LOGO_Icon_Bola_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LOGO_Icon_Bola_small.png; sourceTree = "<group>"; };
+		3B6BF247191149A70082628E /* GOAL_text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GOAL_text.png; sourceTree = "<group>"; };
 		6198A357190068660083EA5D /* UXTopBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UXTopBar.h; sourceTree = "<group>"; };
 		6198A358190068660083EA5D /* UXTopBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UXTopBar.m; sourceTree = "<group>"; };
 		6198A35A1900727C0083EA5D /* lock-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock-4.png"; sourceTree = "<group>"; };
@@ -951,6 +953,7 @@
 		61D6E77618FDB5B70017A389 /* V2_HUD */ = {
 			isa = PBXGroup;
 			children = (
+				3B6BF247191149A70082628E /* GOAL_text.png */,
 				3B6BF245191144280082628E /* LOGO_Icon_Bola_small.png */,
 				3B6BF2431911416C0082628E /* LOGO_Icon_Bola.png */,
 				6198A35A1900727C0083EA5D /* lock-4.png */,
@@ -1168,6 +1171,7 @@
 				61A257DC18FDE998001B7F67 /* skysphere.png in Resources */,
 				61D6E85E18FDB5B70017A389 /* Card_Icon_SpecC_L1.png in Resources */,
 				61D6E87818FDB5B70017A389 /* Field_Layer01.png in Resources */,
+				3B6BF248191149A70082628E /* GOAL_text.png in Resources */,
 				61D6E80118FDB5B70017A389 /* tile_left.png in Resources */,
 				61D6E7FC18FDB5B70017A389 /* tile_all.png in Resources */,
 				297E6C2519097F4F00369BDF /* blank_texture.png in Resources */,
