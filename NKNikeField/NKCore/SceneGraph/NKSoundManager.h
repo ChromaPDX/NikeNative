@@ -15,8 +15,8 @@
 
 +(void)loadSoundFileNamed:(NSString*)name;
 +(void)loadMultipleSoundFiles:(NSArray*)names;
++(void)loadAndPlayMusicNamed:(NSString*)name;
 
-//+(void)playSoundFileNamed:(NSString *)name isMusic:(bool)isMusic;
 +(void)playSoundNamed:(NSString*)name;
 +(void)playMusicNamed:(NSString*)name;
 

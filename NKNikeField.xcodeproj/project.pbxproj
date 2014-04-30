@@ -22,10 +22,53 @@
 		29090EEE190ED98B00BE6B92 /* Halo.png in Resources */ = {isa = PBXBuildFile; fileRef = 29090EEB190ED98B00BE6B92 /* Halo.png */; };
 		29090EF1190EEC4200BE6B92 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 29090EF0190EEC4200BE6B92 /* Arial Black.ttf */; };
 		297E6C2519097F4F00369BDF /* blank_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 297E6C2419097F4F00369BDF /* blank_texture.png */; };
-		29B84B5918FF03F600469EE0 /* NKPickerNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B84B5818FF03F600469EE0 /* NKPickerNode.m */; };
-		29C42BA3191033E800441639 /* NKSoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C42BA2191033E800441639 /* NKSoundManager.m */; };
-		29C42BA51910384800441639 /* 30 PWSteal.Ldpinch.D.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BA41910384800441639 /* 30 PWSteal.Ldpinch.D.mp3 */; };
-		29C42BA7191053B000441639 /* 03 Bass [A$AP Rocky].mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BA6191053B000441639 /* 03 Bass [A$AP Rocky].mp3 */; };
+		29BF47FE1911666500487EBD /* NKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FA1911666500487EBD /* NKView.m */; };
+		29BF47FF1911666500487EBD /* NKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FC1911666500487EBD /* NKViewController.m */; };
+		29BF481D1911667900487EBD /* NKCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48021911667900487EBD /* NKCamera.m */; };
+		29BF481E1911667900487EBD /* NKCoreTextNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48041911667900487EBD /* NKCoreTextNode.m */; };
+		29BF481F1911667900487EBD /* NKEmitterNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48061911667900487EBD /* NKEmitterNode.m */; };
+		29BF48201911667900487EBD /* NKLabelNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48081911667900487EBD /* NKLabelNode.m */; };
+		29BF48211911667900487EBD /* NKMeshNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF480A1911667900487EBD /* NKMeshNode.m */; };
+		29BF48221911667900487EBD /* NKNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF480C1911667900487EBD /* NKNode.m */; };
+		29BF48231911667900487EBD /* NKNodeAnimationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF480E1911667900487EBD /* NKNodeAnimationHandler.m */; };
+		29BF48241911667900487EBD /* NKPickerNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48101911667900487EBD /* NKPickerNode.m */; };
+		29BF48251911667900487EBD /* NKPrimitiveNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48121911667900487EBD /* NKPrimitiveNode.m */; };
+		29BF48261911667900487EBD /* NKSceneNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48141911667900487EBD /* NKSceneNode.m */; };
+		29BF48271911667900487EBD /* NKScrollNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48161911667900487EBD /* NKScrollNode.m */; };
+		29BF48281911667900487EBD /* NKShaderNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48181911667900487EBD /* NKShaderNode.m */; };
+		29BF48291911667900487EBD /* NKSoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF481A1911667900487EBD /* NKSoundManager.m */; };
+		29BF482A1911667900487EBD /* NKSpriteNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF481C1911667900487EBD /* NKSpriteNode.m */; };
+		29BF482D19116B0600487EBD /* UIFont+CoreText.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF482C19116B0600487EBD /* UIFont+CoreText.m */; };
+		29C42BDB19105C0600441639 /* 30 PWSteal.Ldpinch.D.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BA919105C0600441639 /* 30 PWSteal.Ldpinch.D.mp3 */; };
+		29C42BDC19105C0600441639 /* 06 Track 6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BAB19105C0600441639 /* 06 Track 6.mp3 */; };
+		29C42BDD19105C0600441639 /* kickoff.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BAC19105C0600441639 /* kickoff.aiff */; };
+		29C42BDE19105C0600441639 /* 03 Bass [A$AP Rocky].mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BAE19105C0600441639 /* 03 Bass [A$AP Rocky].mp3 */; };
+		29C42BDF19105C0600441639 /* goal.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BB019105C0600441639 /* goal.aiff */; };
+		29C42BE019105C0600441639 /* goal_easter_egg.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BB119105C0600441639 /* goal_easter_egg.mp3 */; };
+		29C42BE119105C0600441639 /* raw-original.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BB319105C0600441639 /* raw-original.wav */; };
+		29C42BE219105C0600441639 /* swish.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BB419105C0600441639 /* swish.aiff */; };
+		29C42BE319105C0600441639 /* FattNedC2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BB619105C0600441639 /* FattNedC2.wav */; };
+		29C42BE419105C0600441639 /* Tom-FMD-TomiVoz-Lo-127.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BB719105C0600441639 /* Tom-FMD-TomiVoz-Lo-127.wav */; };
+		29C42BE519105C0600441639 /* 178993__glitchedtones__glitchedtones-rise.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BB919105C0600441639 /* 178993__glitchedtones__glitchedtones-rise.wav */; };
+		29C42BE619105C0600441639 /* expand.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BBA19105C0600441639 /* expand.aiff */; };
+		29C42BE719105C0600441639 /* FattNedA4.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BBC19105C0600441639 /* FattNedA4.wav */; };
+		29C42BE819105C0600441639 /* PlucknWiggleA#1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BBE19105C0600441639 /* PlucknWiggleA#1.wav */; };
+		29C42BE919105C0600441639 /* PlucknWiggleA#2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BBF19105C0600441639 /* PlucknWiggleA#2.wav */; };
+		29C42BEA19105C0600441639 /* PlucknWiggleA#3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BC019105C0600441639 /* PlucknWiggleA#3.wav */; };
+		29C42BEB19105C0600441639 /* KnifeMachine-MindEraser-42.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BC219105C0600441639 /* KnifeMachine-MindEraser-42.wav */; };
+		29C42BEC19105C0600441639 /* Mercurian-BrainWasher-42.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BC319105C0600441639 /* Mercurian-BrainWasher-42.wav */; };
+		29C42BED19105C0600441639 /* anomaly_19.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BC519105C0600441639 /* anomaly_19.wav */; };
+		29C42BEE19105C0600441639 /* Androyd-Agitake-42.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BC719105C0600441639 /* Androyd-Agitake-42.wav */; };
+		29C42BEF19105C0600441639 /* high6-b.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BC819105C0600441639 /* high6-b.wav */; };
+		29C42BF019105C0600441639 /* contract.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BCA19105C0600441639 /* contract.aiff */; };
+		29C42BF119105C0600441639 /* anomaly_7.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BCC19105C0600441639 /* anomaly_7.wav */; };
+		29C42BF219105C0600441639 /* slope-rattle.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BCE19105C0600441639 /* slope-rattle.wav */; };
+		29C42BF319105C0600441639 /* Androyd-Uck-41.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BD019105C0600441639 /* Androyd-Uck-41.wav */; };
+		29C42BF419105C0600441639 /* lock.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BD219105C0600441639 /* lock.aiff */; };
+		29C42BF519105C0600441639 /* DeStablizer-MetalBowl-41.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BD419105C0600441639 /* DeStablizer-MetalBowl-41.wav */; };
+		29C42BF619105C0600441639 /* DotMatrix-Pang-84.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BD619105C0600441639 /* DotMatrix-Pang-84.wav */; };
+		29C42BF719105C0600441639 /* Androyd-Alert-84.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BD819105C0600441639 /* Androyd-Alert-84.wav */; };
+		29C42BF819105C0600441639 /* Androyd-Bulbtone-41.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BDA19105C0600441639 /* Androyd-Bulbtone-41.wav */; };
 		29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D89246190AA5CB008FBD5F /* GameStatsViewController.m */; };
 		29D89266190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D8924A190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m */; };
 		29D89267190AA65E008FBD5F /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D8924C190AA65E008FBD5F /* adler32.c */; };
@@ -43,7 +86,6 @@
 		29D89273190AA65E008FBD5F /* trees.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D8925F190AA65E008FBD5F /* trees.c */; };
 		29D89274190AA65E008FBD5F /* uncompr.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D89261190AA65E008FBD5F /* uncompr.c */; };
 		29D89275190AA65E008FBD5F /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D89264190AA65E008FBD5F /* zutil.c */; };
-		29D89278190AAB42008FBD5F /* NKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D89277190AAB42008FBD5F /* NKViewController.m */; };
 		29D8927B190AAD28008FBD5F /* SyncScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D8927A190AAD28008FBD5F /* SyncScene.m */; };
 		29D89291190AC3B0008FBD5F /* diagonals.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D8927D190AC3B0008FBD5F /* diagonals.png */; };
 		29D89292190AC3B0008FBD5F /* diagonals@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D8927E190AC3B0008FBD5F /* diagonals@2x.png */; };
@@ -82,18 +124,6 @@
 		61A257C218FDE998001B7F67 /* NKMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578618FDE998001B7F67 /* NKMesh.m */; };
 		61A257C318FDE998001B7F67 /* NKStaticDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578918FDE998001B7F67 /* NKStaticDraw.m */; };
 		61A257C418FDE998001B7F67 /* NKVectorTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578B18FDE998001B7F67 /* NKVectorTypes.m */; };
-		61A257C518FDE998001B7F67 /* NKCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2579018FDE998001B7F67 /* NKCamera.m */; };
-		61A257C618FDE998001B7F67 /* NKCoreTextNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2579218FDE998001B7F67 /* NKCoreTextNode.m */; };
-		61A257C718FDE998001B7F67 /* NKEmitterNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2579418FDE998001B7F67 /* NKEmitterNode.m */; };
-		61A257C818FDE998001B7F67 /* NKLabelNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2579618FDE998001B7F67 /* NKLabelNode.m */; };
-		61A257C918FDE998001B7F67 /* NKMeshNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2579818FDE998001B7F67 /* NKMeshNode.m */; };
-		61A257CA18FDE998001B7F67 /* NKNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2579A18FDE998001B7F67 /* NKNode.m */; };
-		61A257CB18FDE998001B7F67 /* NKNodeAnimationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2579C18FDE998001B7F67 /* NKNodeAnimationHandler.m */; };
-		61A257CC18FDE998001B7F67 /* NKPrimitiveNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2579E18FDE998001B7F67 /* NKPrimitiveNode.m */; };
-		61A257CD18FDE998001B7F67 /* NKSceneNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257A018FDE998001B7F67 /* NKSceneNode.m */; };
-		61A257CE18FDE998001B7F67 /* NKScrollNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257A218FDE998001B7F67 /* NKScrollNode.m */; };
-		61A257CF18FDE998001B7F67 /* NKShaderNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257A418FDE998001B7F67 /* NKShaderNode.m */; };
-		61A257D018FDE998001B7F67 /* NKSpriteNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257A618FDE998001B7F67 /* NKSpriteNode.m */; };
 		61A257D118FDE998001B7F67 /* NKBlendShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257A918FDE998001B7F67 /* NKBlendShader.m */; };
 		61A257D218FDE998001B7F67 /* NKDrawDepthShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257AB18FDE998001B7F67 /* NKDrawDepthShader.m */; };
 		61A257D318FDE998001B7F67 /* NKGaussianBlur.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257AD18FDE998001B7F67 /* NKGaussianBlur.m */; };
@@ -106,7 +136,6 @@
 		61A257DA18FDE998001B7F67 /* NKTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257BA18FDE998001B7F67 /* NKTexture.m */; };
 		61A257DB18FDE998001B7F67 /* NKTextureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257BC18FDE998001B7F67 /* NKTextureManager.m */; };
 		61A257DC18FDE998001B7F67 /* skysphere.png in Resources */ = {isa = PBXBuildFile; fileRef = 61A257BD18FDE998001B7F67 /* skysphere.png */; };
-		61A257DD18FDE998001B7F67 /* NKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257C018FDE998001B7F67 /* NKView.m */; };
 		61D6E44F18FDAE110017A389 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D6E44E18FDAE110017A389 /* Foundation.framework */; };
 		61D6E45118FDAE110017A389 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D6E45018FDAE110017A389 /* CoreGraphics.framework */; };
 		61D6E45318FDAE110017A389 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D6E45218FDAE110017A389 /* UIKit.framework */; };
@@ -228,12 +257,70 @@
 		29090EEB190ED98B00BE6B92 /* Halo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Halo.png; sourceTree = "<group>"; };
 		29090EF0190EEC4200BE6B92 /* Arial Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Black.ttf"; sourceTree = "<group>"; };
 		297E6C2419097F4F00369BDF /* blank_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank_texture.png; sourceTree = "<group>"; };
-		29B84B5718FF03F600469EE0 /* NKPickerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKPickerNode.h; sourceTree = "<group>"; };
-		29B84B5818FF03F600469EE0 /* NKPickerNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKPickerNode.m; sourceTree = "<group>"; };
-		29C42BA1191033E800441639 /* NKSoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKSoundManager.h; sourceTree = "<group>"; };
-		29C42BA2191033E800441639 /* NKSoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKSoundManager.m; sourceTree = "<group>"; };
-		29C42BA41910384800441639 /* 30 PWSteal.Ldpinch.D.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "30 PWSteal.Ldpinch.D.mp3"; path = "SFX/field song/30 PWSteal.Ldpinch.D.mp3"; sourceTree = "<group>"; };
-		29C42BA6191053B000441639 /* 03 Bass [A$AP Rocky].mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "03 Bass [A$AP Rocky].mp3"; path = "SFX/menu song/03 Bass [A$AP Rocky].mp3"; sourceTree = "<group>"; };
+		29BF47F91911666500487EBD /* NKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKView.h; sourceTree = "<group>"; };
+		29BF47FA1911666500487EBD /* NKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKView.m; sourceTree = "<group>"; };
+		29BF47FB1911666500487EBD /* NKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKViewController.h; sourceTree = "<group>"; };
+		29BF47FC1911666500487EBD /* NKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKViewController.m; sourceTree = "<group>"; };
+		29BF48011911667900487EBD /* NKCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKCamera.h; sourceTree = "<group>"; };
+		29BF48021911667900487EBD /* NKCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKCamera.m; sourceTree = "<group>"; };
+		29BF48031911667900487EBD /* NKCoreTextNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKCoreTextNode.h; sourceTree = "<group>"; };
+		29BF48041911667900487EBD /* NKCoreTextNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKCoreTextNode.m; sourceTree = "<group>"; };
+		29BF48051911667900487EBD /* NKEmitterNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKEmitterNode.h; sourceTree = "<group>"; };
+		29BF48061911667900487EBD /* NKEmitterNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKEmitterNode.m; sourceTree = "<group>"; };
+		29BF48071911667900487EBD /* NKLabelNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKLabelNode.h; sourceTree = "<group>"; };
+		29BF48081911667900487EBD /* NKLabelNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKLabelNode.m; sourceTree = "<group>"; };
+		29BF48091911667900487EBD /* NKMeshNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKMeshNode.h; sourceTree = "<group>"; };
+		29BF480A1911667900487EBD /* NKMeshNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKMeshNode.m; sourceTree = "<group>"; };
+		29BF480B1911667900487EBD /* NKNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKNode.h; sourceTree = "<group>"; };
+		29BF480C1911667900487EBD /* NKNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKNode.m; sourceTree = "<group>"; };
+		29BF480D1911667900487EBD /* NKNodeAnimationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKNodeAnimationHandler.h; sourceTree = "<group>"; };
+		29BF480E1911667900487EBD /* NKNodeAnimationHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKNodeAnimationHandler.m; sourceTree = "<group>"; };
+		29BF480F1911667900487EBD /* NKPickerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKPickerNode.h; sourceTree = "<group>"; };
+		29BF48101911667900487EBD /* NKPickerNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKPickerNode.m; sourceTree = "<group>"; };
+		29BF48111911667900487EBD /* NKPrimitiveNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKPrimitiveNode.h; sourceTree = "<group>"; };
+		29BF48121911667900487EBD /* NKPrimitiveNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKPrimitiveNode.m; sourceTree = "<group>"; };
+		29BF48131911667900487EBD /* NKSceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKSceneNode.h; sourceTree = "<group>"; };
+		29BF48141911667900487EBD /* NKSceneNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKSceneNode.m; sourceTree = "<group>"; };
+		29BF48151911667900487EBD /* NKScrollNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKScrollNode.h; sourceTree = "<group>"; };
+		29BF48161911667900487EBD /* NKScrollNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKScrollNode.m; sourceTree = "<group>"; };
+		29BF48171911667900487EBD /* NKShaderNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKShaderNode.h; sourceTree = "<group>"; };
+		29BF48181911667900487EBD /* NKShaderNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKShaderNode.m; sourceTree = "<group>"; };
+		29BF48191911667900487EBD /* NKSoundManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKSoundManager.h; sourceTree = "<group>"; };
+		29BF481A1911667900487EBD /* NKSoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKSoundManager.m; sourceTree = "<group>"; };
+		29BF481B1911667900487EBD /* NKSpriteNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKSpriteNode.h; sourceTree = "<group>"; };
+		29BF481C1911667900487EBD /* NKSpriteNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKSpriteNode.m; sourceTree = "<group>"; };
+		29BF482B19116B0600487EBD /* UIFont+CoreText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIFont+CoreText.h"; path = "NKNikeField/NKCore/UIKitExtensions/UIFont+CoreText.h"; sourceTree = SOURCE_ROOT; };
+		29BF482C19116B0600487EBD /* UIFont+CoreText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIFont+CoreText.m"; path = "NKNikeField/NKCore/UIKitExtensions/UIFont+CoreText.m"; sourceTree = SOURCE_ROOT; };
+		29C42BA919105C0600441639 /* 30 PWSteal.Ldpinch.D.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "30 PWSteal.Ldpinch.D.mp3"; sourceTree = "<group>"; };
+		29C42BAB19105C0600441639 /* 06 Track 6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "06 Track 6.mp3"; sourceTree = "<group>"; };
+		29C42BAC19105C0600441639 /* kickoff.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = kickoff.aiff; sourceTree = "<group>"; };
+		29C42BAE19105C0600441639 /* 03 Bass [A$AP Rocky].mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "03 Bass [A$AP Rocky].mp3"; sourceTree = "<group>"; };
+		29C42BB019105C0600441639 /* goal.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = goal.aiff; sourceTree = "<group>"; };
+		29C42BB119105C0600441639 /* goal_easter_egg.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = goal_easter_egg.mp3; sourceTree = "<group>"; };
+		29C42BB319105C0600441639 /* raw-original.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "raw-original.wav"; sourceTree = "<group>"; };
+		29C42BB419105C0600441639 /* swish.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = swish.aiff; sourceTree = "<group>"; };
+		29C42BB619105C0600441639 /* FattNedC2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FattNedC2.wav; sourceTree = "<group>"; };
+		29C42BB719105C0600441639 /* Tom-FMD-TomiVoz-Lo-127.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Tom-FMD-TomiVoz-Lo-127.wav"; sourceTree = "<group>"; };
+		29C42BB919105C0600441639 /* 178993__glitchedtones__glitchedtones-rise.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "178993__glitchedtones__glitchedtones-rise.wav"; sourceTree = "<group>"; };
+		29C42BBA19105C0600441639 /* expand.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = expand.aiff; sourceTree = "<group>"; };
+		29C42BBC19105C0600441639 /* FattNedA4.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = FattNedA4.wav; sourceTree = "<group>"; };
+		29C42BBE19105C0600441639 /* PlucknWiggleA#1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "PlucknWiggleA#1.wav"; sourceTree = "<group>"; };
+		29C42BBF19105C0600441639 /* PlucknWiggleA#2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "PlucknWiggleA#2.wav"; sourceTree = "<group>"; };
+		29C42BC019105C0600441639 /* PlucknWiggleA#3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "PlucknWiggleA#3.wav"; sourceTree = "<group>"; };
+		29C42BC219105C0600441639 /* KnifeMachine-MindEraser-42.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "KnifeMachine-MindEraser-42.wav"; sourceTree = "<group>"; };
+		29C42BC319105C0600441639 /* Mercurian-BrainWasher-42.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Mercurian-BrainWasher-42.wav"; sourceTree = "<group>"; };
+		29C42BC519105C0600441639 /* anomaly_19.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = anomaly_19.wav; sourceTree = "<group>"; };
+		29C42BC719105C0600441639 /* Androyd-Agitake-42.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Androyd-Agitake-42.wav"; sourceTree = "<group>"; };
+		29C42BC819105C0600441639 /* high6-b.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "high6-b.wav"; sourceTree = "<group>"; };
+		29C42BCA19105C0600441639 /* contract.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = contract.aiff; sourceTree = "<group>"; };
+		29C42BCC19105C0600441639 /* anomaly_7.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = anomaly_7.wav; sourceTree = "<group>"; };
+		29C42BCE19105C0600441639 /* slope-rattle.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "slope-rattle.wav"; sourceTree = "<group>"; };
+		29C42BD019105C0600441639 /* Androyd-Uck-41.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Androyd-Uck-41.wav"; sourceTree = "<group>"; };
+		29C42BD219105C0600441639 /* lock.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = lock.aiff; sourceTree = "<group>"; };
+		29C42BD419105C0600441639 /* DeStablizer-MetalBowl-41.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "DeStablizer-MetalBowl-41.wav"; sourceTree = "<group>"; };
+		29C42BD619105C0600441639 /* DotMatrix-Pang-84.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "DotMatrix-Pang-84.wav"; sourceTree = "<group>"; };
+		29C42BD819105C0600441639 /* Androyd-Alert-84.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Androyd-Alert-84.wav"; sourceTree = "<group>"; };
+		29C42BDA19105C0600441639 /* Androyd-Bulbtone-41.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Androyd-Bulbtone-41.wav"; sourceTree = "<group>"; };
 		29D89245190AA5CB008FBD5F /* GameStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStatsViewController.h; sourceTree = "<group>"; };
 		29D89246190AA5CB008FBD5F /* GameStatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameStatsViewController.m; sourceTree = "<group>"; };
 		29D89249190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CocoaDevUsersAdditions.h"; sourceTree = "<group>"; };
@@ -264,8 +351,6 @@
 		29D89263190AA65E008FBD5F /* zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zlib.h; sourceTree = "<group>"; };
 		29D89264190AA65E008FBD5F /* zutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zutil.c; sourceTree = "<group>"; };
 		29D89265190AA65E008FBD5F /* zutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zutil.h; sourceTree = "<group>"; };
-		29D89276190AAB42008FBD5F /* NKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKViewController.h; sourceTree = "<group>"; };
-		29D89277190AAB42008FBD5F /* NKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKViewController.m; sourceTree = "<group>"; };
 		29D89279190AAD28008FBD5F /* SyncScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncScene.h; sourceTree = "<group>"; };
 		29D8927A190AAD28008FBD5F /* SyncScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncScene.m; sourceTree = "<group>"; };
 		29D8927D190AC3B0008FBD5F /* diagonals.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = diagonals.png; sourceTree = "<group>"; };
@@ -333,30 +418,6 @@
 		61A2578B18FDE998001B7F67 /* NKVectorTypes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKVectorTypes.m; sourceTree = "<group>"; };
 		61A2578C18FDE998001B7F67 /* NKpch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKpch.h; sourceTree = "<group>"; };
 		61A2578D18FDE998001B7F67 /* NodeKitten.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeKitten.h; sourceTree = "<group>"; };
-		61A2578F18FDE998001B7F67 /* NKCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKCamera.h; sourceTree = "<group>"; };
-		61A2579018FDE998001B7F67 /* NKCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKCamera.m; sourceTree = "<group>"; };
-		61A2579118FDE998001B7F67 /* NKCoreTextNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKCoreTextNode.h; sourceTree = "<group>"; };
-		61A2579218FDE998001B7F67 /* NKCoreTextNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKCoreTextNode.m; sourceTree = "<group>"; };
-		61A2579318FDE998001B7F67 /* NKEmitterNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKEmitterNode.h; sourceTree = "<group>"; };
-		61A2579418FDE998001B7F67 /* NKEmitterNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKEmitterNode.m; sourceTree = "<group>"; };
-		61A2579518FDE998001B7F67 /* NKLabelNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKLabelNode.h; sourceTree = "<group>"; };
-		61A2579618FDE998001B7F67 /* NKLabelNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKLabelNode.m; sourceTree = "<group>"; };
-		61A2579718FDE998001B7F67 /* NKMeshNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKMeshNode.h; sourceTree = "<group>"; };
-		61A2579818FDE998001B7F67 /* NKMeshNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKMeshNode.m; sourceTree = "<group>"; };
-		61A2579918FDE998001B7F67 /* NKNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKNode.h; sourceTree = "<group>"; };
-		61A2579A18FDE998001B7F67 /* NKNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKNode.m; sourceTree = "<group>"; };
-		61A2579B18FDE998001B7F67 /* NKNodeAnimationHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKNodeAnimationHandler.h; sourceTree = "<group>"; };
-		61A2579C18FDE998001B7F67 /* NKNodeAnimationHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKNodeAnimationHandler.m; sourceTree = "<group>"; };
-		61A2579D18FDE998001B7F67 /* NKPrimitiveNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKPrimitiveNode.h; sourceTree = "<group>"; };
-		61A2579E18FDE998001B7F67 /* NKPrimitiveNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKPrimitiveNode.m; sourceTree = "<group>"; };
-		61A2579F18FDE998001B7F67 /* NKSceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKSceneNode.h; sourceTree = "<group>"; };
-		61A257A018FDE998001B7F67 /* NKSceneNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKSceneNode.m; sourceTree = "<group>"; };
-		61A257A118FDE998001B7F67 /* NKScrollNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKScrollNode.h; sourceTree = "<group>"; };
-		61A257A218FDE998001B7F67 /* NKScrollNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKScrollNode.m; sourceTree = "<group>"; };
-		61A257A318FDE998001B7F67 /* NKShaderNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKShaderNode.h; sourceTree = "<group>"; };
-		61A257A418FDE998001B7F67 /* NKShaderNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKShaderNode.m; sourceTree = "<group>"; };
-		61A257A518FDE998001B7F67 /* NKSpriteNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKSpriteNode.h; sourceTree = "<group>"; };
-		61A257A618FDE998001B7F67 /* NKSpriteNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKSpriteNode.m; sourceTree = "<group>"; };
 		61A257A818FDE998001B7F67 /* NKBlendShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKBlendShader.h; sourceTree = "<group>"; };
 		61A257A918FDE998001B7F67 /* NKBlendShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKBlendShader.m; sourceTree = "<group>"; };
 		61A257AA18FDE998001B7F67 /* NKDrawDepthShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKDrawDepthShader.h; sourceTree = "<group>"; };
@@ -378,8 +439,6 @@
 		61A257BB18FDE998001B7F67 /* NKTextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKTextureManager.h; sourceTree = "<group>"; };
 		61A257BC18FDE998001B7F67 /* NKTextureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKTextureManager.m; sourceTree = "<group>"; };
 		61A257BD18FDE998001B7F67 /* skysphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skysphere.png; sourceTree = "<group>"; };
-		61A257BF18FDE998001B7F67 /* NKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKView.h; sourceTree = "<group>"; };
-		61A257C018FDE998001B7F67 /* NKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKView.m; sourceTree = "<group>"; };
 		61D6E44B18FDAE110017A389 /* NKNikeField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NKNikeField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61D6E44E18FDAE110017A389 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		61D6E45018FDAE110017A389 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -542,13 +601,286 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		29BF47F51911666500487EBD /* UIKitExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				29BF482B19116B0600487EBD /* UIFont+CoreText.h */,
+				29BF482C19116B0600487EBD /* UIFont+CoreText.m */,
+			);
+			name = UIKitExtensions;
+			path = UIKitExtentions;
+			sourceTree = "<group>";
+		};
+		29BF47F81911666500487EBD /* UIView */ = {
+			isa = PBXGroup;
+			children = (
+				29BF47F91911666500487EBD /* NKView.h */,
+				29BF47FA1911666500487EBD /* NKView.m */,
+				29BF47FB1911666500487EBD /* NKViewController.h */,
+				29BF47FC1911666500487EBD /* NKViewController.m */,
+			);
+			path = UIView;
+			sourceTree = "<group>";
+		};
+		29BF48001911667900487EBD /* SceneGraph */ = {
+			isa = PBXGroup;
+			children = (
+				29BF48011911667900487EBD /* NKCamera.h */,
+				29BF48021911667900487EBD /* NKCamera.m */,
+				29BF48031911667900487EBD /* NKCoreTextNode.h */,
+				29BF48041911667900487EBD /* NKCoreTextNode.m */,
+				29BF48051911667900487EBD /* NKEmitterNode.h */,
+				29BF48061911667900487EBD /* NKEmitterNode.m */,
+				29BF48071911667900487EBD /* NKLabelNode.h */,
+				29BF48081911667900487EBD /* NKLabelNode.m */,
+				29BF48091911667900487EBD /* NKMeshNode.h */,
+				29BF480A1911667900487EBD /* NKMeshNode.m */,
+				29BF480B1911667900487EBD /* NKNode.h */,
+				29BF480C1911667900487EBD /* NKNode.m */,
+				29BF480D1911667900487EBD /* NKNodeAnimationHandler.h */,
+				29BF480E1911667900487EBD /* NKNodeAnimationHandler.m */,
+				29BF480F1911667900487EBD /* NKPickerNode.h */,
+				29BF48101911667900487EBD /* NKPickerNode.m */,
+				29BF48111911667900487EBD /* NKPrimitiveNode.h */,
+				29BF48121911667900487EBD /* NKPrimitiveNode.m */,
+				29BF48131911667900487EBD /* NKSceneNode.h */,
+				29BF48141911667900487EBD /* NKSceneNode.m */,
+				29BF48151911667900487EBD /* NKScrollNode.h */,
+				29BF48161911667900487EBD /* NKScrollNode.m */,
+				29BF48171911667900487EBD /* NKShaderNode.h */,
+				29BF48181911667900487EBD /* NKShaderNode.m */,
+				29BF48191911667900487EBD /* NKSoundManager.h */,
+				29BF481A1911667900487EBD /* NKSoundManager.m */,
+				29BF481B1911667900487EBD /* NKSpriteNode.h */,
+				29BF481C1911667900487EBD /* NKSpriteNode.m */,
+			);
+			path = SceneGraph;
+			sourceTree = "<group>";
+		};
 		29C42BA01910332100441639 /* SFX */ = {
 			isa = PBXGroup;
 			children = (
-				29C42BA6191053B000441639 /* 03 Bass [A$AP Rocky].mp3 */,
-				29C42BA41910384800441639 /* 30 PWSteal.Ldpinch.D.mp3 */,
+				29C42BA819105C0600441639 /* field song */,
+				29C42BAA19105C0600441639 /* kickoff */,
+				29C42BAD19105C0600441639 /* menu song */,
+				29C42BAF19105C0600441639 /* goal */,
+				29C42BB219105C0600441639 /* card slide in */,
+				29C42BB519105C0600441639 /* challenge fail */,
+				29C42BB819105C0600441639 /* card expand */,
+				29C42BBB19105C0600441639 /* challenge success */,
+				29C42BBD19105C0600441639 /* card carousel swipe */,
+				29C42BC119105C0600441639 /* move player */,
+				29C42BC419105C0600441639 /* nice bits with no home */,
+				29C42BC619105C0600441639 /* tap on enemy player */,
+				29C42BC919105C0600441639 /* card contract */,
+				29C42BCB19105C0600441639 /* wrong button */,
+				29C42BCD19105C0600441639 /* kick ball */,
+				29C42BCF19105C0600441639 /* Card tap */,
+				29C42BD119105C0600441639 /* lock card */,
+				29C42BD319105C0600441639 /* player drops onto field */,
+				29C42BD519105C0600441639 /* play a card */,
+				29C42BD719105C0600441639 /* tap on team player */,
+				29C42BD919105C0600441639 /* Menu tap */,
 			);
 			name = SFX;
+			sourceTree = "<group>";
+		};
+		29C42BA819105C0600441639 /* field song */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BA919105C0600441639 /* 30 PWSteal.Ldpinch.D.mp3 */,
+			);
+			name = "field song";
+			path = "SFX/field song";
+			sourceTree = "<group>";
+		};
+		29C42BAA19105C0600441639 /* kickoff */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BAB19105C0600441639 /* 06 Track 6.mp3 */,
+				29C42BAC19105C0600441639 /* kickoff.aiff */,
+			);
+			name = kickoff;
+			path = SFX/kickoff;
+			sourceTree = "<group>";
+		};
+		29C42BAD19105C0600441639 /* menu song */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BAE19105C0600441639 /* 03 Bass [A$AP Rocky].mp3 */,
+			);
+			name = "menu song";
+			path = "SFX/menu song";
+			sourceTree = "<group>";
+		};
+		29C42BAF19105C0600441639 /* goal */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BB019105C0600441639 /* goal.aiff */,
+				29C42BB119105C0600441639 /* goal_easter_egg.mp3 */,
+			);
+			name = goal;
+			path = SFX/goal;
+			sourceTree = "<group>";
+		};
+		29C42BB219105C0600441639 /* card slide in */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BB319105C0600441639 /* raw-original.wav */,
+				29C42BB419105C0600441639 /* swish.aiff */,
+			);
+			name = "card slide in";
+			path = "SFX/card slide in";
+			sourceTree = "<group>";
+		};
+		29C42BB519105C0600441639 /* challenge fail */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BB619105C0600441639 /* FattNedC2.wav */,
+				29C42BB719105C0600441639 /* Tom-FMD-TomiVoz-Lo-127.wav */,
+			);
+			name = "challenge fail";
+			path = "SFX/challenge fail";
+			sourceTree = "<group>";
+		};
+		29C42BB819105C0600441639 /* card expand */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BB919105C0600441639 /* 178993__glitchedtones__glitchedtones-rise.wav */,
+				29C42BBA19105C0600441639 /* expand.aiff */,
+			);
+			name = "card expand";
+			path = "SFX/card expand";
+			sourceTree = "<group>";
+		};
+		29C42BBB19105C0600441639 /* challenge success */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BBC19105C0600441639 /* FattNedA4.wav */,
+			);
+			name = "challenge success";
+			path = "SFX/challenge success";
+			sourceTree = "<group>";
+		};
+		29C42BBD19105C0600441639 /* card carousel swipe */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BBE19105C0600441639 /* PlucknWiggleA#1.wav */,
+				29C42BBF19105C0600441639 /* PlucknWiggleA#2.wav */,
+				29C42BC019105C0600441639 /* PlucknWiggleA#3.wav */,
+			);
+			name = "card carousel swipe";
+			path = "SFX/card carousel swipe";
+			sourceTree = "<group>";
+		};
+		29C42BC119105C0600441639 /* move player */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BC219105C0600441639 /* KnifeMachine-MindEraser-42.wav */,
+				29C42BC319105C0600441639 /* Mercurian-BrainWasher-42.wav */,
+			);
+			name = "move player";
+			path = "SFX/move player";
+			sourceTree = "<group>";
+		};
+		29C42BC419105C0600441639 /* nice bits with no home */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BC519105C0600441639 /* anomaly_19.wav */,
+			);
+			name = "nice bits with no home";
+			path = "SFX/nice bits with no home";
+			sourceTree = "<group>";
+		};
+		29C42BC619105C0600441639 /* tap on enemy player */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BC719105C0600441639 /* Androyd-Agitake-42.wav */,
+				29C42BC819105C0600441639 /* high6-b.wav */,
+			);
+			name = "tap on enemy player";
+			path = "SFX/tap on enemy player";
+			sourceTree = "<group>";
+		};
+		29C42BC919105C0600441639 /* card contract */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BCA19105C0600441639 /* contract.aiff */,
+			);
+			name = "card contract";
+			path = "SFX/card contract";
+			sourceTree = "<group>";
+		};
+		29C42BCB19105C0600441639 /* wrong button */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BCC19105C0600441639 /* anomaly_7.wav */,
+			);
+			name = "wrong button";
+			path = "SFX/wrong button";
+			sourceTree = "<group>";
+		};
+		29C42BCD19105C0600441639 /* kick ball */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BCE19105C0600441639 /* slope-rattle.wav */,
+			);
+			name = "kick ball";
+			path = "SFX/kick ball";
+			sourceTree = "<group>";
+		};
+		29C42BCF19105C0600441639 /* Card tap */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BD019105C0600441639 /* Androyd-Uck-41.wav */,
+			);
+			name = "Card tap";
+			path = "SFX/Card tap";
+			sourceTree = "<group>";
+		};
+		29C42BD119105C0600441639 /* lock card */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BD219105C0600441639 /* lock.aiff */,
+			);
+			name = "lock card";
+			path = "SFX/lock card";
+			sourceTree = "<group>";
+		};
+		29C42BD319105C0600441639 /* player drops onto field */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BD419105C0600441639 /* DeStablizer-MetalBowl-41.wav */,
+			);
+			name = "player drops onto field";
+			path = "SFX/player drops onto field";
+			sourceTree = "<group>";
+		};
+		29C42BD519105C0600441639 /* play a card */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BD619105C0600441639 /* DotMatrix-Pang-84.wav */,
+			);
+			name = "play a card";
+			path = "SFX/play a card";
+			sourceTree = "<group>";
+		};
+		29C42BD719105C0600441639 /* tap on team player */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BD819105C0600441639 /* Androyd-Alert-84.wav */,
+			);
+			name = "tap on team player";
+			path = "SFX/tap on team player";
+			sourceTree = "<group>";
+		};
+		29C42BD919105C0600441639 /* Menu tap */ = {
+			isa = PBXGroup;
+			children = (
+				29C42BDA19105C0600441639 /* Androyd-Bulbtone-41.wav */,
+			);
+			name = "Menu tap";
+			path = "SFX/Menu tap";
 			sourceTree = "<group>";
 		};
 		29D89244190AA572008FBD5F /* APP */ = {
@@ -661,13 +993,14 @@
 		61A2578118FDE998001B7F67 /* NodeKitten */ = {
 			isa = PBXGroup;
 			children = (
+				29BF48001911667900487EBD /* SceneGraph */,
+				29BF47F51911666500487EBD /* UIKitExtensions */,
+				29BF47F81911666500487EBD /* UIView */,
 				61A2578218FDE998001B7F67 /* Geometry */,
 				61A2578C18FDE998001B7F67 /* NKpch.h */,
 				61A2578D18FDE998001B7F67 /* NodeKitten.h */,
-				61A2578E18FDE998001B7F67 /* SceneGraph */,
 				61A257A718FDE998001B7F67 /* Shader */,
 				61A257B318FDE998001B7F67 /* Texture */,
-				61A257BE18FDE998001B7F67 /* UIKit */,
 			);
 			name = NodeKitten;
 			path = NKCore;
@@ -687,39 +1020,6 @@
 				61A2578B18FDE998001B7F67 /* NKVectorTypes.m */,
 			);
 			path = Geometry;
-			sourceTree = "<group>";
-		};
-		61A2578E18FDE998001B7F67 /* SceneGraph */ = {
-			isa = PBXGroup;
-			children = (
-				61A2578F18FDE998001B7F67 /* NKCamera.h */,
-				61A2579018FDE998001B7F67 /* NKCamera.m */,
-				61A2579118FDE998001B7F67 /* NKCoreTextNode.h */,
-				61A2579218FDE998001B7F67 /* NKCoreTextNode.m */,
-				61A2579318FDE998001B7F67 /* NKEmitterNode.h */,
-				61A2579418FDE998001B7F67 /* NKEmitterNode.m */,
-				61A2579518FDE998001B7F67 /* NKLabelNode.h */,
-				61A2579618FDE998001B7F67 /* NKLabelNode.m */,
-				61A2579718FDE998001B7F67 /* NKMeshNode.h */,
-				61A2579818FDE998001B7F67 /* NKMeshNode.m */,
-				61A2579918FDE998001B7F67 /* NKNode.h */,
-				61A2579A18FDE998001B7F67 /* NKNode.m */,
-				61A2579B18FDE998001B7F67 /* NKNodeAnimationHandler.h */,
-				61A2579C18FDE998001B7F67 /* NKNodeAnimationHandler.m */,
-				61A2579D18FDE998001B7F67 /* NKPrimitiveNode.h */,
-				61A2579E18FDE998001B7F67 /* NKPrimitiveNode.m */,
-				61A2579F18FDE998001B7F67 /* NKSceneNode.h */,
-				61A257A018FDE998001B7F67 /* NKSceneNode.m */,
-				61A257A118FDE998001B7F67 /* NKScrollNode.h */,
-				61A257A218FDE998001B7F67 /* NKScrollNode.m */,
-				29B84B5718FF03F600469EE0 /* NKPickerNode.h */,
-				29B84B5818FF03F600469EE0 /* NKPickerNode.m */,
-				61A257A318FDE998001B7F67 /* NKShaderNode.h */,
-				61A257A418FDE998001B7F67 /* NKShaderNode.m */,
-				61A257A518FDE998001B7F67 /* NKSpriteNode.h */,
-				61A257A618FDE998001B7F67 /* NKSpriteNode.m */,
-			);
-			path = SceneGraph;
 			sourceTree = "<group>";
 		};
 		61A257A718FDE998001B7F67 /* Shader */ = {
@@ -756,19 +1056,6 @@
 				61A257BD18FDE998001B7F67 /* skysphere.png */,
 			);
 			path = Texture;
-			sourceTree = "<group>";
-		};
-		61A257BE18FDE998001B7F67 /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-				61A257BF18FDE998001B7F67 /* NKView.h */,
-				61A257C018FDE998001B7F67 /* NKView.m */,
-				29D89276190AAB42008FBD5F /* NKViewController.h */,
-				29D89277190AAB42008FBD5F /* NKViewController.m */,
-				29C42BA1191033E800441639 /* NKSoundManager.h */,
-				29C42BA2191033E800441639 /* NKSoundManager.m */,
-			);
-			path = UIKit;
 			sourceTree = "<group>";
 		};
 		61D6E44218FDAE110017A389 = {
@@ -1142,11 +1429,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29C42BF119105C0600441639 /* anomaly_7.wav in Resources */,
+				29C42BE519105C0600441639 /* 178993__glitchedtones__glitchedtones-rise.wav in Resources */,
 				2902A073190C7BAE008D0092 /* Faction_Sention_ON.png in Resources */,
 				61D6E85918FDB5B70017A389 /* Card_Icon_Kick_L2.png in Resources */,
 				61D6E87A18FDB5B70017A389 /* Field_Layer03.png in Resources */,
 				61D6E7FF18FDB5B70017A389 /* tile_bottomright.png in Resources */,
+				29C42BE619105C0600441639 /* expand.aiff in Resources */,
 				61D6E7FD18FDB5B70017A389 /* tile_bottom.png in Resources */,
+				29C42BDD19105C0600441639 /* kickoff.aiff in Resources */,
 				29D89291190AC3B0008FBD5F /* diagonals.png in Resources */,
 				61D6E88018FDB5B70017A389 /* PlayerIndicator_PlayerSHADOW.png in Resources */,
 				61D6E80318FDB5B70017A389 /* tile_right.png in Resources */,
@@ -1158,8 +1449,12 @@
 				3B6BF23D191016200082628E /* fuelbar_fuel.png in Resources */,
 				61D6E85718FDB5B70017A389 /* Card_Icon_Chal_L3.png in Resources */,
 				61D6E87C18FDB5B70017A389 /* PlayerIndicator_HUD.png in Resources */,
+				29C42BE719105C0600441639 /* FattNedA4.wav in Resources */,
+				29C42BF619105C0600441639 /* DotMatrix-Pang-84.wav in Resources */,
 				61A257D718FDE998001B7F67 /* chromeKittenSmall.png in Resources */,
 				61D6E87518FDB5B70017A389 /* ball_Texture.png in Resources */,
+				29C42BF819105C0600441639 /* Androyd-Bulbtone-41.wav in Resources */,
+				29C42BE819105C0600441639 /* PlucknWiggleA#1.wav in Resources */,
 				61D6E86618FDB5B70017A389 /* Card_Icon_SpecM_L3.png in Resources */,
 				61D6E7F818FDB5B70017A389 /* tile_3bottom.png in Resources */,
 				61D6E87618FDB5B70017A389 /* CardType_HUD.png in Resources */,
@@ -1169,33 +1464,43 @@
 				61D6E86D18FDB5B70017A389 /* Move_L1a.png in Resources */,
 				3B6BF246191144280082628E /* LOGO_Icon_Bola_small.png in Resources */,
 				61A257DC18FDE998001B7F67 /* skysphere.png in Resources */,
+				29C42BEA19105C0600441639 /* PlucknWiggleA#3.wav in Resources */,
 				61D6E85E18FDB5B70017A389 /* Card_Icon_SpecC_L1.png in Resources */,
 				61D6E87818FDB5B70017A389 /* Field_Layer01.png in Resources */,
 				3B6BF248191149A70082628E /* GOAL_text.png in Resources */,
 				61D6E80118FDB5B70017A389 /* tile_left.png in Resources */,
 				61D6E7FC18FDB5B70017A389 /* tile_all.png in Resources */,
 				297E6C2519097F4F00369BDF /* blank_texture.png in Resources */,
+				29C42BEE19105C0600441639 /* Androyd-Agitake-42.wav in Resources */,
 				61D6E87918FDB5B70017A389 /* Field_Layer02.png in Resources */,
+				29C42BE319105C0600441639 /* FattNedC2.wav in Resources */,
 				61D6E87318FDB5B70017A389 /* Special_L3b.png in Resources */,
 				61D6E80018FDB5B70017A389 /* tile_horizontal.png in Resources */,
 				61D6E85618FDB5B70017A389 /* Card_Icon_Chal_L2.png in Resources */,
 				61D6E87D18FDB5B70017A389 /* PlayerIndicator_Layer01.png in Resources */,
+				29C42BED19105C0600441639 /* anomaly_19.wav in Resources */,
+				29C42BF519105C0600441639 /* DeStablizer-MetalBowl-41.wav in Resources */,
 				61D6E86118FDB5B70017A389 /* Card_Icon_SpecK_L1.png in Resources */,
 				61D6E85818FDB5B70017A389 /* Card_Icon_Kick_L1.png in Resources */,
 				61D6E87B18FDB5B70017A389 /* CardType_PlayerSign.png in Resources */,
 				61D6E80518FDB5B70017A389 /* tile_topleft.png in Resources */,
 				61D6E86A18FDB5B70017A389 /* Kick_L1a.png in Resources */,
+				29C42BE019105C0600441639 /* goal_easter_egg.mp3 in Resources */,
+				29C42BE919105C0600441639 /* PlucknWiggleA#2.wav in Resources */,
 				29090EE8190ED80C00BE6B92 /* bottom_bar.png in Resources */,
 				61D6E85D18FDB5B70017A389 /* Card_Icon_Move_L3.png in Resources */,
 				29090EEC190ED98B00BE6B92 /* Halo_Marks_glow.png in Resources */,
 				61D6E7F918FDB5B70017A389 /* tile_3left.png in Resources */,
 				29090EEE190ED98B00BE6B92 /* Halo.png in Resources */,
 				61D6E80418FDB5B70017A389 /* tile_top.png in Resources */,
+				29C42BF019105C0600441639 /* contract.aiff in Resources */,
 				61D6E86F18FDB5B70017A389 /* Move_L3a.png in Resources */,
 				2902A072190C7BAE008D0092 /* Faction_Psyke_ON.png in Resources */,
 				61D6E85B18FDB5B70017A389 /* Card_Icon_Move_L1.png in Resources */,
 				61D6E7FA18FDB5B70017A389 /* tile_3right.png in Resources */,
 				61D6E86818FDB5B70017A389 /* Challenge_L2a.png in Resources */,
+				29C42BEC19105C0600441639 /* Mercurian-BrainWasher-42.wav in Resources */,
+				29C42BDF19105C0600441639 /* goal.aiff in Resources */,
 				61D6E86318FDB5B70017A389 /* Card_Icon_SpecK_L3.png in Resources */,
 				61D6E80718FDB5B70017A389 /* tile_vertical.png in Resources */,
 				61D6E87718FDB5B70017A389 /* Field_Goal.png in Resources */,
@@ -1205,36 +1510,46 @@
 				61D6E7FB18FDB5B70017A389 /* tile_3top.png in Resources */,
 				29D89294190AC3B0008FBD5F /* HEADER_WEB.png in Resources */,
 				29090EE6190ED77500BE6B92 /* top_bar.png in Resources */,
+				29C42BE219105C0600441639 /* swish.aiff in Resources */,
+				29C42BDE19105C0600441639 /* 03 Bass [A$AP Rocky].mp3 in Resources */,
 				2902A06C190C7BAE008D0092 /* Faction_Genmod_OFF.png in Resources */,
 				29D89297190AC3B0008FBD5F /* nike.sqlite in Resources */,
 				61D6E85A18FDB5B70017A389 /* Card_Icon_Kick_L3.png in Resources */,
 				61D6E80218FDB5B70017A389 /* tile_none.png in Resources */,
 				3B6BF250191161A80082628E /* screen_recap.png in Resources */,
 				61D6E85F18FDB5B70017A389 /* Card_Icon_SpecC_L2.png in Resources */,
+				29C42BF219105C0600441639 /* slope-rattle.wav in Resources */,
 				61D6E86918FDB5B70017A389 /* Challenge_L3a.png in Resources */,
 				3B6BF2401911371F0082628E /* screen_menu.png in Resources */,
 				2902A06E190C7BAE008D0092 /* Faction_Kinforce_ON.png in Resources */,
 				2902A074190C7BAE008D0092 /* Faction_Sention_OFF.png in Resources */,
 				61D6E85C18FDB5B70017A389 /* Card_Icon_Move_L2.png in Resources */,
+				29C42BF319105C0600441639 /* Androyd-Uck-41.wav in Resources */,
 				61D6E86218FDB5B70017A389 /* Card_Icon_SpecK_L2.png in Resources */,
+				29C42BF719105C0600441639 /* Androyd-Alert-84.wav in Resources */,
 				61D6E85518FDB5B70017A389 /* Card_Icon_Chal_L1.png in Resources */,
 				61D6E87218FDB5B70017A389 /* Special_L3a.png in Resources */,
 				61A257D818FDE998001B7F67 /* moon.png in Resources */,
+				29C42BEF19105C0600441639 /* high6-b.wav in Resources */,
 				2902A071190C7BAE008D0092 /* Faction_Psyke_OFF.png in Resources */,
 				61A257D618FDE998001B7F67 /* chromeKitten.png in Resources */,
 				6198A35B1900727C0083EA5D /* lock-4.png in Resources */,
+				29C42BDC19105C0600441639 /* 06 Track 6.mp3 in Resources */,
 				29090EED190ED98B00BE6B92 /* Halo_Marks.png in Resources */,
+				29C42BEB19105C0600441639 /* KnifeMachine-MindEraser-42.wav in Resources */,
+				29C42BE419105C0600441639 /* Tom-FMD-TomiVoz-Lo-127.wav in Resources */,
 				61D6E86518FDB5B70017A389 /* Card_Icon_SpecM_L2.png in Resources */,
 				2902A06D190C7BAE008D0092 /* Faction_Genmod_ON.png in Resources */,
-				29C42BA51910384800441639 /* 30 PWSteal.Ldpinch.D.mp3 in Resources */,
+				29C42BDB19105C0600441639 /* 30 PWSteal.Ldpinch.D.mp3 in Resources */,
 				61D6E46A18FDAE120017A389 /* Images.xcassets in Resources */,
+				29C42BE119105C0600441639 /* raw-original.wav in Resources */,
 				29090EF1190EEC4200BE6B92 /* Arial Black.ttf in Resources */,
 				61D6E86718FDB5B70017A389 /* Challenge_L1a.png in Resources */,
 				61D6E80618FDB5B70017A389 /* tile_topright.png in Resources */,
 				61D6E46218FDAE110017A389 /* Main_iPhone.storyboard in Resources */,
 				2902A06F190C7BAE008D0092 /* Faction_Kinforce_OFF.png in Resources */,
-				29C42BA7191053B000441639 /* 03 Bass [A$AP Rocky].mp3 in Resources */,
 				61D6E87418FDB5B70017A389 /* Background_Field.png in Resources */,
+				29C42BF419105C0600441639 /* lock.aiff in Resources */,
 				61D6E45918FDAE110017A389 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1258,11 +1573,12 @@
 				29D8926E190AA65E008FBD5F /* gzwrite.c in Sources */,
 				29D892BC190AC6C1008FBD5F /* UIImage+Alpha.m in Sources */,
 				29D892B0190AC625008FBD5F /* Reachability.m in Sources */,
+				29BF48261911667900487EBD /* NKSceneNode.m in Sources */,
 				29D89298190AC3B0008FBD5F /* NikeConnect.m in Sources */,
 				61D6E45B18FDAE110017A389 /* main.m in Sources */,
+				29BF481D1911667900487EBD /* NKCamera.m in Sources */,
 				29D8926D190AA65E008FBD5F /* gzread.c in Sources */,
 				61A257D318FDE998001B7F67 /* NKGaussianBlur.m in Sources */,
-				61A257CB18FDE998001B7F67 /* NKNodeAnimationHandler.m in Sources */,
 				29D89268190AA65E008FBD5F /* compress.c in Sources */,
 				29D89269190AA65E008FBD5F /* crc32.c in Sources */,
 				29D8926C190AA65E008FBD5F /* gzlib.c in Sources */,
@@ -1271,44 +1587,43 @@
 				29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */,
 				29D8926A190AA65E008FBD5F /* deflate.c in Sources */,
 				61A257C218FDE998001B7F67 /* NKMesh.m in Sources */,
-				61A257C718FDE998001B7F67 /* NKEmitterNode.m in Sources */,
 				61D6E88F18FDB5B70017A389 /* MenuScene.m in Sources */,
 				61D6E8A618FDB5B70017A389 /* ButtonSprite.m in Sources */,
+				29BF481E1911667900487EBD /* NKCoreTextNode.m in Sources */,
 				61D6E88E18FDB5B70017A389 /* MenuPlayerProfileScene.m in Sources */,
+				29BF482A1911667900487EBD /* NKSpriteNode.m in Sources */,
 				29D892AD190AC559008FBD5F /* ParseController.m in Sources */,
 				29D89296190AC3B0008FBD5F /* LineGraph.m in Sources */,
 				61D6E88C18FDB5B70017A389 /* Manager.m in Sources */,
 				29D89299190AC3B0008FBD5F /* NikeViewController.m in Sources */,
-				61A257D018FDE998001B7F67 /* NKSpriteNode.m in Sources */,
-				29D89278190AAB42008FBD5F /* NKViewController.m in Sources */,
 				61D6E8AA18FDB5B70017A389 /* GameScene.m in Sources */,
 				29D89274190AA65E008FBD5F /* uncompr.c in Sources */,
-				61A257CA18FDE998001B7F67 /* NKNode.m in Sources */,
+				29BF48231911667900487EBD /* NKNodeAnimationHandler.m in Sources */,
 				29D89272190AA65E008FBD5F /* inftrees.c in Sources */,
 				61A257DB18FDE998001B7F67 /* NKTextureManager.m in Sources */,
-				61A257DD18FDE998001B7F67 /* NKView.m in Sources */,
 				29D8927B190AAD28008FBD5F /* SyncScene.m in Sources */,
 				61D6E8AD18FDB5B70017A389 /* UXWindow.m in Sources */,
-				61A257C918FDE998001B7F67 /* NKMeshNode.m in Sources */,
-				61A257C818FDE998001B7F67 /* NKLabelNode.m in Sources */,
 				6198A359190068660083EA5D /* UXTopBar.m in Sources */,
 				61D6E8A518FDB5B70017A389 /* BoardTile.m in Sources */,
+				29BF48221911667900487EBD /* NKNode.m in Sources */,
 				61A257C318FDE998001B7F67 /* NKStaticDraw.m in Sources */,
 				61D6E8AC18FDB5B70017A389 /* PlayerSprite.m in Sources */,
 				61D6E8A918FDB5B70017A389 /* GameBoardNode.m in Sources */,
-				61A257CD18FDE998001B7F67 /* NKSceneNode.m in Sources */,
 				61D6E88418FDB5B70017A389 /* AStar.m in Sources */,
 				29D892A9190AC559008FBD5F /* PAPCache.m in Sources */,
 				29D89273190AA65E008FBD5F /* trees.c in Sources */,
+				29BF481F1911667900487EBD /* NKEmitterNode.m in Sources */,
+				29BF48201911667900487EBD /* NKLabelNode.m in Sources */,
 				29D8926F190AA65E008FBD5F /* infback.c in Sources */,
 				29D892B3190AC679008FBD5F /* PAPLogInViewController.m in Sources */,
+				29BF48281911667900487EBD /* NKShaderNode.m in Sources */,
 				61A257D218FDE998001B7F67 /* NKDrawDepthShader.m in Sources */,
 				61A257D918FDE998001B7F67 /* NKFbo.m in Sources */,
 				61D6E88818FDB5B70017A389 /* Game.m in Sources */,
 				61D6E8A718FDB5B70017A389 /* CardSprite.m in Sources */,
-				61A257CC18FDE998001B7F67 /* NKPrimitiveNode.m in Sources */,
+				29BF47FF1911666500487EBD /* NKViewController.m in Sources */,
+				29BF48251911667900487EBD /* NKPrimitiveNode.m in Sources */,
 				61D6E45F18FDAE110017A389 /* AppDelegate.m in Sources */,
-				29B84B5918FF03F600469EE0 /* NKPickerNode.m in Sources */,
 				61A257D418FDE998001B7F67 /* NKGaussianZ.m in Sources */,
 				29D892BE190AC6C1008FBD5F /* UIImage+ResizeAdditions.m in Sources */,
 				61D6E8A818FDB5B70017A389 /* DevMenu.m in Sources */,
@@ -1320,23 +1635,24 @@
 				61A257C118FDE998001B7F67 /* NKMaterial.m in Sources */,
 				61D6E8A418FDB5B70017A389 /* BallSprite.m in Sources */,
 				61D6E88518FDB5B70017A389 /* BoardLocation.m in Sources */,
-				61A257C618FDE998001B7F67 /* NKCoreTextNode.m in Sources */,
 				61D6E6C618FDAF8C0017A389 /* View.m in Sources */,
-				29C42BA3191033E800441639 /* NKSoundManager.m in Sources */,
+				29BF48211911667900487EBD /* NKMeshNode.m in Sources */,
+				29BF48291911667900487EBD /* NKSoundManager.m in Sources */,
 				61A257D118FDE998001B7F67 /* NKBlendShader.m in Sources */,
+				29BF48271911667900487EBD /* NKScrollNode.m in Sources */,
 				29D892AB190AC559008FBD5F /* PAPUtility.m in Sources */,
 				29D89270190AA65E008FBD5F /* inffast.c in Sources */,
 				3B41EE0F190C0FFC00837DC0 /* MainMenu.m in Sources */,
 				29D892AA190AC559008FBD5F /* PAPConstants.m in Sources */,
+				29BF48241911667900487EBD /* NKPickerNode.m in Sources */,
 				29D8926B190AA65E008FBD5F /* gzclose.c in Sources */,
 				29D892BF190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.m in Sources */,
-				61A257CF18FDE998001B7F67 /* NKShaderNode.m in Sources */,
 				29D89267190AA65E008FBD5F /* adler32.c in Sources */,
-				61A257C518FDE998001B7F67 /* NKCamera.m in Sources */,
-				61A257CE18FDE998001B7F67 /* NKScrollNode.m in Sources */,
 				3B2361FF190020FA00056AE2 /* MenuStartVS.m in Sources */,
 				61A257C418FDE998001B7F67 /* NKVectorTypes.m in Sources */,
 				29D89275190AA65E008FBD5F /* zutil.c in Sources */,
+				29BF482D19116B0600487EBD /* UIFont+CoreText.m in Sources */,
+				29BF47FE1911666500487EBD /* NKView.m in Sources */,
 				29D89271190AA65E008FBD5F /* inflate.c in Sources */,
 				29D89293190AC3B0008FBD5F /* GraphScreens.m in Sources */,
 				61D6E8A318FDB5B70017A389 /* AlertSprite.m in Sources */,

@@ -39,11 +39,11 @@
         [self setSize:size];
         
         if (!fontName) {
-            _fontName = @"Arial-BoldMT";
+            _fontName = @"Arial Black";
         }
         else{
             _fontName = fontName;
-            //_fontName = @"Arial-BoldMT";
+            //_fontName = @"Arial Black";
         }
         
         //NSLog(@"labelnode with fontnamed: %@", _fontName);

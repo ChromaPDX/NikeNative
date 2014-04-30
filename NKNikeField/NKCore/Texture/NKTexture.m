@@ -9,6 +9,7 @@
 #import "NodeKitten.h"
 #import "NKTextureManager.h"
 #import <CoreText/CoreText.h>
+#import "UIFont+CoreText.h"
 
 @implementation NKTexture
 
@@ -88,7 +89,8 @@
         
         CGColorRef color = textColor.CGColor;
         
-        CTFontRef font = CTFontCreateWithName((CFStringRef) name, fontSize, NULL);
+        CTFontRef font = [UIFont bundledFontNamed:name size:fontSize];
+        //CTFontRef font = CTFontCreateWithName((CFStringRef) name, fontSize, NULL);
         
         CTTextAlignment theAlignment = kCTCenterTextAlignment;
         

@@ -19,6 +19,7 @@
 #define AI_SPEED .75
 
 
+
 @interface GameScene : NKSceneNode <GameSceneProtocol>
 
 {
@@ -32,7 +33,7 @@
 @property (nonatomic, weak) BoardTile *selectedBoardTile;
 
 @property (nonatomic, strong) NSMutableDictionary *gameTiles;  //objects:game tiles, key:location
-
+@property (nonatomic, strong) NSDictionary *soundFiles;
 // UI NODES / SPRITES
 
 @property (nonatomic,strong) NKNode* pivot;
