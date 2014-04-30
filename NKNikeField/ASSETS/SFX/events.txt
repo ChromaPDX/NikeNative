@@ -1,7 +1,7 @@
 
 
 DONE
-player drops
+
 
 
 wrong button sound
@@ -10,12 +10,16 @@ Menu tap
 
 
 
-kickoff text spin (CHANGE THIS, LOOKS UGLY)
+
 
 
 
 
 — done —
+
+player drops
+
+kickoff text spin (CHANGE THIS, LOOKS UGLY)
 
 GOOOOOAAAALLL (CHNAGE TEXT, LOOKS UGLY)
 

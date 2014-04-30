@@ -40,6 +40,8 @@
 -(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
     NKTouchState hit = [super touchUp:location id:touchId];
     
+    [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
+    
     NSLog(@"RecapMenu touchUP location = %f,%f", location.x, location.y);
     CGRect startButtonRect = CGRectMake(97, 470, 120, 50);
     if(CGRectContainsPoint(startButtonRect, location)){

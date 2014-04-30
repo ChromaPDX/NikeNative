@@ -91,7 +91,9 @@ float PARTICLE_SCALE;
                         @"goal":@"goal.aiff",
                         
                         @"challengeSuccessful":@"FattNedA4.wav",
-                        @"challengeFail":@"Tom-FMD-TomiVoz-Lo-127.wav"
+                        @"challengeFail":@"Tom-FMD-TomiVoz-Lo-127.wav",
+                        
+                        @"badTouch":@"anomaly_7.wav"
                         };
         
         _soundVolumes = @{@"fieldSong": @.5,
@@ -341,6 +343,7 @@ float PARTICLE_SCALE;
     if (![selectedPlayer.manager isEqual:_game.me]) {
         [self playSoundWithKey:@"enemyTap"];
     }
+    else {
     
     if ([_game canUsePlayer:selectedPlayer]) {
         
@@ -348,15 +351,18 @@ float PARTICLE_SCALE;
             [self setSelectedCard:nil];
         }
         
-          [self playSoundWithKey:@"playerTap"];
+        [self playSoundWithKey:@"playerTap"];
         
         [self showPlayerSelection:selectedPlayer];
         
         _selectedPlayer = selectedPlayer;
         
-        
+    }
+    else {
+        [self playSoundWithKey:@"badTouch"];
     }
     
+    }
 }
 
 -(void)showPlayerSelection:(Player*)p{

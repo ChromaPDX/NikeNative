@@ -35,6 +35,7 @@
         [table setHighlightColor:highlightColor];
         table.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
         
+        [NKSoundManager loadSoundFileNamed:@"Androyd-Bulbtone-41.wav"];
         [NKSoundManager loadSoundFileNamed:@"03 Bass [A$AP Rocky].mp3"];
         [NKSoundManager playMusicNamed:@"03 Bass [A$AP Rocky].mp3"];
     }
@@ -53,6 +54,9 @@
 
 -(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
     NKTouchState hit = [super touchUp:location id:touchId];
+    
+  
+    [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
     CGRect syncButtonRect = CGRectMake(101, 301, 120, 50);

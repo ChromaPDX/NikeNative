@@ -40,7 +40,6 @@
 		29BF482A1911667900487EBD /* NKSpriteNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF481C1911667900487EBD /* NKSpriteNode.m */; };
 		29BF482D19116B0600487EBD /* UIFont+CoreText.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF482C19116B0600487EBD /* UIFont+CoreText.m */; };
 		29C42BDB19105C0600441639 /* 30 PWSteal.Ldpinch.D.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BA919105C0600441639 /* 30 PWSteal.Ldpinch.D.mp3 */; };
-		29C42BDC19105C0600441639 /* 06 Track 6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BAB19105C0600441639 /* 06 Track 6.mp3 */; };
 		29C42BDD19105C0600441639 /* kickoff.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BAC19105C0600441639 /* kickoff.aiff */; };
 		29C42BDE19105C0600441639 /* 03 Bass [A$AP Rocky].mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BAE19105C0600441639 /* 03 Bass [A$AP Rocky].mp3 */; };
 		29C42BDF19105C0600441639 /* goal.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BB019105C0600441639 /* goal.aiff */; };
@@ -292,7 +291,6 @@
 		29BF482B19116B0600487EBD /* UIFont+CoreText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIFont+CoreText.h"; path = "NKNikeField/NKCore/UIKitExtensions/UIFont+CoreText.h"; sourceTree = SOURCE_ROOT; };
 		29BF482C19116B0600487EBD /* UIFont+CoreText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIFont+CoreText.m"; path = "NKNikeField/NKCore/UIKitExtensions/UIFont+CoreText.m"; sourceTree = SOURCE_ROOT; };
 		29C42BA919105C0600441639 /* 30 PWSteal.Ldpinch.D.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "30 PWSteal.Ldpinch.D.mp3"; sourceTree = "<group>"; };
-		29C42BAB19105C0600441639 /* 06 Track 6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "06 Track 6.mp3"; sourceTree = "<group>"; };
 		29C42BAC19105C0600441639 /* kickoff.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = kickoff.aiff; sourceTree = "<group>"; };
 		29C42BAE19105C0600441639 /* 03 Bass [A$AP Rocky].mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "03 Bass [A$AP Rocky].mp3"; sourceTree = "<group>"; };
 		29C42BB019105C0600441639 /* goal.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = goal.aiff; sourceTree = "<group>"; };
@@ -697,7 +695,6 @@
 		29C42BAA19105C0600441639 /* kickoff */ = {
 			isa = PBXGroup;
 			children = (
-				29C42BAB19105C0600441639 /* 06 Track 6.mp3 */,
 				29C42BAC19105C0600441639 /* kickoff.aiff */,
 			);
 			name = kickoff;
@@ -1534,7 +1531,6 @@
 				2902A071190C7BAE008D0092 /* Faction_Psyke_OFF.png in Resources */,
 				61A257D618FDE998001B7F67 /* chromeKitten.png in Resources */,
 				6198A35B1900727C0083EA5D /* lock-4.png in Resources */,
-				29C42BDC19105C0600441639 /* 06 Track 6.mp3 in Resources */,
 				29090EED190ED98B00BE6B92 /* Halo_Marks.png in Resources */,
 				29C42BEB19105C0600441639 /* KnifeMachine-MindEraser-42.wav in Resources */,
 				29C42BE419105C0600441639 /* Tom-FMD-TomiVoz-Lo-127.wav in Resources */,

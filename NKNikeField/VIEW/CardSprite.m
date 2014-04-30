@@ -219,6 +219,9 @@
                 }
                 
             }
+            else {
+                [(GameScene*)self.scene playSoundWithKey:@"badTouch"];
+            }
         }
     }
     return hit;
