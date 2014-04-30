@@ -11,16 +11,17 @@ Menu tap
 
 
 kickoff text spin (CHANGE THIS, LOOKS UGLY)
-challenge ball - success
-challenge ball - fail
 
 
 
 
+— done —
 
 GOOOOOAAAALLL (CHNAGE TEXT, LOOKS UGLY)
 
-— done —
+
+challenge ball - success
+challenge ball - fail
 
 kick ball
 move player

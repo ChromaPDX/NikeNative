@@ -80,12 +80,14 @@ float PARTICLE_SCALE;
                         @"cardContract":@"contract.aiff",
                         @"cardSwipe":@"PlucknWiggleA#1.wav",
                         
+                        @"playerDeploy":@"DeStablizer-MetalBowl-41.wav",
                         @"playerTap":@"Androyd-Alert-84.wav",
                         @"enemyTap":@"Androyd-Agitake-42.wav",
                         @"playerMove":@"KnifeMachine-MindEraser-42.wav",
                         @"playerPass":@"slope-rattle.wav",
                         @"playerShoot":@"slope-rattle.wav",
                         
+                        @"kickoff":@"kickoff.aiff",
                         @"goal":@"goal.aiff",
                         
                         @"challengeSuccessful":@"FattNedA4.wav",
@@ -100,8 +102,8 @@ float PARTICLE_SCALE;
                           @"cardLock":@4.,
                           @"playerMove":@1.5,
                           @"playerPass":@2.,
-                          @"playerShoot":@2.
-                          
+                          @"playerShoot":@2.,
+                          @"playerTap":@.75
                           };
         
         [NKSoundManager loadMultipleSoundFiles:_soundFiles.allValues];
@@ -844,6 +846,7 @@ float PARTICLE_SCALE;
     }
     
     else if (event.type == kEventKickoff){
+        [self playSoundWithKey:@"kickoff"];
         block();
        // [self animateBigText:@"KICK OFF" withCompletionBlock:^{
         //    [self animateBigText:@"GAME ON" withCompletionBlock:^{
@@ -1068,6 +1071,8 @@ float PARTICLE_SCALE;
     }
     
     else {
+        
+        [self playSoundWithKey:@"playerDeploy"];
         
         int newY = tile.position.y + TILE_HEIGHT*10;
         if (!_game.me.teamSide) {
