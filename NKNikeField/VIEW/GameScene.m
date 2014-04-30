@@ -96,9 +96,12 @@ float PARTICLE_SCALE;
                           @"cardExpand":@.5,
                           @"cardContract":@.5,
                           @"cardPlay":@.5,
+                          @"cardSwipe":@.5,
+                          @"cardLock":@4.,
                           @"playerMove":@1.5,
                           @"playerPass":@2.,
                           @"playerShoot":@2.
+                          
                           };
         
         [NKSoundManager loadMultipleSoundFiles:_soundFiles.allValues];
