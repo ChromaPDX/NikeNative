@@ -20,6 +20,7 @@
 {
     // Adapted from http://stackoverflow.com/questions/2703085/how-can-you-load-a-font-ttf-from-a-file-using-core-text
     NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:@"ttf"];
+    if (path) {
     CFURLRef url = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, (CFStringRef)path, kCFURLPOSIXPathStyle, false);
     CGDataProviderRef dataProvider = CGDataProviderCreateWithURL(url);
     CGFontRef theCGFont = CGFontCreateWithDataProvider(dataProvider);
@@ -28,6 +29,10 @@
     CFRelease(dataProvider);
     CFRelease(url);
     return result;
+    }
+    
+    NSLog(@"CoreText: Error loading Font from Bundle");
+    return CTFontCreateWithName((CFStringRef) @"Helvetica", size, NULL);
 }
 
 @end
