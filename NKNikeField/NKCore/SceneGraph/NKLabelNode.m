@@ -42,8 +42,8 @@
             _fontName = @"Arial Black";
         }
         else{
-            //_fontName = fontName;
-            _fontName = @"Arial Black";
+            _fontName = fontName;
+            //_fontName = @"Arial Black";
         }
         
         //NSLog(@"labelnode with fontnamed: %@", _fontName);
