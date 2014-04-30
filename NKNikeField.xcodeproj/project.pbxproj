@@ -601,12 +601,13 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		29BF47F51911666500487EBD /* UIKitExtentions */ = {
+		29BF47F51911666500487EBD /* UIKitExtensions */ = {
 			isa = PBXGroup;
 			children = (
 				29BF47F61911666500487EBD /* UIFont+CoreText.h */,
 				29BF47F71911666500487EBD /* UIFont+CoreText.m */,
 			);
+			name = UIKitExtensions;
 			path = UIKitExtentions;
 			sourceTree = "<group>";
 		};
@@ -993,7 +994,7 @@
 			isa = PBXGroup;
 			children = (
 				29BF48001911667900487EBD /* SceneGraph */,
-				29BF47F51911666500487EBD /* UIKitExtentions */,
+				29BF47F51911666500487EBD /* UIKitExtensions */,
 				29BF47F81911666500487EBD /* UIView */,
 				61A2578218FDE998001B7F67 /* Geometry */,
 				61A2578C18FDE998001B7F67 /* NKpch.h */,
@@ -1470,7 +1471,6 @@
 				61D6E80118FDB5B70017A389 /* tile_left.png in Resources */,
 				61D6E7FC18FDB5B70017A389 /* tile_all.png in Resources */,
 				297E6C2519097F4F00369BDF /* blank_texture.png in Resources */,
-				3B41EE0C190C0FD500837DC0 /* main_menu.png in Resources */,
 				29C42BEE19105C0600441639 /* Androyd-Agitake-42.wav in Resources */,
 				61D6E87918FDB5B70017A389 /* Field_Layer02.png in Resources */,
 				29C42BE319105C0600441639 /* FattNedC2.wav in Resources */,
