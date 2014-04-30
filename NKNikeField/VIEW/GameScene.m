@@ -86,13 +86,16 @@ float PARTICLE_SCALE;
                         @"playerPass":@"slope-rattle.wav",
                         @"playerShoot":@"slope-rattle.wav",
                         
-                        @"goal":@"goal.aiff"
+                        @"goal":@"goal.aiff",
                         
+                        @"challengeSuccessful":@"FattNedA4.wav",
+                        @"challengeFail":@"Tom-FMD-TomiVoz-Lo-127.wav"
                         };
         
         _soundVolumes = @{@"fieldSong": @.5,
                           @"cardExpand":@.5,
                           @"cardContract":@.5,
+                          @"cardPlay":@.5
                           };
         
         [NKSoundManager loadMultipleSoundFiles:_soundFiles.allValues];
@@ -492,6 +495,8 @@ float PARTICLE_SCALE;
         [player runAction:[NKAction moveTo:[[_gameTiles objectForKey:event.location] position] duration:MOVE_SPEED] completion:^{
             
             if (event.wasSuccessful) {
+                
+                [self playSoundWithKey:@"challengeSuccessful"];
                 [receiver stopPosession:^{
                     [receiver runAction:[NKAction moveTo:[[_gameTiles objectForKey:event.startingLocation] position] duration:MOVE_SPEED]];
                     
@@ -505,6 +510,7 @@ float PARTICLE_SCALE;
             }
             
             else {
+                [self playSoundWithKey:@"challengeFail"];
                 [player runAction:[NKAction moveTo:[[_gameTiles objectForKey:event.startingLocation] position] duration:MOVE_SPEED] completion:^{
                     
                     block();
