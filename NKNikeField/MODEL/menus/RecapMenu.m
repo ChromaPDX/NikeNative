@@ -27,7 +27,7 @@
         table.scale = 1.02;  // to correct for image...this needs to be fixed
         table.name = @"table";
         table.delegate = self;
-        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"recap_menu.png"]];
+        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"screen_recap.png"]];
         UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
         [table setHighlightColor:highlightColor];

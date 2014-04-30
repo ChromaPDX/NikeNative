@@ -777,11 +777,11 @@ float PARTICLE_SCALE;
     
     else if (event.type == kEventKickoff){
         block();
-        //[self animateBigText:@"KICK OFF" withCompletionBlock:^{
+       // [self animateBigText:@"KICK OFF" withCompletionBlock:^{
         //    [self animateBigText:@"GAME ON" withCompletionBlock:^{
-        //        block();
+       //        block();
         //    }];
-        //}];
+       // }];
         
     }
     
@@ -834,7 +834,7 @@ float PARTICLE_SCALE;
 
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block {
     
-    NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(300, 60) FontNamed:@"Arial-BoldMT"];
+    NKLabelNode *bigText = [[NKLabelNode alloc]initWithSize:CGSizeMake(300, 60) FontNamed:@"Coe"];
     bigText.fontSize = 40;
     bigText.fontColor = NKWHITE;
     [bigText setZPosition:400];
@@ -867,6 +867,7 @@ float PARTICLE_SCALE;
             }];
         }];
          */
+        /*
         float animateDuration = 2;
         [self fadeInChild:bigText duration:.1 withCompletion:^{
             [bigText runAction:[NKAction group: @[[NKAction scaleBy:2 duration:animateDuration],[NKAction fadeAlphaTo:0. duration:animateDuration]]] completion:^{
@@ -875,9 +876,15 @@ float PARTICLE_SCALE;
                 }];
             }];
         }];
-
+         */
+        [self fadeInChild:bigText duration:.25 withCompletion:^{
+            [bigText runAction:[NKAction delayFor:2.5] completion:^{
+                [self fadeOutChild:bigText duration:.25 withCompletion:^{
+                    block();
+                }];
+            }];
+        }];
     }];
-    
 }
 
 

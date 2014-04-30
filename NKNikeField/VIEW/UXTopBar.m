@@ -28,15 +28,22 @@
         
         NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"fuelbar_fuel.png"]];
         NKSpriteNode* fuel = [[NKSpriteNode alloc] initWithTexture:image];
-        [fuel setPosition:CGPointMake(-134, 10)];
+        [fuel setPosition:CGPointMake(-80, 10)];
         fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
         fuelLabel.fontSize = 22;
         [fuelLabel setColor:V2YELLOW];
         [fuelLabel setText:@"ENERGY"];
-        [fuelLabel setPosition:CGPointMake(-234, -50)];
+        [fuelLabel setPosition:CGPointMake(-180, -50)];
+        
+        NKTexture *logoImage = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"LOGO_Icon_Bola_small.png"]];
+        NKSpriteNode* logo = [[NKSpriteNode alloc] initWithTexture:logoImage];
+        //[logo setScale:.33];
+        [logo setPosition:CGPointMake(-270, -5)];
+
         [self addChild:fuel];
         [self addChild:fuelLabel];
-        
+        [self addChild:logo];
+
         
        
         //        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];

@@ -42,8 +42,8 @@
             _fontName = @"Arial-BoldMT";
         }
         else{
-            //_fontName = fontName;
-            _fontName = @"Arial-BoldMT";
+            _fontName = fontName;
+            //_fontName = @"Arial-BoldMT";
         }
         
         //NSLog(@"labelnode with fontnamed: %@", _fontName);

@@ -52,7 +52,9 @@
 		<string>https://api.nike.com</string>
 	</dict>
 	<key>UIAppFonts</key>
-	<array/>
+	<array>
+		<string>Coe.otf</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

@@ -29,7 +29,7 @@
         //V3t rot =
         //table.node->setOrientation
         
-        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"main_menu.png"]];
+        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"screen_menu.png"]];
         UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
         [table setHighlightColor:highlightColor];
@@ -57,7 +57,7 @@
     NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
     CGRect syncButtonRect = CGRectMake(101, 301, 120, 50);
     CGRect startButtonRect = CGRectMake(101, 367, 120, 50);
-    CGRect HiddenAIButtonRect = CGRectMake(135, 115, 50, 50);
+    CGRect HiddenAIButtonRect = CGRectMake(116, 151, 50, 50);
     if(CGRectContainsPoint(syncButtonRect, location)){
         NSLog(@"*NSYNC!");
     }
