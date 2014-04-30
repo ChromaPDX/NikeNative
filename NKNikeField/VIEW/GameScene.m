@@ -67,8 +67,13 @@ float PARTICLE_SCALE;
             
         }
         
+
         boardScale = 1.;
         
+        _soundFiles = @{@"cardTap":@"Androyd-Uck-41.wav",
+                        @"cardLock":@"lock.aiff",
+                        @"cardPlay":@"DotMatrix-Pang-84.wav"
+                        };
         
         //
         //        _scoreBoard = [[ScoreBoard alloc] initWithTexture:nil color:nil size:CGSizeMake(WINDOW_WIDTH*2., WINDOW_WIDTH*.5)];
