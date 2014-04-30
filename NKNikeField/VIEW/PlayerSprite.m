@@ -148,26 +148,34 @@
     
     if (!_ball) {
         
-        if (!_posession) {
+        if (!rotate) {
             
+            rotate = [[NKNode alloc]init];
+            [self addChild:rotate];
+            
+            [rotate repeatAction:[NKAction rotateByAngle:180 duration:4.]];
+            [rotate setPosition3d:V3Make(0, -20, h*.3)];
+
             _posession = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:CGSizeMake(h, h)];
             
             //[_posession setAlpha:.5];
             [_posession setColorBlendFactor:1.];
             [_posession setColor:_model.manager.color];
-            [_posession setZPosition:h*.25];
+            //[_posession setPosition3d:V3Make(0, -20, h*.3)];
             
-            NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks.png"] color:NKWHITE size:CGSizeMake(h, h)];
+
+            
+            NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks_glow.png"] color:NKWHITE size:CGSizeMake(h, h)];
             [_posession addChild:haloMarks];
             [haloMarks setZPosition:2];
             
             _ballTarget = [[NKSpriteNode alloc]initWithColor:nil size:CGSizeMake(4, 4)];
             
             [_posession addChild:_ballTarget];
+            [haloMarks repeatAction:[NKAction rotateByAngle:180 duration:8.]];
+            [_ballTarget setPosition3d:V3Make(0, w*.42, 0)];
             
-            [_ballTarget setPosition3d:V3Make(0, w*.5, 0)];
-            
-            [self fadeInChild:_posession duration:FAST_ANIM_DUR withCompletion:^{
+            [rotate fadeInChild:_posession duration:FAST_ANIM_DUR withCompletion:^{
                 
             }];
             
@@ -198,9 +206,6 @@
         
         [_posession runAction:[NKAction repeatActionForever:
                                [NKAction group:@[
-                                                 [NKAction sequence:@[[NKAction move3dBy:V3Make(0,0,h*.33) duration:1.],
-                                                                      [NKAction move3dBy:V3Make(0,0,-h*.33) duration:1.]]],
-                                                 
                                                                       [NKAction rotateByAngle:180 duration:2.]
                                                     ]]]];
 
@@ -227,6 +232,7 @@
             _posession = nil;
             _ball.player = nil;
             _ball = nil;
+            [rotate removeFromParent];
             block();
         }];
 

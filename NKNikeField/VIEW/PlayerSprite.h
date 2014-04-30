@@ -17,6 +17,7 @@
     CGPoint origin;
     //NKLabelNode *cardName;
     NKSpriteNode *cardImg;
+    NKNode *rotate;
 }
 
 @property (nonatomic, strong) NKSpriteNode *posession;
