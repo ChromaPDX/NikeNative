@@ -51,6 +51,10 @@ static NKSoundManager *sharedObject = nil;
     //NSLog(@"added sound: %@", )
 }
 
++(void)loadAndPlayMusicNamed:(NSString*)name {
+    [NKSoundManager loadSoundFileNamed:name];
+    [NKSoundManager playMusicNamed:name];
+}
 
 +(void)playSoundFileNamed:(NSString *)name isMusic:(bool)isMusic {
     

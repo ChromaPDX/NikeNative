@@ -22,7 +22,6 @@
 		29090EEE190ED98B00BE6B92 /* Halo.png in Resources */ = {isa = PBXBuildFile; fileRef = 29090EEB190ED98B00BE6B92 /* Halo.png */; };
 		29090EF1190EEC4200BE6B92 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 29090EF0190EEC4200BE6B92 /* Arial Black.ttf */; };
 		297E6C2519097F4F00369BDF /* blank_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 297E6C2419097F4F00369BDF /* blank_texture.png */; };
-		29BF47FD1911666500487EBD /* UIFont+CoreText.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47F71911666500487EBD /* UIFont+CoreText.m */; };
 		29BF47FE1911666500487EBD /* NKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FA1911666500487EBD /* NKView.m */; };
 		29BF47FF1911666500487EBD /* NKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FC1911666500487EBD /* NKViewController.m */; };
 		29BF481D1911667900487EBD /* NKCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48021911667900487EBD /* NKCamera.m */; };
@@ -39,6 +38,7 @@
 		29BF48281911667900487EBD /* NKShaderNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48181911667900487EBD /* NKShaderNode.m */; };
 		29BF48291911667900487EBD /* NKSoundManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF481A1911667900487EBD /* NKSoundManager.m */; };
 		29BF482A1911667900487EBD /* NKSpriteNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF481C1911667900487EBD /* NKSpriteNode.m */; };
+		29BF482D19116B0600487EBD /* UIFont+CoreText.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF482C19116B0600487EBD /* UIFont+CoreText.m */; };
 		29C42BDB19105C0600441639 /* 30 PWSteal.Ldpinch.D.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BA919105C0600441639 /* 30 PWSteal.Ldpinch.D.mp3 */; };
 		29C42BDC19105C0600441639 /* 06 Track 6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BAB19105C0600441639 /* 06 Track 6.mp3 */; };
 		29C42BDD19105C0600441639 /* kickoff.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BAC19105C0600441639 /* kickoff.aiff */; };
@@ -257,8 +257,6 @@
 		29090EEB190ED98B00BE6B92 /* Halo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Halo.png; sourceTree = "<group>"; };
 		29090EF0190EEC4200BE6B92 /* Arial Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Black.ttf"; sourceTree = "<group>"; };
 		297E6C2419097F4F00369BDF /* blank_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank_texture.png; sourceTree = "<group>"; };
-		29BF47F61911666500487EBD /* UIFont+CoreText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+CoreText.h"; sourceTree = "<group>"; };
-		29BF47F71911666500487EBD /* UIFont+CoreText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+CoreText.m"; sourceTree = "<group>"; };
 		29BF47F91911666500487EBD /* NKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKView.h; sourceTree = "<group>"; };
 		29BF47FA1911666500487EBD /* NKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKView.m; sourceTree = "<group>"; };
 		29BF47FB1911666500487EBD /* NKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKViewController.h; sourceTree = "<group>"; };
@@ -291,6 +289,8 @@
 		29BF481A1911667900487EBD /* NKSoundManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKSoundManager.m; sourceTree = "<group>"; };
 		29BF481B1911667900487EBD /* NKSpriteNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKSpriteNode.h; sourceTree = "<group>"; };
 		29BF481C1911667900487EBD /* NKSpriteNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKSpriteNode.m; sourceTree = "<group>"; };
+		29BF482B19116B0600487EBD /* UIFont+CoreText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIFont+CoreText.h"; path = "NKNikeField/NKCore/UIKitExtensions/UIFont+CoreText.h"; sourceTree = SOURCE_ROOT; };
+		29BF482C19116B0600487EBD /* UIFont+CoreText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIFont+CoreText.m"; path = "NKNikeField/NKCore/UIKitExtensions/UIFont+CoreText.m"; sourceTree = SOURCE_ROOT; };
 		29C42BA919105C0600441639 /* 30 PWSteal.Ldpinch.D.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "30 PWSteal.Ldpinch.D.mp3"; sourceTree = "<group>"; };
 		29C42BAB19105C0600441639 /* 06 Track 6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "06 Track 6.mp3"; sourceTree = "<group>"; };
 		29C42BAC19105C0600441639 /* kickoff.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = kickoff.aiff; sourceTree = "<group>"; };
@@ -604,8 +604,8 @@
 		29BF47F51911666500487EBD /* UIKitExtensions */ = {
 			isa = PBXGroup;
 			children = (
-				29BF47F61911666500487EBD /* UIFont+CoreText.h */,
-				29BF47F71911666500487EBD /* UIFont+CoreText.m */,
+				29BF482B19116B0600487EBD /* UIFont+CoreText.h */,
+				29BF482C19116B0600487EBD /* UIFont+CoreText.m */,
 			);
 			name = UIKitExtensions;
 			path = UIKitExtentions;
@@ -1572,7 +1572,6 @@
 				61D6E88918FDB5B70017A389 /* GameEvent.m in Sources */,
 				29D8926E190AA65E008FBD5F /* gzwrite.c in Sources */,
 				29D892BC190AC6C1008FBD5F /* UIImage+Alpha.m in Sources */,
-				29BF47FD1911666500487EBD /* UIFont+CoreText.m in Sources */,
 				29D892B0190AC625008FBD5F /* Reachability.m in Sources */,
 				29BF48261911667900487EBD /* NKSceneNode.m in Sources */,
 				29D89298190AC3B0008FBD5F /* NikeConnect.m in Sources */,
@@ -1652,6 +1651,7 @@
 				3B2361FF190020FA00056AE2 /* MenuStartVS.m in Sources */,
 				61A257C418FDE998001B7F67 /* NKVectorTypes.m in Sources */,
 				29D89275190AA65E008FBD5F /* zutil.c in Sources */,
+				29BF482D19116B0600487EBD /* UIFont+CoreText.m in Sources */,
 				29BF47FE1911666500487EBD /* NKView.m in Sources */,
 				29D89271190AA65E008FBD5F /* inflate.c in Sources */,
 				29D89293190AC3B0008FBD5F /* GraphScreens.m in Sources */,

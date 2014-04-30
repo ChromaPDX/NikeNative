@@ -70,7 +70,8 @@ float PARTICLE_SCALE;
 
         boardScale = 1.;
         
-        _soundFiles = @{@"cardTap":@"Androyd-Uck-41.wav",
+        _soundFiles = @{@"gameMusic":@"30 PWSteal.Ldpinch.D.mp3",
+                        @"cardTap":@"Androyd-Uck-41.wav",
                         @"cardLock":@"lock.aiff",
                         @"cardPlay":@"DotMatrix-Pang-84.wav"
                         };
@@ -188,8 +189,7 @@ float PARTICLE_SCALE;
     [_pivot runAction:[NKAction rotate3dToAngle:V3Make(-26, 0,0) duration:2.]];
     [_pivot runAction:[NKAction move3dTo:V3Make(0,-h*.25,0) duration:2.]];
     
-    [NKSoundManager loadSoundFileNamed:@"30 PWSteal.Ldpinch.D.mp3"];
-    [NKSoundManager playMusicNamed:@"30 PWSteal.Ldpinch.D.mp3"];
+    [NKSoundManager loadAndPlayMusicNamed:[_soundFiles objectForKey:@"gameMusic"]];
 }
 
 //-(void)startMiniGame {
