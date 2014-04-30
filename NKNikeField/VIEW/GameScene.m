@@ -95,7 +95,10 @@ float PARTICLE_SCALE;
         _soundVolumes = @{@"fieldSong": @.5,
                           @"cardExpand":@.5,
                           @"cardContract":@.5,
-                          @"cardPlay":@.5
+                          @"cardPlay":@.5,
+                          @"playerMove":@1.5,
+                          @"playerPass":@2.,
+                          @"playerShoot":@2.
                           };
         
         [NKSoundManager loadMultipleSoundFiles:_soundFiles.allValues];
