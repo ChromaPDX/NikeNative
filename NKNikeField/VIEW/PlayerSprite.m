@@ -156,26 +156,26 @@
             [rotate repeatAction:[NKAction rotateByAngle:180 duration:4.]];
             [rotate setPosition3d:V3Make(0, -20, h*.3)];
 
-            _posession = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:CGSizeMake(h, h)];
+            halo = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:CGSizeMake(h, h)];
             
-            //[_posession setAlpha:.5];
-            [_posession setColorBlendFactor:1.];
-            [_posession setColor:_model.manager.color];
-            //[_posession setPosition3d:V3Make(0, -20, h*.3)];
+            //[halo setAlpha:.5];
+            [halo setColorBlendFactor:1.];
+            [halo setColor:_model.manager.color];
+            //[halo setPosition3d:V3Make(0, -20, h*.3)];
             
 
             
             NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks_glow.png"] color:NKWHITE size:CGSizeMake(h, h)];
-            [_posession addChild:haloMarks];
+            [halo addChild:haloMarks];
             [haloMarks setZPosition:2];
             
             _ballTarget = [[NKSpriteNode alloc]initWithColor:nil size:CGSizeMake(4, 4)];
             
-            [_posession addChild:_ballTarget];
+            [halo addChild:_ballTarget];
             [haloMarks repeatAction:[NKAction rotateByAngle:180 duration:8.]];
             [_ballTarget setPosition3d:V3Make(0, w*.42, 0)];
             
-            [rotate fadeInChild:_posession duration:FAST_ANIM_DUR withCompletion:^{
+            [rotate fadeInChild:halo duration:FAST_ANIM_DUR withCompletion:^{
                 
             }];
             
@@ -204,7 +204,7 @@
         
        
         
-        [_posession runAction:[NKAction repeatActionForever:
+        [halo runAction:[NKAction repeatActionForever:
                                [NKAction group:@[
                                                                       [NKAction rotateByAngle:180 duration:2.]
                                                     ]]]];
@@ -218,21 +218,21 @@
 //    //return [self.parent convertPoint:_ballTarget.position fromNode:self];
 //    //CGPoint loc = [_ballTarget pos
 //    
-//    CGPoint cp = [_posession childLocationIncludingRotation:_ballTarget];
+//    CGPoint cp = [halo childLocationIncludingRotation:_ballTarget];
 //    
-//    return V3Make(self.position3d.x + cp.x, self.position3d.y + cp.y, _posession.position3d.z + self.position3d.z);
+//    return V3Make(self.position3d.x + cp.x, self.position3d.y + cp.y, halo.position3d.z + self.position3d.z);
 //}
 
 
 -(void)stopPosession:(void (^)())block {
 
-        [self fadeOutChild:_posession duration:FAST_ANIM_DUR withCompletion:^{
+        [self fadeOutChild:rotate duration:FAST_ANIM_DUR withCompletion:^{
             NSLog(@"stopped possesion : %@", _model.name);
             [_ballTarget removeFromParent];
-            _posession = nil;
             _ball.player = nil;
             _ball = nil;
             [rotate removeFromParent];
+            rotate = nil;
             block();
         }];
 

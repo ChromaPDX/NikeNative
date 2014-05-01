@@ -18,9 +18,9 @@
     //NKLabelNode *cardName;
     NKSpriteNode *cardImg;
     NKNode *rotate;
+    NKSpriteNode *halo;
 }
 
-@property (nonatomic, strong) NKSpriteNode *posession;
 @property (nonatomic, strong) NKSpriteNode *ballTarget;
 
 @property (nonatomic, weak) BallSprite *ball;
