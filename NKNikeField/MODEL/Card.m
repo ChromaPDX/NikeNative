@@ -31,13 +31,22 @@
         _level = 2;
     }
     _moveCategory = CardMoveCategoryNull;
-    
+    _challengeCategory = CardChallengeCategoryNull;
 }
 
 -(void)getRandomMoveAttributes {
     _level = 2;
     _moveCategory = rand()%4 + 1;
     _kickCategory = CardKickCategoryNull;
+    _challengeCategory = CardChallengeCategoryNull;
+}
+
+-(void)getRandomChallengeAttributes {
+    _level = 1;
+    _challengeCategory = rand()%2 + 1;
+    _kickCategory = CardKickCategoryNull;
+    _moveCategory = CardMoveCategoryNull;
+
 }
 
 -(id)initWithDeck:(Deck*)deck {
@@ -55,11 +64,9 @@
             case CardCategoryKick:
                 [self getRandomKickAttributes];
                 break;
-            
             case CardCategoryChallenge:
-                _level = 1;
+                [self getRandomChallengeAttributes];
                 break;
-                
             default:
                 break;
         }
@@ -381,7 +388,12 @@
     }
     
     else if (self.category == CardCategoryChallenge) {
-        accessible = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:_range];
+        if(self.challengeCategory == CardChallengeCategoryRook){
+            accessible = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range];
+        }
+        else if (self.challengeCategory == CardChallengeCategoryBishop){
+            accessible = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range];
+        }
     }
     else if (self.category == CardCategoryKick) {
         switch(self.kickCategory){
