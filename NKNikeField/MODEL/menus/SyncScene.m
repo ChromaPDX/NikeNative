@@ -11,7 +11,7 @@
 
 @implementation SyncScene
 
--(instancetype)initWithSize:(CGSize)size {
+-(instancetype)initWithSize:(S2t)size {
     self = [super initWithSize:size];
     
     if (self) {

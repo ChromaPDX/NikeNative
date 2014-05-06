@@ -143,7 +143,7 @@
 }
 
 -(S2t)size {
-    return CGSizeMake(_size3d.x, _size3d.y);
+    return S2Make(_size3d.x, _size3d.y);
 }
 
 -(V3t)size3d {
@@ -206,8 +206,8 @@
         }
         
         
-        if (childFrame.x + childFrame.w > rect.x + rect.w) {
-            rect.w = rect.x + childFrame.x + childFrame.w;
+        if (childFrame.x + childFrame.size.width > rect.x + rect.size.width) {
+            rect.size.width = rect.x + childFrame.x + childFrame.size.width;
         }
         
         if (childFrame.y < rect.y) {
@@ -215,8 +215,8 @@
         }
         
         
-        if (childFrame.y + childFrame.h > rect.y + rect.h) {
-            rect.h = rect.y + childFrame.y + childFrame.h;
+        if (childFrame.y + childFrame.size.height > rect.y + rect.size.height) {
+            rect.size.height = rect.y + childFrame.y + childFrame.size.height;
         }
         
     }
@@ -268,7 +268,7 @@
     [_parent removeChildrenInArray:@[self]];
 }
 
-+(NKFbo*)customFbo:(CGSize)size {
++(NKFbo*)customFbo:(S2t)size {
     
     NKFbo* custom = [[NKFbo alloc]init];
 //    
@@ -291,31 +291,20 @@
 
 -(void)loadShaderNamed:(NSString *)name {
     if (!_shader) {
-        _shader = [[NKShaderNode alloc] initWithShaderNamed:name node:self paramBlock:nil];
-    }
-    
-    else {
-        [_shader loadShaderNamed:name];
+        _shader = [[NKShaderProgram alloc]initWithName:name];
+        [_shader load];
     }
     
     useShader = true;
 }
 
--(void)loadShaderNamed:(NSString*)name paramBlock:(ShaderParamBlock)block{
-    if (!_shader) {
-        _shader = [[NKShaderNode alloc] initWithShaderNamed:name node:self paramBlock:block];
-    }
-    
-    useShader = true;
-}
-
--(void)loadShader:(NKShaderNode*)shader {
-    if (!_shader) {
-        _shader = shader;
-    }
-    
-    useShader = true;
-}
+//-(void)loadShader:(NKShaderNode*)shader {
+//    if (!_shader) {
+//        _shader = shader;
+//    }
+//    
+//    useShader = true;
+//}
 
 #pragma mark - Actions
 
@@ -507,18 +496,18 @@
     }
 }
 
-
-
 -(void)begin {
-    glPushMatrix();
-    nkMultMatrix(localTransformMatrix);
-    
-    if (_shader.needsDepthBuffer) {
-        [self drawToDepthBuffer];
+    if (NK_GL_VERSION == 2) {
+        if (_shader){
+            self.scene.activeShader = _shader;
+            [_shader use];
+        }
+        
+        [self.scene pushMultiplyMatrix:localTransformMatrix];
     }
-    
-    if(useShader) {
-        [_shader begin];
+    else {
+        glPushMatrix();
+        nkMultMatrix(localTransformMatrix);
     }
 }
 
@@ -528,25 +517,13 @@
     [self pushStyle];
     
     [self customDraw];
-    
-    if(useShader) {
-        if (_useShaderOnSelfOnly){
-            [_shader end];
-        }
-    }
-    
+
     for (NKNode *child in intChildren) {
         if (!child.isHidden) {
             [child draw];
         }
     }
     
-    if(useShader) {
-        if (!_useShaderOnSelfOnly){
-            [_shader end];
-        }
-    }
-
     [self end];
 }
 
@@ -555,53 +532,64 @@
 }
 
 -(void)end {
-    
-    glPopMatrix();
+    if (NK_GL_VERSION == 2) {
+        [self.scene popMatrix];
+    }
+    else {
+        glPopMatrix();
+    }
 }
 
-+(void)drawRectangle:(CGSize)size {
-    
-    NKMeshNode *node = [[NKStaticDraw meshesCache]objectForKey:[NKStaticDraw stringForPrimitive:NKPrimitiveRect]];
-    
-    if (!node) {
-        node = [[NKMeshNode alloc] initWithPrimitive:NKPrimitiveRect texture:nil color:NKWHITE size:V3Make(size.width, size.height, 0)];
-    }
-    
-    glPushMatrix();
-    glScalef(size.width, size.height, 0);
-    [node customDraw];
-    glPopMatrix();
-    
-}
+//+(void)drawRectangle:(S2t)size {
+//    
+//    NKMeshNode *node = [[NKStaticDraw meshesCache]objectForKey:[NKStaticDraw stringForPrimitive:NKPrimitiveRect]];
+//    
+//    if (!node) {
+//        node = [[NKMeshNode alloc] initWithPrimitive:NKPrimitiveRect texture:nil color:NKWHITE size:V3Make(size.width, size.height, 0)];
+//    }
+//    
+//    if (NK_GL_VERSION == 2) {
+//        [node customDraw];
+//    }
+//    else {
+//        
+//        glPushMatrix();
+//        glScalef(size.width, size.height, 0);
+//        [node customDraw];
+//        glPopMatrix();
+//        
+//    }
+//    
+//}
 
 #pragma mark - GEOMETRY
 
 // this sucks, needs work
-//-(CGPoint)transformedPoint:(CGPoint)location {
+//-(P2t)transformedPoint:(P2t)location {
 //    
 //    M16t inverse = M16InvertColumnMajor([self getGlobalTransformMatrix], NULL);
 //    //M16t inverse = [self getGlobalTransformMatrix];
 //    
 //    V3t transformed = V3MultiplyM16(inverse, V3Make(location.x, location.y, V3GetM16Translation(inverse).z));
 //    
-//    CGPoint p = CGPointMake(transformed.x / 100., transformed.y / 100.);
+//    P2tp = P2Make(transformed.x / 100., transformed.y / 100.);
 //
 //    NSLog(@"%f %f node transformed %f, %f", location.x, location.y, p.x, p.y);
 //    
 //    return p;
 //}
 
--(bool)containsPoint:(CGPoint)location {
+-(bool)containsPoint:(P2t)location {
     
-    CGPoint p = location;
-    //CGPoint p = [self transformedPoint:location];
+    P2t p = location;
+    //P2tp = [self transformedPoint:location];
     
     //NSLog(@"world coords: %f %f %f", p.x, p.y, p.z);
     
     R4t r = [self getWorldFrame];
     
     //bool withinArea = false;
-    if ( p.x > r.x && p.x < r.x + r.w && p.y > r.y && p.y < r.y + r.h)
+    if ( p.x > r.x && p.x < r.x + r.size.width && p.y > r.y && p.y < r.y + r.size.height)
     {
        // [self logCoords];
         return true;
@@ -650,9 +638,9 @@
     return 0;
 }
 
--(CGPoint)childLocationIncludingRotation:(NKNode*)child {
+-(P2t)childLocationIncludingRotation:(NKNode*)child {
     
-    CGPoint polar = carToPol(child.position);
+    P2t polar = carToPol(child.position);
     polar.y += self.zRotation;
     
     //NSLog(@"zRotation: %f", self.zRotation);
@@ -732,19 +720,19 @@
 	}
 }
 
--(void)setPosition:(CGPoint)p {
+-(void)setPosition:(P2t)p {
     [self setPosition3d:V3Make(p.x, p.y, position.z)];
 }
 
--(CGPoint)position {
-    return CGPointMake(position.x, position.y);
+-(P2t)position {
+    return P2Make(position.x, position.y);
 }
 
--(CGPoint)positionInNode:(NKNode *)n {
+-(P2t)positionInNode:(NKNode *)n {
 //    V3t p = self.node->getGlobalPosition() - n.node->getGlobalPosition();
 //
     V3t p = [self convertPoint3d:V3Make(0,0,0) toNode:n];
-    return CGPointMake(p.x, p.y);
+    return P2Make(p.x, p.y);
 }
 
 -(V3t)positionInNode3d:(NKNode *)n {
@@ -753,13 +741,13 @@
 
 #pragma mark - ANCHOR
 
--(void)setAnchorPoint:(CGPoint)anchorPoint {
+-(void)setAnchorPoint:(P2t)anchorPoint {
     _anchorPoint3d.x = anchorPoint.x;
     _anchorPoint3d.y = anchorPoint.y;
 }
 
--(CGPoint)anchorPoint {
-    return CGPointMake(_anchorPoint3d.x, _anchorPoint3d.y);
+-(P2t)anchorPoint {
+    return P2Make(_anchorPoint3d.x, _anchorPoint3d.y);
 }
 
 #pragma mark - Orientation
@@ -944,8 +932,8 @@ void ofNode::resetTransform() {
     return scale;
 }
 
--(CGPoint)scale {
-    return CGPointMake(scale.x, scale.y);
+-(P2t)scale {
+    return P2Make(scale.x, scale.y);
 }
 
 #pragma mark - ALPHA / BLEND
@@ -979,7 +967,7 @@ void ofNode::resetTransform() {
 }
 
 #pragma mark - TOUCH
--(NKTouchState)touchDown:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchDown:(P2t)location id:(int)touchId {
     // OVERRIDE, CALL SUPER
     
     NKTouchState hit = NKTouchNone;
@@ -1004,7 +992,7 @@ void ofNode::resetTransform() {
     return hit;
 }
 
--(NKTouchState)touchMoved:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
     // OVERRIDE, CALL SUPER
     
     NKTouchState hit = NKTouchNone;
@@ -1026,7 +1014,7 @@ void ofNode::resetTransform() {
     return hit;
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     // OVERRIDE, CALL SUPER
     
     NKTouchState hit = NKTouchNone;

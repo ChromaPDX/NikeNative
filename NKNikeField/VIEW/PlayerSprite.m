@@ -65,14 +65,14 @@
         
         _model = model;
         
-        NKSpriteNode *shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerShadow] color:NKBLACK size:CGSizeMake(w, h)];
+        NKSpriteNode *shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerShadow] color:NKBLACK size:S2Make(w, h)];
         [shadow setAlpha:.2];
         shadow.name = @"shadow";
         
         [self addChild:shadow];
         [shadow setPosition3d:V3Make(-self.size.width * .03, self.size.width*.03, -1)];
         
-        cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:CGSizeMake(w, h)];
+        cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:S2Make(w, h)];
         
         [cardImg setOrientationEuler:V3Make(45,0,0)];
         float cardOffset = -20;
@@ -96,7 +96,7 @@
     [self removeChildNamed:@"shadow"];
     [cardImg removeFromParent];
     
-    cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:CGSizeMake(w, h)];
+    cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:S2Make(w, h)];
     [self addChild:cardImg];
     
     [cardImg setZPosition:2];
@@ -126,8 +126,8 @@
    
     
     if (highlighted && !_highlighted) {
-       // NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:CGSizeMake(TILE_WIDTH, TILE_HEIGHT)];
-        NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:CGSizeMake(self.size.width + 6, self.size.height + 22)];
+       // NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:S2Make(TILE_WIDTH, TILE_HEIGHT)];
+        NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:S2Make(self.size.width + 6, self.size.height + 22)];
         crosshairs.name = @"crosshairs";
         [self addChild:crosshairs];
         [crosshairs setZPosition: 1];
@@ -156,7 +156,7 @@
             [rotate repeatAction:[NKAction rotateByAngle:180 duration:4.]];
             [rotate setPosition3d:V3Make(0, -20, h*.3)];
 
-            halo = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:CGSizeMake(h, h)];
+            halo = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:S2Make(h, h)];
             
             //[halo setAlpha:.5];
             [halo setColorBlendFactor:1.];
@@ -165,11 +165,11 @@
             
 
             
-            NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks_glow.png"] color:NKWHITE size:CGSizeMake(h, h)];
+            NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks_glow.png"] color:NKWHITE size:S2Make(h, h)];
             [halo addChild:haloMarks];
             [haloMarks setZPosition:2];
             
-            _ballTarget = [[NKSpriteNode alloc]initWithColor:nil size:CGSizeMake(4, 4)];
+            _ballTarget = [[NKSpriteNode alloc]initWithColor:nil size:S2Make(4, 4)];
             
             [halo addChild:_ballTarget];
             [haloMarks repeatAction:[NKAction rotateByAngle:180 duration:8.]];
@@ -216,9 +216,9 @@
 //-(ofPoint)ballLoc {
 //    
 //    //return [self.parent convertPoint:_ballTarget.position fromNode:self];
-//    //CGPoint loc = [_ballTarget pos
+//    //P2tloc = [_ballTarget pos
 //    
-//    CGPoint cp = [halo childLocationIncludingRotation:_ballTarget];
+//    P2tcp = [halo childLocationIncludingRotation:_ballTarget];
 //    
 //    return V3Make(self.position3d.x + cp.x, self.position3d.y + cp.y, halo.position3d.z + self.position3d.z);
 //}
@@ -238,7 +238,7 @@
 
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     
     NKTouchState touchState = [super touchUp:location id:touchId];
     

@@ -350,100 +350,108 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
 -(void) drawWithTexture:(NKTexture*)texture color:(C4t)color {
     
     if (NK_GL_VERSION == 2) {
-//        
-//        glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE,
-//                              sizeof(Vertex), 0);
-//        glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE,
-//                              sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
-//        glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]),
-//                       GL_UNSIGNED_BYTE, 0);
 
-    }
-    else {
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glNormalPointer(GL_FLOAT, 0, vertexNormals);
-    
-    
-    for (int i = 0; i < numberOfVertices; i++){
-        memcpy(vertexColors+(i), &color.r, sizeof(C4t));
-    }
-    
-    
-    glTexCoordPointer(2, GL_FLOAT, 0, textureCoords);
-    
-    glColorPointer(4,GL_FLOAT, 0, &vertexColors[0]);
-    
-
-    if (_primitiveType || !groups.count) {
+        [texture enableAndBind:0];
         
-        
-        [texture bind];
-        
-        
-        C4t black = C4Make(0., 0., 0., 1.);
-        
-        
-        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, (const GLfloat *)&black);
-        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, (const GLfloat *)&black);
-        glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (const GLfloat *)&black);
-        glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 0.);
-        
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, numberOfVertices);
-        
-        
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-        [texture unbind];
-        
-        
-        glDisableClientState(GL_COLOR_ARRAY);
-        
+        [vertexBuffer bind:^{
+            glDrawArrays(GL_TRIANGLES, 0, vertexBuffer.numberOfElements);
+        }];
         
     }
     
     else {
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        
+        glVertexPointer(3, GL_FLOAT, 0, vertices);
+        glNormalPointer(GL_FLOAT, 0, vertexNormals);
         
         
-        
-        for (NKMaterialGroup *group in groups)
-        {
-            if (textureCoords != NULL && group.material.texture != nil)
-                [group.material.texture bind];
-            
-            // Set color and materials based on group's material
-            C4t ambient = group.material.ambient;
-            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, (const GLfloat *)&ambient);
-            
-            C4t diffuse = group.material.diffuse;
-            glColor4f(diffuse.r, diffuse.g, diffuse.b, diffuse.a);
-            
-            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,  (const GLfloat *)&diffuse);
-            
-            C4t specular = group.material.specular;
-            glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (const GLfloat *)&specular);
-            
-            glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, group.material.shininess);
-            
-            glDrawElements(GL_TRIANGLES, 3*group.numberOfFaces, GL_UNSIGNED_SHORT, &(group.faces[0]));
+        for (int i = 0; i < numberOfVertices; i++){
+            memcpy(vertexColors+(i), &color.r, sizeof(C4t));
         }
         
-        if (textureCoords != NULL)
+        
+        glTexCoordPointer(2, GL_FLOAT, 0, textureCoords);
+        
+        glColorPointer(4,GL_FLOAT, 0, &vertexColors[0]);
+        
+        
+        if (_primitiveType || !groups.count) {
+            
+            
+            [texture bind];
+            
+            
+            C4t black = C4Make(0., 0., 0., 1.);
+            
+            
+            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, (const GLfloat *)&black);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, (const GLfloat *)&black);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (const GLfloat *)&black);
+            glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 0.);
+            
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, numberOfVertices);
+            
+            
             glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    }
-    
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    
+            [texture unbind];
+            
+            
+            glDisableClientState(GL_COLOR_ARRAY);
+            
+            
+        }
+        
+        else {
+            
+            
+            
+            for (NKMaterialGroup *group in groups)
+            {
+                if (textureCoords != NULL && group.material.texture != nil)
+                    [group.material.texture bind];
+                
+                // Set color and materials based on group's material
+                C4t ambient = group.material.ambient;
+                glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, (const GLfloat *)&ambient);
+                
+                C4t diffuse = group.material.diffuse;
+                glColor4f(diffuse.r, diffuse.g, diffuse.b, diffuse.a);
+                
+                glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,  (const GLfloat *)&diffuse);
+                
+                C4t specular = group.material.specular;
+                glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (const GLfloat *)&specular);
+                
+                glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, group.material.shininess);
+                
+                glDrawElements(GL_TRIANGLES, 3*group.numberOfFaces, GL_UNSIGNED_SHORT, &(group.faces[0]));
+            }
+            
+            if (textureCoords != NULL)
+                glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        }
+        
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
+        
     }
     
 }
 
 -(void) drawWithColor:(C4t)color {
     
+    if (NK_GL_VERSION == 2) {
+        
+        [vertexBuffer bind:^{
+            glDrawArrays(GL_TRIANGLES, 0, vertexBuffer.numberOfElements);
+        }];
+        
+    }
+    else {
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
     
@@ -509,6 +517,8 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
     
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
+        
+    }
     
 }
 
@@ -534,6 +544,8 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
             
         case NKPrimitiveRect:
             [self defaultRect];
+          //  [self sphereWithStacks:16 slices:16 squash:1.];
+            break;
         default:
             break;
     }
@@ -546,44 +558,52 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
 }
 
 -(void)defaultRect {
-    numberOfVertices = 4;
+    if (NK_GL_VERSION == 2) {
+        vertexBuffer = [NKVertexBuffer defaultRect];
+        numberOfVertices = 6;
+    }
+    else {
     
-    V3t nvertices[] = {
-        {-.5f,  .5f, -0.0},
-        { .5f,  .5f, -0.0},
-        {-.5f, -.5f, -0.0},
-        { .5f, -.5f, -0.0}
-    };
-    
-    V3t nnormals[] = {
-        {0.0, 0.0, 1.0},
-        {0.0, 0.0, 1.0},
-        {0.0, 0.0, 1.0},
-        {0.0, 0.0, 1.0}
-    };
-    
-    GLfloat ntexCoords[] = {
-        0.0, 1.0,
-        1.0, 1.0,
-        0.0, 0.0,
-        1.0, 0.0
-    };
-    
-    
-    GLfloat col[4] = {1., 1., 1., 1.};
-    
-    vertices = (V3t*)malloc(sizeof(V3t)*numberOfVertices);
-    memcpy(vertices, nvertices, sizeof(V3t)*numberOfVertices);
-    
-    vertexNormals = (V3t*)malloc(sizeof(V3t)*numberOfVertices);
-    memcpy(vertexNormals, nnormals, sizeof(V3t)*numberOfVertices);
-    
-    textureCoords = (float*)malloc(sizeof(GLfloat)*2*numberOfVertices);
-    memcpy(textureCoords, ntexCoords, sizeof(GLfloat)*2*numberOfVertices);
-    
-    vertexColors = (C4t*)malloc(sizeof(GLfloat)*4*numberOfVertices);
-    for (int i = 0; i < numberOfVertices; i++){
-        memcpy(vertexColors+(i), &col[0], sizeof(C4t));
+        numberOfVertices = 4;
+        
+        V3t nvertices[] = {
+            {-.5f,  .5f, -0.0},
+            { .5f,  .5f, -0.0},
+            {-.5f, -.5f, -0.0},
+            { .5f, -.5f, -0.0}
+        };
+        
+        V3t nnormals[] = {
+            {0.0, 0.0, 1.0},
+            {0.0, 0.0, 1.0},
+            {0.0, 0.0, 1.0},
+            {0.0, 0.0, 1.0}
+        };
+        
+        GLfloat ntexCoords[] = {
+            0.0, 1.0,
+            1.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0
+        };
+        
+        
+        GLfloat col[4] = {1., 1., 1., 1.};
+        
+        vertices = (V3t*)malloc(sizeof(V3t)*numberOfVertices);
+        memcpy(vertices, nvertices, sizeof(V3t)*numberOfVertices);
+        
+        vertexNormals = (V3t*)malloc(sizeof(V3t)*numberOfVertices);
+        memcpy(vertexNormals, nnormals, sizeof(V3t)*numberOfVertices);
+        
+        textureCoords = (float*)malloc(sizeof(GLfloat)*2*numberOfVertices);
+        memcpy(textureCoords, ntexCoords, sizeof(GLfloat)*2*numberOfVertices);
+        
+        vertexColors = (C4t*)malloc(sizeof(GLfloat)*4*numberOfVertices);
+        for (int i = 0; i < numberOfVertices; i++){
+            memcpy(vertexColors+(i), &col[0], sizeof(C4t));
+        }
+        
     }
 }
 

@@ -16,12 +16,12 @@
 //    return newLabel;
 //}
 + (instancetype)labelNodeWithFontNamed:(NSString *)fontName {
-    return [[NKLabelNode alloc]initWithSize:CGSizeMake(200, 100) FontNamed:fontName];
+    return [[NKLabelNode alloc]initWithSize:S2Make(200, 100) FontNamed:fontName];
 }
 
 - (instancetype)initWithFontNamed:(NSString *)fontName {
     
-    self = [self initWithSize:CGSizeMake(200, 100) FontNamed:fontName];
+    self = [self initWithSize:S2Make(200, 100) FontNamed:fontName];
 
     if (self){
         

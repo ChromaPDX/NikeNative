@@ -14,7 +14,7 @@
 @end
 
 @interface PlayerHand : NKNode <NKTableCellDelegate>{
-    CGSize cardSize;
+    S2t cardSize;
 }
     @property (nonatomic, weak) UXWindow* delegate;
     @property (nonatomic, weak) Player* player;
@@ -48,13 +48,13 @@
 
 -(void)refreshCardsForPlayer:(Player *)p WithCompletionBlock:(void (^)())block;
 
--(void)cardTouchMoved:(CardSprite*)card atPoint:(CGPoint)point;
--(void)cardTouchBegan:(CardSprite*)card atPoint:(CGPoint)point;
--(void)cardTouchEnded:(CardSprite*)card atPoint:(CGPoint)point;
+-(void)cardTouchMoved:(CardSprite*)card atPoint:(P2t)point;
+-(void)cardTouchBegan:(CardSprite*)card atPoint:(P2t)point;
+-(void)cardTouchEnded:(CardSprite*)card atPoint:(P2t)point;
 
 -(void)cardDoubleTap:(CardSprite*)card;
 
--(BoardLocation*)canPlayCard:(Card*)card atPosition:(CGPoint)pos;
+-(BoardLocation*)canPlayCard:(Card*)card atPosition:(P2t)pos;
 
 -(void)setActionButtonTo:(NSString*)function;
 -(void)cleanup;

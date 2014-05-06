@@ -27,7 +27,7 @@
     
 }
 
-+(instancetype) textureWithPVRNamed:(NSString*)name size:(CGSize)size{
++(instancetype) textureWithPVRNamed:(NSString*)name size:(S2t)size{
     
     if (![[NKTextureManager imageCache] objectForKey:name]) {
         [[NKTextureManager imageCache] setObject:[[NKTexture alloc] initWithPVRFile:name width:size.width height:size.height]forKey:name];
@@ -66,7 +66,7 @@
     return [[NKTextureManager labelCache] objectForKey:string];
 }
 
-+(instancetype) textureWithString:(NSString *)text fontNamed:(NSString*)name color:(NKColor*)textColor Size:(CGSize)size fontSize:(CGFloat)fontSize completion:(void (^)())block{
++(instancetype) textureWithString:(NSString *)text fontNamed:(NSString*)name color:(NKColor*)textColor Size:(S2t)size fontSize:(CGFloat)fontSize completion:(void (^)())block{
     
     if (!textColor) {
         textColor = NKWHITE;
@@ -162,9 +162,9 @@
             request = [NKImage imageNamed:@"chromeKittenSmall.png"];
         }
         
-        [self loadTexFromCGContext:[NKTexture contextFromImage:request] size:request.size];
+        [self loadTexFromCGContext:[NKTexture contextFromImage:request] size:S2MakeCG(request.size)];
         
-        self.size = request.size;
+        self.size = S2MakeCG(request.size);
 
         self.shouldResizeToTexture = false;
 
@@ -238,9 +238,9 @@
             image = [NKImage imageNamed:@"chromeKitten.png"];
         }
         
-        [self loadTexFromCGContext:[NKTexture contextFromImage:image] size:image.size];
+        [self loadTexFromCGContext:[NKTexture contextFromImage:image] size:S2Make(image.size.width, image.size.height)];
         
-        self.size = image.size;
+        self.size = S2MakeCG(image.size);
 
         self.shouldResizeToTexture = false;
     }
@@ -249,7 +249,7 @@
 }
 
 
--(instancetype) initWithCGContext:(CGContextRef)ref size:(CGSize)size{
+-(instancetype) initWithCGContext:(CGContextRef)ref size:(S2t)size{
     self = [super init];
     
     if (self) {
@@ -262,7 +262,7 @@
     return self;
 }
 
--(instancetype) initForBackThreadWithSize:(CGSize)size {
+-(instancetype) initForBackThreadWithSize:(S2t)size {
     self = [super init];
     
     if (self) {
@@ -280,7 +280,7 @@
 +(NKTexture*)blankTexture {
     return [NKTexture textureWithImageNamed:@"blank_texture"];
 //    
-//    CGSize sz = CGSizeMake(10, 10);
+//    CGSize sz = S2Make(10, 10);
 //    NKTexture* tex = [[NKTexture alloc]initForBackThreadWithSize:sz];
 //    CGContextRef context = [NKTexture newRGBAContext:sz];
 //    CGContextClearRect(context, CGRectMake(0, 0, sz.width, sz.height));
@@ -312,7 +312,7 @@
     
 }
 
--(void)loadTexFromCGContext:(CGContextRef)context size:(CGSize)size {
+-(void)loadTexFromCGContext:(CGContextRef)context size:(S2t)size {
     
     int w = size.width;
     int h = size.height;
@@ -387,7 +387,7 @@
     texture[0] = loc;
 }
 
-//-(void)loadTexFromCGContext:(CGContextRef)context size:(CGSize)size {
+//-(void)loadTexFromCGContext:(CGContextRef)context size:(S2t)size {
 //    
 //    int w = size.width;
 //    int h = size.height;
@@ -426,18 +426,38 @@
     
 }
 
--(void)bind {
+-(void)bind { // GL 1
 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture[0]);
 
 }
 
--(void)unbind {
-
+-(void)unbind { // GL 1
     glBindTexture(GL_TEXTURE_2D, 0);
-    glDisable(GL_TEXTURE_2D);
+//    glDisable(GL_TEXTURE_2D);
 
+}
+
+- (void)enableAndBind:(int)textureLoc
+{
+    glActiveTexture(GL_TEXTURE0+textureLoc);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+}
+
+- (void)enableAndBindToUniform:(GLuint)uniformSamplerLocation
+{
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glUniform1i(uniformSamplerLocation, 0);
+}
+
+- (void)enableAndBindToUniform:(GLuint)uniformSamplerLocation atPosition:(int)textureNum
+{
+    assert(GL_TEXTURE1 == GL_TEXTURE0 + 1);
+    glActiveTexture(GL_TEXTURE0 + textureNum);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glUniform1i(uniformSamplerLocation, textureNum);
 }
 
 -(void)dealloc {
@@ -475,7 +495,7 @@
  *
  */
 
-+(CGContextRef)newRGBAContext:(CGSize)size {
++(CGContextRef)newRGBAContext:(S2t)size {
     
     CGContextRef context = NULL;
 	CGColorSpaceRef colorSpace;

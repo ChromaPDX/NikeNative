@@ -11,7 +11,7 @@
 @class GameScene;
 
 @interface UXTopBar : NKSpriteNode {
-    CGSize cardSize;
+    S2t cardSize;
     NKLabelNode *fuelPoints;
     NKLabelNode *fuelLabel;
 }

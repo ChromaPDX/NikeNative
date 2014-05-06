@@ -11,7 +11,7 @@
 
 @implementation NKSpriteNode
 
-+ (instancetype)spriteNodeWithTexture:(NKTexture*)texture size:(CGSize)size {
++ (instancetype)spriteNodeWithTexture:(NKTexture*)texture size:(S2t)size {
     NKSpriteNode *node = [[NKSpriteNode alloc] initWithTexture:texture color:[UIColor colorWithWhite:1. alpha:1.] size:size];
     return node;
 }
@@ -26,12 +26,12 @@
     return node;
 }
 
-+ (instancetype)spriteNodeWithColor:(UIColor*)color size:(CGSize)size {
++ (instancetype)spriteNodeWithColor:(UIColor*)color size:(S2t)size {
     NKSpriteNode *node = [[NKSpriteNode alloc] initWithColor:color size:size];
     return node;
 }
 
-- (instancetype)initWithTexture:(NKTexture*)texture color:(UIColor*)color size:(CGSize)size {
+- (instancetype)initWithTexture:(NKTexture*)texture color:(UIColor*)color size:(S2t)size {
     
     self = [super initWithPrimitive:NKPrimitiveRect texture:texture color:color size:V3Make(size.width, size.height, 1)];
     
@@ -50,7 +50,7 @@
     return [self initWithTexture:newTex color:NKWHITE size:self.texture.size];
 }
 
-- (instancetype)initWithColor:(UIColor*)color size:(CGSize)size {
+- (instancetype)initWithColor:(UIColor*)color size:(S2t)size {
     self = [super initWithPrimitive:NKPrimitiveRect texture:nil color:color size:V3Make(size.width, size.height, 1)];
     
     if (self) {

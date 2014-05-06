@@ -10,7 +10,7 @@
 
 @implementation NKScrollNode
 
--(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size {
+-(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(S2t)size {
     
     self = [super initWithTexture:texture color:color size:size];
     
@@ -25,7 +25,7 @@
     
 }
 
--(instancetype) initWithColor:(UIColor *)color size:(CGSize)size {
+-(instancetype) initWithColor:(UIColor *)color size:(S2t)size {
     
     self = [super initWithColor:color size:size];
     
@@ -59,12 +59,12 @@
         return nil;
     }
     
-    CGSize size;
+    S2t size;
     if (parent.scrollDirectionVertical) {
-        size = CGSizeMake(parent.size.width, parent.size.height*autoSizePct);
+        size = S2Make(parent.size.width, parent.size.height*autoSizePct);
     }
     else {
-        size = CGSizeMake(parent.size.width*autoSizePct,parent.size.height);
+        size = S2Make(parent.size.width*autoSizePct,parent.size.height);
     }
     
     self = [super initWithColor:NKCLEAR size:size];
@@ -241,11 +241,11 @@
             int tempSize = 0;
             for(int i = 0; i < [intChildren indexOfObject:child]; i++)
             {
-                int temp = [intChildren[i] size].height;
+                int temp = [(NKNode*)intChildren[i] size].height;
                 tempSize += temp + _padding.y;
             }
             
-            CGSize childSize;
+            S2t childSize;
             
             if ([child isKindOfClass:[NKScrollNode class]]) {
                 childSize.height = self.size.height * child.autoSizePct.y;
@@ -269,11 +269,11 @@
             int tempSize = 0;
             for(int i = 0; i < [intChildren indexOfObject:child]; i++)
             {
-                int temp = [intChildren[i] size].width;
+                int temp = [(NKNode*)intChildren[i] size].width;
                 tempSize += temp + _padding.x;
             }
             
-            CGSize childSize;
+            S2t childSize;
             
             if ([child isKindOfClass:[NKScrollNode class]]) {
                 childSize.width = self.size.width * child.autoSizePct.x;
@@ -315,7 +315,7 @@
         return true;
     }
     
-    else if (self.position3d.x + self.size.width/2. < r.x || self.position3d.x - self.size.width/2. > r.x + r.w) {
+    else if (self.position3d.x + self.size.width/2. < r.x || self.position3d.x - self.size.width/2. > r.x + r.size.width) {
         return true;
     }
     
@@ -325,10 +325,10 @@
 -(P2t)scrollPositionForChild:(int)child {
     
     if (_scrollDirectionVertical) {
-        return P2Make(0,-([intChildren[child] size].height + _padding.y) * (child) + h*contentOffset.y);
+        return P2Make(0,-([(NKNode*)intChildren[child] size].height + _padding.y) * (child) + h*contentOffset.y);
     }
     else {
-        return P2Make(-([intChildren[child] size].width + _padding.x) * (child) + w*contentOffset.x, 0);
+        return P2Make(-([(NKNode*)intChildren[child] size].width + _padding.x) * (child) + w*contentOffset.x, 0);
     }
     
     
@@ -474,7 +474,7 @@
 
 // TOUCH HANDLING
 
--(NKTouchState) touchDown:(CGPoint)location id:(int) touchId
+-(NKTouchState) touchDown:(P2t)location id:(int) touchId
 {
     
   
@@ -533,7 +533,7 @@
     
 }
 
--(NKTouchState)touchMoved:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
     
     NKTouchState hit = NKTouchNone;
     
@@ -626,7 +626,7 @@
     
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId    {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId    {
     
    
     NKTouchState hit = NKTouchNone;

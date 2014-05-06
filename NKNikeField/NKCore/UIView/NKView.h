@@ -15,26 +15,11 @@
 
 @class NKViewController;
 @class NKSceneNode;
-
-// Uniform index.
-enum
-{
-    UNIFORM_MODELVIEWPROJECTION_MATRIX,
-    UNIFORM_NORMAL_MATRIX,
-    NUM_UNIFORMS
-};
-GLint uniforms[NUM_UNIFORMS];
+@class NKVertexBuffer;
+@class NKShaderProgram;
+@class NKTexture;
 
 // Attribute index.
-enum
-{
-    ATTRIB_POSITION,
-    ATTRIB_NORMAL,
-    ATTRIB_COLOR,
-    ATTRIB_TEX_COORD_0,
-    ATTRIB_TEX_COORD_1,
-    NUM_ATTRIBUTES
-};
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -56,16 +41,14 @@ enum
     GLuint _program;
     
     M16t _modelViewProjectionMatrix;
-    M16t _normalMatrix;
+    M9t _normalMatrix;
     float _rotation;
     
-    GLuint _vertexArray;
-    GLuint _vertexBuffer;
     
-    GLuint _positionSlot;
-    GLuint _normalSlot;
-    GLuint _colorSlot;
-
+    // TEMP FOR DEBUG
+    NKShaderProgram *defaultShader;
+    NKVertexBuffer *vertexBuffer;
+    NKTexture * texture;
 }
 
 @property (nonatomic, weak) NKViewController *controller;

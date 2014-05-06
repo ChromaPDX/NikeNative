@@ -125,7 +125,7 @@
 						textureFilename = texName;
 					// TODO: Look for PVRT file
                     
-                    NKTexture *theTex = [NKTexture textureWithPVRNamed:textureFilename size:CGSizeMake(width, height)];
+                    NKTexture *theTex = [NKTexture textureWithPVRNamed:textureFilename size:S2Make(width, height)];
 			
 					material.texture = theTex;
 				}

@@ -15,12 +15,14 @@
 		2902A072190C7BAE008D0092 /* Faction_Psyke_ON.png in Resources */ = {isa = PBXBuildFile; fileRef = 2902A069190C7BAE008D0092 /* Faction_Psyke_ON.png */; };
 		2902A073190C7BAE008D0092 /* Faction_Sention_ON.png in Resources */ = {isa = PBXBuildFile; fileRef = 2902A06A190C7BAE008D0092 /* Faction_Sention_ON.png */; };
 		2902A074190C7BAE008D0092 /* Faction_Sention_OFF.png in Resources */ = {isa = PBXBuildFile; fileRef = 2902A06B190C7BAE008D0092 /* Faction_Sention_OFF.png */; };
+		2908D7FC1912BB1A001FC6B4 /* NKVertexBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2908D7FB1912BB1A001FC6B4 /* NKVertexBuffer.m */; };
 		29090EE6190ED77500BE6B92 /* top_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 29090EE5190ED77500BE6B92 /* top_bar.png */; };
 		29090EE8190ED80C00BE6B92 /* bottom_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 29090EE7190ED80C00BE6B92 /* bottom_bar.png */; };
 		29090EEC190ED98B00BE6B92 /* Halo_Marks_glow.png in Resources */ = {isa = PBXBuildFile; fileRef = 29090EE9190ED98B00BE6B92 /* Halo_Marks_glow.png */; };
 		29090EED190ED98B00BE6B92 /* Halo_Marks.png in Resources */ = {isa = PBXBuildFile; fileRef = 29090EEA190ED98B00BE6B92 /* Halo_Marks.png */; };
 		29090EEE190ED98B00BE6B92 /* Halo.png in Resources */ = {isa = PBXBuildFile; fileRef = 29090EEB190ED98B00BE6B92 /* Halo.png */; };
 		29090EF1190EEC4200BE6B92 /* Arial Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 29090EF0190EEC4200BE6B92 /* Arial Black.ttf */; };
+		292BB0CF191431E400AFE938 /* NKShaderProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 292BB0CE191431E400AFE938 /* NKShaderProgram.m */; };
 		297E6C2519097F4F00369BDF /* blank_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 297E6C2419097F4F00369BDF /* blank_texture.png */; };
 		29BF47FE1911666500487EBD /* NKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FA1911666500487EBD /* NKView.m */; };
 		29BF47FF1911666500487EBD /* NKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FC1911666500487EBD /* NKViewController.m */; };
@@ -249,12 +251,16 @@
 		2902A069190C7BAE008D0092 /* Faction_Psyke_ON.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Faction_Psyke_ON.png; sourceTree = "<group>"; };
 		2902A06A190C7BAE008D0092 /* Faction_Sention_ON.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Faction_Sention_ON.png; sourceTree = "<group>"; };
 		2902A06B190C7BAE008D0092 /* Faction_Sention_OFF.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Faction_Sention_OFF.png; sourceTree = "<group>"; };
+		2908D7FA1912BB1A001FC6B4 /* NKVertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKVertexBuffer.h; sourceTree = "<group>"; };
+		2908D7FB1912BB1A001FC6B4 /* NKVertexBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKVertexBuffer.m; sourceTree = "<group>"; };
 		29090EE5190ED77500BE6B92 /* top_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_bar.png; sourceTree = "<group>"; };
 		29090EE7190ED80C00BE6B92 /* bottom_bar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_bar.png; sourceTree = "<group>"; };
 		29090EE9190ED98B00BE6B92 /* Halo_Marks_glow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Halo_Marks_glow.png; sourceTree = "<group>"; };
 		29090EEA190ED98B00BE6B92 /* Halo_Marks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Halo_Marks.png; sourceTree = "<group>"; };
 		29090EEB190ED98B00BE6B92 /* Halo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Halo.png; sourceTree = "<group>"; };
 		29090EF0190EEC4200BE6B92 /* Arial Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arial Black.ttf"; sourceTree = "<group>"; };
+		292BB0CD191431E400AFE938 /* NKShaderProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKShaderProgram.h; sourceTree = "<group>"; };
+		292BB0CE191431E400AFE938 /* NKShaderProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKShaderProgram.m; sourceTree = "<group>"; };
 		297E6C2419097F4F00369BDF /* blank_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank_texture.png; sourceTree = "<group>"; };
 		29BF47F91911666500487EBD /* NKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKView.h; sourceTree = "<group>"; };
 		29BF47FA1911666500487EBD /* NKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKView.m; sourceTree = "<group>"; };
@@ -424,7 +430,7 @@
 		61A257AD18FDE998001B7F67 /* NKGaussianBlur.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKGaussianBlur.m; sourceTree = "<group>"; };
 		61A257AE18FDE998001B7F67 /* NKGaussianZ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKGaussianZ.h; sourceTree = "<group>"; };
 		61A257AF18FDE998001B7F67 /* NKGaussianZ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKGaussianZ.m; sourceTree = "<group>"; };
-		61A257B018FDE998001B7F67 /* NKShaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKShaders.h; sourceTree = "<group>"; };
+		61A257B018FDE998001B7F67 /* NKShaderTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKShaderTypes.h; sourceTree = "<group>"; };
 		61A257B118FDE998001B7F67 /* NKZBlur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKZBlur.h; sourceTree = "<group>"; };
 		61A257B218FDE998001B7F67 /* NKZBlur.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKZBlur.m; sourceTree = "<group>"; };
 		61A257B418FDE998001B7F67 /* chromeKitten.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chromeKitten.png; sourceTree = "<group>"; };
@@ -1006,15 +1012,17 @@
 		61A2578218FDE998001B7F67 /* Geometry */ = {
 			isa = PBXGroup;
 			children = (
+				61A2578A18FDE998001B7F67 /* NKVectorTypes.h */,
+				61A2578B18FDE998001B7F67 /* NKVectorTypes.m */,
 				61A2578318FDE998001B7F67 /* NKMaterial.h */,
 				61A2578418FDE998001B7F67 /* NKMaterial.m */,
 				61A2578518FDE998001B7F67 /* NKMesh.h */,
 				61A2578618FDE998001B7F67 /* NKMesh.m */,
+				2908D7FA1912BB1A001FC6B4 /* NKVertexBuffer.h */,
+				2908D7FB1912BB1A001FC6B4 /* NKVertexBuffer.m */,
 				61A2578718FDE998001B7F67 /* NKMeshTypes.h */,
 				61A2578818FDE998001B7F67 /* NKStaticDraw.h */,
 				61A2578918FDE998001B7F67 /* NKStaticDraw.m */,
-				61A2578A18FDE998001B7F67 /* NKVectorTypes.h */,
-				61A2578B18FDE998001B7F67 /* NKVectorTypes.m */,
 			);
 			path = Geometry;
 			sourceTree = "<group>";
@@ -1022,6 +1030,9 @@
 		61A257A718FDE998001B7F67 /* Shader */ = {
 			isa = PBXGroup;
 			children = (
+				61A257B018FDE998001B7F67 /* NKShaderTypes.h */,
+				292BB0CD191431E400AFE938 /* NKShaderProgram.h */,
+				292BB0CE191431E400AFE938 /* NKShaderProgram.m */,
 				61A257A818FDE998001B7F67 /* NKBlendShader.h */,
 				61A257A918FDE998001B7F67 /* NKBlendShader.m */,
 				61A257AA18FDE998001B7F67 /* NKDrawDepthShader.h */,
@@ -1030,7 +1041,6 @@
 				61A257AD18FDE998001B7F67 /* NKGaussianBlur.m */,
 				61A257AE18FDE998001B7F67 /* NKGaussianZ.h */,
 				61A257AF18FDE998001B7F67 /* NKGaussianZ.m */,
-				61A257B018FDE998001B7F67 /* NKShaders.h */,
 				61A257B118FDE998001B7F67 /* NKZBlur.h */,
 				61A257B218FDE998001B7F67 /* NKZBlur.m */,
 			);
@@ -1595,6 +1605,7 @@
 				61D6E8AA18FDB5B70017A389 /* GameScene.m in Sources */,
 				29D89274190AA65E008FBD5F /* uncompr.c in Sources */,
 				29BF48231911667900487EBD /* NKNodeAnimationHandler.m in Sources */,
+				292BB0CF191431E400AFE938 /* NKShaderProgram.m in Sources */,
 				29D89272190AA65E008FBD5F /* inftrees.c in Sources */,
 				61A257DB18FDE998001B7F67 /* NKTextureManager.m in Sources */,
 				29D8927B190AAD28008FBD5F /* SyncScene.m in Sources */,
@@ -1633,6 +1644,7 @@
 				61D6E88518FDB5B70017A389 /* BoardLocation.m in Sources */,
 				61D6E6C618FDAF8C0017A389 /* View.m in Sources */,
 				29BF48211911667900487EBD /* NKMeshNode.m in Sources */,
+				2908D7FC1912BB1A001FC6B4 /* NKVertexBuffer.m in Sources */,
 				29BF48291911667900487EBD /* NKSoundManager.m in Sources */,
 				61A257D118FDE998001B7F67 /* NKBlendShader.m in Sources */,
 				29BF48271911667900487EBD /* NKScrollNode.m in Sources */,

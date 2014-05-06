@@ -17,23 +17,58 @@
 -(instancetype) initWithScene:(NKSceneNode*)scene {
     self = [super init];
     if (self) {
-
         self.scene = scene;
         self.name = @"CAMERA";
         
-        [self initGL];
-  
+        if (NK_GL_VERSION == 2) {
+            [self initGL2];
+        }
+        else {
+            [self initGL1];
+        }
         //[self setOrientationEuler:V3Make(0,180,0)];
         [self setPosition3d:V3Make(0,0,-1000.)];
-        
-
     }
     return self;
-
 }
 
--(void)initGL{
 
+-(void)initGL2 {
+    
+    _normalMatrix = M9IdentityMake();
+    
+    _fieldOfView = 36;
+    aspectRatio = (float)self.scene.size.width / (float)self.scene.size.height;
+    
+    if([UIApplication sharedApplication].statusBarOrientation > 2)
+        aspectRatio = 1/aspectRatio;
+    
+    viewPort = R4Make(0,0,self.scene.size.width,self.scene.size.height);
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    
+    zNear = 10;
+    zFar = 10000;
+    
+    GLfloat frustum = zNear * tanf(DEGREES_TO_RADIANS(_fieldOfView) / 2.0);
+
+    _projectionMatrix = M16MakePerspective(DEGREES_TO_RADIANS(_fieldOfView), aspectRatio, zNear, zFar);
+    frustrum = M16MakeFrustum(-frustum, frustum, -frustum/aspectRatio, frustum/aspectRatio, zNear, zFar);
+
+    glEnable(GL_DEPTH_TEST);
+    
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, .02);
+    
+    glEnable(GL_BLEND);
+    
+    glGetError(); // Clear error codes
+    
+}
+
+-(void)initGL1{
+  
     _fieldOfView = 36;
     aspectRatio = (float)self.scene.size.width / (float)self.scene.size.height;
     
@@ -53,7 +88,7 @@
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glViewport(viewPort.x, viewPort.y, viewPort.w, viewPort.h);
+    glViewport(viewPort.x, viewPort.y, viewPort.size.width, viewPort.size.height);
     
     glEnable(GL_DEPTH_TEST);
     
@@ -66,8 +101,14 @@
     //[self initLighting];
     
     glGetError(); // Clear error codes
+}
 
-
+-(void)begin {
+    [super begin];
+    
+    if (NK_GL_VERSION == 2) {
+        [[self.scene activeShader] setMatrix3:_normalMatrix forUniform:UNIFORM_NORMAL_MATRIX];
+    }
 }
 
 -(void)setFieldOfView:(float)fieldOfView{
@@ -75,8 +116,14 @@
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     GLfloat frustum = zNear * tanf(DEGREES_TO_RADIANS(_fieldOfView) / 2.0);
-    glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, zNear, zFar);
-    glMatrixMode(GL_MODELVIEW);
+    
+    if (NK_GL_VERSION == 2) {
+        frustrum = M16MakeFrustum(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, zNear, zFar);
+    }
+    else {
+        glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, zNear, zFar);
+        glMatrixMode(GL_MODELVIEW);
+    }
 }
 
 -(void)initLighting{
@@ -116,7 +163,7 @@
 //	if(isOrtho) {
 //		return M16t::newOrthoMatrix(0, viewport.width, 0, viewport.height, nearClip, farClip);
 //	}else{
-    float aspect = forceAspectRatio ? aspectRatio : viewport.w/viewport.h;
+    float aspect = forceAspectRatio ? aspectRatio : viewport.size.width/viewport.size.height;
     
     M16t matProjection = M16Multiply(M16MakePerspective(DEGREES_TO_RADIANS(_fieldOfView), aspect, zNear, zFar), M16MakeTranslate(-lensOffset.x, -lensOffset.y, 0));
 
@@ -130,11 +177,11 @@
 }
 
 //convert from screen to camera
--(V3t)s2w:(CGPoint)ScreenXY {
+-(V3t)s2w:(P2t)ScreenXY {
     
     V3t CameraXYZ;
-    CameraXYZ.x = 4.0f * (ScreenXY.x - viewPort.x) / viewPort.w - 1.0f;
-    CameraXYZ.y = 1.0f - 4.0f*(ScreenXY.y - viewPort.y) / viewPort.h;
+    CameraXYZ.x = 4.0f * (ScreenXY.x - viewPort.x) / viewPort.size.width - 1.0f;
+    CameraXYZ.y = 1.0f - 4.0f*(ScreenXY.y - viewPort.y) / viewPort.size.height;
     //CameraXYZ.z = ScreenXYZ.z;
     
     //get inverse camera matrix
@@ -147,21 +194,21 @@
 
 
 
--(CGPoint)screenToWorld:(CGPoint)p {
+-(P2t)screenToWorld:(P2t)p {
 
      V3t p2 = [self s2w:p];
     p2.x *= 1800.;
     p2.y *= 1800.;
      //NSLog(@"world i: %f %f o:%f %f", p.x, p.y, p2.x, p2.y);
-    return CGPointMake(p2.x, p2.y);
-    //return CGPointMake(10000, 10000);
+    return P2Make(p2.x, p2.y);
+    //return P2Make(10000, 10000);
 }
 
--(CGPoint)screenPoint:(CGPoint)p InNode:(NKNode*)node {
+-(P2t)screenPoint:(P2t)p InNode:(NKNode*)node {
     
     V3t CameraXYZ;
-    CameraXYZ.x = 1.0f * (p.x - viewPort.x) / viewPort.w - 1.0f;
-    CameraXYZ.y = 1.0f - 1.0f*(p.y - viewPort.y) / viewPort.h;
+    CameraXYZ.x = 1.0f * (p.x - viewPort.x) / viewPort.size.width - 1.0f;
+    CameraXYZ.y = 1.0f - 1.0f*(p.y - viewPort.y) / viewPort.size.height;
     //CameraXYZ.z = ScreenXYZ.z;
     
     //get inverse camera matrix
@@ -175,7 +222,7 @@
     p2.y *= 1820.;
     
     //NSLog(@"world i: %f %f o:%f %f", p.x, p.y, p2.x, p2.y);
-    return CGPointMake(p2.x, p2.y);
+    return P2Make(p2.x, p2.y);
     
 }
 

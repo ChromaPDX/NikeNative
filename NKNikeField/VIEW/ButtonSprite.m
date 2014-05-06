@@ -12,7 +12,7 @@
 
 @implementation ButtonSprite
 
-+ (instancetype) buttonWithTextureOn:(NKTexture*)textureOn TextureOff:(NKTexture*)textureOff type:(ButtonType)type size:(CGSize) size {
++ (instancetype) buttonWithTextureOn:(NKTexture*)textureOn TextureOff:(NKTexture*)textureOff type:(ButtonType)type size:(S2t) size {
     
     ButtonSprite* button = [super spriteNodeWithTexture:textureOff size:size];
     button.userInteractionEnabled = YES;
@@ -24,9 +24,9 @@
     return button;
 }
 
-+ (instancetype) buttonWithNames:(NSArray*)names color:(NSArray*)colors type:(ButtonType)type size:(CGSize) size {
++ (instancetype) buttonWithNames:(NSArray*)names color:(NSArray*)colors type:(ButtonType)type size:(S2t) size {
     
-    ButtonSprite* button = [super spriteNodeWithColor:colors[0] size:CGSizeMake(size.width-2, size.height-2)];
+    ButtonSprite* button = [super spriteNodeWithColor:colors[0] size:S2Make(size.width-2, size.height-2)];
     button.userInteractionEnabled = YES;
     button.type = type;
     button.stateLabels = names;

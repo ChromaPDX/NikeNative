@@ -58,9 +58,9 @@ typedef NS_ENUM(int32_t, Direction) {
 @property BorderMask borderShape;
 
 +(instancetype)pX:(int)x Y:(int)y;
-+(instancetype)pointWithCGPoint:(CGPoint)point;
++(instancetype)pointWithP2:(P2t)point;
 -(id)initWithX:(NSInteger)x Y:(NSInteger)y;
--(CGPoint)CGPoint;
+-(P2t)CGPoint;
 -(BOOL)isEqual:(BoardLocation*)point;
 -(int)isAdjacentTo:(BoardLocation*)b;
 -(void)setBorderShapeInContext:(NSArray*)arrayOfLocations;

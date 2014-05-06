@@ -48,7 +48,7 @@
 //    
 //    if (!fbo){
 //        
-//        fbo = [NKNode customFbo:CGSizeMake(self.nodeRef.size.width, self.nodeRef.size.height)];
+//        fbo = [NKNode customFbo:S2Make(self.nodeRef.size.width, self.nodeRef.size.height)];
 //        
 //        NSLog(@"allocate blur fbo w: %1.0f h: %1.0f", fbo->getWidth(), fbo->getHeight());
 //        texFill = new ofPlanePrimitive;
@@ -96,7 +96,7 @@
 //
 //        
 //        if (!passBuffer[i%2]) {
-//            passBuffer[i%2] = [NKNode customFbo:CGSizeMake(self.nodeRef.size.width * .5, self.nodeRef.size.height * .5)];
+//            passBuffer[i%2] = [NKNode customFbo:S2Make(self.nodeRef.size.width * .5, self.nodeRef.size.height * .5)];
 //            NSLog(@"allocate fbo ping/pong w: %1.0f h: %1.0f", passBuffer[i%2]->getWidth(), passBuffer[i%2]->getHeight());
 //            texFill->resizeToTexture(passBuffer[i%2]->getTextureReference());
 //        }

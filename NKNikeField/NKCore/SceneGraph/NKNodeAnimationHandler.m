@@ -245,7 +245,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     return action;
 }
 
-+ (NKAction *)moveTo:(CGPoint)location duration:(F1t)sec {
++ (NKAction *)moveTo:(P2t)location duration:(F1t)sec {
     
     return [NKAction moveToX:location.x y:location.y duration:sec];
     

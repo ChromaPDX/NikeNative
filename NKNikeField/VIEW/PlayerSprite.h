@@ -13,8 +13,8 @@
 
 @interface PlayerSprite : NKSpriteNode
 {
-    CGPoint touchOffset;
-    CGPoint origin;
+    P2t touchOffset;
+    P2t origin;
     //NKLabelNode *cardName;
     NKSpriteNode *cardImg;
     NKNode *rotate;

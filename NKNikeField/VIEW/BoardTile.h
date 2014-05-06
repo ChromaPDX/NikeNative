@@ -14,7 +14,7 @@
 
 @interface BoardTile : NKSpriteNode
 
--(instancetype)initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size;
+-(instancetype)initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(S2t)size;
 
 // MODEL
 @property (nonatomic, strong) BoardLocation *location;

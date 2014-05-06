@@ -11,7 +11,7 @@
 
 @implementation CardSprite
 
--(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size {
+-(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(S2t)size {
     
     self = [super initWithTexture:nil color:nil size:size];
     
@@ -50,7 +50,7 @@
         if (!_shadow) {
             _shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Ipad_shadow"] color:[NKColor blackColor]  size:self.size];
             [_shadow setZPosition:-1];
-            [_shadow setPosition:CGPointMake(-w*.075, h*.075)];
+            [_shadow setPosition:P2Make(-w*.075, h*.075)];
             [self addChild:_shadow];
         }
         [_shadow setHidden:NO];
@@ -147,7 +147,7 @@
     return self;
 }
 
--(NKTouchState)touchDown:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchDown:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchMoved:location id:touchId];
     
     cachedPosition = self.position;
@@ -156,7 +156,7 @@
     
 }
 
--(NKTouchState)touchMoved:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchMoved:location id:touchId];
     if (hit == 2) {
         if (location.y < lastTouch.y) {
@@ -172,7 +172,7 @@
 -(void)showLocked {
     if (![self childNodeWithName:@"lock"]) {
         
-    NKSpriteNode *lock =  [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"lock-4"] color:self.color size:CGSizeMake(self.size.width*.5, self.size.width*.5)];
+    NKSpriteNode *lock =  [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"lock-4"] color:self.color size:S2Make(self.size.width*.5, self.size.width*.5)];
     [self addChild:lock];
     [lock setPosition:P2Make(w *.25, h*-.25)];
     lock.name = @"lock";
@@ -195,7 +195,7 @@
     }
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     
     NKTouchState hit = [super touchUp:location id:touchId];
     if (hit == 2) {

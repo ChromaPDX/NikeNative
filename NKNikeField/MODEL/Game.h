@@ -69,8 +69,8 @@ typedef enum RTMessageType {
 -(void)addNetworkUIForEvent:(GameEvent*)event;
 -(void)cleanUpUIForSequence:(GameSequence*)sequence;
 
--(void)opponentBeganCardTouch:(Card*)card atPoint:(CGPoint)point;
--(void)opponentMovedCardTouch:(Card*)card atPoint:(CGPoint)point;
+-(void)opponentBeganCardTouch:(Card*)card atPoint:(P2t)point;
+-(void)opponentMovedCardTouch:(Card*)card atPoint:(P2t)point;
 
 // CARDS
 
@@ -182,7 +182,7 @@ typedef enum RTMessageType {
 // RT PROTOCOL
 -(void)fetchThisTurnSequences;
 -(void)sendSequence:(GameSequence*)sequence perform:(BOOL)perform;
--(void)sendRTPacketWithCard:(Card*)c point:(CGPoint)touch began:(BOOL)began;
+-(void)sendRTPacketWithCard:(Card*)c point:(P2t)touch began:(BOOL)began;
 -(void)sendRTPacketWithType:(RTMessageType)type point:(BoardLocation*)location;
 -(void)receiveRTPacket:(NSData*)packet;
 

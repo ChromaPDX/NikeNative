@@ -21,7 +21,7 @@
     return self;
 }
 
-+(instancetype)pointWithCGPoint:(CGPoint)point {
++(instancetype)pointWithP2:(P2t)point {
     return [[BoardLocation alloc] initWithX:point.x Y:point.y];
 }
 
@@ -29,8 +29,8 @@
     return [[BoardLocation alloc] initWithX:x Y:y];
 }
 
--(CGPoint)CGPoint {
-    return CGPointMake(_x, _y);
+-(P2t)P2t{
+    return P2Make(_x, _y);
 }
 
 -(BOOL)isEqual:(id)other {

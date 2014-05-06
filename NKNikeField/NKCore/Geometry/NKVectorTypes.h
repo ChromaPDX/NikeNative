@@ -17,14 +17,42 @@
 
 typedef GLubyte U1t;
 typedef GLfloat F1t;
-typedef CGPoint P2t;
-typedef CGSize S2t;
 
-typedef struct {
-	F1t x;
-	F1t y;
-	F1t z;
-} V3t ; // VECTOR 3
+union _V2t {
+    struct { F1t x, y; };
+    struct { F1t s, t; };
+    struct { F1t width, height; };
+};
+typedef union _V2t V2t;
+
+typedef V2t P2t;
+typedef V2t S2t;
+
+union _V3t {
+	struct { F1t x, y, z; };
+    struct { F1t r, g, b; };
+    struct { F1t h, s, v; };
+}; // VECTOR 3
+
+typedef union _V3t V3t;
+
+typedef V3t RGBcolor;
+typedef V3t HSVcolor;
+
+union _V4t
+{
+    struct { F1t x, y, z, w; };
+    struct { P2t origin; S2t size;};
+    struct { F1t r, g, b, a; };
+    struct { F1t s, t, p, q; };
+    float v[4];
+} __attribute__((aligned(16)));
+
+typedef union _V4t V4t;
+
+typedef V4t Q4t;
+typedef V4t C4t;
+typedef V4t R4t;
 
 typedef struct {
 	GLushort	i1;
@@ -38,42 +66,12 @@ typedef struct {
 	V3t	v3;
 } T3t; // INDEX 3
 
-union _C4t {
-    struct
-    
-    {
-    F1t r;
-	F1t g;
-	F1t b;
-    F1t a;
-    };
-    
-    F1t p[4];
-    
-}; // COLOR 4
-
-typedef union _C4t C4t;
-
-typedef struct {
-	F1t x;
-	F1t y;
-	F1t z;
-    F1t w;
-} Q4t; // QUATERNION 4
-
 typedef struct {
 	F1t a;
 	F1t x;
 	F1t y;
     F1t z;
 } A4t; // ANGLE+AXIS 4
-
-typedef struct {
-	F1t x;
-	F1t y;
-	F1t w;
-    F1t h;
-} R4t; // RECTANGLE 4
 
 union _V9t
 {
@@ -88,6 +86,18 @@ union _V9t
 } ;
 
 typedef union _V9t V9t;
+
+union _M9t
+{
+    struct
+    {
+        float m00, m01, m02;
+        float m10, m11, m12;
+        float m20, m21, m22;
+    };
+    float m[9];
+};
+typedef union _M9t M9t;
 
 union _M16t
 {
@@ -161,6 +171,26 @@ static inline A4t A4Make(float angle, float x, float y, float z){
     return A4;
 }
 
+static inline bool R4ContainsPoint(R4t rect, P2t point){
+    for (int i = rect.x; i < rect.x + rect.size.width; i++) {
+        if ((int)point.x == i) {
+            for (int j = rect.y; j < rect.y + rect.size.height; j++) {
+                if ((int)point.y == j) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+static inline M9t M9IdentityMake() {
+    M9t ret;
+    ret.m[0] = ret.m[4] = ret.m[8] = 1.0;
+    ret.m[1] = ret.m[2] = ret.m[3] = 0.0;
+    ret.m[5] = ret.m[6] = ret.m[7] = 0.0;
+    return ret;
+}
 
 static inline M16t M16IdentityMake(){
     M16t ret;
@@ -173,7 +203,32 @@ static inline M16t M16IdentityMake(){
 
 #pragma mark - Point 2 Type
 
-#define P2Make CGPointMake
+
+static inline P2t P2Make(F1t x, F1t y) {
+    P2t ret;
+    ret.x = x;
+    ret.y = y;
+    return ret;
+}
+
+static inline S2t S2Make(F1t width, F1t height) {
+    S2t ret;
+    ret.width = width;
+    ret.height = height;
+    return ret;
+}
+
+static inline S2t S2MakeCG(CGSize size){
+    return S2Make(size.width, size.height);
+}
+
+static inline P2t P2MakeCG(CGPoint point){
+    return P2Make(point.x, point.y);
+}
+
+static inline CGSize CGS2Make(S2t s){
+    return CGSizeMake(s.width, s.height);
+}
 
 static inline P2t P2Add (P2t a, P2t b){
     return P2Make(a.x + b.x, a.y + b.y);
@@ -218,9 +273,9 @@ static inline V3t getTweenPoint(V3t src, V3t dst, F1t d){
 }
 
 
-static inline CGPoint polToCar(CGPoint pol) {
+static inline P2t polToCar(P2t pol) {
     
-    CGPoint car;
+    P2t car;
     
     car.x = pol.x*cosf(pol.y);
     car.y = pol.x*sin(pol.y);
@@ -229,9 +284,9 @@ static inline CGPoint polToCar(CGPoint pol) {
     
 }
 
-static inline CGPoint carToPol(CGPoint car){
+static inline P2t carToPol(P2t car){
     
-    CGPoint pol;
+    P2t pol;
     
     pol.x = sqrt(car.x*car.x + car.y*car.y);
     pol.y = atan2( car.y, car.x );
@@ -464,6 +519,61 @@ static inline V3t V3GetTriangleSurfaceNormal(T3t triangle)
 	ret.y = (u.z * v.x) - (u.x * v.z);
 	ret.z = (u.x * v.y) - (u.y * v.x);
 	return ret;
+}
+
+#pragma mark - Color Type
+
+static inline HSVcolor HSVfromRGB(RGBcolor rgb)
+{
+    HSVcolor hsv;
+    
+    CGFloat rgb_min, rgb_max;
+    rgb_min = MIN(rgb.r, MIN(rgb.g, rgb.b));
+    rgb_max = MAX(rgb.r, MAX(rgb.g, rgb.b));
+    
+    if (rgb_max == rgb_min) {
+        hsv.h = 0;
+    } else if (rgb_max == rgb.r) {
+        hsv.h = 60.0f * ((rgb.g - rgb.b) / (rgb_max - rgb_min));
+        hsv.h = fmodf(hsv.h, 360.0f);
+    } else if (rgb_max == rgb.g) {
+        hsv.h = 60.0f * ((rgb.b - rgb.r) / (rgb_max - rgb_min)) + 120.0f;
+    } else if (rgb_max == rgb.b) {
+        hsv.h = 60.0f * ((rgb.r - rgb.g) / (rgb_max - rgb_min)) + 240.0f;
+    }
+    hsv.v = rgb_max;
+    if (rgb_max == 0) {
+        hsv.s = 0;
+    } else {
+        hsv.s = 1.0 - (rgb_min / rgb_max);
+    }
+    
+    return hsv;
+}
+
+static inline void NOCColorComponentsForColor(GLfloat *components, UIColor *color)
+{
+    const CGFloat *myColor = CGColorGetComponents(color.CGColor);
+    int numColorComponents = CGColorGetNumberOfComponents(color.CGColor);
+    if(numColorComponents == 4){
+        components[0] = myColor[0];
+        components[1] = myColor[1];
+        components[2] = myColor[2];
+        components[3] = myColor[3];
+    }else{
+        if(numColorComponents == 2){
+            components[0] = myColor[0];
+            components[1] = myColor[0];
+            components[2] = myColor[0];
+            components[3] = myColor[1];
+        }else{
+            NSLog(@"ERROR: Could not find 4 color components. Found %i", numColorComponents);
+            components[0] = 1.0f;
+            components[1] = 1.0f;
+            components[2] = 1.0f;
+            components[3] = 1.0f;
+        }
+    }
 }
 
 #pragma mark - Rect 4 Type

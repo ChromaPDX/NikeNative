@@ -12,7 +12,7 @@
 
 @implementation UXTopBar
 
--(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size {
+-(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(S2t)size {
     
     self = [super initWithTexture:texture color:color size:size];
     
@@ -28,17 +28,17 @@
         
         NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"fuelbar_fuel.png"]];
         NKSpriteNode* fuel = [[NKSpriteNode alloc] initWithTexture:image];
-        [fuel setPosition:CGPointMake(-80, 10)];
+        [fuel setPosition:P2Make(-80, 10)];
         fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
         fuelLabel.fontSize = 22;
         [fuelLabel setColor:V2YELLOW];
         [fuelLabel setText:@"ENERGY"];
-        [fuelLabel setPosition:CGPointMake(-180, -50)];
+        [fuelLabel setPosition:P2Make(-180, -50)];
         
         NKTexture *logoImage = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"LOGO_Icon_Bola_small.png"]];
         NKSpriteNode* logo = [[NKSpriteNode alloc] initWithTexture:logoImage];
         //[logo setScale:.33];
-        [logo setPosition:CGPointMake(-270, -5)];
+        [logo setPosition:P2Make(-270, -5)];
 
         [self addChild:fuel];
         [self addChild:fuelLabel];
@@ -153,11 +153,11 @@
 
 -(void)sortPlayers {
     for (int i = 0; i < 3; i++){
-        [_playerSprites[i] setPosition:P2Make(110 + i*(cardSize.width+25), 0)];
+        [(PlayerSprite*)_playerSprites[i] setPosition:P2Make(110 + i*(cardSize.width+25), 0)];
     }
 }
 
--(NKTouchState) touchUp:(CGPoint)location id:(int)touchId {
+-(NKTouchState) touchUp:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchUp:location id:touchId];
     
     for (PlayerSprite *ps in _playerSprites) {

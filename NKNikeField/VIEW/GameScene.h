@@ -66,7 +66,7 @@
 -(void)shouldPerformCurrentAction;
 -(BOOL)requestActionWithPlayer:(PlayerSprite*)player;
 -(void)resetFingerLocation;
--(BoardLocation*)canPlayCard:(Card*)card atPosition:(CGPoint)pos;
+-(BoardLocation*)canPlayCard:(Card*)card atPosition:(P2t)pos;
 
 -(void)playerSpriteDidSelectPlayer:(Player*)player;
 

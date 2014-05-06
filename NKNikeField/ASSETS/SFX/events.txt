@@ -4,11 +4,6 @@ DONE
 
 
 
-wrong button sound
-
-Menu tap
-
-
 
 
 
@@ -16,6 +11,13 @@ Menu tap
 
 
 — done —
+
+
+wrong button sound
+
+Menu tap
+
+
 
 player drops
 

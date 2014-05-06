@@ -106,7 +106,7 @@ static inline V3t getTweenPoint(V3t src, V3t dst, F1t d);
 
 + (NKAction *)moveToX:(CGFloat)x y:(CGFloat)y duration:(F1t)sec;
 
-+ (NKAction *)moveTo:(CGPoint)location duration:(F1t)sec;
++ (NKAction *)moveTo:(P2t)location duration:(F1t)sec;
 + (NKAction *)moveToX:(CGFloat)x duration:(F1t)sec;
 + (NKAction *)moveToY:(CGFloat)y duration:(F1t)sec;
 //

@@ -16,7 +16,7 @@
 @implementation RecapMenu
 
 
--(instancetype)initWithSize:(CGSize)size {
+-(instancetype)initWithSize:(S2t)size {
     self = [super initWithSize:size];
     
     if (self) {
@@ -37,14 +37,14 @@
     return self;
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchUp:location id:touchId];
     
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"RecapMenu touchUP location = %f,%f", location.x, location.y);
-    CGRect startButtonRect = CGRectMake(97, 470, 120, 50);
-    if(CGRectContainsPoint(startButtonRect, location)){
+    R4t startButtonRect = R4Make(97, 470, 120, 50);
+    if(R4ContainsPoint(startButtonRect, location)){
         NKSceneNode* newScene = [[MainMenu alloc]initWithSize:self.size];
         self.nkView.scene = newScene;
     }

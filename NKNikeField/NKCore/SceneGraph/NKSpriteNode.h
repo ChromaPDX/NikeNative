@@ -37,15 +37,15 @@ static inline float cblend(float col, float bl){
 
 // INIT
 
-+ (instancetype)spriteNodeWithTexture:(NKTexture*)texture size:(CGSize)size;
++ (instancetype)spriteNodeWithTexture:(NKTexture*)texture size:(S2t)size;
 + (instancetype)spriteNodeWithTexture:(NKTexture*)texture;
 + (instancetype)spriteNodeWithImageNamed:(NSString *)name;
-+ (instancetype)spriteNodeWithColor:(UIColor *)color size:(CGSize)size;
++ (instancetype)spriteNodeWithColor:(UIColor *)color size:(S2t)size;
 
-- (instancetype)initWithTexture:(NKTexture*)texture color:(UIColor *)color size:(CGSize)size;
+- (instancetype)initWithTexture:(NKTexture*)texture color:(UIColor *)color size:(S2t)size;
 - (instancetype)initWithTexture:(NKTexture*)texture;
 - (instancetype)initWithImageNamed:(NSString *)name;
-- (instancetype)initWithColor:(UIColor *)color size:(CGSize)size;
+- (instancetype)initWithColor:(UIColor *)color size:(S2t)size;
 
 @property (nonatomic) R4t centerRect;
 

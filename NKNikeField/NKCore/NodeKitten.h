@@ -47,6 +47,7 @@
 
 // GEOMETRY + DRAWS
 // #import "NKVectorTypes.h" should be in the PCH
+#import "NKVertexBuffer.h"
 #import "NKStaticDraw.h"
 #import "NKMesh.h"
 
@@ -59,7 +60,7 @@
 
 // SHADERS
 
-#import "NKShaders.h"
+#import "NKShaderProgram.h"
 
 // ANIMATION
 

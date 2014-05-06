@@ -30,7 +30,7 @@ typedef NS_OPTIONS(UInt8, NKTextureMapStyle) {
     GLuint		texture[1];
 }
 
-@property (nonatomic) CGSize size;
+@property (nonatomic) S2t size;
 @property (nonatomic) bool shouldResizeToTexture;
 @property (nonatomic) NKTextureMapStyle textureMapStyle;
 
@@ -40,13 +40,17 @@ typedef NS_OPTIONS(UInt8, NKTextureMapStyle) {
 +(instancetype) textureWithString:(NSString *)string ForLabelNode:(NKLabelNode*)node;
 +(instancetype) textureWithString:(NSString *)string ForLabelNode:(NKLabelNode *)node inBackGroundWithCompletionBlock:(void (^)())block;
 
-//+(instancetype) textureWithString:(NSString *)text fontNamed:(NSString*)name color:(NKColor*)textColor Size:(CGSize)size fontSize:(CGFloat)fontSize completion:(void (^)())block;
+//+(instancetype) textureWithString:(NSString *)text fontNamed:(NSString*)name color:(NKColor*)textColor Size:(S2t)size fontSize:(CGFloat)fontSize completion:(void (^)())block;
 
 
-+(instancetype) textureWithPVRNamed:(NSString*)name size:(CGSize)size;
++(instancetype) textureWithPVRNamed:(NSString*)name size:(S2t)size;
 
 -(void)updateWithTimeSinceLast:(F1t) dt;
+
 -(void)bind;
+-(void)enableAndBind:(int)textureLoc;
+-(void)enableAndBindToUniform:(GLuint)uniformSamplerLocation;
+-(void)enableAndBindToUniform:(GLuint)uniformSamplerLocation atPosition:(int)textureNum;
 -(void)unbind;
 
 +(NKTexture*)blankTexture;

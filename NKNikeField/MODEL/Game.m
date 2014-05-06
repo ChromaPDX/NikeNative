@@ -2497,14 +2497,14 @@
             // BoardLocation *location = [unarchiver decodeObjectForKey:@"location"];
             // //Card *c = [self cardInHandForManager:_opponent location:location];
             //
-            // CGPoint touch = [unarchiver decodeCGPointForKey:@"touch"];
+            // P2ttouch = [unarchiver decodeCGPointForKey:@"touch"];
             // CGSize inSize = [unarchiver decodeCGSizeForKey:@"bounds"];
             // CGSize outSize = [[UIScreen mainScreen] bounds].size;
             //
             // float xScale = outSize.width / inSize.width;
             // float yScale = outSize.height / inSize.height;
             //
-            // CGPoint pos = CGPointMake(touch.x * xScale, touch.y * yScale);
+            // P2tpos = P2Make(touch.x * xScale, touch.y * yScale);
             //
             // if (type == RTMessageBeginCardTouch) {
             //
@@ -2559,7 +2559,7 @@
     
 }
 
--(void)sendRTPacketWithCard:(Card*)c point:(CGPoint)touch began:(BOOL)began{
+-(void)sendRTPacketWithCard:(Card*)c point:(P2t)touch began:(BOOL)began{
     
     if (_myTurn) {
         
@@ -2579,7 +2579,7 @@
             
             [archiver encodeInt:type forKey:@"type"];
             [archiver encodeObject:c.location forKey:@"location"];
-            [archiver encodeCGPoint:touch forKey:@"touch"];
+            [archiver encodeP2:touch forKey:@"touch"];
             [archiver encodeCGSize:[[UIScreen mainScreen] bounds].size forKey:@"bounds"];
             
             [archiver finishEncoding];
