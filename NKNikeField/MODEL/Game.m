@@ -826,13 +826,9 @@
 
 -(BOOL)performEvent:(GameEvent*)event {
     
-    
-    if (event.type == kEventChallenge) {
-        event.wasSuccessful = rand() % 100 > 50 ? true : false;
-    }
-    else {
-        event.wasSuccessful = true;
-    }
+ 
+    event.wasSuccessful = true;
+
     
     // FIRST INHERIT WHO IS INVOLVED FROM PERSISTENT LOCATIONS
     
@@ -1343,11 +1339,11 @@
 }
 
 -(void)AIChooseLocationForCard:(Card*) c { // called from UI after card has been selected
-    NSArray *pathToGoal;
-    NSArray *pathToBall;
+    NSMutableArray *pathToGoal;
+    NSMutableArray *pathToBall;
     Player *passToPlayer;
     NSArray *playersCloserToGoal;
-    NSArray* pathToGoalUnverified;
+    NSMutableArray* pathToGoalUnverified;
     Player *p = c.deck.player;
     // NSLog(@"in AIChooseLocationForCard, aiActionType = %d", c.aiActionType);
     switch (c.aiActionType){
@@ -1356,7 +1352,9 @@
             break;
         case MOVE_TO_DEFENDGOAL:  // Eric I put this stuff in basically move to goal, but opponent's goal
             NSLog(@"*********************************************AI: DEFEND GOAL");
-            pathToGoal = [p pathToOpenFieldClosestToLocation:p.manager.opponent.goal];
+            pathToGoal = [[p pathToOpenFieldClosestToLocation:p.manager.opponent.goal] mutableCopy];
+            [pathToGoal removeObject:p.manager.goal];
+            [pathToGoal removeObject:p.manager.opponent.goal];
             
             // NSLog(@"pathToGoalVerified = ");
             // for(BoardLocation *loc in pathToGoal){
@@ -1379,14 +1377,9 @@
             break;
         case MOVE_TO_GOAL:
             NSLog(@"*********************************************AI: MOVE TO GOAL");
-           // pathToGoalUnverified = [c.deck.player pathToGoal];
-            // NSLog(@"pathToGoalUnverified = ");
-            // for(BoardLocation *loc in pathToGoalUnverified){
-            //     NSLog(@"%@",loc);
-            // }
-            
-            //pathToGoal = [c validatedPath:[c.deck.player pathToGoal]];
-            pathToGoal = [p pathToOpenFieldClosestToLocation:p.manager.goal];
+            pathToGoal = [[p pathToOpenFieldClosestToLocation:p.manager.goal] mutableCopy];
+            [pathToGoal removeObject:p.manager.goal];
+            [pathToGoal removeObject:p.manager.opponent.goal];
             
             // NSLog(@"pathToGoalVerified = ");
             // for(BoardLocation *loc in pathToGoal){
@@ -1408,7 +1401,9 @@
             break;
         case MOVE_TO_GOAL_IN_PASS_RANGE:
             NSLog(@"*********************************************AI: MOVE TO GOAL IN PASS RANGE");
-            pathToGoal = [p pathToOpenFieldClosestToLocationInPassRange:p.manager.goal];
+            pathToGoal = [[p pathToOpenFieldClosestToLocationInPassRange:p.manager.goal] mutableCopy];
+            [pathToGoal removeObject:p.manager.goal];
+            [pathToGoal removeObject:p.manager.opponent.goal];
             if(pathToGoal && [pathToGoal count]){
                 BoardLocation *newLoc;
                 newLoc = [pathToGoal objectAtIndex:[pathToGoal count] - 1];
@@ -1465,7 +1460,9 @@
         case MOVE_TO_CHALLENGE:
             NSLog(@"*********************************************AI: MOVE TO CHALLENGE");
             
-            pathToBall = [p pathToBall];
+            pathToBall = [[p pathToBall] mutableCopy];
+            [pathToBall removeObject:p.manager.goal];
+            [pathToBall removeObject:p.manager.opponent.goal];
             if(pathToBall){
                 [_gameScene AISelectedLocation:pathToBall[[pathToBall count]-1]];
                 return;
@@ -1479,7 +1476,9 @@
         case MOVE_TO_BALL:
             NSLog(@"*********************************************AI: MOVE TO BALL");
             //NSArray *pathToBall = [c.deck.player pathToClosestAdjacentBoardLocation:_ball.location];
-            pathToBall = [p pathToOpenFieldClosestToLocation:_ball.location];
+            pathToBall = [[p pathToOpenFieldClosestToLocation:_ball.location] mutableCopy];
+            [pathToGoal removeObject:p.manager.goal];
+            [pathToGoal removeObject:p.manager.opponent.goal];
         
             if(pathToBall && [pathToBall count]){
                 BoardLocation *newLoc;

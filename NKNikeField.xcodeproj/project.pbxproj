@@ -119,6 +119,7 @@
 		3B6BF246191144280082628E /* LOGO_Icon_Bola_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF245191144280082628E /* LOGO_Icon_Bola_small.png */; };
 		3B6BF248191149A70082628E /* GOAL_text.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF247191149A70082628E /* GOAL_text.png */; };
 		3B6BF250191161A80082628E /* screen_recap.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF24F191161A80082628E /* screen_recap.png */; };
+		3BC5A7CF19193E9600414544 /* FuelBar_Container.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7CE19193E9600414544 /* FuelBar_Container.png */; };
 		6198A359190068660083EA5D /* UXTopBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6198A358190068660083EA5D /* UXTopBar.m */; };
 		6198A35B1900727C0083EA5D /* lock-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 6198A35A1900727C0083EA5D /* lock-4.png */; };
 		61A257C118FDE998001B7F67 /* NKMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578418FDE998001B7F67 /* NKMaterial.m */; };
@@ -408,6 +409,7 @@
 		3B6BF245191144280082628E /* LOGO_Icon_Bola_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LOGO_Icon_Bola_small.png; sourceTree = "<group>"; };
 		3B6BF247191149A70082628E /* GOAL_text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GOAL_text.png; sourceTree = "<group>"; };
 		3B6BF24F191161A80082628E /* screen_recap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screen_recap.png; sourceTree = "<group>"; };
+		3BC5A7CE19193E9600414544 /* FuelBar_Container.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelBar_Container.png; sourceTree = "<group>"; };
 		6198A357190068660083EA5D /* UXTopBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UXTopBar.h; sourceTree = "<group>"; };
 		6198A358190068660083EA5D /* UXTopBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UXTopBar.m; sourceTree = "<group>"; };
 		6198A35A1900727C0083EA5D /* lock-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock-4.png"; sourceTree = "<group>"; };
@@ -1252,6 +1254,7 @@
 				3B6BF2431911416C0082628E /* LOGO_Icon_Bola.png */,
 				6198A35A1900727C0083EA5D /* lock-4.png */,
 				3B6BF23C191016200082628E /* fuelbar_fuel.png */,
+				3BC5A7CE19193E9600414544 /* FuelBar_Container.png */,
 				61D6E77718FDB5B70017A389 /* CardType_PlayerSign.png */,
 			);
 			path = V2_HUD;
@@ -1441,6 +1444,7 @@
 				2902A073190C7BAE008D0092 /* Faction_Sention_ON.png in Resources */,
 				61D6E85918FDB5B70017A389 /* Card_Icon_Kick_L2.png in Resources */,
 				61D6E87A18FDB5B70017A389 /* Field_Layer03.png in Resources */,
+				3BC5A7CF19193E9600414544 /* FuelBar_Container.png in Resources */,
 				61D6E7FF18FDB5B70017A389 /* tile_bottomright.png in Resources */,
 				29C42BE619105C0600441639 /* expand.aiff in Resources */,
 				61D6E7FD18FDB5B70017A389 /* tile_bottom.png in Resources */,

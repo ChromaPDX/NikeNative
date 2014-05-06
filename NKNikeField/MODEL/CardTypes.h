@@ -37,6 +37,12 @@ typedef NS_ENUM(int32_t, CardKickCategory) {
     CardKickCategoryDrop = 4,
 };
 
+typedef NS_ENUM(int32_t, CardChallengeCategory) {
+    CardChallengeCategoryNull = 0,
+    CardChallengeCategoryRook = 1,
+    CardChallengeCategoryBishop = 2
+};
+
 typedef NS_ENUM(int32_t, EventType) {
     kNullAction,
     // Player Actions
