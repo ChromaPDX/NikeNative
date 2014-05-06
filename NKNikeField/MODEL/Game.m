@@ -826,13 +826,9 @@
 
 -(BOOL)performEvent:(GameEvent*)event {
     
-    
-    if (event.type == kEventChallenge) {
-        event.wasSuccessful = rand() % 100 > 50 ? true : false;
-    }
-    else {
-        event.wasSuccessful = true;
-    }
+ 
+    event.wasSuccessful = true;
+
     
     // FIRST INHERIT WHO IS INVOLVED FROM PERSISTENT LOCATIONS
     
