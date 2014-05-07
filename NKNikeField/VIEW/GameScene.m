@@ -624,9 +624,11 @@ float PARTICLE_SCALE;
                         
                         [self playSoundWithKey:@"goal"];
                         
+                        
                         [self runAction:[NKAction fadeAlphaTo:0 duration:2.5] completion:^{
                             [_game endGame];
-                            [self.nkView setScene:[[RecapMenu alloc] initWithSize:self.size]];
+                            RecapMenuWin *recapMenu = [[RecapMenuWin alloc] init];
+                            [self.nkView setScene:[recapMenu initWithSize:self.size]];
                         }];
                     }];
                 }
