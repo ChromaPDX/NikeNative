@@ -38,8 +38,8 @@
 - (void)setColorArrayToColor:(UIColor *)toColor;
 @end
 
-void GLDrawCircle (int circleSegments, CGFloat circleSize, CGPoint center, bool filled);
-void GLDrawEllipse (int segments, CGFloat width, CGFloat height, CGPoint center, bool filled);
-void GLDrawSpokes (int spokeCount, CGFloat radius, CGPoint center);
-void GLDrawEllipticalSpokes(int spokeCount, CGFloat width, CGFloat height, CGPoint center);
-void GLDrawEllipticalSpokesWithGradient(int spokeCount, CGFloat width, CGFloat height, CGPoint center, UIColor *innerColor, UIColor *outerColor);
+void GLDrawCircle (int circleSegments, CGFloat circleSize, P2t center, bool filled);
+void GLDrawEllipse (int segments, CGFloat width, CGFloat height, P2t center, bool filled);
+void GLDrawSpokes (int spokeCount, CGFloat radius, P2t center);
+void GLDrawEllipticalSpokes(int spokeCount, CGFloat width, CGFloat height, P2t center);
+void GLDrawEllipticalSpokesWithGradient(int spokeCount, CGFloat width, CGFloat height, P2t center, UIColor *innerColor, UIColor *outerColor);

@@ -96,19 +96,33 @@
 
 -(void)customDraw {
     
-    if (_texture || _color) {
-    
-    glPushMatrix();
-    glScalef(w,h,d);
-    
-    if (_texture) {
-        [_mesh drawWithTexture:_texture color:_intColor];
+    if (NK_GL_VERSION == 2) {
+        
+        if (_texture) {
+            [_mesh drawWithTexture:_texture color:_intColor];
+        }
+        else {
+            [_mesh drawWithColor:_intColor];
+        }
+        
     }
     else {
-        [_mesh drawWithColor:_intColor];
-    }
-
-    glPopMatrix();
+        
+        if (_texture || _color) {
+            
+            glPushMatrix();
+            glScalef(w,h,d);
+            
+            if (_texture) {
+                [_mesh drawWithTexture:_texture color:_intColor];
+            }
+            else {
+                [_mesh drawWithColor:_intColor];
+            }
+            
+            glPopMatrix();
+            
+        }
         
     }
 }

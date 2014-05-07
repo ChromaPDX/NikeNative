@@ -23,11 +23,16 @@
     float s2w;
     R4t viewPort;
     float _aspectRatio;
+    
+    M16t frustrum;
+    
 }
 
 @property (nonatomic) float fieldOfView;
+@property (nonatomic) M16t projectionMatrix;
+@property (nonatomic) M9t normalMatrix;
 
 -(instancetype)initWithScene:(NKSceneNode*)scene;
--(CGPoint)screenToWorld:(CGPoint)p;
+-(P2t)screenToWorld:(P2t)p;
 
 @end

@@ -25,18 +25,12 @@
  OF THE POSSIBILITY OF SUCH DAMAGE. *
  ***********************************************************************/
 
-// *****
-// ofShader uses these default attributes
-//COLOR_ATTRIBUTE="color";
-//POSITION_ATTRIBUTE="position";
-//NORMAL_ATTRIBUTE="normal";
-//TEXCOORD_ATTRIBUTE="texcoord";
-// *****
 
-// BASE CLASS
+
+//// BASE CLASS
 #import "NKShaderNode.h"
-
-// SUB CLASSES
+//
+//// SUB CLASSES
 #import "NKGaussianBlur.h"
 #import "NKDrawDepthShader.h"
 #import "NKZBlur.h"
@@ -114,38 +108,55 @@ static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
 (
  //precision highp float;
  
- attribute vec4 position;
- attribute vec3 normal;
- attribute vec4 color;
+ attribute vec4 a_position;
+ attribute vec3 a_normal;
+ attribute vec4 a_color;
+ attribute vec2 a_texCoord0;
+ attribute vec2 a_texCoord1;
+
+ uniform mat4 u_modelViewProjectionMatrix;
+ uniform mat3 u_normalMatrix;
+ uniform int u_useUniformColor;
+ uniform vec4 u_color;
  
- varying lowp vec4 colorVarying;
+ uniform sampler2D tex0;
  
- uniform mat4 modelViewProjectionMatrix;
- uniform mat3 normalMatrix;
+ varying mediump vec2 v_texCoord0;
+ varying lowp vec4 v_color;
  
  void main()
 {
-    vec3 eyeNormal = normalize(normalMatrix * normal);
-    vec3 lightPosition = vec3(0.0, 0.0, 1.0);
-    vec4 diffuseColor = vec4(0.4, 0.4, 1.0, 1.0);
+    vec3 eyeNormal = normalize(u_normalMatrix * a_normal);
+    vec3 lightPosition = vec3(0.5, 1.5, -1.0);
+    vec4 diffuseColor;
+    if (u_useUniformColor == 1){
+        diffuseColor = u_color;
+    }
+    else {
+        diffuseColor = vec4(0.,0,1.,1.);
+    }
     
     float nDotVP = max(0.0, dot(eyeNormal, normalize(lightPosition)));
     
-    colorVarying = diffuseColor;// * nDotVP;
-    
-    gl_Position = modelViewProjectionMatrix * position;
+    v_color = diffuseColor * nDotVP;
+    v_texCoord0 = a_texCoord0;
+    gl_Position = u_modelViewProjectionMatrix * a_position;
 }
  
 );
 
 static NSString *const nkDefaultTextureFragmentShader = SHADER_STRING
 (
- varying lowp vec4 colorVarying;
+ uniform sampler2D tex0;
+ 
+ varying lowp vec4 v_color;
+ varying mediump vec2 v_texCoord0;
  
  void main()
 {
-    gl_FragColor = colorVarying;
+    gl_FragColor = texture2D(tex0, v_texCoord0);// * v_color;
 }
- );
+ 
+);
 
 #endif

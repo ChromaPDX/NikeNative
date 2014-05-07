@@ -96,7 +96,7 @@
 // Creates a mask that makes the outer edges transparent and everything else opaque
 // The size must include the entire mask (opaque part + transparent border)
 // The caller is responsible for releasing the returned reference by calling CGImageRelease
-- (CGImageRef)newBorderMask:(NSUInteger)borderSize size:(CGSize)size {
+- (CGImageRef)newBorderMask:(NSUInteger)borderSize size:(S2t)size {
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();
     
     // Build a context that's the same dimensions as the new size

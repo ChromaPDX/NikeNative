@@ -7,6 +7,7 @@
 //
 
 @class NKTexture;
+@class NKVertexBuffer;
 
 typedef NS_ENUM(NSInteger, NKPrimitive) {
     NKPrimitiveNone,
@@ -23,12 +24,15 @@ typedef NS_ENUM(NSInteger, NKPrimitive) {
 	NSString			*sourceMtlFilePath;
 	
 	GLuint				numberOfVertices;
+    
+    GLuint				numberOfFaces;			// Total faces in all groups
+    
 	V3t                 *vertices;
-	GLuint				numberOfFaces;			// Total faces in all groups
-	
 	V3t                 *surfaceNormals;		// length = numberOfFaces
 	V3t                 *vertexNormals;			// length = numberOfFaces (*3 vertices per triangle);
     C4t                 *vertexColors;
+    
+    NKVertexBuffer      *vertexBuffer;
     
 	GLfloat				*textureCoords;
 

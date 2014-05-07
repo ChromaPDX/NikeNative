@@ -42,7 +42,7 @@ typedef NS_ENUM(NSInteger, ButtonState) {
 @property (nonatomic, weak) id delegate;
 @property (nonatomic) SEL method;
 
-+ (instancetype) buttonWithNames:(NSArray*)names color:(NSArray*)colors type:(ButtonType)type size:(CGSize) size;
-+ (instancetype) buttonWithTextureOn:(NKTexture*)textureOn TextureOff:(NKTexture*)textureOff type:(ButtonType)type size:(CGSize) size;
++ (instancetype) buttonWithNames:(NSArray*)names color:(NSArray*)colors type:(ButtonType)type size:(S2t) size;
++ (instancetype) buttonWithTextureOn:(NKTexture*)textureOn TextureOff:(NKTexture*)textureOff type:(ButtonType)type size:(S2t) size;
 
 @end

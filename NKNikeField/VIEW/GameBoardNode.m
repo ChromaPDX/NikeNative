@@ -10,7 +10,7 @@
 
 @implementation GameBoardNode
 //
-//-(instancetype)initWithColor:(UIColor *)color size:(CGSize)size {
+//-(instancetype)initWithColor:(UIColor *)color size:(S2t)size {
 //    self = [super initWithColor:color size:size];
 //    
 //    if(self){

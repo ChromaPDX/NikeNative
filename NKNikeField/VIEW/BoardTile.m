@@ -11,7 +11,7 @@
 
 @implementation BoardTile
 
--(instancetype)initWithTexture:(NKTexture*)texture color:(UIColor *)color size:(CGSize)size {
+-(instancetype)initWithTexture:(NKTexture*)texture color:(UIColor *)color size:(S2t)size {
     self = [super initWithTexture:texture color:color size:size];
     if (self){
       // box = (ofPlanePrimitive*)new ofBoxPrimitive(size.width, size.height, 4);
@@ -23,7 +23,7 @@
     return [NSString stringWithFormat:@"TILE: %d %d",_location.x,_location.y ];
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchUp:location id:touchId];
     if (hit == 2) {
         _delegate.selectedBoardTile = self;

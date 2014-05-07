@@ -30,9 +30,9 @@
 @class NKAction;
 @class NodeAnimationHandler;
 @class NKSceneNode;
-@class NKShaderNode;
 @class NKDrawDepthShader;
 @class NKFbo;
+@class NKShaderProgram;
 
 typedef NS_ENUM(U1t, NKTouchState) {
     NKTouchNone,
@@ -85,7 +85,6 @@ typedef void (^CompletionBlock)(void);
     bool dirty;
     
     NodeAnimationHandler *animationHandler;
-    NKDrawDepthShader *depthShader;
     bool useShader;
     
     F1t w;
@@ -100,7 +99,7 @@ typedef void (^CompletionBlock)(void);
 
 #pragma mark - POSITION PROPERTIES
 
-@property (nonatomic) CGPoint anchorPoint;
+@property (nonatomic) P2t anchorPoint;
 @property (nonatomic) V3t anchorPoint3d;
 @property (nonatomic) F1t zRotation;
 @property (nonatomic) V3t upVector;
@@ -123,7 +122,7 @@ typedef void (^CompletionBlock)(void);
 
 #pragma mark - SHADER PROPERTIES
 @property (nonatomic)  NKFbo *depthFbo;
-@property (nonatomic, strong) NKShaderNode *shader;
+@property (nonatomic, strong) NKShaderProgram *shader;
 
 #pragma mark - HIERARCHY METHODS
 - (void)addChild:(NKNode *)node;
@@ -133,7 +132,7 @@ typedef void (^CompletionBlock)(void);
 - (void)fadeOutChild:(NKNode*)child duration:(NSTimeInterval)seconds;
 - (void)fadeInChild:(NKNode*)child duration:(NSTimeInterval)seconds withCompletion:(void (^)())block;
 - (void)fadeOutChild:(NKNode*)child duration:(NSTimeInterval)seconds withCompletion:(void (^)())block;
--(CGPoint)childLocationIncludingRotation:(NKNode*)child;
+-(P2t)childLocationIncludingRotation:(NKNode*)child;
 - (void)insertChild:(NKNode *)node atIndex:(NSInteger)index;
 - (void)removeChildrenInArray:(NSArray *)nodes;
 - (void)removeAllChildren;
@@ -145,14 +144,14 @@ typedef void (^CompletionBlock)(void);
 #pragma mark - GEOMETRY METHODS
 
 - (void)setZPosition:(int)zPosition;
-- (void)setPosition:(CGPoint)position;
+- (void)setPosition:(P2t)position;
 
 -(V3t)getGlobalPosition;
--(CGPoint)positionInNode:(NKNode*)node;
+-(P2t)positionInNode:(NKNode*)node;
 -(V3t)positionInNode3d:(NKNode*)node;
 
-- (CGPoint)convertPoint:(CGPoint)point fromNode:(NKNode *)node;
-- (CGPoint)convertPoint:(CGPoint)point toNode:(NKNode *)node;
+- (P2t)convertPoint:(P2t)point fromNode:(NKNode *)node;
+- (P2t)convertPoint:(P2t)point toNode:(NKNode *)node;
 
 -(V3t)convertPoint3d:(V3t)point fromNode:(NKNode *)node;
 -(V3t)convertPoint3d:(V3t)point toNode:(NKNode *)node;
@@ -176,8 +175,7 @@ typedef void (^CompletionBlock)(void);
 #pragma mark - SHADER / FBO
 
 -(void)loadShaderNamed:(NSString*)name;
--(void)loadShader:(NKShaderNode*)shader;
-+(NKFbo*)customFbo:(CGSize)size;
++(NKFbo*)customFbo:(S2t)size;
 
 #pragma mark - STATE MAINTENANCE
 
@@ -201,9 +199,9 @@ typedef void (^CompletionBlock)(void);
 
 #pragma mark - POSITION METHODS
 
--(bool)containsPoint:(CGPoint) location;
+-(bool)containsPoint:(P2t) location;
 
--(CGPoint)position;
+-(P2t)position;
 -(V3t)position3d;
 -(void)setPosition3d:(V3t)position3d;
 
@@ -241,15 +239,15 @@ typedef void (^CompletionBlock)(void);
 -(void)setYScale:(F1t)s;
 
 -(V3t)scale3d;
--(CGPoint)scale;
+-(P2t)scale;
 
 #pragma mark - TOUCH
 
--(NKTouchState) touchDown:(CGPoint)location id:(int) touchId;
--(NKTouchState) touchMoved:(CGPoint)location id:(int) touchId;
--(NKTouchState) touchUp:(CGPoint)location id:(int) touchId;
+-(NKTouchState) touchDown:(P2t)location id:(int) touchId;
+-(NKTouchState) touchMoved:(P2t)location id:(int) touchId;
+-(NKTouchState) touchUp:(P2t)location id:(int) touchId;
 
-+(void)drawRectangle:(CGSize)size;
+//+(void)drawRectangle:(S2t)size;
 
 // UTIL
 -(void)logCoords;

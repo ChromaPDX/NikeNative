@@ -5,7 +5,7 @@
 
 @implementation UXWindow
 
--(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(CGSize)size {
+-(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(S2t)size {
     
     self = [super initWithTexture:texture color:color size:size];
     
@@ -48,8 +48,8 @@
 //    if ([function isEqualToString:@"end"]) {
 //        
 //        
-//        _actionButton = [ButtonSprite buttonWithTextureOn:[NKTexture textureWithImageNamed:@"Button_EndTurnON"] TextureOff:[NKTexture textureWithImageNamed:@"Button_EndTurnOFF"] type:ButtonTypePush size:CGSizeMake(TILE_SIZE*UI_MULT, TILE_SIZE*UI_MULT)];
-//        [_actionButton setPosition:CGPointMake(self.size.width-(TILE_SIZE*.5),TILE_SIZE*.5)];
+//        _actionButton = [ButtonSprite buttonWithTextureOn:[NKTexture textureWithImageNamed:@"Button_EndTurnON"] TextureOff:[NKTexture textureWithImageNamed:@"Button_EndTurnOFF"] type:ButtonTypePush size:S2Make(TILE_SIZE*UI_MULT, TILE_SIZE*UI_MULT)];
+//        [_actionButton setPosition:P2Make(self.size.width-(TILE_SIZE*.5),TILE_SIZE*.5)];
 //        _actionButton.delegate = _delegate;
 //        _actionButton.method = @selector(endTurn:);
 //        
@@ -58,14 +58,14 @@
 //    else if ([function isEqualToString:@"draw"]) {
 //        
 //        
-//        _actionButton = [ButtonSprite buttonWithTextureOn:[NKTexture textureWithImageNamed:@"Button_DrawCardON"] TextureOff:[NKTexture textureWithImageNamed:@"Button_DrawCardOFF"] type:ButtonTypePush size:CGSizeMake(TILE_SIZE*UI_MULT, TILE_SIZE*UI_MULT)];
-//        [_actionButton setPosition:CGPointMake(self.size.width-(TILE_SIZE*.5),TILE_SIZE*.5)];
+//        _actionButton = [ButtonSprite buttonWithTextureOn:[NKTexture textureWithImageNamed:@"Button_DrawCardON"] TextureOff:[NKTexture textureWithImageNamed:@"Button_DrawCardOFF"] type:ButtonTypePush size:S2Make(TILE_SIZE*UI_MULT, TILE_SIZE*UI_MULT)];
+//        [_actionButton setPosition:P2Make(self.size.width-(TILE_SIZE*.5),TILE_SIZE*.5)];
 //        _actionButton.delegate = _delegate;
 //        _actionButton.method = @selector(drawCard:);
 //        
 //    }
 //    
-//    [_actionButton setPosition:CGPointMake(0, -_turnTokensWindow.size.height*.25)];
+//    [_actionButton setPosition:P2Make(0, -_turnTokensWindow.size.height*.25)];
 //    
 //    if (new) {
 //        [_turnTokensWindow fadeInSprite:_actionButton duration:CARD_ANIM_DUR];
@@ -79,17 +79,17 @@
 #pragma mark METHODS TO MODEL / DELEGATE
 
 //-(void) setupHUD{
-//    fieldHUD = [[NKSpriteNode alloc] initWithTexture:[_delegate.sharedAtlas textureNamed:@"soccer_field_mini"]  color:[UIColor colorWithRed:0.0 green:0.5 blue:0.0 alpha:1.0] size:CGSizeMake(75*1.35, 75)];
+//    fieldHUD = [[NKSpriteNode alloc] initWithTexture:[_delegate.sharedAtlas textureNamed:@"soccer_field_mini"]  color:[UIColor colorWithRed:0.0 green:0.5 blue:0.0 alpha:1.0] size:S2Make(75*1.35, 75)];
 //    [fieldHUD setAlpha:0.75];
-//    [fieldHUD setPosition:CGPointMake(self.size.width/2. - self.size.height*.4, .2*self.size.height)];
+//    [fieldHUD setPosition:P2Make(self.size.width/2. - self.size.height*.4, .2*self.size.height)];
 //    [self addChild:fieldHUD];
-//    fieldHUDSelectionBar = [[NKSpriteNode alloc] initWithTexture:Nil color:[UIColor colorWithWhite:1.0 alpha:0.33] size:CGSizeMake(fieldHUD.size.width*.1,fieldHUD.size.height)];
-//    [fieldHUDSelectionBar setPosition:CGPointMake(fieldHUD.position.x, fieldHUD.position.y)];
+//    fieldHUDSelectionBar = [[NKSpriteNode alloc] initWithTexture:Nil color:[UIColor colorWithWhite:1.0 alpha:0.33] size:S2Make(fieldHUD.size.width*.1,fieldHUD.size.height)];
+//    [fieldHUDSelectionBar setPosition:P2Make(fieldHUD.position.x, fieldHUD.position.y)];
 //    [self addChild:fieldHUDSelectionBar];
 //}
 //-(void)refreshFieldHUDXOffset:(NSInteger)xOffset{
 //    if(!fieldHUD) [self setupHUD];
-//    [fieldHUDSelectionBar setPosition:CGPointMake(fieldHUD.position.x-(8-xOffset)/15.0*fieldHUD.size.width, fieldHUD.position.y)];
+//    [fieldHUDSelectionBar setPosition:P2Make(fieldHUD.position.x-(8-xOffset)/15.0*fieldHUD.size.width, fieldHUD.position.y)];
 //}
 
 -(void)cheatGetPoints:(ButtonSprite*)sender {
@@ -163,7 +163,7 @@
     [super end];
 }
 
--(void)cardTouchEnded:(CardSprite*)card atPoint:(CGPoint)point {
+-(void)cardTouchEnded:(CardSprite*)card atPoint:(P2t)point {
     
     self.selectedCard = card.model;
     _delegate.selectedCard = _selectedCard;
@@ -177,7 +177,7 @@
     float dur = FAST_ANIM_DUR;
     
     if (!ph.bigCards) {
-        BigCards* big = [[BigCards alloc]initWithColor:NKCLEAR size:CGSizeMake(w, h*3.)];
+        BigCards* big = [[BigCards alloc]initWithColor:NKCLEAR size:S2Make(w, h*3.)];
         big.delegate = ph;
         
         ph.bigCards = big;
@@ -300,7 +300,7 @@
     
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     
     NKTouchState hit = [super touchUp:location id:touchId];
     if (hit == 2) {
@@ -332,7 +332,7 @@
         cardSize.width = (1. / (p.cardSlots+2)) * w;
         cardSize.height = (cardSize.width * (100. / 70.));
         
-        _playerName = [[NKLabelNode alloc]initWithSize:CGSizeMake(cardSize.width*2., cardSize.height) FontNamed:@"Arial Black.ttf"];
+        _playerName = [[NKLabelNode alloc]initWithSize:S2Make(cardSize.width*2., cardSize.height) FontNamed:@"Arial Black.ttf"];
         _playerName.fontSize = 20;
         _playerName.text = p.name;
         
@@ -433,7 +433,7 @@
             
             
             offSet += cardSize.width * .1;
-            cs.origin = CGPointMake(offSet, cardSize.height*.1);
+            cs.origin = P2Make(offSet, cardSize.height*.1);
             offSet += cardSize.width * 1.2;
             nscale = 1.15;
             
@@ -444,7 +444,7 @@
             
             nscale = 1.;
             
-            cs.origin = CGPointMake(offSet, 0);
+            cs.origin = P2Make(offSet, 0);
             offSet += cardSize.width * 1.1;
             
         }
@@ -483,8 +483,8 @@
         
         [cs setAlpha:1.];
         
-        //cs.origin = CGPointMake((w*.3) - ((cardSize.width*.15 + (w*.125)* (2./_myCards.count) ) * i),0);
-        cs.origin = CGPointMake(cardSize.width * 1.1 * (i-1), 0);
+        //cs.origin = P2Make((w*.3) - ((cardSize.width*.15 + (w*.125)* (2./_myCards.count) ) * i),0);
+        cs.origin = P2Make(cardSize.width * 1.1 * (i-1), 0);
         
         if (animated) {
             

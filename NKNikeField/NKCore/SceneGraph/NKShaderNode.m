@@ -7,7 +7,6 @@
 //
 
 #import "NodeKitten.h"
-#import "NKShaders.h"
 
 @implementation NKShaderNode
 

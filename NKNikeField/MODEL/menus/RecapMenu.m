@@ -16,7 +16,7 @@
 @implementation RecapMenu
 
 
--(instancetype)initWithSize:(CGSize)size {
+-(instancetype)initWithSize:(S2t)size {
     self = [super initWithSize:size];
     
     if (self) {
@@ -38,7 +38,7 @@
     return self;
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchUp:location id:touchId];
     
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];

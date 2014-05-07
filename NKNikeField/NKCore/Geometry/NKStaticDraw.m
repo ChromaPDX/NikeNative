@@ -140,11 +140,11 @@ static NKStaticDraw *sharedObject = nil;
 }
 @end
 
-void GLDrawCircle (int circleSegments, CGFloat circleSize, CGPoint center, bool filled)
+void GLDrawCircle (int circleSegments, CGFloat circleSize, P2t center, bool filled)
 {
 	GLDrawEllipse(circleSegments, circleSize, circleSize, center, filled);
 }
-void GLDrawEllipse (int segments, CGFloat width, CGFloat height, CGPoint center, bool filled)
+void GLDrawEllipse (int segments, CGFloat width, CGFloat height, P2t center, bool filled)
 {
 	glTranslatef(center.x, center.y, 0.0);
 	GLfloat vertices[segments*2];
@@ -157,11 +157,11 @@ void GLDrawEllipse (int segments, CGFloat width, CGFloat height, CGPoint center,
 	glVertexPointer (2, GL_FLOAT , 0, vertices);
 	glDrawArrays ((filled) ? GL_TRIANGLE_FAN : GL_LINE_LOOP, 0, segments);
 }
-void GLDrawSpokes (int spokeCount, CGFloat radius, CGPoint center)
+void GLDrawSpokes (int spokeCount, CGFloat radius, P2t center)
 {
 	GLDrawEllipticalSpokes(spokeCount, radius, radius, center);
 }
-void GLDrawEllipticalSpokes(int spokeCount, CGFloat width, CGFloat height, CGPoint center)
+void GLDrawEllipticalSpokes(int spokeCount, CGFloat width, CGFloat height, P2t center)
 {
 	glTranslatef(center.x, center.y, 0.0);
 	for (GLfloat i = 0; i < 360.0f; i+=(360.0f/spokeCount))
@@ -171,7 +171,7 @@ void GLDrawEllipticalSpokes(int spokeCount, CGFloat width, CGFloat height, CGPoi
 		glDrawArrays (GL_LINES, 0, 2);
 	}
 }
-void GLDrawEllipticalSpokesWithGradient(int spokeCount, CGFloat width, CGFloat height, CGPoint center, UIColor *innerColor, UIColor *outerColor)
+void GLDrawEllipticalSpokesWithGradient(int spokeCount, CGFloat width, CGFloat height, P2t center, UIColor *innerColor, UIColor *outerColor)
 {
 	glTranslatef(center.x, center.y, 0.0);
 	for (GLfloat i = 0; i < 360.0f; i+=(360.0f/spokeCount))

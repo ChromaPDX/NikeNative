@@ -175,9 +175,9 @@
         
         float height = cell.bounds.size.height * .5;
         
-        //label.center = CGPointMake(cell.bounds.size.width * .6, height);
-        //label2.center = CGPointMake(cell.bounds.size.width, height);
-        //label3.center = CGPointMake(cell.bounds.size.width, height);
+        //label.center = P2Make(cell.bounds.size.width * .6, height);
+        //label2.center = P2Make(cell.bounds.size.width, height);
+        //label3.center = P2Make(cell.bounds.size.width, height);
 
         //cell.center = tableView.center
         

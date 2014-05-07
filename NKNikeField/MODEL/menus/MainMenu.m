@@ -15,7 +15,7 @@
 @implementation MainMenu
 
 
--(instancetype)initWithSize:(CGSize)size {
+-(instancetype)initWithSize:(S2t)size {
     self = [super initWithSize:size];
     
     if (self) {
@@ -35,6 +35,8 @@
         [table setHighlightColor:highlightColor];
         table.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
         
+        //[table repeatAction:[NKAction rotateYByAngle:90 duration:2.]];
+        
         [NKSoundManager loadSoundFileNamed:@"Androyd-Bulbtone-41.wav"];
         [NKSoundManager loadSoundFileNamed:@"03 Bass [A$AP Rocky].mp3"];
         [NKSoundManager playMusicNamed:@"03 Bass [A$AP Rocky].mp3"];
@@ -52,26 +54,26 @@
     return self;
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchUp:location id:touchId];
     
   
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
-    CGRect syncButtonRect = CGRectMake(101, 301, 120, 50);
-    CGRect startButtonRect = CGRectMake(101, 367, 120, 50);
-    CGRect HiddenAIButtonRect = CGRectMake(116, 151, 50, 50);
-    if(CGRectContainsPoint(syncButtonRect, location)){
+    R4t syncButtonRect = R4Make(101, 301, 120, 50);
+    R4t startButtonRect = R4Make(101, 367, 120, 50);
+    R4t HiddenAIButtonRect = R4Make(116, 151, 50, 50);
+    if(R4ContainsPoint(syncButtonRect, location)){
         NSLog(@"*NSYNC!");
     }
-    else if(CGRectContainsPoint(startButtonRect, location)){
+    else if(R4ContainsPoint(startButtonRect, location)){
         NSLog(@"start button pressed, starting game...");
         NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startSinglePlayerGame];
         self.nkView.scene = newScene;
     }
-    else if(CGRectContainsPoint(HiddenAIButtonRect, location)){
+    else if(R4ContainsPoint(HiddenAIButtonRect, location)){
         NSLog(@"AI button pressed, starting game...");
         NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startAIGame];

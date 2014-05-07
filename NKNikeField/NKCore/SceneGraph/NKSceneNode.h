@@ -29,11 +29,15 @@
 
 @class NKView;
 @class NKCamera;
+@class NKShaderProgram;
+
 @interface NKSceneNode : NKNode
 
 {
     int fps;
-
+    NSMutableData *matrixStack;
+    M16t modelMatrix;
+    int stackP;
 }
 
 @property (nonatomic) void *view;
@@ -43,14 +47,19 @@
 @property (nonatomic) UIColor *borderColor;
 @property (nonatomic, strong) NKCamera *camera;
 @property (nonatomic, weak) NKView *nkView;
+@property (nonatomic, strong) NKShaderProgram *activeShader;
 
--(instancetype) initWithSize:(CGSize)size;
+-(instancetype) initWithSize:(S2t)size;
 
 - (void)draw;
 // encompasses 3 states
+
 -(void)begin;
 -(void)customDraw;
 -(void)end;
+
+-(void)pushMultiplyMatrix:(M16t)matrix;
+-(void)popMatrix;
 
 // DRAW STATE SHADOWING
 @property (nonatomic) NKBlendMode blendModeState;

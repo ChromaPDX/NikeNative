@@ -25,11 +25,11 @@
             int tempSize = 0;
             for(int i = 0; i < [intChildren indexOfObject:child]; i++)
             {
-                int temp = [intChildren[i] size].height;
+                int temp = [(NKNode*)intChildren[i] size].height;
                 tempSize += temp + self.padding.y;
             }
             
-            CGSize childSize;
+            S2t childSize;
             
             if ([child isKindOfClass:[NKScrollNode class]]) {
                 childSize.height = self.size.height * child.autoSizePct.y;
@@ -57,11 +57,11 @@
             int tempSize = 0;
             for(int i = 0; i < [intChildren indexOfObject:child]; i++)
             {
-                int temp = [intChildren[i] size].width;
+                int temp = [(NKNode*)intChildren[i] size].width;
                 tempSize += temp + self.padding.x;
             }
             
-            CGSize childSize;
+            S2t childSize;
             
             if ([child isKindOfClass:[NKScrollNode class]]) {
                 childSize.width = self.size.width * child.autoSizePct.x;

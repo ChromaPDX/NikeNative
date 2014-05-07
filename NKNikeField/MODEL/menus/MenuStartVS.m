@@ -15,7 +15,7 @@
 @implementation MenuStartVS
 
 
--(instancetype)initWithSize:(CGSize)size {
+-(instancetype)initWithSize:(S2t)size {
     self = [super initWithSize:size];
     
     if (self) {
@@ -48,12 +48,12 @@
     return self;
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchUp:location id:touchId];
     
    // NSLog(@"MenuStartVS.m touchUP location = %f,%f", location.x, location.y);
-    CGRect buttonRect = CGRectMake(95, 80, 130, 55);
-    if(CGRectContainsPoint(buttonRect, location)){
+    R4t buttonRect = R4Make(95, 80, 130, 55);
+    if(R4ContainsPoint(buttonRect, location)){
         NSLog(@"start button pressed, starting game...");
         NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startAIGame];

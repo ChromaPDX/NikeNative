@@ -30,8 +30,8 @@
     P2t lastTouch;
 }
 
-@property (nonatomic) CGPoint touchOffset;
-@property (nonatomic) CGPoint realPosition;
+@property (nonatomic) P2t touchOffset;
+@property (nonatomic) P2t realPosition;
 @property (nonatomic) BOOL flipped;
 
 @property (nonatomic) BOOL hasShadow;
@@ -41,7 +41,7 @@
 @property (nonatomic, weak) Card* model;
 @property (nonatomic, weak) GameScene *delegate;
 @property (nonatomic, weak) UXWindow *window;
-@property (nonatomic) CGPoint origin;
+@property (nonatomic) P2t origin;
 @property (nonatomic) int order;
 
 @property (nonatomic, strong) NKSpriteNode *art;
