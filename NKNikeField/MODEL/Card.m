@@ -43,7 +43,7 @@
 
 -(void)getRandomChallengeAttributes {
     _level = 1;
-    _challengeCategory = rand()%2 + 1;
+    _challengeCategory = rand()%4 + 1;
     _kickCategory = CardKickCategoryNull;
     _moveCategory = CardMoveCategoryNull;
 
@@ -358,23 +358,23 @@
     
     
     AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
-    NSArray *accessible;
+    NSMutableArray *accessible = [[NSMutableArray alloc] init];
     
     // STEP 2: CALCULATE ACCESSIBLE WITH RANGE
     
     if (self.category == CardCategoryMove){
         switch(self.moveCategory){
             case CardMoveCategoryBishop:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range];
+                accessible = [[aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range] mutableCopy];
                 break;
             case CardMoveCategoryQueen:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:_range];
+                accessible = [[aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:_range] mutableCopy];
                 break;
             case CardMoveCategoryRook:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range];
+                accessible = [[aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
                 break;
             case CardMoveCategoryKnight:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeKnightStraight walkDistance:_range];
+                accessible = [[aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeKnightStraight walkDistance:_range]mutableCopy];
                 break;
             case CardMoveCategoryNull:
                 accessible = NULL;
@@ -384,27 +384,51 @@
                 break;
         }
         
-        accessible = [accessible arrayByAddingObject:[self.deck.player.location copy]];
+        accessible = [[accessible arrayByAddingObject:[self.deck.player.location copy]] mutableCopy];
     }
     
     else if (self.category == CardCategoryChallenge) {
         if(self.challengeCategory == CardChallengeCategoryRook){
-            accessible = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range];
+            accessible = [[aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
         }
         else if (self.challengeCategory == CardChallengeCategoryBishop){
-            accessible = [aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range];
+            accessible = [[aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range] mutableCopy];
+        }
+        else if (self.challengeCategory == CardChallengeCategoryHorizantal){
+            accessible = [[aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
+            BoardLocation *WLoc = [self.location stepInDirection:W];
+            BoardLocation *ELoc = [self.location stepInDirection:E];
+            if(WLoc){
+                [accessible removeObject:WLoc];
+            }
+            if(ELoc){
+                [accessible removeObject:ELoc];
+            }
+        }
+        else if (self.challengeCategory == CardChallengeCategoryVertical){
+            accessible = [[aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
+            accessible = [[aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
+            BoardLocation *NLoc = [self.location stepInDirection:W];
+            BoardLocation *SLoc = [self.location stepInDirection:E];
+            if(NLoc){
+                [accessible removeObject:NLoc];
+            }
+            if(SLoc){
+                [accessible removeObject:SLoc];
+            }
+
         }
     }
     else if (self.category == CardCategoryKick) {
         switch(self.kickCategory){
             case CardKickCategoryStraight:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:_range];
+                accessible = [[aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:_range] mutableCopy];
                 break;
             case CardKickCategoryLob:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenLobStraight walkDistance:_range];
+                accessible = [[aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeQueenLobStraight walkDistance:_range] mutableCopy];
                 break;
             case CardKickCategoryBeckem:
-                accessible = [aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeKnightStraight walkDistance:_range];
+                accessible = [[aStar cellsAccesibleFromStraight:_deck.player.location NeighborhoodType:NeighborhoodTypeKnightStraight walkDistance:_range] mutableCopy];
                 break;
             default:
                 accessible = NULL;

@@ -75,7 +75,7 @@
     }
     else if ([cell.name isEqualToString:@"ERIC"]) {
         newScene = [[MainMenu alloc]initWithSize:self.size];
-        //[[(GameScene*)newScene game] startAIGame];
+        [[(GameScene*)newScene game] startAIGame];
     }
     else if ([cell.name isEqualToString:@"LEIF"]) {
         newScene = [[GameScene alloc]initWithSize:self.size];

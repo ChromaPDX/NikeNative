@@ -45,6 +45,7 @@
 @property (nonatomic, weak) GameSequence *parent;
 @property (nonatomic) float totalModifier;
 @property (nonatomic) float success;
+@property (nonatomic) BOOL win;
 
 //PERSISTENT
 @property (nonatomic) bool wasSuccessful;

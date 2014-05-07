@@ -9,6 +9,7 @@
 #import "NikeNodeHeaders.h"
 #import "ModelHeaders.h"
 #import "GameStatsViewController.h"
+#import "FuelBar.h"
 
 @implementation UXTopBar
 
@@ -26,21 +27,22 @@
         cardSize.width =  55; //(1. / (7)) * w;
         cardSize.height = 55; //(cardSize.width * (67. / 65.));
         
-        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"fuelbar_fuel.png"]];
-        NKSpriteNode* fuel = [[NKSpriteNode alloc] initWithTexture:image];
-        [fuel setPosition:P2Make(-80, 10)];
+        FuelBar *fuelBar = [[FuelBar alloc] init];
+        [fuelBar setPosition:P2Make(-80, 10)];
+        [fuelBar setFill:.5];
+        
         fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
-        fuelLabel.fontSize = 22;
+        fuelLabel.fontSize = 18;
         [fuelLabel setColor:V2YELLOW];
-        [fuelLabel setText:@"ENERGY"];
-        [fuelLabel setPosition:P2Make(-180, -50)];
+        [fuelLabel setText:@"ENERGY : 2250"];
+        [fuelLabel setPosition:P2Make(-165, -50)];
         
         NKTexture *logoImage = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"LOGO_Icon_Bola_small.png"]];
         NKSpriteNode* logo = [[NKSpriteNode alloc] initWithTexture:logoImage];
         //[logo setScale:.33];
         [logo setPosition:P2Make(-270, -5)];
 
-        [self addChild:fuel];
+        [self addChild:fuelBar];
         [self addChild:fuelLabel];
         [self addChild:logo];
 

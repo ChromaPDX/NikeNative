@@ -27,7 +27,8 @@
         table.scale = 1.02;  // to correct for image...this needs to be fixed
         table.name = @"table";
         table.delegate = self;
-        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"screen_recap.png"]];
+        NKTexture *image;
+        image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_RecapWinNoText.png"]];
         UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
         [table setHighlightColor:highlightColor];
@@ -42,9 +43,10 @@
     
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
-    NSLog(@"RecapMenu touchUP location = %f,%f", location.x, location.y);
-    R4t startButtonRect = R4Make(97, 470, 120, 50);
-    if(R4ContainsPoint(startButtonRect, location)){
+    NSLog(@"RecapMenuWin touchUP location = %f,%f", location.x, location.y);
+    CGRect startButtonRect = CGRectMake(97, 470, 120, 50);
+    
+    if(CGRectContainsPoint(startButtonRect, CGPointMake(location.x, location.y))){
         NKSceneNode* newScene = [[MainMenu alloc]initWithSize:self.size];
         self.nkView.scene = newScene;
     }
@@ -52,7 +54,7 @@
 }
 
 -(void)cellWasSelected:(NKScrollNode *)cell {
-   // NSLog(@"RecapMenu cellWasSelected: %@ was selected", cell.name);
+   // NSLog(@"RecapMenuWin cellWasSelected: %@ was selected", cell.name);
     
 }
 
