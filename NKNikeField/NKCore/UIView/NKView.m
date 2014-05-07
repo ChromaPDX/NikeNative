@@ -297,6 +297,7 @@ static const GLubyte Indices[] = {
     
     //vertexBuffer = [[NKVertexBuffer alloc] initWithVertexData:vertices ofSize:sizeof(vertices)];
     vertexBuffer = [NKVertexBuffer defaultRect];
+    
     texture = [NKTexture textureWithImageNamed:@"sdf"];
     
 //    GLuint vertexBuffer;
@@ -354,15 +355,12 @@ static int rotate = 0;
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glClearColor(0.0f, 0.2f, 0.2f, 1.0f);
-    
+    glClearColor(0.0f, 0.1f, 0.1f, 1.0f);
+
     if (_scene) {
-        
        // NSLog(@"frame time: %f1.0",dt);
         [_scene updateWithTimeSinceLast:dt];
         [_scene draw];
-        
-        
     }
     
     else {
@@ -455,30 +453,9 @@ static int rotate = 0;
     }];
 }
 
--(void)drawAxes {
-    static const GLfloat XAxis[] = {-1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f};
-    static const GLfloat YAxis[] = {0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
-    static const GLfloat ZAxis[] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f};
-    
-    glPushMatrix();
-    
-    glColor4f(1.0, 1.0, 1.0, 1.0);
-    
-    glEnableClientState(GL_VERTEX_ARRAY);
-    
-    glLineWidth(2.0);
-    glColor4f(1.0, 1.0, 1.0, 1.0);
-    glVertexPointer(3, GL_FLOAT, 0, XAxis);
-    glDrawArrays(GL_LINE_LOOP, 0, 2);
-    glVertexPointer(3, GL_FLOAT, 0, YAxis);
-    glDrawArrays(GL_LINE_LOOP, 0, 2);
-    glVertexPointer(3, GL_FLOAT, 0, ZAxis);
-    glDrawArrays(GL_LINE_LOOP, 0, 2);
-    
-    glDisableClientState(GL_VERTEX_ARRAY);
-    
-    glPopMatrix();
-}
+
+
+
 
 //-(void)initViewPort{
 //

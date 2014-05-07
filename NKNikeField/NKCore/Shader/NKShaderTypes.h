@@ -116,12 +116,14 @@ static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
 
  uniform mat4 u_modelViewProjectionMatrix;
  uniform mat3 u_normalMatrix;
- uniform int u_useUniformColor;
+ uniform lowp int u_useUniformColor;
+ uniform lowp int u_numTextures;
  uniform vec4 u_color;
  
  uniform sampler2D tex0;
  
  varying mediump vec2 v_texCoord0;
+ varying mediump vec2 v_texCoord1;
  varying lowp vec4 v_color;
  
  void main()
@@ -129,17 +131,32 @@ static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
     vec3 eyeNormal = normalize(u_normalMatrix * a_normal);
     vec3 lightPosition = vec3(0.5, 1.5, -1.0);
     vec4 diffuseColor;
+    
     if (u_useUniformColor == 1){
         diffuseColor = u_color;
     }
     else {
-        diffuseColor = vec4(0.,0,1.,1.);
+        if (a_color.a > 0.){
+            diffuseColor = a_color;
+        }
+        else {
+            diffuseColor = vec4(1.,1.,1.,1.);
+        }
     }
     
-    float nDotVP = max(0.0, dot(eyeNormal, normalize(lightPosition)));
+//    float nDotVP = max(0.0, dot(eyeNormal, normalize(lightPosition)));
+//    
+//    v_color = diffuseColor * nDotVP;
+
+    v_color = diffuseColor;
     
-    v_color = diffuseColor * nDotVP;
-    v_texCoord0 = a_texCoord0;
+    if (u_numTextures > 0){
+        v_texCoord0 = a_texCoord0;
+        if (u_numTextures > 1){
+                v_texCoord1 = a_texCoord1;
+        }
+    }
+
     gl_Position = u_modelViewProjectionMatrix * a_position;
 }
  
@@ -148,13 +165,20 @@ static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
 static NSString *const nkDefaultTextureFragmentShader = SHADER_STRING
 (
  uniform sampler2D tex0;
+ uniform lowp int u_numTextures;
  
  varying lowp vec4 v_color;
  varying mediump vec2 v_texCoord0;
+ varying mediump vec2 v_texCoord1;
  
  void main()
 {
-    gl_FragColor = texture2D(tex0, v_texCoord0);// * v_color;
+    if (u_numTextures > 0){
+        gl_FragColor = texture2D(tex0, v_texCoord0) * v_color;// * v_color;
+    }
+    else {
+        gl_FragColor = v_color;
+    }
 }
  
 );

@@ -1,10 +1,6 @@
-//
-//  NKAttributeBuffer.h
-//  NKNikeField
-//
-//  Created by Leif Shackelford on 5/1/14.
-//  Copyright (c) 2014 Chroma Developer. All rights reserved.
-//
+//*
+//*  NODE KITTEN
+//*
 
 #import <Foundation/Foundation.h>
 
@@ -17,6 +13,7 @@
 
 +(instancetype)defaultCube;
 +(instancetype)defaultRect;
++(instancetype)axes;
 
 - (void)bind;
 - (void)bind:(void(^)())drawingBlock;

@@ -30,14 +30,19 @@
 @class NKView;
 @class NKCamera;
 @class NKShaderProgram;
+@class NKVertexBuffer;
 
 @interface NKSceneNode : NKNode
 
 {
     int fps;
-    NSMutableData *matrixStack;
+    M16t *matrixStack;
+    UInt32 matrixBlockSize;
+    UInt32 matrixCount;
+    
     M16t modelMatrix;
-    int stackP;
+    
+    NKVertexBuffer *axes;
 }
 
 @property (nonatomic) void *view;
@@ -59,6 +64,7 @@
 -(void)end;
 
 -(void)pushMultiplyMatrix:(M16t)matrix;
+-(void)pushScale:(V3t)scale;
 -(void)popMatrix;
 
 // DRAW STATE SHADOWING

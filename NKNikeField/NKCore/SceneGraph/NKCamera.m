@@ -22,44 +22,74 @@
         
         if (NK_GL_VERSION == 2) {
             [self initGL2];
+            //[self setPosition3d:V3Make(0,0,1.)];
         }
         else {
             [self initGL1];
         }
         //[self setOrientationEuler:V3Make(0,180,0)];
-        [self setPosition3d:V3Make(0,0,-1000.)];
+       
     }
     return self;
 }
 
+//- (id)init
+//{
+//    self = [super init];
+//    if ( self )
+//    {
+//        self.fovVertRadians = DEGREES_TO_RADIANS(65.0f);
+//        CGSize screenSize = [UIScreen mainScreen].bounds.size;
+//        self.aspect = screenSize.width / screenSize.height; // Use screen bounds as default
+//        self.nearZ = 0.1f;
+//        self.farZ = 1000.0f;
+//        self.target = V3Make(0, 0, 0);
+//        self.eye = V3Make(0, 0, -3.0f);
+//        self.up = V3Make(0, 1, 0);
+//    }
+//    return self;
+//}
+
+- (M16t)projectionMatrix
+{
+    if (dirty) {
+        
+        M16t projectionMat = M16MakePerspective(self.fovVertRadians,
+                                                self.aspect,
+                                                self.nearZ,
+                                                self.farZ);
+        
+        M16t camMat = M16MakeLookAt(self.position3d.x, self.position3d.y, self.position3d.z,
+                                    _target.x, _target.y, _target.z,
+                                    _up.x, _up.y, _up.z);
+        
+        dirty = false;
+        
+        return cachedMatrix = M16Multiply(projectionMat, camMat);
+        
+    }
+    
+    return cachedMatrix;
+    
+}
 
 -(void)initGL2 {
     
+    self.fovVertRadians = DEGREES_TO_RADIANS(60.0f);
+    
+    self.aspect = self.scene.size.width / self.scene.size.height; // Use screen bounds as default
+    self.nearZ = 10.f;
+    self.farZ = 10000.0f;
+    self.target = V3Make(0, 0, 0);
+    self.position3d = V3Make(0,0, 1000);
+    self.up = V3Make(0, 1, 0);
+    
     _normalMatrix = M9IdentityMake();
     
-    _fieldOfView = 36;
-    aspectRatio = (float)self.scene.size.width / (float)self.scene.size.height;
-    
-    if([UIApplication sharedApplication].statusBarOrientation > 2)
-        aspectRatio = 1/aspectRatio;
-    
-    viewPort = R4Make(0,0,self.scene.size.width,self.scene.size.height);
-    
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    
-    zNear = 10;
-    zFar = 10000;
-    
-    GLfloat frustum = zNear * tanf(DEGREES_TO_RADIANS(_fieldOfView) / 2.0);
-
-    _projectionMatrix = M16MakePerspective(DEGREES_TO_RADIANS(_fieldOfView), aspectRatio, zNear, zFar);
-    frustrum = M16MakeFrustum(-frustum, frustum, -frustum/aspectRatio, frustum/aspectRatio, zNear, zFar);
-
     glEnable(GL_DEPTH_TEST);
     
     glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, .02);
+    glAlphaFunc(GL_GREATER, .1);
     
     glEnable(GL_BLEND);
     
@@ -69,31 +99,30 @@
 
 -(void)initGL1{
   
-    _fieldOfView = 36;
-    aspectRatio = (float)self.scene.size.width / (float)self.scene.size.height;
+    self.fovVertRadians = DEGREES_TO_RADIANS(36.0f);
     
-    if([UIApplication sharedApplication].statusBarOrientation > 2)
-        aspectRatio = 1/aspectRatio;
-    
-    viewPort = R4Make(0,0,self.scene.size.width,self.scene.size.height);
+    self.aspect = self.scene.size.width / self.scene.size.height; // Use screen bounds as default
+    self.nearZ = 10.f;
+    self.farZ = 10000.0f;
+    [self setPosition3d:V3Make(0,0,-1000.)];
+    self.target = V3Make(0, 0, 0);
+    self.up = V3Make(0, 1, 0);
     
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    
-    zNear = 10;
-    zFar = 10000;
-    
-    GLfloat frustum = zNear * tanf(DEGREES_TO_RADIANS(_fieldOfView) / 2.0);
-    glFrustumf(-frustum, frustum, -frustum/aspectRatio, frustum/aspectRatio, zNear, zFar);
+    GLfloat frustum = _nearZ * tanf(_fovVertRadians / 2.0);
+    glFrustumf(-frustum, frustum, -frustum/_aspect, frustum/_aspect, _nearZ, _farZ);
+    //glTranslatef(0, 0, -1000);
+    //glMultMatrixf([self projectionMatrix].m);
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glViewport(viewPort.x, viewPort.y, viewPort.size.width, viewPort.size.height);
+    glViewport(0, 0, self.scene.size.width, self.scene.size.height);
     
     glEnable(GL_DEPTH_TEST);
     
     glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, .02);
+    glAlphaFunc(GL_GREATER, .1);
     
     glEnable(GL_BLEND);
     
@@ -111,94 +140,51 @@
     }
 }
 
--(void)setFieldOfView:(float)fieldOfView{
-    _fieldOfView = fieldOfView;
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    GLfloat frustum = zNear * tanf(DEGREES_TO_RADIANS(_fieldOfView) / 2.0);
-    
-    if (NK_GL_VERSION == 2) {
-        frustrum = M16MakeFrustum(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, zNear, zFar);
-    }
-    else {
-        glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, zNear, zFar);
-        glMatrixMode(GL_MODELVIEW);
-    }
-}
-
--(void)initLighting{
-    GLfloat white[] = {.3f, .3f, .3f, 1.0f};
-    GLfloat blue[] = {0.0f, 0.0f, 1.0f, 1.0f};
-    GLfloat green[] = {0.0f, 1.0f, 0.0f, 1.0f};
-    GLfloat red[] = {1.0f, 0.0f, 0.0f, 1.0f};
-    
-    GLfloat pos1[] = {0.0f, 100.0f, 0.0f, 1.0f};
-    GLfloat pos2[] = {-100.0f, 0.0f, 0.0f, 1.0f};
-    GLfloat pos3[] = {100.0f, 0.0f,  0.0f, 1.0f};
-    
-    glLightfv(GL_LIGHT0, GL_AMBIENT, white);
-    glLightfv(GL_LIGHT1, GL_POSITION, pos1);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, blue);
-    glLightfv(GL_LIGHT2, GL_POSITION, pos2);
-    glLightfv(GL_LIGHT2, GL_DIFFUSE, red);
-    glLightfv(GL_LIGHT3, GL_POSITION, pos3);
-    glLightfv(GL_LIGHT3, GL_DIFFUSE, green);
-    
-    //glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, white);
-    //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, blue);
-    
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_LIGHTING);
-    
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
-    glEnable(GL_LIGHT2);
-    glEnable(GL_LIGHT3);
-}
+//-(void)setFieldOfView:(float)fieldOfView{
+//    _fieldOfView = fieldOfView;
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+//    GLfloat frustum = zNear * tanf(DEGREES_TO_RADIANS(_fieldOfView) / 2.0);
+//    
+//    if (NK_GL_VERSION == 2) {
+//        frustrum = M16MakeFrustum(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, zNear, zFar);
+//    }
+//    else {
+//        glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, zNear, zFar);
+//        glMatrixMode(GL_MODELVIEW);
+//    }
+//}
 
 #pragma mark UTIL
-
-//----------------------------------------
--(M16t) getProjectionMatrix:(R4t)viewport {
-//	if(isOrtho) {
-//		return M16t::newOrthoMatrix(0, viewport.width, 0, viewport.height, nearClip, farClip);
-//	}else{
-    float aspect = forceAspectRatio ? aspectRatio : viewport.size.width/viewport.size.height;
-    
-    M16t matProjection = M16Multiply(M16MakePerspective(DEGREES_TO_RADIANS(_fieldOfView), aspect, zNear, zFar), M16MakeTranslate(-lensOffset.x, -lensOffset.y, 0));
-
-    return matProjection;
-//	}
-}
-
-//----------------------------------------
--(M16t)getModelViewMatrix {
-	return M16InvertColumnMajor([self getGlobalTransformMatrix], NULL);
-}
 
 //convert from screen to camera
 -(V3t)s2w:(P2t)ScreenXY {
     
     V3t CameraXYZ;
-    CameraXYZ.x = 4.0f * (ScreenXY.x - viewPort.x) / viewPort.size.width - 1.0f;
-    CameraXYZ.y = 1.0f - 4.0f*(ScreenXY.y - viewPort.y) / viewPort.size.height;
+    CameraXYZ.x = 4.0f * (ScreenXY.x - 0) / self.scene.size.width - 1.0f;
+    CameraXYZ.y = 1.0f - 4.0f*(ScreenXY.y - 0) /self.scene.size.height;
     //CameraXYZ.z = ScreenXYZ.z;
     
     //get inverse camera matrix
-    M16t inverseCamera = M16InvertColumnMajor([self getProjectionMatrix:viewPort], NULL);
+    M16t inverseCamera = M16InvertColumnMajor([self projectionMatrix], NULL);
     
     //convert camera to world
     
     return V3MultiplyM16(inverseCamera, CameraXYZ);
 }
 
-
-
 -(P2t)screenToWorld:(P2t)p {
 
-     V3t p2 = [self s2w:p];
-    p2.x *= 1800.;
-    p2.y *= 1800.;
+    V3t p2 = [self s2w:p];
+    if (NK_GL_VERSION == 2) {
+        p2.x *= 1000.;
+        p2.y *= 1000.;
+    }
+    else {
+        p2.x *= -1800.;
+        p2.y *= 1800.;
+    }
+    
      //NSLog(@"world i: %f %f o:%f %f", p.x, p.y, p2.x, p2.y);
     return P2Make(p2.x, p2.y);
     //return P2Make(10000, 10000);
@@ -207,8 +193,8 @@
 -(P2t)screenPoint:(P2t)p InNode:(NKNode*)node {
     
     V3t CameraXYZ;
-    CameraXYZ.x = 1.0f * (p.x - viewPort.x) / viewPort.size.width - 1.0f;
-    CameraXYZ.y = 1.0f - 1.0f*(p.y - viewPort.y) / viewPort.size.height;
+    CameraXYZ.x = 1.0f * (p.x - 0) / self.scene.size.width - 1.0f;
+    CameraXYZ.y = 1.0f - 1.0f*(p.y - 0) / self.scene.size.height;
     //CameraXYZ.z = ScreenXYZ.z;
     
     //get inverse camera matrix

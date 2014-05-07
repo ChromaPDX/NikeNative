@@ -11,25 +11,19 @@
 @class NKSceneNode;
 
 @interface NKCamera : NKNode {
-    
-    bool isOrtho;
-	float zNear;
-	float zFar;
-	P2t lensOffset;
-	bool forceAspectRatio;
-	float aspectRatio; // only used when forceAspect=true, = w / h
-	bool isActive;
-	bool vFlip;
-    float s2w;
-    R4t viewPort;
-    float _aspectRatio;
-    
-    M16t frustrum;
-    
+    M16t cachedMatrix;
 }
 
-@property (nonatomic) float fieldOfView;
-@property (nonatomic) M16t projectionMatrix;
+@property float fovVertRadians;
+@property float aspect;
+@property float nearZ;
+@property float farZ;
+
+@property (nonatomic, assign) V3t target;
+@property (nonatomic, assign) V3t up;
+
+- (M16t)projectionMatrix;
+
 @property (nonatomic) M9t normalMatrix;
 
 -(instancetype)initWithScene:(NKSceneNode*)scene;

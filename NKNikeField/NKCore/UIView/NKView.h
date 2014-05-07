@@ -1,17 +1,13 @@
-//
-//  GLView.h
-//  Wavefront OBJ Loader
-//
-//  Created by Jeff LaMarche on 12/14/08.
-//  Copyright Jeff LaMarche 2008. All rights reserved.
-//
+//*
+//*  NODE KITTEN
+//*
 
 #import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 
-#define NK_GL_VERSION 1
+#define NK_GL_VERSION 2
 
 @class NKViewController;
 @class NKSceneNode;

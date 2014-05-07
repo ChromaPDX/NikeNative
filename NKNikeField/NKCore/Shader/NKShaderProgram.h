@@ -25,6 +25,7 @@ static NSString *const UNIFORM_MODELVIEWPROJECTION_MATRIX = @"u_modelViewProject
 static NSString *const UNIFORM_NORMAL_MATRIX = @"u_normalMatrix";
 static NSString *const UNIFORM_COLOR = @"u_color";
 static NSString *const USE_UNIFORM_COLOR = @"u_useUniformColor";
+static NSString *const UNIFORM_NUM_TEXTURES = @"u_numTextures";
 
 //GLint uniforms[NUM_UNIFORMS];
 

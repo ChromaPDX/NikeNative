@@ -702,7 +702,8 @@
 
 -(void)setPosition3d:(V3t)position3d {
     position = position3d;
-    M16SetV3Translation(&localTransformMatrix, position3d);
+    M16SetV3Translation(&localTransformMatrix, position);
+    dirty = true;
 }
 
 // convenience >>
@@ -763,6 +764,7 @@
     // Make identity, scale it, rotate it
     localTransformMatrix = M16Multiply(M16MakeScale(scale), M16MakeRotate(orientation));
     // Set Translation
+    //localTransformMatrix = M16TranslateWithV3(localTransformMatrix, position);
     M16SetV3Translation(&(localTransformMatrix), position);
     
 //	if(scale[0]>0) axis[0] = localTransformMatrix.getRowAsVec3f(0)/scale[0];
@@ -848,11 +850,13 @@ void ofNode::resetTransform() {
 -(void)rotateMatrix:(M16t)M16 {
     M16t m = M16MakeScale(scale);
     localTransformMatrix = M16Multiply(m,M16);
+    //localTransformMatrix = M16TranslateWithV3(localTransformMatrix, position);
     M16SetV3Translation(&localTransformMatrix, position);
 }
 
 -(void)globalRotateMatrix:(M16t)M16 {
     M16t m = M16MakeScale(scale);
+    //localTransformMatrix = M16TranslateWithV3(localTransformMatrix, position);
     M16SetV3Translation(&m, position);
     m = M16Multiply(m, M16);
     localTransformMatrix = M16Multiply(m, M16InvertColumnMajor([_parent getGlobalTransformMatrix], 0));

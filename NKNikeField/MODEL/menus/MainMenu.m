@@ -35,7 +35,11 @@
         [table setHighlightColor:highlightColor];
         table.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
         
-        //[table repeatAction:[NKAction rotateYByAngle:90 duration:2.]];
+//       [table repeatAction:[NKAction rotateYByAngle:90 duration:2.]];
+//        [table repeatAction:[NKAction sequence:@[[NKAction move3dBy:V3Make(0, .1, 1.) duration:.25],
+//                             [NKAction move3dBy:V3Make(0, -.1, -1.) duration:.25],
+//                                                 [NKAction rotateYByAngle:33 duration:.5]
+//                             ]]];
         
         [NKSoundManager loadSoundFileNamed:@"Androyd-Bulbtone-41.wav"];
         [NKSoundManager loadSoundFileNamed:@"03 Bass [A$AP Rocky].mp3"];

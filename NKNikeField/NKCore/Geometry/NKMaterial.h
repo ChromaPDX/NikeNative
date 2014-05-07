@@ -1,10 +1,6 @@
-//
-//  OpenGLWaveFrontMaterial.h
-//  Wavefront OBJ Loader
-//
-//  Created by Jeff LaMarche on 12/18/08.
-//  Copyright 2008 Jeff LaMarche. All rights reserved.
-//
+//*
+//*  NODE KITTEN
+//*
 
 #import <Foundation/Foundation.h>
 #import <OpenGLES/EAGL.h>
