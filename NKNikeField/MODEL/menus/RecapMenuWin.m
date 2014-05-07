@@ -36,7 +36,7 @@
 }
 
 
--(instancetype)initWithSize:(CGSize)size {
+-(instancetype)initWithSize:(S2t)size {
     self = [super initWithSize:size];
     
     if (self) {
@@ -60,30 +60,30 @@
 
         bigText.fontSize = 20;
         bigText.fontColor = V2ORANGE;
-        [bigText setSize:CGSizeMake(500,100)];
+        [bigText setSize:S2Make(500,100)];
         [bigText setZPosition:1];
         [bigText setText:[listOfNames objectAtIndex:0]];
-        [bigText setPosition:CGPointMake(-190, 250)];
+        [bigText setPosition:P2Make(-190, 250)];
         [self addChild:bigText];
         
         NKLabelNode *bigText2 = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
 
         bigText2.fontSize = 40;
         bigText2.fontColor = V2ORANGE;
-        [bigText2 setSize:CGSizeMake(500, 100)];
+        [bigText2 setSize:S2Make(500, 100)];
         [bigText2 setZPosition:2];
         [bigText2 setText:[listOfNames objectAtIndex:1]];
-        [bigText2 setPosition:CGPointMake(0, 350)];
+        [bigText2 setPosition:P2Make(0, 350)];
         [self addChild:bigText2];
         
         NKLabelNode *bigText3 = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
         
         bigText3.fontSize = 20;
         bigText3.fontColor = V2ORANGE;
-        [bigText3 setSize:CGSizeMake(500,100)];
+        [bigText3 setSize:S2Make(500,100)];
         [bigText3 setZPosition:3];
         [bigText3 setText:[listOfNames objectAtIndex:2]];
-        [bigText3 setPosition:CGPointMake(190, 250)];
+        [bigText3 setPosition:P2Make(190, 250)];
         [self addChild:bigText3];
     }
 
@@ -91,7 +91,7 @@
 }
 
 -(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
-    NKTouchState hit = [super touchUp:location id:touchId];
+    NKTouchState hit = [super touchUp:P2Make(location.x, location.y) id:touchId];
     
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     

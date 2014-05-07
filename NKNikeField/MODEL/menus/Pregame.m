@@ -15,7 +15,7 @@
 @implementation Pregame
 
 
--(instancetype)initWithSize:(CGSize)size {
+-(instancetype)initWithSize:(S2t)size {
     self = [super initWithSize:size];
 
     if (self) {
@@ -52,7 +52,7 @@
     return self;
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchUp:location id:touchId];
     
   
@@ -62,16 +62,17 @@
     CGRect syncButtonRect = CGRectMake(101, 301, 120, 50);
     CGRect startButtonRect = CGRectMake(101, 367, 120, 50);
     CGRect HiddenAIButtonRect = CGRectMake(116, 151, 50, 50);
-    if(CGRectContainsPoint(syncButtonRect, location)){
+    CGPoint point = CGPointMake(location.x, location.y);
+    if(CGRectContainsPoint(syncButtonRect, point)){
         NSLog(@"*NSYNC!");
     }
-    else if(CGRectContainsPoint(startButtonRect, location)){
+    else if(CGRectContainsPoint(startButtonRect, point)){
         NSLog(@"start button pressed, starting game...");
         NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startSinglePlayerGame];
         self.nkView.scene = newScene;
     }
-    else if(CGRectContainsPoint(HiddenAIButtonRect, location)){
+    else if(CGRectContainsPoint(HiddenAIButtonRect, point)){
         NSLog(@"AI button pressed, starting game...");
         NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startAIGame];

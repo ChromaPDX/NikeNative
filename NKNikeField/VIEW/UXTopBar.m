@@ -28,14 +28,14 @@
         cardSize.height = 55; //(cardSize.width * (67. / 65.));
         
         FuelBar *fuelBar = [[FuelBar alloc] init];
-        [fuelBar setPosition:CGPointMake(-80, 10)];
+        [fuelBar setPosition:P2Make(-80, 10)];
         [fuelBar setFill:.5];
         
         fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
         fuelLabel.fontSize = 18;
         [fuelLabel setColor:V2YELLOW];
         [fuelLabel setText:@"ENERGY : 2250"];
-        [fuelLabel setPosition:CGPointMake(-165, -50)];
+        [fuelLabel setPosition:P2Make(-165, -50)];
         
         NKTexture *logoImage = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"LOGO_Icon_Bola_small.png"]];
         NKSpriteNode* logo = [[NKSpriteNode alloc] initWithTexture:logoImage];

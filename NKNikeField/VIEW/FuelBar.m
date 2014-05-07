@@ -19,10 +19,10 @@
     NKSpriteNode *fuelContainer = [[NKSpriteNode alloc] initWithTexture:imageContainer];
     [fuelContainer setYScale:1.15];
     [fuelContainer setXScale:1.03];
-    [fuelContainer setPosition:CGPointMake(0, .5)];
+    [fuelContainer setPosition:P2Make(0, .5)];
     [fuelContainer setZPosition:-1];
     
-    CGSize imageSize = [imageContainer size];
+    S2t imageSize = [imageContainer size];
     
     self = [super initWithTexture:nil color:nil size:imageSize];
 
@@ -34,11 +34,11 @@
 
 - (void)setFill:(float)fill{
     
-    CGSize size = self.size;
+    S2t size = self.size;
     size.width = self.size.width * fill;
     [fuel setSize: size];
     R4t frame = [fuel getDrawFrame];
-    CGPoint point = CGPointMake(frame.x, 0);
+    P2t point = P2Make(frame.x, 0);
     [fuel setPosition:point];
    // CGPoint newPoint = CGPointMake(frame.x + )
 
