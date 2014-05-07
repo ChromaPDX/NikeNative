@@ -7,7 +7,6 @@
 //
 
 #import "NKGaussianZ.h"
-#import "NKShaderTypes.h"
 
 @implementation NKGaussianZ
 

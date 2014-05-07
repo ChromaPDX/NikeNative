@@ -14,6 +14,7 @@
 @class NKVertexBuffer;
 @class NKShaderProgram;
 @class NKTexture;
+@class NKFrameBuffer;
 
 // Attribute index.
 
@@ -22,6 +23,8 @@
 @interface NKView : UIView
 {
 	EAGLContext *context;
+    
+    NKFrameBuffer *frameBuffer;
     
 	GLuint frameBuffer, colorRenderbuffer,depthRenderbuffer;
     GLint bufferWidth, bufferHeight;

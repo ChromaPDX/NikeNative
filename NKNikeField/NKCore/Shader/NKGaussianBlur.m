@@ -1,4 +1,5 @@
 #import "NodeKitten.h"
+#import "NKGaussianBlur.h"
 
 @implementation NKGaussianBlur
 
@@ -26,13 +27,11 @@
         NSString *newGaussianBlurFragmentShader = [[self class] fragmentShaderForOptimizedBlurOfRadius:(NSUInteger)blurRadiusInPixels sigma:blurRadiusInPixels];
         
         
-        self = [super initWithShaderStringArray:@[newGaussianBlurVertexShader, newGaussianBlurFragmentShader] node:node paramBlock:nil];
+        self = [super initWithVertexShader:newGaussianBlurVertexShader fragmentShader:newGaussianBlurFragmentShader];
         
         if (self) {
             _blurRadiusInPixels = blurRadiusInPixels;
             _blurPasses = blurPasses;
-            self.usesFbo = true;
-            self.needsDepthBuffer = false;
             
         }
         
@@ -537,7 +536,6 @@
         //        NSLog(@"Optimized fragment shader: \n%@", newGaussianBlurFragmentShader);
         //
         //[self switchToVertexShader:newGaussianBlurVertexShader fragmentShader:newGaussianBlurFragmentShader];
-        [self loadShaderFromStringArray:@[newGaussianBlurVertexShader,newGaussianBlurFragmentShader] paramBlock:nil];
         
     }
     shouldResizeBlurRadiusWithImageSize = NO;

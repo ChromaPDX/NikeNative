@@ -25,7 +25,8 @@
  OF THE POSSIBILITY OF SUCH DAMAGE. *
  ***********************************************************************/
 
-#import "NKShaderNode.h"
+#import "NKShaderProgram.h"
+
 @class NKNode;
 
 /** A Gaussian blur filter
@@ -34,7 +35,7 @@
 
 // Obj-C Shader Generators based on code by Brad Larson from https://github.com/BradLarson/GPUImage
 
-@interface NKGaussianBlur : NKShaderNode {
+@interface NKGaussianBlur : NKShaderProgram {
     BOOL shouldResizeBlurRadiusWithImageSize;
     CGFloat _blurRadiusInPixels;
     NKFbo *passBuffer[2];
