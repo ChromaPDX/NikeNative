@@ -25,11 +25,12 @@
  OF THE POSSIBILITY OF SUCH DAMAGE. *
  ***********************************************************************/
 
-#import "NKShaderNode.h"
+#import "NKShaderProgram.h"
+@class NKNode;
 
-@interface NKDrawDepthShader : NKShaderNode
+@interface NKDrawDepthShader : NKShaderProgram
 
-- (instancetype)initWithNode:(NKNode *)node useColor:(UIColor*)nilForDefaultAttrib paramBlock:(ShaderParamBlock)block;
+- (instancetype)initWithNode:(NKNode *)node useColor:(UIColor*)nilForDefaultAttrib;
 
 @property (nonatomic) bool useColor;
 @property (nonatomic, strong) UIColor* forceColor;

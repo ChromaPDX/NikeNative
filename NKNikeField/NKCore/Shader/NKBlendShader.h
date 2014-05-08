@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Chroma. All rights reserved.
 //
 
-#import "NKShaderNode.h"
+#import "NKShaderProgram.h"
 
-@interface NKBlendShader : NKShaderNode
+@interface NKBlendShader : NKShaderProgram
 
 @end

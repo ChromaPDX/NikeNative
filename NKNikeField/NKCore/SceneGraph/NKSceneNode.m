@@ -20,24 +20,31 @@
         self.size3d = V3Make(size.width, size.height, 1);
         
         self.name = @"SCENE";
-        [self logCoords];
+ //       [self logCoords];
         
         self.backgroundColor = [UIColor colorWithRed:.25 green:.25 blue:.25 alpha:1.];
         self.shouldRasterize = false;
         useShader = false;
         self.userInteractionEnabled = true;
+        
         self.blendMode = -1;
         self.cullFace = -1;
-        
-        matrixStack = [[NSMutableData alloc]initWithCapacity:(sizeof(M16t)*32)];
-        modelMatrix = M16IdentityMake();
-        stackP = 0;
-        
+
         _camera = [[NKCamera alloc]initWithScene:self];
 
         self.scene = self;
         
         if (NK_GL_VERSION == 2) {
+            
+            matrixStack = malloc(sizeof(M16t)*32);
+            matrixBlockSize = 32;
+            matrixCount = 0;
+            
+            modelMatrix = M16IdentityMake();
+            
+            memcpy(matrixStack+matrixCount, modelMatrix.m, sizeof(M16t));
+            
+            axes = [NKVertexBuffer axes];
             self.shader = [NKShaderProgram defaultShader];
             [self.shader load];
         }
@@ -56,43 +63,63 @@
     [super updateWithTimeSinceLast:dt];
 }
 
+-(void)pushMatrix{
+    
+    matrixCount++;
+    
+    if (matrixBlockSize <= matrixCount) {
+        NSLog(@"Expanding MATRIX STACK allocation size");
+        M16t* copyBlock = malloc(sizeof(M16t) * (matrixCount*2));
+        memcpy(copyBlock, matrixStack, sizeof(M16t) * (matrixCount));
+        free(matrixStack);
+        matrixStack = copyBlock;
+    }
+
+    
+}
 -(void)pushMultiplyMatrix:(M16t)matrix {
     
-//    M16t new;
-//
-//    new = M16Multiply(modelMatrix, matrix);
-//    
-//    if (matrixStack.length <= stackP) {
-//        [matrixStack appendBytes:new.m length:sizeof(M16t)];
-//    }
-//    else {
-//        char * p = [matrixStack bytes];
-//        p+= stackP;
-//        memcpy(p, new.m, sizeof(M16t));
-//    }
-//
-//    stackP+=sizeof(M16t);
-//   
-//    //[_activeShader setMatrix4:M16Multiply(new, _camera.projectionMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
-//    [_activeShader setMatrix4:new forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    [self pushMatrix];
+    
+    modelMatrix = M16Multiply(modelMatrix, matrix);
+    
+    memcpy(matrixStack+matrixCount, modelMatrix.m, sizeof(M16t));
+    
+    //NSLog(@"push M %lu", matrixCount);
+    
+    [_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    //[_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
    
 }
 
+-(void)pushScale:(V3t)scale {
+    
+    [self pushMatrix];
+    
+    modelMatrix = M16ScaleWithV3(modelMatrix, scale);
+    
+    memcpy(matrixStack+matrixCount, modelMatrix.m, sizeof(M16t));
+    
+    //NSLog(@"push M %lu", matrixCount);
+    
+    [_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    
+}
+
 -(void)popMatrix {
-//    if (stackP > 0) {
-//    stackP-=sizeof(M16t);
-//    
-//    char * p = [matrixStack bytes];
-//    p += stackP;
-//    memcpy(modelMatrix.m, p, sizeof(M16t));
-//        
-//    //NSLog(@"matrix stack %d",stackP/sizeof(M16t));
-//    }
-//    else {
-//        NSLog(@"MATRIX STACK UNDERFLOW");
-//    }
-//    
-//    [_activeShader setMatrix4:M16Multiply(modelMatrix, _camera.projectionMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    if (matrixCount > 0) {
+        matrixCount--;
+        
+        memcpy(modelMatrix.m, matrixStack+matrixCount, sizeof(M16t));
+        
+        //NSLog(@"pop M %lu", matrixCount);
+    }
+    else {
+        NSLog(@"MATRIX STACK UNDERFLOW");
+    }
+    
+    //[_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    [_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
 }
 
 -(void)draw {
@@ -101,35 +128,49 @@
         
         [_activeShader use];
         
-        [_activeShader setMatrix4:M16IdentityMake() forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
-        [_activeShader setMatrix3:M9IdentityMake() forUniform:UNIFORM_NORMAL_MATRIX];
+//        [_activeShader setMatrix4:M16IdentityMake() forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+//        [_activeShader setMatrix3:M9IdentityMake() forUniform:UNIFORM_NORMAL_MATRIX];
         
         // 1
         glViewport(0, 0, self.size.width, self.size.height);
         
-        // 2
-        [_activeShader setInt:1 forUniform:USE_UNIFORM_COLOR];
-        [_activeShader setVec4:C4Make(1., 1., 1., 1.) forUniform:UNIFORM_COLOR];
-    }
-    
-    if (_backgroundColor) {
-        C4t c;
-        [_backgroundColor getRed:&c.r green:&c.g blue:&c.b alpha:&c.a];
-        glClearColor(c.r, c.g, c.b, c.a);
-    }
-    
-   
-    
-    if (!self.parent) {
-        [_camera begin];
-    }
-    
-    [super draw];
+        if (_backgroundColor) {
+            C4t c;
+            [_backgroundColor getRed:&c.r green:&c.g blue:&c.b alpha:&c.a];
+            glClearColor(c.r, c.g, c.b, c.a);
+        }
+        
+//        [_activeShader setInt:1 forUniform:USE_UNIFORM_COLOR];
+//        [_activeShader setVec4:C4Make(1., 1., 1., 1.) forUniform:UNIFORM_COLOR];
 
-    if (!self.parent) {
-        [_camera end];
+       // [self drawAxes];
+        // 2
+        
+        [super draw];
+
     }
     
+    else {
+        
+        if (_backgroundColor) {
+            C4t c;
+            [_backgroundColor getRed:&c.r green:&c.g blue:&c.b alpha:&c.a];
+            glClearColor(c.r, c.g, c.b, c.a);
+        }
+        
+        if (!self.parent) {
+            [_camera begin];
+        }
+        
+        //[self drawAxes];
+        
+        [super draw];
+        
+        if (!self.parent) {
+            [_camera end];
+        }
+        
+    }
     // UNCOMMENT TO DEBUG / DRAW DEPTH BUFFER
 //    if (self.depthFbo){
 //        // NSLog(@"draw depth fbo");
@@ -145,7 +186,43 @@
     
 }
     
-
+-(void)drawAxes {
+    
+    if (NK_GL_VERSION == 2) {
+        [self.activeShader setInt:0 forUniform:UNIFORM_NUM_TEXTURES];
+        [axes bind:^{
+            glLineWidth(4.0);
+            glDrawArrays(GL_LINES, 0, axes.numberOfElements);
+        }];
+    }
+    else {
+        static const GLfloat XAxis[] = {-1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f};
+        static const GLfloat YAxis[] = {0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
+        static const GLfloat ZAxis[] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f};
+        
+        glPushMatrix();
+        
+        glColor4f(1.0, 1.0, 1.0, 1.0);
+        
+        glEnableClientState(GL_VERTEX_ARRAY);
+        
+        glScalef(self.scene.size.width, self.scene.size.height, 1000.);
+        glLineWidth(2.0);
+        glColor4f(1.0, 0., 0., 1.0);
+        glVertexPointer(3, GL_FLOAT, 0, XAxis);
+        glDrawArrays(GL_LINE_LOOP, 0, 2);
+        glColor4f(0, 1., 0., 1.0);
+        glVertexPointer(3, GL_FLOAT, 0, YAxis);
+        glDrawArrays(GL_LINE_LOOP, 0, 2);
+        glColor4f(0., 0., 1.0, 1.0);
+        glVertexPointer(3, GL_FLOAT, 0, ZAxis);
+        glDrawArrays(GL_LINE_LOOP, 0, 2);
+        
+        glDisableClientState(GL_VERTEX_ARRAY);
+        
+        glPopMatrix();
+    }
+}
 
 //-(void)end {
 //    
@@ -198,22 +275,27 @@
 //    
 //    
 //}
+-(void)dealloc {
+    if (matrixStack) {
+        free(matrixStack);
+    }
+    
+}
 
-
--(int)touchDown:(P2t)location id:(int)touchId {
+-(NKTouchState)touchDown:(P2t)location id:(int)touchId {
 
     P2t p = [_camera screenToWorld:location];
     
     return [super touchDown:p id:touchId];
 }
 //
--(int)touchMoved:(P2t)location id:(int)touchId {
+-(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
     P2t p = [_camera screenToWorld:location];
     
     return [super touchMoved:p id:touchId];
 }
 //
--(int)touchUp:(P2t)location id:(int)touchId {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
 
     P2t p = [_camera screenToWorld:location];
     

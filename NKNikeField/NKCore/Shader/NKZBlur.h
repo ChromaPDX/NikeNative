@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Chroma. All rights reserved.
 //
 
-#import "NKShaderNode.h"
+#import "NKShaderProgram.h"
 
 /** A Gaussian blur filter
  Interpolated optimization based on Daniel Rákos' work at http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
@@ -14,7 +14,7 @@
 
 // Obj-C Shader Generators based on code by Brad Larson from https://github.com/BradLarson/GPUImage
 
-@interface NKZBlur : NKShaderNode {
+@interface NKZBlur : NKShaderProgram {
     BOOL shouldResizeBlurRadiusWithImageSize;
     CGFloat _blurRadiusInPixels;
 }

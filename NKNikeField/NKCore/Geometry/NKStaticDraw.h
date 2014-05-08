@@ -1,21 +1,9 @@
-//
-//  NKStaticDraw.h
-//  NKNative
-//
-//  Created by Leif Shackelford on 4/6/14.
-//  Copyright (c) 2014 Chroma Developer. All rights reserved.
-//
-
+//*
+//*  NODE KITTEN
+//*
 #import <Foundation/Foundation.h>
 #import <OpenGLES/ES1/gl.h>
 #import <CoreGraphics/CoreGraphics.h>
-
-
-/*  GLDraw Functions borrowed from:
- *  Created by Jeff LaMarche on 9/27/08.
- *  Copyright 2008 __MyCompanyName__. All rights reserved.
- */
-
 
 
 @interface NKStaticDraw : NSObject
@@ -37,6 +25,12 @@
 - (void)setOpenGLColor;
 - (void)setColorArrayToColor:(UIColor *)toColor;
 @end
+
+
+
+/*  GLDraw Functions borrowed from:
+ *  Created by Jeff LaMarche on 9/27/08.
+ */
 
 void GLDrawCircle (int circleSegments, CGFloat circleSize, P2t center, bool filled);
 void GLDrawEllipse (int segments, CGFloat width, CGFloat height, P2t center, bool filled);

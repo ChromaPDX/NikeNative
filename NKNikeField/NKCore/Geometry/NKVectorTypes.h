@@ -1,3 +1,6 @@
+//*
+//*  NODE KITTEN
+//*
 
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>
@@ -31,7 +34,8 @@ typedef V2t S2t;
 union _V3t {
 	struct { F1t x, y, z; };
     struct { F1t r, g, b; };
-    struct { F1t h, s, v; };
+    struct { F1t hue, sat, val; };
+    F1t v[3];
 }; // VECTOR 3
 
 typedef union _V3t V3t;
@@ -532,20 +536,20 @@ static inline HSVcolor HSVfromRGB(RGBcolor rgb)
     rgb_max = MAX(rgb.r, MAX(rgb.g, rgb.b));
     
     if (rgb_max == rgb_min) {
-        hsv.h = 0;
+        hsv.hue = 0;
     } else if (rgb_max == rgb.r) {
-        hsv.h = 60.0f * ((rgb.g - rgb.b) / (rgb_max - rgb_min));
-        hsv.h = fmodf(hsv.h, 360.0f);
+        hsv.hue = 60.0f * ((rgb.g - rgb.b) / (rgb_max - rgb_min));
+        hsv.hue = fmodf(hsv.hue, 360.0f);
     } else if (rgb_max == rgb.g) {
-        hsv.h = 60.0f * ((rgb.b - rgb.r) / (rgb_max - rgb_min)) + 120.0f;
+        hsv.hue = 60.0f * ((rgb.b - rgb.r) / (rgb_max - rgb_min)) + 120.0f;
     } else if (rgb_max == rgb.b) {
-        hsv.h = 60.0f * ((rgb.r - rgb.g) / (rgb_max - rgb_min)) + 240.0f;
+        hsv.hue = 60.0f * ((rgb.r - rgb.g) / (rgb_max - rgb_min)) + 240.0f;
     }
-    hsv.v = rgb_max;
+    hsv.val = rgb_max;
     if (rgb_max == 0) {
-        hsv.s = 0;
+        hsv.sat = 0;
     } else {
-        hsv.s = 1.0 - (rgb_min / rgb_max);
+        hsv.sat = 1.0 - (rgb_min / rgb_max);
     }
     
     return hsv;
@@ -1198,6 +1202,31 @@ static inline void M16SetV3Translation(M16t *M16, V3t V3)
     M16->m32 = V3.z;
 }
 
+static inline M16t M16Translate(M16t matrix, float tx, float ty, float tz)
+{
+    M16t m = { matrix.m[0], matrix.m[1], matrix.m[2], matrix.m[3],
+        matrix.m[4], matrix.m[5], matrix.m[6], matrix.m[7],
+        matrix.m[8], matrix.m[9], matrix.m[10], matrix.m[11],
+        matrix.m[0] * tx + matrix.m[4] * ty + matrix.m[8] * tz + matrix.m[12],
+        matrix.m[1] * tx + matrix.m[5] * ty + matrix.m[9] * tz + matrix.m[13],
+        matrix.m[2] * tx + matrix.m[6] * ty + matrix.m[10] * tz + matrix.m[14],
+        matrix.m[15] };
+    return m;
+}
+
+static inline M16t M16TranslateWithV3(M16t matrix, V3t translationVector)
+{
+    M16t m = { matrix.m[0], matrix.m[1], matrix.m[2], matrix.m[3],
+        matrix.m[4], matrix.m[5], matrix.m[6], matrix.m[7],
+        matrix.m[8], matrix.m[9], matrix.m[10], matrix.m[11],
+        matrix.m[0] * translationVector.v[0] + matrix.m[4] * translationVector.v[1] + matrix.m[8] * translationVector.v[2] + matrix.m[12],
+        matrix.m[1] * translationVector.v[0] + matrix.m[5] * translationVector.v[1] + matrix.m[9] * translationVector.v[2] + matrix.m[13],
+        matrix.m[2] * translationVector.v[0] + matrix.m[6] * translationVector.v[1] + matrix.m[10] * translationVector.v[2] + matrix.m[14],
+        matrix.m[15] };
+    return m;
+}
+
+
 static inline void M16SetQ4Rotation(M16t *M16, Q4t Q4){
     
     double length2 = Q4Length(Q4);
@@ -1296,6 +1325,66 @@ static inline M16t M16MakeScale(V3t scale)
     return M16;
 }
 
+static inline M16t M164Scale(M16t matrix, float sx, float sy, float sz)
+{
+#if defined(__ARM_NEON__)
+    float32x4x4_t iMatrix = *(float32x4x4_t *)&matrix;
+    float32x4x4_t m;
+    
+    m.val[0] = vmulq_n_f32(iMatrix.val[0], (float32_t)sx);
+    m.val[1] = vmulq_n_f32(iMatrix.val[1], (float32_t)sy);
+    m.val[2] = vmulq_n_f32(iMatrix.val[2], (float32_t)sz);
+    m.val[3] = iMatrix.val[3];
+    
+    return *(M16t *)&m;
+#elif defined(GLK_SSE3_INTRINSICS)
+    M16t m;
+    
+    _mm_store_ps(&m.m[0],  _mm_load_ps(&matrix.m[0])  * _mm_load1_ps(&sx));
+    _mm_store_ps(&m.m[4],  _mm_load_ps(&matrix.m[4])  * _mm_load1_ps(&sy));
+    _mm_store_ps(&m.m[8],  _mm_load_ps(&matrix.m[8])  * _mm_load1_ps(&sz));
+    _mm_store_ps(&m.m[12], _mm_load_ps(&matrix.m[12]));
+    
+    return m;
+#else
+    M16t m = { matrix.m[0] * sx, matrix.m[1] * sx, matrix.m[2] * sx, matrix.m[3] * sx,
+        matrix.m[4] * sy, matrix.m[5] * sy, matrix.m[6] * sy, matrix.m[7] * sy,
+        matrix.m[8] * sz, matrix.m[9] * sz, matrix.m[10] * sz, matrix.m[11] * sz,
+        matrix.m[12], matrix.m[13], matrix.m[14], matrix.m[15] };
+    return m;
+#endif
+}
+
+static inline M16t M16ScaleWithV3(M16t matrix, V3t scaleVector)
+{
+#if defined(__ARM_NEON__)
+    float32x4x4_t iMatrix = *(float32x4x4_t *)&matrix;
+    float32x4x4_t m;
+    
+    m.val[0] = vmulq_n_f32(iMatrix.val[0], (float32_t)scaleVector.v[0]);
+    m.val[1] = vmulq_n_f32(iMatrix.val[1], (float32_t)scaleVector.v[1]);
+    m.val[2] = vmulq_n_f32(iMatrix.val[2], (float32_t)scaleVector.v[2]);
+    m.val[3] = iMatrix.val[3];
+    
+    return *(M16t *)&m;
+#elif defined(GLK_SSE3_INTRINSICS)
+    M16t m;
+    
+    _mm_store_ps(&m.m[0],  _mm_load_ps(&matrix.m[0])  * _mm_load1_ps(&scaleVector.v[0]));
+    _mm_store_ps(&m.m[4],  _mm_load_ps(&matrix.m[4])  * _mm_load1_ps(&scaleVector.v[1]));
+    _mm_store_ps(&m.m[8],  _mm_load_ps(&matrix.m[8])  * _mm_load1_ps(&scaleVector.v[2]));
+    _mm_store_ps(&m.m[12], _mm_load_ps(&matrix.m[12]));
+    
+    return m;
+#else
+    M16t m = { matrix.m[0] * scaleVector.v[0], matrix.m[1] * scaleVector.v[0], matrix.m[2] * scaleVector.v[0], matrix.m[3] * scaleVector.v[0],
+        matrix.m[4] * scaleVector.v[1], matrix.m[5] * scaleVector.v[1], matrix.m[6] * scaleVector.v[1], matrix.m[7] * scaleVector.v[1],
+        matrix.m[8] * scaleVector.v[2], matrix.m[9] * scaleVector.v[2], matrix.m[10] * scaleVector.v[2], matrix.m[11] * scaleVector.v[2],
+        matrix.m[12], matrix.m[13], matrix.m[14], matrix.m[15] };
+    return m;
+#endif
+}
+
 static inline M16t M16MakeRotateX(float degrees)
 {
     float radians = DEGREES_TO_RADIANS(degrees);
@@ -1341,35 +1430,130 @@ static inline M16t M16MakeRotateZ(float degrees)
     return M16;
 }
 
-static inline M16t M16Multiply(M16t m1, M16t m2)
+static inline M16t M16Multiply(M16t matrixLeft, M16t matrixRight)
 {
-    M16t result;
-    // First Column
-    result.m[0] = m1.m[0]*m2.m[0] + m1.m[4]*m2.m[1] + m1.m[8]*m2.m[2] + m1.m[12]*m2.m[3];
-    result.m[1] = m1.m[1]*m2.m[0] + m1.m[5]*m2.m[1] + m1.m[9]*m2.m[2] + m1.m[13]*m2.m[3];
-    result.m[2] = m1.m[2]*m2.m[0] + m1.m[6]*m2.m[1] + m1.m[10]*m2.m[2] + m1.m[14]*m2.m[3];
-    result.m[3] = m1.m[3]*m2.m[0] + m1.m[7]*m2.m[1] + m1.m[11]*m2.m[2] + m1.m[15]*m2.m[3];
+#if defined(__ARM_NEON__)
+    float32x4x4_t iMatrixLeft = *(float32x4x4_t *)&matrixLeft;
+    float32x4x4_t iMatrixRight = *(float32x4x4_t *)&matrixRight;
+    float32x4x4_t m;
     
-    // Second Column
-    result.m[4] = m1.m[0]*m2.m[4] + m1.m[4]*m2.m[5] + m1.m[8]*m2.m[6] + m1.m[12]*m2.m[7];
-    result.m[5] = m1.m[1]*m2.m[4] + m1.m[5]*m2.m[5] + m1.m[9]*m2.m[6] + m1.m[13]*m2.m[7];
-    result.m[6] = m1.m[2]*m2.m[4] + m1.m[6]*m2.m[5] + m1.m[10]*m2.m[6] + m1.m[14]*m2.m[7];
-    result.m[7] = m1.m[3]*m2.m[4] + m1.m[7]*m2.m[5] + m1.m[11]*m2.m[6] + m1.m[15]*m2.m[7];
+    m.val[0] = vmulq_n_f32(iMatrixLeft.val[0], vgetq_lane_f32(iMatrixRight.val[0], 0));
+    m.val[1] = vmulq_n_f32(iMatrixLeft.val[0], vgetq_lane_f32(iMatrixRight.val[1], 0));
+    m.val[2] = vmulq_n_f32(iMatrixLeft.val[0], vgetq_lane_f32(iMatrixRight.val[2], 0));
+    m.val[3] = vmulq_n_f32(iMatrixLeft.val[0], vgetq_lane_f32(iMatrixRight.val[3], 0));
     
-    // Third Column
-    result.m[8] = m1.m[0]*m2.m[8] + m1.m[4]*m2.m[9] + m1.m[8]*m2.m[10] + m1.m[12]*m2.m[11];
-    result.m[9] = m1.m[1]*m2.m[8] + m1.m[5]*m2.m[9] + m1.m[9]*m2.m[10] + m1.m[13]*m2.m[11];
-    result.m[10] = m1.m[2]*m2.m[8] + m1.m[6]*m2.m[9] + m1.m[10]*m2.m[10] + m1.m[14]*m2.m[11];
-    result.m[11] = m1.m[3]*m2.m[8] + m1.m[7]*m2.m[9] + m1.m[11]*m2.m[10] + m1.m[15]*m2.m[11];
+    m.val[0] = vmlaq_n_f32(m.val[0], iMatrixLeft.val[1], vgetq_lane_f32(iMatrixRight.val[0], 1));
+    m.val[1] = vmlaq_n_f32(m.val[1], iMatrixLeft.val[1], vgetq_lane_f32(iMatrixRight.val[1], 1));
+    m.val[2] = vmlaq_n_f32(m.val[2], iMatrixLeft.val[1], vgetq_lane_f32(iMatrixRight.val[2], 1));
+    m.val[3] = vmlaq_n_f32(m.val[3], iMatrixLeft.val[1], vgetq_lane_f32(iMatrixRight.val[3], 1));
     
-    // Fourth Column
-    result.m[12] = m1.m[0]*m2.m[12] + m1.m[4]*m2.m[13] + m1.m[8]*m2.m[14] + m1.m[12]*m2.m[15];
-    result.m[13] = m1.m[1]*m2.m[12] + m1.m[5]*m2.m[13] + m1.m[9]*m2.m[14] + m1.m[13]*m2.m[15];
-    result.m[14] = m1.m[2]*m2.m[12] + m1.m[6]*m2.m[13] + m1.m[10]*m2.m[14] + m1.m[14]*m2.m[15];
-    result.m[15] = m1.m[3]*m2.m[12] + m1.m[7]*m2.m[13] + m1.m[11]*m2.m[14] + m1.m[15]*m2.m[15];
-    return result;
+    m.val[0] = vmlaq_n_f32(m.val[0], iMatrixLeft.val[2], vgetq_lane_f32(iMatrixRight.val[0], 2));
+    m.val[1] = vmlaq_n_f32(m.val[1], iMatrixLeft.val[2], vgetq_lane_f32(iMatrixRight.val[1], 2));
+    m.val[2] = vmlaq_n_f32(m.val[2], iMatrixLeft.val[2], vgetq_lane_f32(iMatrixRight.val[2], 2));
+    m.val[3] = vmlaq_n_f32(m.val[3], iMatrixLeft.val[2], vgetq_lane_f32(iMatrixRight.val[3], 2));
     
+    m.val[0] = vmlaq_n_f32(m.val[0], iMatrixLeft.val[3], vgetq_lane_f32(iMatrixRight.val[0], 3));
+    m.val[1] = vmlaq_n_f32(m.val[1], iMatrixLeft.val[3], vgetq_lane_f32(iMatrixRight.val[1], 3));
+    m.val[2] = vmlaq_n_f32(m.val[2], iMatrixLeft.val[3], vgetq_lane_f32(iMatrixRight.val[2], 3));
+    m.val[3] = vmlaq_n_f32(m.val[3], iMatrixLeft.val[3], vgetq_lane_f32(iMatrixRight.val[3], 3));
+    
+    return *(M16t *)&m;
+#elif defined(GLK_SSE3_INTRINSICS)
+    
+	const __m128 l0 = _mm_load_ps(&matrixLeft.m[0]);
+	const __m128 l1 = _mm_load_ps(&matrixLeft.m[4]);
+	const __m128 l2 = _mm_load_ps(&matrixLeft.m[8]);
+	const __m128 l3 = _mm_load_ps(&matrixLeft.m[12]);
+    
+	const __m128 r0 = _mm_load_ps(&matrixRight.m[0]);
+	const __m128 r1 = _mm_load_ps(&matrixRight.m[4]);
+	const __m128 r2 = _mm_load_ps(&matrixRight.m[8]);
+	const __m128 r3 = _mm_load_ps(&matrixRight.m[12]);
+	
+	const __m128 m0 = l0 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(0, 0, 0, 0))
+    + l1 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(1, 1, 1, 1))
+    + l2 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(2, 2, 2, 2))
+    + l3 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(3, 3, 3, 3));
+    
+	const __m128 m1 = l0 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(0, 0, 0, 0))
+    + l1 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(1, 1, 1, 1))
+    + l2 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(2, 2, 2, 2))
+    + l3 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(3, 3, 3, 3));
+    
+	const __m128 m2 = l0 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(0, 0, 0, 0))
+    + l1 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(1, 1, 1, 1))
+    + l2 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(2, 2, 2, 2))
+    + l3 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(3, 3, 3, 3));
+    
+	const __m128 m3 = l0 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(0, 0, 0, 0))
+    + l1 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(1, 1, 1, 1))
+    + l2 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(2, 2, 2, 2))
+    + l3 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(3, 3, 3, 3));
+    
+	M16t m;
+	_mm_store_ps(&m.m[0], m0);
+	_mm_store_ps(&m.m[4], m1);
+	_mm_store_ps(&m.m[8], m2);
+	_mm_store_ps(&m.m[12], m3);
+    return m;
+    
+#else
+    M16t m;
+    
+    m.m[0]  = matrixLeft.m[0] * matrixRight.m[0]  + matrixLeft.m[4] * matrixRight.m[1]  + matrixLeft.m[8] * matrixRight.m[2]   + matrixLeft.m[12] * matrixRight.m[3];
+	m.m[4]  = matrixLeft.m[0] * matrixRight.m[4]  + matrixLeft.m[4] * matrixRight.m[5]  + matrixLeft.m[8] * matrixRight.m[6]   + matrixLeft.m[12] * matrixRight.m[7];
+	m.m[8]  = matrixLeft.m[0] * matrixRight.m[8]  + matrixLeft.m[4] * matrixRight.m[9]  + matrixLeft.m[8] * matrixRight.m[10]  + matrixLeft.m[12] * matrixRight.m[11];
+	m.m[12] = matrixLeft.m[0] * matrixRight.m[12] + matrixLeft.m[4] * matrixRight.m[13] + matrixLeft.m[8] * matrixRight.m[14]  + matrixLeft.m[12] * matrixRight.m[15];
+    
+	m.m[1]  = matrixLeft.m[1] * matrixRight.m[0]  + matrixLeft.m[5] * matrixRight.m[1]  + matrixLeft.m[9] * matrixRight.m[2]   + matrixLeft.m[13] * matrixRight.m[3];
+	m.m[5]  = matrixLeft.m[1] * matrixRight.m[4]  + matrixLeft.m[5] * matrixRight.m[5]  + matrixLeft.m[9] * matrixRight.m[6]   + matrixLeft.m[13] * matrixRight.m[7];
+	m.m[9]  = matrixLeft.m[1] * matrixRight.m[8]  + matrixLeft.m[5] * matrixRight.m[9]  + matrixLeft.m[9] * matrixRight.m[10]  + matrixLeft.m[13] * matrixRight.m[11];
+	m.m[13] = matrixLeft.m[1] * matrixRight.m[12] + matrixLeft.m[5] * matrixRight.m[13] + matrixLeft.m[9] * matrixRight.m[14]  + matrixLeft.m[13] * matrixRight.m[15];
+    
+	m.m[2]  = matrixLeft.m[2] * matrixRight.m[0]  + matrixLeft.m[6] * matrixRight.m[1]  + matrixLeft.m[10] * matrixRight.m[2]  + matrixLeft.m[14] * matrixRight.m[3];
+	m.m[6]  = matrixLeft.m[2] * matrixRight.m[4]  + matrixLeft.m[6] * matrixRight.m[5]  + matrixLeft.m[10] * matrixRight.m[6]  + matrixLeft.m[14] * matrixRight.m[7];
+	m.m[10] = matrixLeft.m[2] * matrixRight.m[8]  + matrixLeft.m[6] * matrixRight.m[9]  + matrixLeft.m[10] * matrixRight.m[10] + matrixLeft.m[14] * matrixRight.m[11];
+	m.m[14] = matrixLeft.m[2] * matrixRight.m[12] + matrixLeft.m[6] * matrixRight.m[13] + matrixLeft.m[10] * matrixRight.m[14] + matrixLeft.m[14] * matrixRight.m[15];
+    
+	m.m[3]  = matrixLeft.m[3] * matrixRight.m[0]  + matrixLeft.m[7] * matrixRight.m[1]  + matrixLeft.m[11] * matrixRight.m[2]  + matrixLeft.m[15] * matrixRight.m[3];
+	m.m[7]  = matrixLeft.m[3] * matrixRight.m[4]  + matrixLeft.m[7] * matrixRight.m[5]  + matrixLeft.m[11] * matrixRight.m[6]  + matrixLeft.m[15] * matrixRight.m[7];
+	m.m[11] = matrixLeft.m[3] * matrixRight.m[8]  + matrixLeft.m[7] * matrixRight.m[9]  + matrixLeft.m[11] * matrixRight.m[10] + matrixLeft.m[15] * matrixRight.m[11];
+	m.m[15] = matrixLeft.m[3] * matrixRight.m[12] + matrixLeft.m[7] * matrixRight.m[13] + matrixLeft.m[11] * matrixRight.m[14] + matrixLeft.m[15] * matrixRight.m[15];
+    
+    return m;
+#endif
 }
+
+
+//static inline M16t M16Multiply(M16t m1, M16t m2)
+//{
+//    M16t result;
+//    // First Column
+//    result.m[0] = m1.m[0]*m2.m[0] + m1.m[4]*m2.m[1] + m1.m[8]*m2.m[2] + m1.m[12]*m2.m[3];
+//    result.m[1] = m1.m[1]*m2.m[0] + m1.m[5]*m2.m[1] + m1.m[9]*m2.m[2] + m1.m[13]*m2.m[3];
+//    result.m[2] = m1.m[2]*m2.m[0] + m1.m[6]*m2.m[1] + m1.m[10]*m2.m[2] + m1.m[14]*m2.m[3];
+//    result.m[3] = m1.m[3]*m2.m[0] + m1.m[7]*m2.m[1] + m1.m[11]*m2.m[2] + m1.m[15]*m2.m[3];
+//    
+//    // Second Column
+//    result.m[4] = m1.m[0]*m2.m[4] + m1.m[4]*m2.m[5] + m1.m[8]*m2.m[6] + m1.m[12]*m2.m[7];
+//    result.m[5] = m1.m[1]*m2.m[4] + m1.m[5]*m2.m[5] + m1.m[9]*m2.m[6] + m1.m[13]*m2.m[7];
+//    result.m[6] = m1.m[2]*m2.m[4] + m1.m[6]*m2.m[5] + m1.m[10]*m2.m[6] + m1.m[14]*m2.m[7];
+//    result.m[7] = m1.m[3]*m2.m[4] + m1.m[7]*m2.m[5] + m1.m[11]*m2.m[6] + m1.m[15]*m2.m[7];
+//    
+//    // Third Column
+//    result.m[8] = m1.m[0]*m2.m[8] + m1.m[4]*m2.m[9] + m1.m[8]*m2.m[10] + m1.m[12]*m2.m[11];
+//    result.m[9] = m1.m[1]*m2.m[8] + m1.m[5]*m2.m[9] + m1.m[9]*m2.m[10] + m1.m[13]*m2.m[11];
+//    result.m[10] = m1.m[2]*m2.m[8] + m1.m[6]*m2.m[9] + m1.m[10]*m2.m[10] + m1.m[14]*m2.m[11];
+//    result.m[11] = m1.m[3]*m2.m[8] + m1.m[7]*m2.m[9] + m1.m[11]*m2.m[10] + m1.m[15]*m2.m[11];
+//    
+//    // Fourth Column
+//    result.m[12] = m1.m[0]*m2.m[12] + m1.m[4]*m2.m[13] + m1.m[8]*m2.m[14] + m1.m[12]*m2.m[15];
+//    result.m[13] = m1.m[1]*m2.m[12] + m1.m[5]*m2.m[13] + m1.m[9]*m2.m[14] + m1.m[13]*m2.m[15];
+//    result.m[14] = m1.m[2]*m2.m[12] + m1.m[6]*m2.m[13] + m1.m[10]*m2.m[14] + m1.m[14]*m2.m[15];
+//    result.m[15] = m1.m[3]*m2.m[12] + m1.m[7]*m2.m[13] + m1.m[11]*m2.m[14] + m1.m[15]*m2.m[15];
+//    return result;
+//    
+//}
 
 static inline V3t V3MultiplyM16(M16t matrixLeft, V3t vectorRight)
 {
@@ -1498,7 +1682,69 @@ static inline M16t M16MakeLookAt(float eyeX, float eyeY, float eyeZ,
     return m;
 }
 
+static inline M9t M16GetM9(M16t matrix)
+{
+    M9t m = { matrix.m[0], matrix.m[1], matrix.m[2],
+        matrix.m[4], matrix.m[5], matrix.m[6],
+        matrix.m[8], matrix.m[9], matrix.m[10] };
+    return m;
+}
 
+//GLK_INLINE GLKMatrix2 GLKMatrix4GetMatrix2(GLKMatrix4 matrix)
+//{
+//    GLKMatrix2 m = { matrix.m[0], matrix.m[1],
+//        matrix.m[4], matrix.m[5] };
+//    return m;
+//}
+
+static inline V4t M16GetRow(M16t matrix, int row)
+{
+    V4t v = { matrix.m[row], matrix.m[4 + row], matrix.m[8 + row], matrix.m[12 + row] };
+    return v;
+}
+
+static inline V4t M16GetColumn(M16t matrix, int column)
+{
+#if defined(__ARM_NEON__)
+    float32x4_t v = vld1q_f32(&(matrix.m[column * 4]));
+    return *(V4t *)&v;
+#elif defined(GLK_SSE3_INTRINSICS)
+    __m128 v = _mm_load_ps(&matrix.m[column * 4]);
+    return *(V4t *)&v;
+#else
+    V4t v = { matrix.m[column * 4 + 0], matrix.m[column * 4 + 1], matrix.m[column * 4 + 2], matrix.m[column * 4 + 3] };
+    return v;
+#endif
+}
+
+static inline M16t GLKMatrix4SetRow(M16t matrix, int row, V4t vector)
+{
+    matrix.m[row] = vector.v[0];
+    matrix.m[row + 4] = vector.v[1];
+    matrix.m[row + 8] = vector.v[2];
+    matrix.m[row + 12] = vector.v[3];
+    
+    return matrix;
+}
+
+static inline M16t M16SetColumn(M16t matrix, int column, V4t vector)
+{
+#if defined(__ARM_NEON__)
+    float *dst = &(matrix.m[column * 4]);
+    vst1q_f32(dst, vld1q_f32(vector.v));
+    return matrix;
+#elif defined(GLK_SSE3_INTRINSICS)
+    *((__m128*)&matrix.m[column*4]) = *(__m128*)&vector;
+    return matrix;
+#else
+    matrix.m[column * 4 + 0] = vector.v[0];
+    matrix.m[column * 4 + 1] = vector.v[1];
+    matrix.m[column * 4 + 2] = vector.v[2];
+    matrix.m[column * 4 + 3] = vector.v[3];
+    
+    return matrix;
+#endif
+}
 // from
 static inline M16t M16InvertColumnMajor(M16t M16, bool *isInvertible)
 {

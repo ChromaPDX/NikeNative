@@ -1,10 +1,6 @@
-//
-//  NKMesh.h
-//  nike3dField
-//
-//  Created by Chroma Developer on 3/24/14.
-//
-//
+//*
+//*  NODE KITTEN
+//*
 
 @class NKTexture;
 @class NKVertexBuffer;

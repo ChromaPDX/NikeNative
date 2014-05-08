@@ -39,6 +39,11 @@
     self = [super init];
     if (self) {
         self.size3d = size;
+        
+        if (self.size3d.z == 0) {
+            [self setSize3d:V3Make(self.size.x, self.size.y, 1.)];
+        }
+        
         self.texture = texture;
         self.alpha = 1.;
         _colorBlendFactor = 1.;
@@ -98,11 +103,26 @@
     
     if (NK_GL_VERSION == 2) {
         
-        if (_texture) {
-            [_mesh drawWithTexture:_texture color:_intColor];
-        }
-        else {
-            [_mesh drawWithColor:_intColor];
+        if (_texture || _color) {
+            
+            [self.scene pushScale:self.size3d];
+            
+            if (_color) {
+                [self.scene.activeShader setVec4:_intColor forUniform:UNIFORM_COLOR];
+                [self.scene.activeShader setInt:1 forUniform:USE_UNIFORM_COLOR];
+            }
+            
+            if (_texture) {
+                [self.scene.activeShader setInt:1 forUniform:UNIFORM_NUM_TEXTURES];
+                [_mesh drawWithTexture:_texture color:_intColor];
+            }
+            else {
+                [self.scene.activeShader setInt:0 forUniform:UNIFORM_NUM_TEXTURES];
+                [_mesh drawWithColor:_intColor];
+            }
+            
+            [self.scene popMatrix];
+            
         }
         
     }

@@ -43,6 +43,33 @@
     return self;
 }
 
++(instancetype)axes {
+
+    GLfloat gCubeVertexData[7*6] =
+    {
+        -1.0f, 0.0f, 0.0f,      .5f, 0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f,       1.0f, 0.5f, 0.5f, 1.0f,
+        0.0f, -1.0f, 0.0f,      0.0f, .5f, 0.0f, 1.0f,
+        0.0f, 1.0f, 0.0f,       0.5f, 1.0f, 0.5f, 1.0f,
+        0.0f, 0.0f, -1.0f,      0.0f, 0.0f, .5f, 1.0f,
+        0.0f, 0.0f, 1.0f,       0.5f, 0.5f, 1.0f, 1.0f
+    };
+    
+    NKVertexBuffer *buf = [[NKVertexBuffer alloc] initWithSize:sizeof(gCubeVertexData) data:gCubeVertexData setup:^{
+        glEnableVertexAttribArray(NKVertexAttribPosition);
+        glVertexAttribPointer(NKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
+                              28, BUFFER_OFFSET(0));
+        
+        glEnableVertexAttribArray(NKVertexAttribColor);
+        glVertexAttribPointer(NKVertexAttribColor, 3, GL_FLOAT, GL_FALSE,
+                              28, BUFFER_OFFSET(12));
+        
+    }];
+    
+    buf.numberOfElements = sizeof(gCubeVertexData) / (sizeof(F1t)*7.);
+    return buf;
+}
+
 +(instancetype)defaultRect {
 
     GLfloat gCubeVertexData[48] =
