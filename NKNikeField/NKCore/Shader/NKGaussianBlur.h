@@ -27,6 +27,7 @@
 
 #import "NKShaderProgram.h"
 
+@class NKFrameBuffer;
 @class NKNode;
 
 /** A Gaussian blur filter
@@ -38,7 +39,7 @@
 @interface NKGaussianBlur : NKShaderProgram {
     BOOL shouldResizeBlurRadiusWithImageSize;
     CGFloat _blurRadiusInPixels;
-    NKFbo *passBuffer[2];
+    NKFrameBuffer *passBuffer[2];
 }
 
 /** A multiplier for the spacing between texels, ranging from 0.0 on up, with a default of 1.0. Adjusting this may slightly increase the blur strength, but will introduce artifacts in the result.

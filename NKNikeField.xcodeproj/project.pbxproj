@@ -25,6 +25,7 @@
 		292BB0CF191431E400AFE938 /* NKShaderProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 292BB0CE191431E400AFE938 /* NKShaderProgram.m */; };
 		2934BDE2191ADCE700A33DBF /* NKFrameBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934BDE1191ADCE700A33DBF /* NKFrameBuffer.m */; };
 		2934BDE5191ADDE600A33DBF /* UIImage+GLBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934BDE4191ADDE600A33DBF /* UIImage+GLBuffer.m */; };
+		2934BDE8191B166300A33DBF /* perlin.c in Sources */ = {isa = PBXBuildFile; fileRef = 2934BDE6191B166300A33DBF /* perlin.c */; };
 		297E6C2519097F4F00369BDF /* blank_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 297E6C2419097F4F00369BDF /* blank_texture.png */; };
 		29BF47FE1911666500487EBD /* NKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FA1911666500487EBD /* NKView.m */; };
 		29BF47FF1911666500487EBD /* NKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FC1911666500487EBD /* NKViewController.m */; };
@@ -140,7 +141,6 @@
 		61A257D618FDE998001B7F67 /* chromeKitten.png in Resources */ = {isa = PBXBuildFile; fileRef = 61A257B418FDE998001B7F67 /* chromeKitten.png */; };
 		61A257D718FDE998001B7F67 /* chromeKittenSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 61A257B518FDE998001B7F67 /* chromeKittenSmall.png */; };
 		61A257D818FDE998001B7F67 /* moon.png in Resources */ = {isa = PBXBuildFile; fileRef = 61A257B618FDE998001B7F67 /* moon.png */; };
-		61A257D918FDE998001B7F67 /* NKFbo.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257B818FDE998001B7F67 /* NKFbo.m */; };
 		61A257DA18FDE998001B7F67 /* NKTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257BA18FDE998001B7F67 /* NKTexture.m */; };
 		61A257DB18FDE998001B7F67 /* NKTextureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257BC18FDE998001B7F67 /* NKTextureManager.m */; };
 		61A257DC18FDE998001B7F67 /* skysphere.png in Resources */ = {isa = PBXBuildFile; fileRef = 61A257BD18FDE998001B7F67 /* skysphere.png */; };
@@ -272,7 +272,10 @@
 		2934BDE1191ADCE700A33DBF /* NKFrameBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKFrameBuffer.m; sourceTree = "<group>"; };
 		2934BDE3191ADDE600A33DBF /* UIImage+GLBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+GLBuffer.h"; sourceTree = SOURCE_ROOT; };
 		2934BDE4191ADDE600A33DBF /* UIImage+GLBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+GLBuffer.m"; sourceTree = SOURCE_ROOT; };
+		2934BDE6191B166300A33DBF /* perlin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = perlin.c; sourceTree = "<group>"; };
+		2934BDE7191B166300A33DBF /* perlin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = perlin.h; sourceTree = "<group>"; };
 		297E6C2419097F4F00369BDF /* blank_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank_texture.png; sourceTree = "<group>"; };
+		29855333191B16F700166585 /* NKMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NKMath.h; sourceTree = "<group>"; };
 		29BF47F91911666500487EBD /* NKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKView.h; sourceTree = "<group>"; };
 		29BF47FA1911666500487EBD /* NKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKView.m; sourceTree = "<group>"; };
 		29BF47FB1911666500487EBD /* NKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKViewController.h; sourceTree = "<group>"; };
@@ -453,8 +456,6 @@
 		61A257B418FDE998001B7F67 /* chromeKitten.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chromeKitten.png; sourceTree = "<group>"; };
 		61A257B518FDE998001B7F67 /* chromeKittenSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chromeKittenSmall.png; sourceTree = "<group>"; };
 		61A257B618FDE998001B7F67 /* moon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moon.png; sourceTree = "<group>"; };
-		61A257B718FDE998001B7F67 /* NKFbo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKFbo.h; sourceTree = "<group>"; };
-		61A257B818FDE998001B7F67 /* NKFbo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKFbo.m; sourceTree = "<group>"; };
 		61A257B918FDE998001B7F67 /* NKTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKTexture.h; sourceTree = "<group>"; };
 		61A257BA18FDE998001B7F67 /* NKTexture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKTexture.m; sourceTree = "<group>"; };
 		61A257BB18FDE998001B7F67 /* NKTextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKTextureManager.h; sourceTree = "<group>"; };
@@ -1029,7 +1030,10 @@
 		61A2578218FDE998001B7F67 /* Geometry */ = {
 			isa = PBXGroup;
 			children = (
+				2934BDE6191B166300A33DBF /* perlin.c */,
+				2934BDE7191B166300A33DBF /* perlin.h */,
 				61A2578A18FDE998001B7F67 /* NKVectorTypes.h */,
+				29855333191B16F700166585 /* NKMath.h */,
 				61A2578B18FDE998001B7F67 /* NKVectorTypes.m */,
 				61A2578318FDE998001B7F67 /* NKMaterial.h */,
 				61A2578418FDE998001B7F67 /* NKMaterial.m */,
@@ -1072,8 +1076,6 @@
 				61A257B418FDE998001B7F67 /* chromeKitten.png */,
 				61A257B518FDE998001B7F67 /* chromeKittenSmall.png */,
 				61A257B618FDE998001B7F67 /* moon.png */,
-				61A257B718FDE998001B7F67 /* NKFbo.h */,
-				61A257B818FDE998001B7F67 /* NKFbo.m */,
 				61A257B918FDE998001B7F67 /* NKTexture.h */,
 				61A257BA18FDE998001B7F67 /* NKTexture.m */,
 				61A257BB18FDE998001B7F67 /* NKTextureManager.h */,
@@ -1622,6 +1624,7 @@
 				29D892BD190AC6C1008FBD5F /* UIImage+AlphaAdditions.m in Sources */,
 				29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */,
 				29D8926A190AA65E008FBD5F /* deflate.c in Sources */,
+				2934BDE8191B166300A33DBF /* perlin.c in Sources */,
 				61A257C218FDE998001B7F67 /* NKMesh.m in Sources */,
 				61D6E88F18FDB5B70017A389 /* MenuScene.m in Sources */,
 				61D6E8A618FDB5B70017A389 /* ButtonSprite.m in Sources */,
@@ -1656,7 +1659,6 @@
 				29D8926F190AA65E008FBD5F /* infback.c in Sources */,
 				29D892B3190AC679008FBD5F /* PAPLogInViewController.m in Sources */,
 				61A257D218FDE998001B7F67 /* NKDrawDepthShader.m in Sources */,
-				61A257D918FDE998001B7F67 /* NKFbo.m in Sources */,
 				2934BDE2191ADCE700A33DBF /* NKFrameBuffer.m in Sources */,
 				2934BDE5191ADDE600A33DBF /* UIImage+GLBuffer.m in Sources */,
 				61D6E88818FDB5B70017A389 /* Game.m in Sources */,

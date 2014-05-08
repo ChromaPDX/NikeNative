@@ -268,25 +268,6 @@
     [_parent removeChildrenInArray:@[self]];
 }
 
-+(NKFbo*)customFbo:(S2t)size {
-    
-    NKFbo* custom = [[NKFbo alloc]init];
-//    
-//    NKFbo::Settings settings;
-//    settings.width = size.width;
-//    settings.height = size.height;
-//    settings.internalformat = GL_RGBA;
-//    settings.numSamples = 0;
-//    settings.useDepth = true;
-//    settings.useStencil = true;
-//    //settings.depthStencilAsTexture = true;
-//    
-//    custom->allocate(settings);
-    
-    return custom;
-    
-}
-
 #pragma mark - SHADER
 
 -(void)loadShaderNamed:(NSString *)name {

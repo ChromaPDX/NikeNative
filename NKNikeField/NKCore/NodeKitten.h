@@ -56,7 +56,6 @@
 #import "NKTextureManager.h"
 #import "NKTexture.h"
 #import "NKMaterial.h"
-#import "NKFbo.h"
 
 // SHADERS
 
@@ -74,6 +73,6 @@
 
 #import "NKViewController.h"
 #import "NKView.h"
-
+#import "NKFrameBuffer.h"
 
 

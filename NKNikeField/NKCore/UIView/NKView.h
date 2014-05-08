@@ -26,8 +26,8 @@
     
     NKFrameBuffer *frameBuffer;
     
-	GLuint frameBuffer, colorRenderbuffer,depthRenderbuffer;
-    GLint bufferWidth, bufferHeight;
+	//GLuint frameBuffer, colorRenderbuffer,depthRenderbuffer;
+    //GLint bufferWidth, bufferHeight;
 
 
     

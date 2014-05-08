@@ -97,6 +97,29 @@ static NSString *const nkImageVertexShaderString = SHADER_STRING
  );
 
 
+static NSString *const nkVertexHeader = SHADER_STRING
+(
+ //precision highp float;
+ 
+ attribute vec4 a_position;
+ attribute vec3 a_normal;
+ attribute vec4 a_color;
+ attribute vec2 a_texCoord0;
+ attribute vec2 a_texCoord1;
+ 
+ uniform mat4 u_modelViewProjectionMatrix;
+ uniform mat3 u_normalMatrix;
+ uniform lowp int u_useUniformColor;
+ uniform lowp int u_numTextures;
+ uniform vec4 u_color;
+ 
+ uniform sampler2D tex0;
+ 
+ varying mediump vec2 v_texCoord0;
+ varying mediump vec2 v_texCoord1;
+ varying lowp vec4 v_color;
+ );
+
 static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
 (
  //precision highp float;
@@ -176,3 +199,12 @@ static NSString *const nkDefaultTextureFragmentShader = SHADER_STRING
  
  );
 
+static NSString *const nkFragmentHeader = SHADER_STRING
+(
+ uniform sampler2D tex0;
+ uniform lowp int u_numTextures;
+ 
+ varying lowp vec4 v_color;
+ varying mediump vec2 v_texCoord0;
+ varying mediump vec2 v_texCoord1;
+ );

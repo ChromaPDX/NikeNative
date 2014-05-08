@@ -114,8 +114,9 @@ GLfloat gCubeVertexData[216] =
             return nil;
         }
         
-        if(!context || ![EAGLContext setCurrentContext:context] || ![self createFramebuffer] || ![self attachDepthBuffer]){
-            
+        if(!context || ![self createFramebuffer]){
+            NSLog(@"Frame Buffer Creation Failed !!");
+
         }
         else {
             NSLog(@"GLES Context && Frame Buffer loaded!");
@@ -168,8 +169,21 @@ GLfloat gCubeVertexData[216] =
 {
 	[EAGLContext setCurrentContext:context];
 	[self destroyFramebuffer];
+    NSLog(@"rebuilding framebuffer");
 	[self createFramebuffer];
-	[self drawView];
+	//[self drawView];
+}
+
+-(void)destroyFramebuffer {
+    frameBuffer = nil;
+}
+
+-(BOOL) createFramebuffer {
+    frameBuffer = [[NKFrameBuffer alloc ]initWithContext:context layer:(id<EAGLDrawable>)self.layer];
+    if (frameBuffer) {
+        return true;
+    }
+    return false;
 }
 
 //- (BOOL)createFramebuffer {
@@ -216,40 +230,40 @@ GLfloat gCubeVertexData[216] =
 //	return YES;
 //}
 
-- (BOOL)createFramebuffer
-{
-    
-    // 1 // Create the framebuffer and bind it.
-    
-    glGenFramebuffers(1, &frameBuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-    
-    // 2 // Create a color renderbuffer, allocate storage for it, and attach it to the framebuffer’s color attachment point.
-    
-    glGenRenderbuffers(1, &colorRenderbuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
-    //glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, bufferWidth, bufferHeight);
-    [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:(id<EAGLDrawable>)self.layer];
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &bufferWidth);
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &bufferHeight);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
-    
-    // 3 // Create a depth or depth/stencil renderbuffer, allocate storage for it, and attach it to the framebuffer’s depth attachment point.
-    
-    glGenRenderbuffers(1, &depthRenderbuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, bufferWidth, bufferHeight);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
-    
-    // 4 // Test the framebuffer for completeness. This test only needs to be performed when the framebuffer’s configuration changes.
-    
-    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER) ;
-    if(status != GL_FRAMEBUFFER_COMPLETE) {
-        NSLog(@"failed to make complete framebuffer object %x", status);
-        return false;
-    }
-    return true;
-}
+//- (BOOL)createFramebuffer
+//{
+//    
+//    // 1 // Create the framebuffer and bind it.
+//    
+//    glGenFramebuffers(1, &frameBuffer);
+//    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+//    
+//    // 2 // Create a color renderbuffer, allocate storage for it, and attach it to the framebuffer’s color attachment point.
+//    
+//    glGenRenderbuffers(1, &colorRenderbuffer);
+//    glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
+//    //glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, bufferWidth, bufferHeight);
+//    [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:(id<EAGLDrawable>)self.layer];
+//    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &bufferWidth);
+//    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &bufferHeight);
+//    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
+//    
+//    // 3 // Create a depth or depth/stencil renderbuffer, allocate storage for it, and attach it to the framebuffer’s depth attachment point.
+//    
+//    glGenRenderbuffers(1, &depthRenderbuffer);
+//    glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
+//    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, bufferWidth, bufferHeight);
+//    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+//    
+//    // 4 // Test the framebuffer for completeness. This test only needs to be performed when the framebuffer’s configuration changes.
+//    
+//    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER) ;
+//    if(status != GL_FRAMEBUFFER_COMPLETE) {
+//        NSLog(@"failed to make complete framebuffer object %x", status);
+//        return false;
+//    }
+//    return true;
+//}
 
 -(BOOL)attachDepthBuffer {
     return true;
@@ -300,32 +314,8 @@ static const GLubyte Indices[] = {
     
     texture = [NKTexture textureWithImageNamed:@"sdf"];
     
-//    GLuint vertexBuffer;
-//    glGenBuffers(1, &vertexBuffer);
-//    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-//    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
-//    
-//    GLuint indexBuffer;
-//    glGenBuffers(1, &indexBuffer);
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices), Indices, GL_STATIC_DRAW);
-    
 }
 
-// Clean up any buffers we have allocated.
-- (void)destroyFramebuffer
-{
-	glDeleteFramebuffersOES(1, &frameBuffer);
-	//viewFramebuffer = 0;
-	glDeleteRenderbuffersOES(1, &colorRenderbuffer);
-	//viewRenderbuffer = 0;
-	
-	if(depthRenderbuffer)
-	{
-		glDeleteRenderbuffersOES(1, &depthRenderbuffer);
-		depthRenderbuffer = 0;
-	}
-}
 
 - (void)startAnimation
 
@@ -352,9 +342,9 @@ static int rotate = 0;
 	// Make sure that you are drawing to the current context
 	[EAGLContext setCurrentContext:context];
     
-	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+    [frameBuffer bind];
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glClearColor(0.0f, 0.1f, 0.1f, 1.0f);
 
     if (_scene) {
@@ -378,7 +368,7 @@ static int rotate = 0;
             [defaultShader setMatrix3:_normalMatrix forUniform:UNIFORM_NORMAL_MATRIX];
             
             // 1
-            glViewport(0, 0, self.frame.size.width*2., self.frame.size.height*2.);
+            //glViewport(0, 0, self.frame.size.width*2., self.frame.size.height*2.);
             
             // 2
             [defaultShader setInt:1 forUniform:USE_UNIFORM_COLOR];
@@ -391,39 +381,11 @@ static int rotate = 0;
             }];
         }
         else {
-//        glPushMatrix();
-//        
-//        //glViewport(0, 0, self.frame.size.width, self.frame.size.height);
-//        
-//        //NSLog(@"rot : %f", DEGREES_TO_RADIANS(rot));
-//        
-//        glColor4f(1.0, 1.0, 1.0, 1.0);
-//        
-//        glEnableClientState(GL_VERTEX_ARRAY);
-//        
-//        glLineWidth(2.0);
-//        glColor4f(1.0, 1.0, 1.0, 1.0);
-//        glVertexPointer(3, GL_FLOAT, 0, XAxis);
-//        glDrawArrays(GL_LINE_LOOP, 0, 2);
-//        glVertexPointer(3, GL_FLOAT, 0, YAxis);
-//        glDrawArrays(GL_LINE_LOOP, 0, 2);
-//        glVertexPointer(3, GL_FLOAT, 0, ZAxis);
-//        glDrawArrays(GL_LINE_LOOP, 0, 2);
-//        
-//        glDisableClientState(GL_VERTEX_ARRAY);
-//        
-//        glPopMatrix();
+
         }
     }
 
-    //[self quickSquare];
-	
-	glBindRenderbufferOES(GL_RENDERBUFFER, colorRenderbuffer);
-	[context presentRenderbuffer:GL_RENDERBUFFER];
-	
-	//GLenum err = glGetError();
-    //	if(err)
-    //		NSLog(@"%x error", err);
+    [frameBuffer presentInContext:context];
     
 }
 

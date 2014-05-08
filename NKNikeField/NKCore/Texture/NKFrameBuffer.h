@@ -11,14 +11,20 @@
 @interface NKFrameBuffer : NSObject
 
 @property (nonatomic, readonly) CGSize size;
-@property (nonatomic, readonly) GLuint locFramebuffer;
-@property (nonatomic, readonly) GLuint locRenderbuffer;
+@property (nonatomic, readonly) GLuint frameBuffer;
+@property (nonatomic, readonly) GLuint renderBuffer;
+@property (nonatomic, readonly) GLuint depthBuffer;
 @property (nonatomic, readonly) GLuint locRenderTexture;
+@property (nonatomic) GLint width;
+@property (nonatomic) GLint height;
 
-- (id)initWithPixelWidth:(int)width pixelHeight:(int)height;
+- (id)initWithContext:(EAGLContext *)context layer:(id<EAGLDrawable>)layer;
+-(instancetype)initWithWidth:(GLuint)width height:(GLuint)height;
 
 - (void)bind;
 - (void)bind:(void(^)())drawingBlock;
+-(void)presentInContext:(EAGLContext*)context;
+
 - (void)unbind;
 - (GLuint)bindTexture:(int)texLoc;
 - (UIImage *)imageAtRect:(CGRect)cropRect;

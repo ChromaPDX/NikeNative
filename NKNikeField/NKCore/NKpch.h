@@ -44,5 +44,6 @@
 #define debugUI 0
 
 #import "NKVectorTypes.h"
+#import "NKMath.h"
 #import "NKMeshTypes.h"
 

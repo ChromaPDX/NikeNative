@@ -6,12 +6,13 @@
 //  Copyright (c) 2014 Chroma. All rights reserved.
 //
 
+#import "NKDrawDepthShader.h"
 #import "NodeKitten.h"
 
 @implementation NKDrawDepthShader;
 
-- (instancetype)initWithNode:(NKNode *)node useColor:(UIColor*)nilForDefaultAttrib paramBlock:(ShaderParamBlock)block {
-    self = [self initWithNode:node paramBlock:block];
+- (instancetype)initWithNode:(NKNode *)node useColor:(UIColor*)nilForDefaultAttrib {
+    self = [self initWithNode:node];
     if (self) {
         if (nilForDefaultAttrib) {
             _forceColor = nilForDefaultAttrib;
@@ -22,7 +23,7 @@
     return self;
 }
 
-- (instancetype)initWithNode:(NKNode *)node paramBlock:(ShaderParamBlock)block {
+- (instancetype)initWithNode:(NKNode *)node {
 
     NSMutableString *vert = [[NSMutableString alloc]init];
     
@@ -55,7 +56,7 @@
     
     NSMutableString *frag = [[NSMutableString alloc]init];
     
-    [frag appendString:nkFragmentColorHeader];
+    [frag appendString:nkFragmentHeader];
     [frag appendString:@"\n\
      \n\
      uniform int should_invert;\n\
@@ -77,12 +78,10 @@
      "];
     
     
-    self = [super initWithShaderStringArray:@[vert,frag] node:node paramBlock:block];
+    self = [super initWithVertexSource:vert fragmentSource:frag];
     
     if (self) {
         NSLog(@"init draw depth shader");
-        self.usesFbo = false;
-        self.needsDepthBuffer = false;
         _useColor = false;
         _shouldInvert = false;
     }

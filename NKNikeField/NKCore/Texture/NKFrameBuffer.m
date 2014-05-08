@@ -6,38 +6,110 @@
 //  Copyright (c) 2014 Chroma Developer. All rights reserved.
 //
 #import "NKFrameBuffer.h"
+#import "UIImage+GLBuffer.h"
 
 @implementation NKFrameBuffer
-{
-    GLuint _locFramebuffer;
-    GLuint _locRenderbuffer;
-    GLuint _locRenderTexture;
-}
-
-@synthesize size = _size;
-@synthesize locFramebuffer = _locFramebuffer;
-@synthesize locRenderbuffer = _locRenderbuffer;
-@synthesize locRenderTexture = _locRenderTexture;
 
 #pragma mark - Init
 
-- (id)initWithPixelWidth:(int)width pixelHeight:(int)height
+- (id)initWithContext:(EAGLContext *)context layer:(id<EAGLDrawable>)layer
 {
     self = [super init];
     
     if(self){
         
-        _size = CGSizeMake(width, height);
+        // 1 // Create the framebuffer and bind it.
         
-        // Offscreen position framebuffer object
-        glGenFramebuffers(1, &_locFramebuffer);
-        glBindFramebuffer(GL_FRAMEBUFFER, _locFramebuffer);
+        glGenFramebuffers(1, &_frameBuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
         
-        glGenRenderbuffers(1, &_locRenderbuffer);
-        glBindRenderbuffer(GL_RENDERBUFFER, _locRenderbuffer);
+        // 2 // Create a color renderbuffer, allocate storage for it, and attach it to the framebuffer’s color attachment point.
         
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8_OES, _size.width, _size.height);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _locRenderbuffer);
+        glGenRenderbuffers(1, &_renderBuffer);
+        glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
+        
+        [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:layer];
+        
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &_width);
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &_height);
+        
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _renderBuffer);
+        
+        // 3 // Create a depth or depth/stencil renderbuffer, allocate storage for it, and attach it to the framebuffer’s depth attachment point.
+        
+        glGenRenderbuffers(1, &_depthBuffer);
+        glBindRenderbuffer(GL_RENDERBUFFER, _depthBuffer);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, _width, _height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthBuffer);
+        
+        // 4 // Test the framebuffer for completeness. This test only needs to be performed when the framebuffer’s configuration changes.
+        
+        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER) ;
+        if(status != GL_FRAMEBUFFER_COMPLETE) {
+            NSLog(@"failed to make complete framebuffer object %x", status);
+            return nil;
+        }
+
+//        // Offscreen position framebuffer texture target
+//        glGenTextures(1, &_locRenderTexture);
+//        glBindTexture(GL_TEXTURE_2D, _locRenderTexture);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _size.width, _size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+//        glBindTexture(GL_TEXTURE_2D, 0);
+//        
+//        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _locRenderTexture, 0);
+//        
+//        // Always check that our framebuffer is ok
+//        if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+//        {
+//            NKCheckGLError(@"Creating framebuffer");
+//        }
+        
+    }
+    
+    return self;
+    
+}
+
+-(instancetype)initWithWidth:(GLuint)width height:(GLuint)height {
+    
+    self = [super init];
+    
+    if(self){
+        
+        // 1 // Create the framebuffer and bind it.
+        
+        glGenFramebuffers(1, &_frameBuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
+        
+        // 2 // Create a color renderbuffer, allocate storage for it, and attach it to the framebuffer’s color attachment point.
+        
+        glGenRenderbuffers(1, &_renderBuffer);
+        glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_RGB8_OES, width,height);
+        
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &_width);
+        glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &_height);
+        
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _renderBuffer);
+        
+        // 3 // Create a depth or depth/stencil renderbuffer, allocate storage for it, and attach it to the framebuffer’s depth attachment point.
+        
+        glGenRenderbuffers(1, &_depthBuffer);
+        glBindRenderbuffer(GL_RENDERBUFFER, _depthBuffer);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, _width, _height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthBuffer);
+        
+        // 4 // Test the framebuffer for completeness. This test only needs to be performed when the framebuffer’s configuration changes.
+        
+        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER) ;
+        if(status != GL_FRAMEBUFFER_COMPLETE) {
+            NSLog(@"failed to make complete framebuffer object %x", status);
+            return false;
+        }
         
         // Offscreen position framebuffer texture target
         glGenTextures(1, &_locRenderTexture);
@@ -55,6 +127,7 @@
         if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {
             NKCheckGLError(@"Creating framebuffer");
+            return nil;
         }
         
     }
@@ -62,13 +135,45 @@
     return self;
     
 }
+    
+//    // 1 // Create the framebuffer and bind it.
+//    
+//    glGenFramebuffers(1, &_locFramebuffer);
+//    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+//    
+//    // 2 // Create a color renderbuffer, allocate storage for it, and attach it to the framebuffer’s color attachment point.
+//    
+//    glGenRenderbuffers(1, &colorRenderbuffer);
+//    glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
+//    //glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, bufferWidth, bufferHeight);
+//    [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:(id<EAGLDrawable>)self.layer];
+//    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &bufferWidth);
+//    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &bufferHeight);
+//    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
+//    
+//    // 3 // Create a depth or depth/stencil renderbuffer, allocate storage for it, and attach it to the framebuffer’s depth attachment point.
+//    
+//    glGenRenderbuffers(1, &depthRenderbuffer);
+//    glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
+//    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, bufferWidth, bufferHeight);
+//    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+//    
+//    // 4 // Test the framebuffer for completeness. This test only needs to be performed when the framebuffer’s configuration changes.
+//    
+//    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER) ;
+//    if(status != GL_FRAMEBUFFER_COMPLETE) {
+//        NSLog(@"failed to make complete framebuffer object %x", status);
+//        return false;
+//    }
+//    return true;
+//}
 
 #pragma mark - Binding
 
 - (void)bind
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, _locFramebuffer);
-    glViewport(0, 0, _size.width, _size.height);
+    glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
+    glViewport(0, 0, _width, _height);
 }
 
 - (void)bind:(void(^)())drawingBlock
@@ -78,11 +183,30 @@
     [self unbind];
 }
 
+-(void)presentInContext:(EAGLContext*)context {
+    glBindRenderbufferOES(GL_RENDERBUFFER, _frameBuffer);
+	[context presentRenderbuffer:GL_RENDERBUFFER];
+}
+
 - (void)unbind
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+-(void)dealloc {
+
+        glDeleteFramebuffersOES(1, &_frameBuffer);
+        //viewFramebuffer = 0;
+        glDeleteRenderbuffersOES(1, &_renderBuffer);
+        //viewRenderbuffer = 0;
+        
+        if(_depthBuffer)
+        {
+            glDeleteRenderbuffersOES(1, &_depthBuffer);
+            _depthBuffer = 0;
+        }
+    
+}
 - (GLuint)bindTexture:(int)texLoc
 {
     glEnable(GL_TEXTURE_2D);

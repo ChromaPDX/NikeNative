@@ -10,7 +10,7 @@
 
 @implementation NKGaussianZ
 
-- (instancetype)initWithNode:(NKNode *)node paramBlock:(ShaderParamBlock)block {
+- (instancetype)initWithNode:(NKNode *)node {
     {
         _blurRadiusInPixels = 4.; // For now, only do integral sigmas
 //        
@@ -30,14 +30,14 @@
         //        NSString *newGaussianBlurFragmentShader = [[self class] fragmentShaderForOptimizedBlurOfRadius:calculatedSampleRadius sigma:blurRadiusInPixels];
         //
         
-        self = [super initWithShaderStringArray:@[newGaussianBlurVertexShader, newGaussianBlurFragmentShader] node:node paramBlock:block];
+        self = [super initWithVertexSource:newGaussianBlurVertexShader fragmentSource:newGaussianBlurFragmentShader];
         
         if (self) {
             
             shouldResizeBlurRadiusWithImageSize = NO;
             
-            self.usesFbo = true;
-            self.needsDepthBuffer = true;
+//            self.usesFbo = true;
+//            self.needsDepthBuffer = true;
             
         }
         

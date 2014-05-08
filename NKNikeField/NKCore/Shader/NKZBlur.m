@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Chroma. All rights reserved.
 //
 
+#import "NKZBlur.h"
 #import "NodeKitten.h"
 
 @implementation NKZBlur
@@ -19,7 +20,7 @@
 #pragma mark -
 #pragma mark Initialization and teardown
 
-- (instancetype)initWithNode:(NKNode *)node paramBlock:(ShaderParamBlock)block {
+- (instancetype)initWithNode:(NKNode *)node {
     {
         float blurRadiusInPixels = 2.; // For now, only do integral sigmas
         
@@ -35,16 +36,13 @@
         NSString *newGaussianBlurFragmentShader = [[self class] fragmentShaderForOptimizedBlurOfRadius:calculatedSampleRadius sigma:blurRadiusInPixels];
         
         
-        self = [super initWithShaderStringArray:@[newGaussianBlurVertexShader, newGaussianBlurFragmentShader] node:node paramBlock:block];
+        self = [super initWithVertexSource:newGaussianBlurVertexShader fragmentSource:newGaussianBlurFragmentShader];
         
         if (self) {
             
             self.texelSpacingMultiplier = 1.0;
             _blurRadiusInPixels = blurRadiusInPixels;
             shouldResizeBlurRadiusWithImageSize = NO;
-            
-            self.usesFbo = true;
-            self.needsDepthBuffer = true;
             
         }
         
@@ -434,7 +432,7 @@
         //        NSLog(@"Optimized fragment shader: \n%@", newGaussianBlurFragmentShader);
         //
         //[self switchToVertexShader:newGaussianBlurVertexShader fragmentShader:newGaussianBlurFragmentShader];
-        [self loadShaderFromStringArray:@[newGaussianBlurVertexShader,newGaussianBlurFragmentShader] paramBlock:nil];
+       // [self loadShaderFromStringArray:@[newGaussianBlurVertexShader,newGaussianBlurFragmentShader] paramBlock:nil];
         
     }
     shouldResizeBlurRadiusWithImageSize = NO;
