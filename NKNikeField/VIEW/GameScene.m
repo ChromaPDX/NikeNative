@@ -205,6 +205,7 @@ float PARTICLE_SCALE;
             square.delegate = self;
             
             [_gameBoardNode addChild:square];
+            [_gameBoardNode setAlpha:.3];
             [_gameTiles setObject:square forKey:square.location];
             
             [square setPosition3d:V3Make((i+.5)*TILE_WIDTH - (TILE_WIDTH*BOARD_WIDTH*.5), ((j+.5)*TILE_HEIGHT) - (TILE_HEIGHT*BOARD_LENGTH*.5),6) ];

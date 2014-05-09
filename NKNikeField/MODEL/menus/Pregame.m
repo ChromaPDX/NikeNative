@@ -1,15 +1,8 @@
-//
-//  MenuScene.m
-//  nike3dField
-//
-//  Created by Chroma Developer on 3/25/14.
-//
-//
 
 #import "Pregame.h"
 #import "NodeKitten.h"
 #import "GameScene.h"
-
+#import "Menus.h"
 
 
 @implementation Pregame
@@ -38,6 +31,37 @@
         [NKSoundManager loadSoundFileNamed:@"Androyd-Bulbtone-41.wav"];
         [NKSoundManager loadSoundFileNamed:@"03 Bass [A$AP Rocky].mp3"];
         [NKSoundManager playMusicNamed:@"03 Bass [A$AP Rocky].mp3"];
+        
+        NSArray *listOfNames = [FakeFriends getNamesForText:3];
+        NKLabelNode *bigText = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
+        
+        bigText.fontSize = 20;
+        bigText.fontColor = V2ORANGE;
+        [bigText setSize:S2Make(500,100)];
+        [bigText setZPosition:1];
+        [bigText setText:[listOfNames objectAtIndex:0]];
+        [bigText setPosition:P2Make(-190, 250)];
+        [self addChild:bigText];
+        
+        NKLabelNode *bigText2 = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
+        
+        bigText2.fontSize = 40;
+        bigText2.fontColor = V2ORANGE;
+        [bigText2 setSize:S2Make(500, 100)];
+        [bigText2 setZPosition:2];
+        [bigText2 setText:[listOfNames objectAtIndex:1]];
+        [bigText2 setPosition:P2Make(0, 350)];
+        [self addChild:bigText2];
+        
+        NKLabelNode *bigText3 = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
+        
+        bigText3.fontSize = 20;
+        bigText3.fontColor = V2ORANGE;
+        [bigText3 setSize:S2Make(500,100)];
+        [bigText3 setZPosition:3];
+        [bigText3 setText:[listOfNames objectAtIndex:2]];
+        [bigText3 setPosition:P2Make(190, 250)];
+        [self addChild:bigText3];
     }
     
     /*

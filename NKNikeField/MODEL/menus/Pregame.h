@@ -13,6 +13,4 @@
 {
 }
 
-//-(instancetype)initWithSize:(CGSize)size;
-
 @end

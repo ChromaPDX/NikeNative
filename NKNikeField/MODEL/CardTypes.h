@@ -18,7 +18,13 @@ typedef NS_ENUM(int32_t, CardCategory) {
     CardCategoryKick,
     CardCategoryChallenge,
     CardCategoryMove,
-    CardCategorySpecial
+    CardCategorySpecial,
+    CardCategoryGeneral
+};
+
+typedef NS_ENUM(int32_t, CardSpecialCategory) {
+    CardSpecialCategoryNull = 0,
+    CardSpecialCategoryFreeze = 1
 };
 
 typedef NS_ENUM(int32_t, CardMoveCategory) {

@@ -9,7 +9,7 @@
 #import "View.h"
 #import "DevMenu.h"
 #import "GameScene.h"
-#import "MainMenu.h"
+#import "Menus.h"
 
 @implementation View
 

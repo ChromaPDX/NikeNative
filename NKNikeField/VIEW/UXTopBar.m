@@ -36,11 +36,13 @@
         [fuelLabel setColor:V2YELLOW];
         [fuelLabel setText:@"ENERGY : 2250"];
         [fuelLabel setPosition:P2Make(-165, -50)];
+        [fuelLabel setZPosition:3];
         
         NKTexture *logoImage = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"LOGO_Icon_Bola_small.png"]];
         NKSpriteNode* logo = [[NKSpriteNode alloc] initWithTexture:logoImage];
         //[logo setScale:.33];
         [logo setPosition:P2Make(-270, -5)];
+        [logo setZPosition:4];
 
         [self addChild:fuelBar];
         [self addChild:fuelLabel];
