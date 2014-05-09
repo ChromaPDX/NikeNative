@@ -144,10 +144,10 @@ static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
  
  void main()
 {
-    vec3 eyeNormal = normalize(u_normalMatrix * a_normal);
-    vec3 lightPosition = vec3(0.5, 1.5, -1.0);
-    vec4 diffuseColor;
-    
+      vec3 eyeNormal = normalize(u_normalMatrix * a_normal);
+//    vec3 lightPosition = vec3(0.5, 1.5, -1.0);
+      vec4 diffuseColor;
+//    
     if (u_useUniformColor == 1){
         diffuseColor = u_color;
     }

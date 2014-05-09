@@ -124,6 +124,12 @@ typedef union _M16t M16t;
 
 #pragma MAKE FUNCTIONS
 
+static inline V3t  V3MakeF(F1t x)
+{
+	V3t  ret = {x,x,x};
+	return ret;
+}
+
 static inline V3t  V3Make(F1t x, F1t y, F1t z)
 {
 	V3t  ret = {x,y,z};

@@ -60,6 +60,10 @@ static NKStaticDraw *sharedObject = nil;
         case NKPrimitiveSphere:
             return @"NKPrimitiveSphere";
             break;
+        
+        case NKPrimitiveCube:
+            return @"NKPrimitiveCube";
+            break;
             
         default:
             return @"NKPrimitiveNone";
