@@ -119,6 +119,8 @@
 		3B6BF2441911416C0082628E /* LOGO_Icon_Bola.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF2431911416C0082628E /* LOGO_Icon_Bola.png */; };
 		3B6BF246191144280082628E /* LOGO_Icon_Bola_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF245191144280082628E /* LOGO_Icon_Bola_small.png */; };
 		3B6BF248191149A70082628E /* GOAL_text.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF247191149A70082628E /* GOAL_text.png */; };
+		3B9275DF191D12D400381A52 /* FakeFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B9275DE191D12D400381A52 /* FakeFriends.m */; };
+		3B9275E3191D16DB00381A52 /* RecapMenuLoss.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B9275E2191D16DB00381A52 /* RecapMenuLoss.m */; };
 		3BC5A7CF19193E9600414544 /* FuelBar_Container.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7CE19193E9600414544 /* FuelBar_Container.png */; };
 		3BC5A7D21919914800414544 /* FuelBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5A7D11919914800414544 /* FuelBar.m */; };
 		3BC5A7D6191AA9F400414544 /* Screen_RecapLostNoText.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7D3191AA9F400414544 /* Screen_RecapLostNoText.png */; };
@@ -418,6 +420,10 @@
 		3B6BF2431911416C0082628E /* LOGO_Icon_Bola.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LOGO_Icon_Bola.png; sourceTree = "<group>"; };
 		3B6BF245191144280082628E /* LOGO_Icon_Bola_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LOGO_Icon_Bola_small.png; sourceTree = "<group>"; };
 		3B6BF247191149A70082628E /* GOAL_text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GOAL_text.png; sourceTree = "<group>"; };
+		3B9275DE191D12D400381A52 /* FakeFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeFriends.m; sourceTree = "<group>"; };
+		3B9275E0191D12EA00381A52 /* FakeFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeFriends.h; sourceTree = "<group>"; };
+		3B9275E1191D16D300381A52 /* RecapMenuLoss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecapMenuLoss.h; sourceTree = "<group>"; };
+		3B9275E2191D16DB00381A52 /* RecapMenuLoss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecapMenuLoss.m; sourceTree = "<group>"; };
 		3BC5A7CE19193E9600414544 /* FuelBar_Container.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelBar_Container.png; sourceTree = "<group>"; };
 		3BC5A7D0191990EA00414544 /* FuelBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuelBar.h; sourceTree = "<group>"; };
 		3BC5A7D11919914800414544 /* FuelBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuelBar.m; sourceTree = "<group>"; };
@@ -1333,6 +1339,7 @@
 		61D6E79518FDB5B70017A389 /* MENU + META */ = {
 			isa = PBXGroup;
 			children = (
+				61D6E79A18FDB5B70017A389 /* Menus.h */,
 				29D89245190AA5CB008FBD5F /* GameStatsViewController.h */,
 				29D89246190AA5CB008FBD5F /* GameStatsViewController.m */,
 				3B41EE0D190C0FF200837DC0 /* MainMenu.h */,
@@ -1341,17 +1348,20 @@
 				3BC5A7DC191AC03E00414544 /* Pregame.m */,
 				3BC5A7D9191ABED900414544 /* RecapMenuWin.h */,
 				3BC5A7DA191ABEE200414544 /* RecapMenuWin.m */,
+				3B9275E1191D16D300381A52 /* RecapMenuLoss.h */,
+				3B9275E2191D16DB00381A52 /* RecapMenuLoss.m */,
 				3B6BF239190E85410082628E /* RecapMenu.h */,
 				3B6BF23A190E854F0082628E /* RecapMenu.m */,
 				3B2361FD190020E500056AE2 /* MenuStartVS.h */,
 				3B2361FE190020FA00056AE2 /* MenuStartVS.m */,
 				61D6E79818FDB5B70017A389 /* MenuPlayerProfileScene.h */,
 				61D6E79918FDB5B70017A389 /* MenuPlayerProfileScene.m */,
-				61D6E79A18FDB5B70017A389 /* Menus.h */,
 				61D6E7CD18FDB5B70017A389 /* DevMenu.h */,
 				61D6E7CE18FDB5B70017A389 /* DevMenu.m */,
 				29D89279190AAD28008FBD5F /* SyncScene.h */,
 				29D8927A190AAD28008FBD5F /* SyncScene.m */,
+				3B9275E0191D12EA00381A52 /* FakeFriends.h */,
+				3B9275DE191D12D400381A52 /* FakeFriends.m */,
 			);
 			name = "MENU + META";
 			path = MODEL/menus;
@@ -1620,6 +1630,7 @@
 				29D89268190AA65E008FBD5F /* compress.c in Sources */,
 				29D89269190AA65E008FBD5F /* crc32.c in Sources */,
 				29D8926C190AA65E008FBD5F /* gzlib.c in Sources */,
+				3B9275DF191D12D400381A52 /* FakeFriends.m in Sources */,
 				3B6BF23B190E854F0082628E /* RecapMenu.m in Sources */,
 				29D892BD190AC6C1008FBD5F /* UIImage+AlphaAdditions.m in Sources */,
 				29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */,
@@ -1681,6 +1692,7 @@
 				61D6E6C618FDAF8C0017A389 /* View.m in Sources */,
 				29BF48211911667900487EBD /* NKMeshNode.m in Sources */,
 				2908D7FC1912BB1A001FC6B4 /* NKVertexBuffer.m in Sources */,
+				3B9275E3191D16DB00381A52 /* RecapMenuLoss.m in Sources */,
 				29BF48291911667900487EBD /* NKSoundManager.m in Sources */,
 				61A257D118FDE998001B7F67 /* NKBlendShader.m in Sources */,
 				29BF48271911667900487EBD /* NKScrollNode.m in Sources */,

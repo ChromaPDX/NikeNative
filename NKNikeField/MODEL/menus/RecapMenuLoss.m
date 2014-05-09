@@ -6,13 +6,13 @@
 //
 //
 
-#import "RecapMenuWin.h"
+#import "RecapMenuLoss.h"
 #import "NodeKitten.h"
 #import "GameScene.h"
 #import "Menus.h"
 
 
-@implementation RecapMenuWin
+@implementation RecapMenuLoss
 
 
 -(instancetype)initWithSize:(S2t)size {
@@ -27,7 +27,7 @@
         table.name = @"table";
         table.delegate = self;
         NKTexture *image;
-        image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_RecapWinNoText.png"]];
+        image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_RecapLostNoText.png"]];
 
         UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
