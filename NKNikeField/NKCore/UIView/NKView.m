@@ -337,7 +337,7 @@ static int rotate = 0;
 {
     
     F1t dt = (CFAbsoluteTimeGetCurrent() - lastTime) * 1000.;
-    NSLog(@"%d frame rate", (int)(1000. / dt));
+    //NSLog(@"%d frame rate", (int)(1000. / dt));
     
     lastTime = CFAbsoluteTimeGetCurrent();
     
