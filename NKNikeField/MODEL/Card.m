@@ -447,6 +447,15 @@
                 break;
         }
     }
+    else if (self.category == CardCategorySpecial){
+        switch(self.specialTypeCategory){
+            case CardSpecialCategoryFreeze:
+                for(Player *p in self.deck.player.manager.opponent.players.inGame){
+                    [accessible addObject:p.location];
+                }
+                break;
+        }
+    }
     else{
         accessible = NULL;
     }
@@ -462,7 +471,7 @@
     
     // IF MOVING / KICK WE'RE DONE VALIDATING
     
-    if (self.category == CardCategoryMove || self.category == CardCategoryKick){
+    if (self.category == CardCategoryMove || self.category == CardCategoryKick || self.category == CardCategorySpecial){
         return accessible;
     }
     
