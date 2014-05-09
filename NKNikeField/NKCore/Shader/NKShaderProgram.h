@@ -189,15 +189,23 @@ static NSString *const nkDefaultTextureFragmentShader = SHADER_STRING
  
  void main()
 {
+    lowp vec4 final;
+    
     if (u_numTextures > 0){
-        gl_FragColor = texture2D(tex0, v_texCoord0) * v_color;// * v_color;
+        final = texture2D(tex0, v_texCoord0) * v_color;// * v_color;
     }
     else {
-        gl_FragColor = v_color;
+        final = v_color;
+    }
+    
+    if (final.a > .1){
+        gl_FragColor = final;
+    }
+    else {
+        discard;
     }
 }
- 
- );
+);
 
 static NSString *const nkFragmentHeader = SHADER_STRING
 (
