@@ -32,6 +32,8 @@
     }
     _moveCategory = CardMoveCategoryNull;
     _challengeCategory = CardChallengeCategoryNull;
+    _specialTypeCategory = CardSpecialCategoryNull;
+    _specialCategory = CardCategoryNull;
 }
 
 -(void)getRandomMoveAttributes {
@@ -39,6 +41,8 @@
     _moveCategory = rand()%4 + 1;
     _kickCategory = CardKickCategoryNull;
     _challengeCategory = CardChallengeCategoryNull;
+    _specialTypeCategory = CardSpecialCategoryNull;
+    _specialCategory = CardCategoryNull;
 }
 
 -(void)getRandomChallengeAttributes {
@@ -46,7 +50,24 @@
     _challengeCategory = rand()%4 + 1;
     _kickCategory = CardKickCategoryNull;
     _moveCategory = CardMoveCategoryNull;
+    _specialCategory = CardCategoryNull;
+    _specialTypeCategory = CardSpecialCategoryNull;
+}
 
+-(void)getRandomSpecialAttributes {
+    _level = 1;
+    _kickCategory = CardKickCategoryNull;
+    _moveCategory = CardMoveCategoryNull;
+    _challengeCategory = CardChallengeCategoryNull;
+    _specialTypeCategory = rand()%1 + 1;
+    switch (_specialTypeCategory) {
+        case CardSpecialCategoryFreeze:
+            self.specialCategory = CardCategoryGeneral;
+            break;
+        default:
+            self.specialCategory = CardCategoryMove;
+            break;
+    }
 }
 
 -(id)initWithDeck:(Deck*)deck {
@@ -67,32 +88,13 @@
             case CardCategoryChallenge:
                 [self getRandomChallengeAttributes];
                 break;
+            case CardCategorySpecial:
+                [self getRandomSpecialAttributes];
+                break;
             default:
                 break;
         }
-        
-        if (_deck.category == CardCategorySpecial){
-            int special = rand() % 3;
-            switch (special) {
-                case 0:
-                    self.specialCategory = CardCategoryMove;
-                     [self getRandomMoveAttributes];
-                    break;
-                case 1:
-                    self.specialCategory = CardCategoryKick;
-                     [self getRandomKickAttributes];
-                    break;
-                case 2:
-                    self.specialCategory = CardCategoryChallenge;
-                            _level = rand()%2 + 1;
-                    break;
-                default:
-                    self.specialCategory = CardCategoryMove;
-                            _level = rand()%3 + 1;
-                    break;
-            }
-        }
-        
+       
         _range = _level;
         if (_level > 3) _level = 3;
         
@@ -102,7 +104,8 @@
 
 -(CardCategory)category{
     if (_deck.category == CardCategorySpecial) {
-        return self.specialCategory;
+       // return self.specialCategory;
+        return _deck.category;
     }
     else {
         return _deck.category;
@@ -184,13 +187,9 @@
         case CardCategoryKick: return @"Kick";
         case CardCategoryChallenge: return @"Challenge";
         case CardCategorySpecial:
-            switch (_specialCategory) {
-                case CardCategoryMove: return @"Special";
-                case CardCategoryKick: return @"Special";
-                case CardCategoryChallenge: return @"Special";
-                default: break;
+            switch(_specialCategory){
+                case CardCategoryGeneral: return @"SpecialCards_General";
             }
-            
         default:
             break;
     }
@@ -207,9 +206,10 @@
                 case CardCategoryMove: return @"SpecM";
                 case CardCategoryKick: return @"SpecK";
                 case CardCategoryChallenge: return @"SpecC";
+                case CardCategoryGeneral: return @"SpecM";
+               // case CardCategoryGeneral: return
                 default: break;
             }
-            
         default:
             break;
     }
@@ -217,7 +217,13 @@
 }
 
 -(NSString*)fileNameForBigCard {
-    NSString *fileName = [NSString stringWithFormat:@"%@_L%da", [self bigCardImageString], _level];
+    NSString *fileName;
+    if(_deck.category == CardCategorySpecial){
+        fileName = [NSString stringWithFormat:@"%@", [self bigCardImageString]];
+    }
+    else{
+         fileName = [NSString stringWithFormat:@"%@_L%da", [self bigCardImageString], _level];
+    }
     return fileName;
 }
 
