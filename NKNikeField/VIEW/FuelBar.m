@@ -12,15 +12,16 @@
     NSLog(@"init FuelBar");
     NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"fuelbar_fuel.png"]];
     fuel = [[NKSpriteNode alloc] initWithTexture:image];
+    
    
-    //[fuel setZPosition:1];
+    [fuel setZPosition:3];
     
     NKTexture *imageContainer = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"FuelBar_Container.png"]];
     NKSpriteNode *fuelContainer = [[NKSpriteNode alloc] initWithTexture:imageContainer];
     [fuelContainer setYScale:1.15];
     [fuelContainer setXScale:1.03];
     [fuelContainer setPosition:P2Make(0, .5)];
-    [fuelContainer setZPosition:-1];
+    [fuelContainer setZPosition:2];
     
     S2t imageSize = [imageContainer size];
     

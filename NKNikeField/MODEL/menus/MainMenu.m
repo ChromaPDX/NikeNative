@@ -6,7 +6,7 @@
 //
 //
 
-#import "MainMenu.h"
+#import "Menus.h"
 #import "NodeKitten.h"
 #import "GameScene.h"
 
@@ -73,6 +73,8 @@
     }
     else if(R4ContainsPoint(startButtonRect, location)){
         NSLog(@"start button pressed, starting game...");
+        //  Pregame* newScene = [[Pregame alloc] initWithSize:self.size];
+        // [self.nkView setScene:newScene];
         NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startSinglePlayerGame];
         self.nkView.scene = newScene;
