@@ -8,6 +8,7 @@
 typedef NS_ENUM(NSInteger, NKPrimitive) {
     NKPrimitiveNone,
     NKPrimitiveRect,
+    NKPrimitiveCube,
     NKPrimitiveSphere
 } NS_ENUM_AVAILABLE(10_9, 7_0);
 

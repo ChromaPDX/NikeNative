@@ -1030,8 +1030,6 @@
 		61A2578218FDE998001B7F67 /* Geometry */ = {
 			isa = PBXGroup;
 			children = (
-				2934BDE6191B166300A33DBF /* perlin.c */,
-				2934BDE7191B166300A33DBF /* perlin.h */,
 				61A2578A18FDE998001B7F67 /* NKVectorTypes.h */,
 				29855333191B16F700166585 /* NKMath.h */,
 				61A2578B18FDE998001B7F67 /* NKVectorTypes.m */,
@@ -1044,6 +1042,8 @@
 				61A2578718FDE998001B7F67 /* NKMeshTypes.h */,
 				61A2578818FDE998001B7F67 /* NKStaticDraw.h */,
 				61A2578918FDE998001B7F67 /* NKStaticDraw.m */,
+				2934BDE7191B166300A33DBF /* perlin.h */,
+				2934BDE6191B166300A33DBF /* perlin.c */,
 			);
 			path = Geometry;
 			sourceTree = "<group>";

@@ -92,11 +92,11 @@
    
 }
 
--(void)pushScale:(V3t)scale {
+-(void)pushScale:(V3t)nscale {
     
     [self pushMatrix];
     
-    modelMatrix = M16ScaleWithV3(modelMatrix, scale);
+    modelMatrix = M16ScaleWithV3(modelMatrix, nscale);
     
     memcpy(matrixStack+matrixCount, modelMatrix.m, sizeof(M16t));
     

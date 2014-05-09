@@ -341,7 +341,6 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
     }
 }
 
-
 -(V3t*) getVertices:(int*)count{
     *count = numberOfFaces;
     return vertices;
@@ -354,7 +353,7 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
         [texture enableAndBind:0];
         
         [vertexBuffer bind:^{
-            glDrawArrays(GL_TRIANGLES, 0, vertexBuffer.numberOfElements);
+            glDrawArrays(vertexBuffer.drawMode, 0, vertexBuffer.numberOfElements);
         }];
         
     }
@@ -447,7 +446,7 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
     if (NK_GL_VERSION == 2) {
         
         [vertexBuffer bind:^{
-            glDrawArrays(GL_TRIANGLES, 0, vertexBuffer.numberOfElements);
+            glDrawArrays(vertexBuffer.drawMode, 0, vertexBuffer.numberOfElements);
         }];
         
     }
@@ -538,13 +537,27 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
     _primitiveType = primitive;
     
     switch (primitive) {
+           
         case NKPrimitiveSphere:
-            [self sphereWithStacks:16 slices:16 squash:1.];
+            if (NK_GL_VERSION == 2) {
+                vertexBuffer = [NKVertexBuffer sphereWithStacks:16 slices:16 squash:1.];
+                numberOfVertices = vertexBuffer.numberOfElements;
+            }
+            else {
+                [self sphereWithStacks:16 slices:16 squash:1.];
+            }
+            break;
+           
+        case NKPrimitiveCube:
+            if (NK_GL_VERSION == 2){
+                vertexBuffer = [NKVertexBuffer defaultCube];
+                numberOfVertices = vertexBuffer.numberOfElements;
+            }
             break;
             
         case NKPrimitiveRect:
             [self defaultRect];
-          //  [self sphereWithStacks:16 slices:16 squash:1.];
+            //  [self sphereWithStacks:16 slices:16 squash:1.];
             break;
         default:
             break;

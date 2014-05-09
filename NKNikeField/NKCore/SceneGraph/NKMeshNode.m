@@ -46,6 +46,7 @@
         
         self.texture = texture;
         self.alpha = 1.;
+        
         _colorBlendFactor = 1.;
         self.color = color;
         
@@ -55,6 +56,7 @@
         
         _mesh = [[NKMesh alloc]initWithPrimitive:primitive];
         
+        self.cullFace = NKCullFaceBoth;
     }
     
     return self;
@@ -78,7 +80,6 @@
 -(C4t)glColor {
     C4t col;
     if (_texture) {
-        
         [_color getRed:&col.r green:&col.g blue:&col.b alpha:&col.a];
         
         col.a *= self.alpha;
@@ -89,7 +90,6 @@
             col.g =cblend(col.g,colBlend);
             col.b =cblend(col.b,colBlend);
         }
-        
         //  [[self textureColorForSprite] getRed:&col.r green:&col.g blue:&col.b alpha:&col.a];
     }
     else {
@@ -111,11 +111,15 @@
                 [self.scene.activeShader setVec4:_intColor forUniform:UNIFORM_COLOR];
                 [self.scene.activeShader setInt:1 forUniform:USE_UNIFORM_COLOR];
             }
+            else {
+                [self.scene.activeShader setInt:1 forUniform:USE_UNIFORM_COLOR];
+            }
             
             if (_texture) {
                 [self.scene.activeShader setInt:1 forUniform:UNIFORM_NUM_TEXTURES];
                 [_mesh drawWithTexture:_texture color:_intColor];
             }
+            
             else {
                 [self.scene.activeShader setInt:0 forUniform:UNIFORM_NUM_TEXTURES];
                 [_mesh drawWithColor:_intColor];

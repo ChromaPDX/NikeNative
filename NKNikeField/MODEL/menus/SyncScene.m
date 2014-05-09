@@ -8,6 +8,7 @@
 
 #import "SyncScene.h"
 #import "NodeKitten.h"
+#import "NikeNodeHeaders.h"
 
 @implementation SyncScene
 
@@ -16,11 +17,29 @@
     
     if (self) {
         
-         NKMeshNode *ballSprite = [[NKMeshNode alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:nil size:V3Make(250,250,250)];
+         NKMeshNode *ballSprite = [[NKMeshNode alloc]initWithPrimitive:NKPrimitiveSphere texture: [NKTexture textureWithImageNamed:@"ball_Texture.png"] color:V2BLUE size:V3MakeF(200)];
         
         [self addChild:ballSprite];
         
-        [ballSprite repeatAction:[NKAction rotateYByAngle:180 duration:1.]];
+        [ballSprite setPosition:P2Make(0, 400)];
+        
+        [ballSprite repeatAction:[NKAction rotateYByAngle:180 duration:10.]];
+        
+        NKMeshNode *cubeSprite = [[NKMeshNode alloc]initWithPrimitive:NKPrimitiveCube texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:NKWHITE size:V3Make(250,250,250)];
+        
+        [cubeSprite setPosition:P2Make(0, 0)];
+        
+        [self addChild:cubeSprite];
+        
+        [cubeSprite repeatAction:[NKAction rotateXByAngle:180 duration:10.]];
+        
+        NKSpriteNode *testSprite = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:NKWHITE size:P2Make(250,250)];
+        
+        [testSprite setPosition:P2Make(0, -400)];
+        
+        [self addChild:testSprite];
+        
+        [testSprite repeatAction:[NKAction rotateByAngle:180 duration:10.]];
         
     }
     
