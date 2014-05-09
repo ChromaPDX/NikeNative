@@ -306,6 +306,10 @@
                 [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventChallenge];
             }
             
+            else if (_selectedCard.category == CardCategorySpecial){
+                [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventFreeze];
+            }
+            
             
             // ADD DISCARD EVENT
             [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventPlayCard];
@@ -331,6 +335,10 @@
             event.playerReceiving = [self playerAtLocation:event.location];
         }
         
+    }
+    
+    else if (event.type == kEventFreeze){
+        event.playerReceiving = [self playerAtLocation:event.location];
     }
     
     else if (event.type == kEventPlayCard){
@@ -842,7 +850,12 @@
     if (event.type == kEventStartTurn){
         event.manager.myTurn = true;
         for (Player* p in event.manager.players.inGame) {
-            p.used = false;
+            if(p.frozen){
+                p.frozen = FALSE;
+            }
+            else{
+                p.used = false;
+            }
         }
         
         [self assignBallIfPossible];
@@ -1093,6 +1106,11 @@
             if (event.manager.teamSide) _score.y += 1;
             else _score.x += 1;
             
+        }
+        
+        else if (event.type == kEventFreeze){
+            event.playerReceiving.used = TRUE;
+            event.playerReceiving.frozen = TRUE;
         }
         
         

@@ -72,6 +72,7 @@ typedef NS_ENUM(int32_t, EventType) {
     kEventMove,
     kEventAddSpecial,
     kEventRemoveSpecial,
+    kEventFreeze,
     
     // Deck
     kEventShuffleDeck,
