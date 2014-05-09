@@ -203,10 +203,10 @@
         case CardCategoryChallenge: return @"Chal";
         case CardCategorySpecial:
             switch (_specialCategory) {
-                case CardCategoryMove: return @"SpecM";
-                case CardCategoryKick: return @"SpecK";
-                case CardCategoryChallenge: return @"SpecC";
-                case CardCategoryGeneral: return @"SpecM";
+                case CardCategoryMove: return @"SpecGeneral";
+                case CardCategoryKick: return @"SpecGeneral";
+                case CardCategoryChallenge: return @"SpecGeneral";
+                case CardCategoryGeneral: return @"SpecGeneral";
                // case CardCategoryGeneral: return
                 default: break;
             }
@@ -228,7 +228,13 @@
 }
 
 -(NSString*)fileNameForThumbnail {
-    NSString *fileName = [NSString stringWithFormat:@"Card_Icon_%@_L%d", [self thumbnailImageString], _level];
+    NSString *fileName;
+    if(_deck.category == CardCategorySpecial){
+        fileName = [NSString stringWithFormat:@"Card_Icon_%@", [self thumbnailImageString]];
+    }
+    else{
+        fileName = [NSString stringWithFormat:@"Card_Icon_%@_L%d", [self thumbnailImageString], _level];
+    }
     return fileName;
 }
 
