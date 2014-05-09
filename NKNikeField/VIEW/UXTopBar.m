@@ -42,7 +42,7 @@
         NKSpriteNode* logo = [[NKSpriteNode alloc] initWithTexture:logoImage];
         //[logo setScale:.33];
         [logo setPosition:P2Make(-270, -5)];
-        [logo setZPosition:1];
+        [logo setZPosition:4];
 
         [self addChild:fuelBar];
         [self addChild:fuelLabel];

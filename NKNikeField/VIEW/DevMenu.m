@@ -74,12 +74,14 @@
         newScene = [[SyncScene alloc]initWithSize:self.size];
     }
     else if ([cell.name isEqualToString:@"ERIC"]) {
-        newScene = [[MainMenu alloc]initWithSize:self.size];
+        newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startAIGame];
     }
     else if ([cell.name isEqualToString:@"LEIF"]) {
-        newScene = [[GameScene alloc]initWithSize:self.size];
-        [[(GameScene*)newScene game] startSinglePlayerGame];
+        //newScene = [[GameScene alloc]initWithSize:self.size];
+        //[[(GameScene*)newScene game] startSinglePlayerGame];
+        newScene = [[MainMenu alloc]initWithSize:self.size];
+        //newScene = [[Pregame alloc]initWithSize:self.size];
     }
     
     self.nkView.scene = newScene;
