@@ -21,8 +21,8 @@
         // Initialization code
         float scale = [[UIScreen mainScreen] scale];
         
-        //self.scene = [[MainMenu alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
-        self.scene = [[DevMenu alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
+        self.scene = [[MainMenu alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
+        //self.scene = [[DevMenu alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
 
         
         //GameScene *scene = [[GameScene alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
