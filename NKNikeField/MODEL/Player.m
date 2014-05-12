@@ -16,6 +16,10 @@
         _manager = m;
         _faction = rand()%4 + 1;
     }
+    _frozen = FALSE;
+    _noLegs = FALSE;
+    _noLegsCount = 0;
+    _deRez = FALSE;
     return self;
 }
 

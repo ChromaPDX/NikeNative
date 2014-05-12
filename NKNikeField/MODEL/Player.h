@@ -37,7 +37,10 @@ typedef NS_ENUM(int32_t, FactionType) {
 
 @property (nonatomic, weak) Manager *manager;
 @property (nonatomic) bool used;
+@property (nonatomic) bool deRez;
 @property (nonatomic) bool frozen;
+@property (nonatomic) bool noLegs;
+@property (nonatomic) int noLegsCount;
 @property (nonatomic, weak) Card *ball;  // if I'm a player, do i have the ball? (or, NIL)
 @property (nonatomic, strong) NSArray *enchantments; // array of (Card*) types, cards currently modifying a player card. only used ifTypePlayer
 

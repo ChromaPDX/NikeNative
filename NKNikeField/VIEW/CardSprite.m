@@ -108,13 +108,40 @@
     return V2YELLOW;
 }
 
--(void)setCorrectTexture {
+-(void)showLabels{
+    NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
     
+    /*text.fontSize = 20;
+    text.fontColor = V2ORANGE;
+    [text setSize:S2Make(500,100)];
+    //[text setZPosition:1];
+    [text setText:[NSString stringWithFormat:@"%d", self.model.actionPointCost]];
+    //[text setText:@"test"];
+    [text setPosition:P2Make(0, -40)];
+    [self addChild:text];
+    */
+    
+    text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
+    text.fontSize = 16;
+    text.fontColor = V2ORANGE;
+    [text setSize:S2Make(500,100)];
+    [text setText:[self.model descriptionForCard]];
+    [text setPosition:P2Make(0, -100)];
+    //[text setZPosition:2];
+
+    [self addChild:text];
+}
+
+-(void)setCorrectTexture {
     self.texture = [NKTexture textureWithImageNamed:[_model fileNameForThumbnail]];
+    if(self.model.category == CardCategorySpecial){
+       // [self showLabels];
+    }
     if (_model.locked) {
         [self showLocked];
     }
 }
+
 -(void)setFlipped:(BOOL)flipped {
     
     _flipped = flipped;

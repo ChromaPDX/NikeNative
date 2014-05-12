@@ -307,7 +307,28 @@
             }
             
             else if (_selectedCard.category == CardCategorySpecial){
-                [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventFreeze];
+                if(_selectedCard.specialTypeCategory == CardSpecialCategoryFreeze){
+                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventFreeze];
+                }
+                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryNoLegs){
+                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventNoLegs];
+                }
+                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryBlock){
+                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventBlock];
+                }
+                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryDeRez){
+                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventDeRez];
+                }
+                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryNewDeal){
+                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventNewDeal];
+                }
+                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryPredictiveAnalysis){
+                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventPredictiveAnalysis];
+                }
+                else  if(_selectedCard.specialTypeCategory == CardSpecialCategorySuccubus){
+                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventSuccubus];
+                }
+                
             }
             
             
@@ -337,7 +358,7 @@
         
     }
     
-    else if (event.type == kEventFreeze){
+    else if (event.type == kEventFreeze || event.type == kEventNoLegs || event.type == kEventDeRez){
         event.playerReceiving = [self playerAtLocation:event.location];
     }
     
@@ -358,6 +379,7 @@
     else if (event.type == kEventRemovePlayer) {
         
         event.playerPerforming = [self playerAtLocation:event.location];
+        event.playerReceiving = [self playerAtLocation:event.location];
         
     }
     
@@ -870,6 +892,12 @@
             [p.challengeDeck drawNewCardIfEmptyForEvent:event];
             [p.specialDeck drawNewCardIfEmptyForEvent:event];
             [p.specialDeck drawNewCardIfEmptyForEvent:event];
+            if(p.deRez){
+                NSMutableArray *arCopy = [event.manager.players.inGame mutableCopy];
+                [arCopy removeObject:p];
+                event.manager.players.inGame = arCopy;
+            }
+            
         }
         
         //NSLog(@"Game.m : drawing card %@ for:%@", newCard.name, event.manager.name);
@@ -1107,15 +1135,33 @@
             else _score.x += 1;
             
         }
-        
-        else if (event.type == kEventFreeze){
+#pragma mark special card events
+        else if (event.type == kEventFreeze){  //  FREEZE
             event.playerReceiving.used = TRUE;
             event.playerReceiving.frozen = TRUE;
         }
-        
-        
-        
-        return 1;
+        else if (event.type == kEventNoLegs){  //  NO LEGS
+            event.playerReceiving.noLegs = TRUE;
+        }
+        else if (event.type == kEventSuccubus){  //  SUCCUBUS
+            event.manager.opponent.actionPointsEarned -= 100;
+            event.manager.actionPointsEarned += 50;
+
+        }
+        else if (event.type == kEventBlock){  //  BLOCK
+           
+        }
+        else if (event.type == kEventDeRez){  //  DEREZ
+            event.playerReceiving.deRez = 0;
+            
+        }
+        else if (event.type == kEventNewDeal){  //  NEWDEAL
+            [event.playerPerforming.deck shuffleWithSeed:event.seed fromDeck:event.playerPerforming.deck.allCards];
+        }
+        else if (event.type == kEventPredictiveAnalysis){  //  PREDICTIVE ANALASYS
+           
+        }
+        return TRUE;
     }
 #pragma mark card failed
     

@@ -59,13 +59,31 @@
     _kickCategory = CardKickCategoryNull;
     _moveCategory = CardMoveCategoryNull;
     _challengeCategory = CardChallengeCategoryNull;
-    _specialTypeCategory = rand()%1 + 1;
+    _specialTypeCategory = rand() % 7 + 1;
     switch (_specialTypeCategory) {
         case CardSpecialCategoryFreeze:
             self.specialCategory = CardCategoryGeneral;
             break;
+        case CardSpecialCategoryNoLegs:
+            self.specialCategory = CardCategoryGeneral;
+            break;
+        case CardSpecialCategoryBlock:
+            self.specialCategory = CardCategoryGeneral;
+            break;
+        case CardSpecialCategoryDeRez:
+            self.specialCategory = CardCategoryGeneral;
+            break;
+        case CardSpecialCategoryNewDeal:
+            self.specialCategory = CardCategoryGeneral;
+            break;
+        case CardSpecialCategoryPredictiveAnalysis:
+            self.specialCategory = CardCategoryGeneral;
+            break;
+        case CardSpecialCategorySuccubus:
+            self.specialCategory = CardCategoryGeneral;
+            break;
         default:
-            self.specialCategory = CardCategoryMove;
+            self.specialCategory = CardCategoryGeneral;
             break;
     }
 }
@@ -284,8 +302,40 @@
 //    
 //    if(_cardCategory == kCardCategoryActionNeuralTriggerFear) return @"Neural Trigger Fear";
 //    if(_cardCategory == kCardCategoryActionAutoPlayerTrackingSystem) return @"Auto Player  Tracking System";
-//    
-    return @"add card descriptions";
+//
+    if(self.category == CardCategorySpecial){
+        if(self.specialTypeCategory == CardSpecialCategoryNoLegs){
+           
+        }
+        if(self.specialTypeCategory == CardSpecialCategoryFreeze){
+            return @"FREEZE";
+        }
+        switch (self.specialTypeCategory) {
+            case CardSpecialCategoryNoLegs:
+                return @"NO LEGS";
+                break;
+            case CardSpecialCategoryFreeze:
+                return @"FREEZE";
+                break;
+            case CardSpecialCategoryBlock:
+                return @"BLOCK";
+                break;
+            case CardSpecialCategorySuccubus:
+                return @"SUCCUBUS";
+                break;
+            case CardSpecialCategoryDeRez:
+                return @"DE-REZ";
+                break;
+            case CardSpecialCategoryNewDeal:
+                return @"NEW DEAL";
+                break;
+            case CardSpecialCategoryPredictiveAnalysis:
+                return @"ANALYZ";
+            default:
+                break;
+        }
+    }
+    return @"##NONE##";
     
     
 }
@@ -342,6 +392,16 @@
    // NSLog(@"selectionSet...");
     
     if (self.category == CardCategoryKick) {
+        if (self.enchantee.noLegs){
+            if(self.enchantee.noLegsCount < 3){
+                self.enchantee.noLegs = FALSE;
+                self.enchantee.noLegsCount = 0;
+                return nil;
+            }
+            else{
+                self.enchantee.noLegsCount++;
+            }
+        }
         if (!self.deck.player.ball) {
             return nil;
         }
@@ -449,12 +509,40 @@
     }
     else if (self.category == CardCategorySpecial){
         switch(self.specialTypeCategory){
-            case CardSpecialCategoryFreeze:
+            case CardSpecialCategoryNoLegs: case CardSpecialCategoryFreeze:  case CardSpecialCategoryDeRez:
                 for(Player *p in self.deck.player.manager.opponent.players.inGame){
-                    [accessible addObject:p.location];
+                    if(p.location){
+                        [accessible addObject:p.location];
+                    }else{
+                        NSLog(@"**ERROR no location for player");
+                    }
                 }
                 break;
+            case CardSpecialCategoryBlock:
+                accessible = [[self.game allBoardLocations] mutableCopy];
+                if(self.enchantee.location){
+                [accessible removeObject:self.enchantee.location];
+                }
+                else{
+                    NSLog(@"**ERROR no location for enchantee");
+                }
+                return accessible;
+            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
+                accessible = [[NSMutableArray alloc] init];
+                [accessible addObject:self.enchantee.location];
+                return accessible;
+                break;
         }
+        
+        
+        if(self.category == CardCategorySpecial && self.specialTypeCategory == CardSpecialCategoryBlock){
+           
+        }
+        if(self.category == CardCategorySpecial &&
+           (self.specialTypeCategory == CardSpecialCategoryNewDeal || self.specialTypeCategory == CardSpecialCategoryPredictiveAnalysis)){
+           
+        }
+
     }
     else{
         accessible = NULL;
