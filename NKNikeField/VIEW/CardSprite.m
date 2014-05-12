@@ -135,7 +135,7 @@
 -(void)setCorrectTexture {
     self.texture = [NKTexture textureWithImageNamed:[_model fileNameForThumbnail]];
     if(self.model.category == CardCategorySpecial){
-       // [self showLabels];
+        [self showLabels];
     }
     if (_model.locked) {
         [self showLocked];

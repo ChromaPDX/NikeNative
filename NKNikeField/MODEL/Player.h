@@ -38,6 +38,7 @@ typedef NS_ENUM(int32_t, FactionType) {
 @property (nonatomic, weak) Manager *manager;
 @property (nonatomic) bool used;
 @property (nonatomic) bool deRez;
+@property (nonatomic) bool newDeal;
 @property (nonatomic) bool frozen;
 @property (nonatomic) bool noLegs;
 @property (nonatomic) int noLegsCount;

@@ -868,7 +868,6 @@
     
     //event.manager.SequencePoints -= event.cost;
     
-    
     if (event.type == kEventStartTurn){
         event.manager.myTurn = true;
         for (Player* p in event.manager.players.inGame) {
@@ -883,8 +882,8 @@
         [self assignBallIfPossible];
         
     }
-    
-    else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
+
+else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
         
         for (Player* p in event.manager.players.inGame) {
             [p.moveDeck drawNewCardIfEmptyForEvent:event];
@@ -1006,7 +1005,12 @@
     else if (event.type == kEventResetPlayers){
         
         for (Player *p in event.manager.players.inGame) {
-            p.used = true;
+            if(p.newDeal){
+                p.newDeal=FALSE;
+            }
+            else{
+                p.used = TRUE;
+            }
         }
         // NSLog(@"resetting coin toss position");
         for (int i = 0; i<3; i++) {
@@ -1152,14 +1156,22 @@
            
         }
         else if (event.type == kEventDeRez){  //  DEREZ
-            event.playerReceiving.deRez = 0;
+            //event.playerReceiving.deRez = TRUE;
+            event.playerReceiving.deRez = FALSE;
             
         }
         else if (event.type == kEventNewDeal){  //  NEWDEAL
             [event.playerPerforming.deck shuffleWithSeed:event.seed fromDeck:event.playerPerforming.deck.allCards];
+            event.playerPerforming.newDeal = TRUE;
         }
         else if (event.type == kEventPredictiveAnalysis){  //  PREDICTIVE ANALASYS
-           
+            event.playerPerforming.manager.opponent.preditiveAnalysis = TRUE;
+            for(Player *p in event.playerPerforming.manager.opponent.players.allCards){
+                Card *challengeCard = p.challengeDeck.allCards[0];
+                NSLog(@"Challenge Card %@ SelectionSet = %@", challengeCard, [challengeCard selectionSet]);
+                [_gameScene showCardPath:[challengeCard selectionSet]];
+                
+            }
         }
         return TRUE;
     }

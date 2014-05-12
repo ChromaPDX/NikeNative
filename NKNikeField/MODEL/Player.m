@@ -20,6 +20,7 @@
     _noLegs = FALSE;
     _noLegsCount = 0;
     _deRez = FALSE;
+    _newDeal = FALSE;
     return self;
 }
 

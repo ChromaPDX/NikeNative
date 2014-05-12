@@ -520,8 +520,8 @@
                 break;
             case CardSpecialCategoryBlock:
                 accessible = [[self.game allBoardLocations] mutableCopy];
-                if(self.enchantee.location){
-                [accessible removeObject:self.enchantee.location];
+                if(self.deck.player.location){
+                [accessible removeObject:self.deck.player.location];
                 }
                 else{
                     NSLog(@"**ERROR no location for enchantee");
@@ -529,7 +529,7 @@
                 return accessible;
             case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
                 accessible = [[NSMutableArray alloc] init];
-                [accessible addObject:self.enchantee.location];
+                [accessible addObject:self.deck.player.location];
                 return accessible;
                 break;
         }
