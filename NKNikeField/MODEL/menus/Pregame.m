@@ -22,7 +22,7 @@
         //V3t rot =
         //table.node->setOrientation
         
-        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"screen_menu.png"]];
+        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_PregameNoText.png"]];
         UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
         [table setHighlightColor:highlightColor];
@@ -40,7 +40,7 @@
         [bigText setSize:S2Make(500,100)];
         [bigText setZPosition:1];
         [bigText setText:[listOfNames objectAtIndex:0]];
-        [bigText setPosition:P2Make(-190, 250)];
+        [bigText setPosition:P2Make(-190, 150)];
         [self addChild:bigText];
         
         NKLabelNode *bigText2 = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
@@ -50,7 +50,7 @@
         [bigText2 setSize:S2Make(500, 100)];
         [bigText2 setZPosition:2];
         [bigText2 setText:[listOfNames objectAtIndex:1]];
-        [bigText2 setPosition:P2Make(0, 350)];
+        [bigText2 setPosition:P2Make(0, 250)];
         [self addChild:bigText2];
         
         NKLabelNode *bigText3 = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
@@ -60,7 +60,7 @@
         [bigText3 setSize:S2Make(500,100)];
         [bigText3 setZPosition:3];
         [bigText3 setText:[listOfNames objectAtIndex:2]];
-        [bigText3 setPosition:P2Make(190, 250)];
+        [bigText3 setPosition:P2Make(190, 150)];
         [self addChild:bigText3];
     }
     
@@ -83,23 +83,12 @@
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
-    CGRect syncButtonRect = CGRectMake(101, 301, 120, 50);
-    CGRect startButtonRect = CGRectMake(101, 367, 120, 50);
-    CGRect HiddenAIButtonRect = CGRectMake(116, 151, 50, 50);
+    CGRect startButtonRect = CGRectMake(101, 450, 120, 50);
     CGPoint point = CGPointMake(location.x, location.y);
-    if(CGRectContainsPoint(syncButtonRect, point)){
-        NSLog(@"*NSYNC!");
-    }
-    else if(CGRectContainsPoint(startButtonRect, point)){
+    if(CGRectContainsPoint(startButtonRect, point)){
         NSLog(@"start button pressed, starting game...");
         NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startSinglePlayerGame];
-        self.nkView.scene = newScene;
-    }
-    else if(CGRectContainsPoint(HiddenAIButtonRect, point)){
-        NSLog(@"AI button pressed, starting game...");
-        NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
-        [[(GameScene*)newScene game] startAIGame];
         self.nkView.scene = newScene;
     }
     return hit;

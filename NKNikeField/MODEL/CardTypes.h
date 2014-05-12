@@ -24,7 +24,13 @@ typedef NS_ENUM(int32_t, CardCategory) {
 
 typedef NS_ENUM(int32_t, CardSpecialCategory) {
     CardSpecialCategoryNull = 0,
-    CardSpecialCategoryFreeze = 1
+    CardSpecialCategoryFreeze = 1,
+    CardSpecialCategoryNoLegs = 2,
+    CardSpecialCategorySuccubus = 3,
+    CardSpecialCategoryBlock = 4,
+    CardSpecialCategoryDeRez = 5,
+    CardSpecialCategoryNewDeal = 6,
+    CardSpecialCategoryPredictiveAnalysis = 7
 };
 
 typedef NS_ENUM(int32_t, CardMoveCategory) {
@@ -72,7 +78,14 @@ typedef NS_ENUM(int32_t, EventType) {
     kEventMove,
     kEventAddSpecial,
     kEventRemoveSpecial,
-    
+    kEventFreeze,
+    kEventNoLegs,
+    kEventSuccubus,
+    kEventBlock,
+    kEventDeRez,
+    kEventNewDeal,
+    kEventPredictiveAnalysis,
+
     // Deck
     kEventShuffleDeck,
     kEventReShuffleDeck,
