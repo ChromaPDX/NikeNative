@@ -9,7 +9,7 @@
 #import "Menus.h"
 #import "NodeKitten.h"
 #import "GameScene.h"
-
+#import "NikeViewController.h"
 
 
 @implementation MainMenu
@@ -70,6 +70,10 @@
     R4t HiddenAIButtonRect = R4Make(116, 151, 50, 50);
     if(R4ContainsPoint(syncButtonRect, location)){
         NSLog(@"*NSYNC!");
+        NikeViewController* sync = [[NikeViewController alloc]init];
+        [self.nkView.controller presentViewController:sync animated:YES completion:^{
+            
+        }];
     }
     else if(R4ContainsPoint(startButtonRect, location)){
         NSLog(@"start button pressed, starting game...");

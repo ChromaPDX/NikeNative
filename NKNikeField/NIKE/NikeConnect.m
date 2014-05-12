@@ -220,10 +220,6 @@
                                          [[json objectForKey:@"metricSummary"] objectForKey:@"distance"], @"totalDistance",
                                          nil];
             
-   
-   
-            
-
                 // THIS WILL SAVE API CALLS EVENTUALLY
 
             
@@ -248,9 +244,6 @@
     //  [self.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
-
-
-
 -(NSArray*)compressArray:(NSArray*)array{
     NSInteger part = 0;
     NSInteger sum = 0;
@@ -266,6 +259,7 @@
     }
     return sums;
 }
+
 -(void)loadAllPriorLogins{
     
     NSFileManager *fileManager = [NSFileManager defaultManager];

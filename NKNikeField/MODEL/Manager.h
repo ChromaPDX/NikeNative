@@ -27,7 +27,7 @@
 @property (nonatomic) bool myTurn;
 @property (nonatomic) bool isAI;
 @property (nonatomic) int teamSide;
-@property (nonatomic) int ActionPoints;
+@property (nonatomic) int energy;
 
 // Meta Data
 
