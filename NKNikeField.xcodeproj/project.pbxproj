@@ -27,6 +27,7 @@
 		2934BDE5191ADDE600A33DBF /* UIImage+GLBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934BDE4191ADDE600A33DBF /* UIImage+GLBuffer.m */; };
 		2934BDE8191B166300A33DBF /* perlin.c in Sources */ = {isa = PBXBuildFile; fileRef = 2934BDE6191B166300A33DBF /* perlin.c */; };
 		297E6C2519097F4F00369BDF /* blank_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 297E6C2419097F4F00369BDF /* blank_texture.png */; };
+		29B518831922AC920033E85B /* Screen_Menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B518821922AC920033E85B /* Screen_Menu.png */; };
 		29BF47FE1911666500487EBD /* NKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FA1911666500487EBD /* NKView.m */; };
 		29BF47FF1911666500487EBD /* NKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FC1911666500487EBD /* NKViewController.m */; };
 		29BF481D1911667900487EBD /* NKCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48021911667900487EBD /* NKCamera.m */; };
@@ -133,7 +134,6 @@
 		3BC5A7D8191AA9F400414544 /* Screen_PregameNoText.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7D5191AA9F400414544 /* Screen_PregameNoText.png */; };
 		3BC5A7DB191ABEE200414544 /* RecapMenuWin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5A7DA191ABEE200414544 /* RecapMenuWin.m */; };
 		3BC5A7DD191AC03E00414544 /* Pregame.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5A7DC191AC03E00414544 /* Pregame.m */; };
-		3BC5A7E0191ADA5000414544 /* screen_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7DF191ADA5000414544 /* screen_menu.png */; };
 		6198A359190068660083EA5D /* UXTopBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6198A358190068660083EA5D /* UXTopBar.m */; };
 		6198A35B1900727C0083EA5D /* lock-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 6198A35A1900727C0083EA5D /* lock-4.png */; };
 		61A257C118FDE998001B7F67 /* NKMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578418FDE998001B7F67 /* NKMaterial.m */; };
@@ -282,6 +282,7 @@
 		2934BDE7191B166300A33DBF /* perlin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = perlin.h; sourceTree = "<group>"; };
 		297E6C2419097F4F00369BDF /* blank_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank_texture.png; sourceTree = "<group>"; };
 		29855333191B16F700166585 /* NKMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NKMath.h; sourceTree = "<group>"; };
+		29B518821922AC920033E85B /* Screen_Menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Menu.png; sourceTree = "<group>"; };
 		29BF47F91911666500487EBD /* NKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKView.h; sourceTree = "<group>"; };
 		29BF47FA1911666500487EBD /* NKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKView.m; sourceTree = "<group>"; };
 		29BF47FB1911666500487EBD /* NKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKViewController.h; sourceTree = "<group>"; };
@@ -443,7 +444,6 @@
 		3BC5A7DA191ABEE200414544 /* RecapMenuWin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecapMenuWin.m; sourceTree = "<group>"; };
 		3BC5A7DC191AC03E00414544 /* Pregame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pregame.m; sourceTree = "<group>"; };
 		3BC5A7DE191AC04A00414544 /* Pregame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pregame.h; sourceTree = "<group>"; };
-		3BC5A7DF191ADA5000414544 /* screen_menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screen_menu.png; sourceTree = "<group>"; };
 		6198A357190068660083EA5D /* UXTopBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UXTopBar.h; sourceTree = "<group>"; };
 		6198A358190068660083EA5D /* UXTopBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UXTopBar.m; sourceTree = "<group>"; };
 		6198A35A1900727C0083EA5D /* lock-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock-4.png"; sourceTree = "<group>"; };
@@ -1194,7 +1194,7 @@
 		61D6E6C918FDB5B70017A389 /* Menus */ = {
 			isa = PBXGroup;
 			children = (
-				3BC5A7DF191ADA5000414544 /* screen_menu.png */,
+				29B518821922AC920033E85B /* Screen_Menu.png */,
 				3BC5A7D3191AA9F400414544 /* Screen_RecapLostNoText.png */,
 				3BC5A7D4191AA9F400414544 /* Screen_RecapWinNoText.png */,
 				3BC5A7D5191AA9F400414544 /* Screen_PregameNoText.png */,
@@ -1543,9 +1543,9 @@
 				61D6E85818FDB5B70017A389 /* Card_Icon_Kick_L1.png in Resources */,
 				61D6E87B18FDB5B70017A389 /* CardType_PlayerSign.png in Resources */,
 				61D6E80518FDB5B70017A389 /* tile_topleft.png in Resources */,
+				29B518831922AC920033E85B /* Screen_Menu.png in Resources */,
 				61D6E86A18FDB5B70017A389 /* Kick_L1a.png in Resources */,
 				29C42BE019105C0600441639 /* goal_easter_egg.mp3 in Resources */,
-				3BC5A7E0191ADA5000414544 /* screen_menu.png in Resources */,
 				29C42BE919105C0600441639 /* PlucknWiggleA#2.wav in Resources */,
 				29090EE8190ED80C00BE6B92 /* bottom_bar.png in Resources */,
 				3BC5A7D8191AA9F400414544 /* Screen_PregameNoText.png in Resources */,
