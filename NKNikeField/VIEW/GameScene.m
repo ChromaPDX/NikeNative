@@ -281,7 +281,19 @@ float PARTICLE_SCALE;
 
 -(void)cleanUpUIForSequence:(GameSequence *)sequence {
     for (BoardTile* tile in _gameTiles.allValues) {
-        [tile setColor:nil];
+        if([self.game.blockedBoardLocations containsObject:tile.location]){
+          //  [tile removeAllActions];
+           // [tile setColor:V2GREEN];
+            NSArray *path = [[NSArray alloc] initWithObjects:tile.location, nil];
+            [tile.location setBorderShapeInContext:path];
+            [tile setTextureForBorder:tile.location.borderShape];
+            [tile setUserInteractionEnabled:true];
+           // [tile runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
+            [tile setColor:V2RED];
+        }
+        else{
+            [tile setColor:nil];
+        }
         [tile setTexture:nil];
         [tile setUserInteractionEnabled:false];
     }
@@ -371,6 +383,7 @@ float PARTICLE_SCALE;
         [p setHighlighted:false];
     }
     [[playerSprites objectForKey:p] setHighlighted:true];
+    
 }
 
 #pragma mark - AI selection

@@ -117,6 +117,8 @@
     
     self.myTurn = YES;
     
+    _blockedBoardLocations = [[NSMutableArray alloc] init];
+    
     [_gameScene setupGameBoard];
     
     NSLog(@"gameboard setup");
@@ -1153,7 +1155,7 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
 
         }
         else if (event.type == kEventBlock){  //  BLOCK
-           
+            [event.manager.game.blockedBoardLocations addObject:event.location];
         }
         else if (event.type == kEventDeRez){  //  DEREZ
             //event.playerReceiving.deRez = TRUE;
