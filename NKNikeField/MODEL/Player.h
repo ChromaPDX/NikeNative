@@ -19,7 +19,7 @@ typedef NS_ENUM(int32_t, FactionType) {
 
 @interface Player : Card
 
--(id) initWithManager:(Manager*)m;
+-(id)initWithManager:(Manager*)m;
 -(void)generateDefaultCards;
 
 // PERSISTENT (IN ADDITION TO PERSISTENT INHERITED CARD PROPERTIES)
@@ -37,11 +37,16 @@ typedef NS_ENUM(int32_t, FactionType) {
 
 @property (nonatomic, weak) Manager *manager;
 @property (nonatomic) bool used;
-@property (nonatomic) bool deRez;
-@property (nonatomic) bool newDeal;
-@property (nonatomic) bool frozen;
-@property (nonatomic) bool noLegs;
-@property (nonatomic) int noLegsCount;
+
+//@Eric, let's turn these into a NSDictionary so we can keep clean as card #'s grow
+
+@property (nonatomic,strong) NSMutableDictionary *effects;
+
+//@property (nonatomic) bool deRez;
+//@property (nonatomic) bool newDeal;
+//@property (nonatomic) bool frozen;
+//@property (nonatomic) bool noLegs;
+
 @property (nonatomic, weak) Card *ball;  // if I'm a player, do i have the ball? (or, NIL)
 @property (nonatomic, strong) NSArray *enchantments; // array of (Card*) types, cards currently modifying a player card. only used ifTypePlayer
 
@@ -51,11 +56,11 @@ typedef NS_ENUM(int32_t, FactionType) {
 -(void)removeEnchantment:(Card*)enchantment;
 -(void)removeLastEnchantment;
 
--(NSArray*)allCardsInHand;
--(NSArray*)allCardsInDeck;
-
--(Card*)cardInHandAtlocation:(BoardLocation*)location;
--(Card*)cardInDeckAtLocation:(BoardLocation*)location;
+//-(NSArray*)allCardsInHand;
+//-(NSArray*)allCardsInDeck;
+//
+//-(Card*)cardInHandAtlocation:(BoardLocation*)location;
+//-(Card*)cardInDeckAtLocation:(BoardLocation*)location;
 
 // Convenience functions for AI, etc.
 -(NSArray*)pathToBoardLocation:(BoardLocation*)location;

@@ -22,7 +22,10 @@
     self = [super init];
     if ( self )
     {
-        glEnable(GL_DEPTH_TEST);
+        
+        NSLog(@"init vertex buffer with size: %ld", size);
+        
+        //glEnable(GL_DEPTH_TEST);
         
         glGenVertexArraysOES(1, &_vertexArray);
         glBindVertexArrayOES(_vertexArray);
@@ -116,19 +119,19 @@
     int numElements = (slices*2+2) * (stacks);
     
     // Vertices
-    V3t *vertices = (V3t*)malloc(sizeof(V3t) * numElements);
+    V3t *vertices = (V3t*)calloc(numElements,sizeof(V3t));
     F1t *vPtr = (F1t*)&vertices[0];
     
-    // Color
-    C4t *vertexColors = (C4t*)malloc(sizeof(C4t) * numElements);
-    F1t *cPtr = (F1t*)&vertexColors[0];
-    
     // Normal pointers for lighting
-    V3t *vertexNormals = (V3t*)malloc(sizeof(V3t) * numElements);
+    V3t *vertexNormals = (V3t*)calloc(numElements,sizeof(V3t));
     F1t *nPtr = (F1t*)&vertexNormals[0];
     
-    V2t *textureCoords = (V2t*)malloc(sizeof(V2t) * numElements);
+    V2t *textureCoords = (V2t*)calloc(numElements,sizeof(V2t));
     F1t *tPtr = (F1t*)&textureCoords[0];
+    
+    // Color
+    C4t *vertexColors = (C4t*)calloc(numElements, sizeof(C4t));
+    F1t *cPtr = (F1t*)&vertexColors[0];
     
     unsigned int phiIdx, thetaIdx;
     
@@ -216,19 +219,19 @@
         
     }
     
-    NKVertexArray *elements = (NKVertexArray*)malloc(sizeof(NKVertexArray)*numElements);
+    NKVertexArray *elements = (NKVertexArray*)calloc(numElements, sizeof(NKVertexArray));
     
     for (int i = 0; i < numElements; i++) {
         memcpy(&elements[i].vertex, &vertices[i], sizeof(V3t));
         memcpy(&elements[i].normal, &vertexNormals[i], sizeof(V3t));
         memcpy(&elements[i].texCoord, &textureCoords[i], sizeof(V2t));
-       // memcpy(&elements[i].color, &vertexColors[i], sizeof(C4t));
+    //    memcpy(&elements[i].color, &vertexColors[i], sizeof(C4t));
     }
     
     free(vertices);
     free(vertexNormals);
-    free(vertexColors);
     free(textureCoords);
+    free(vertexColors);
     
     NSLog(@"V2t: %lu V3t: %lu V4t: %lu ", sizeof(V2t), sizeof(V3t), sizeof(V4t));
     NSLog(@"NKVertexArraySize: %lu", sizeof(NKVertexArray));
@@ -253,6 +256,7 @@
     
     buf.numberOfElements = numElements;
     buf.drawMode = GL_TRIANGLE_STRIP;
+    
     free(elements);
     
     return buf;

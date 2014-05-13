@@ -1723,7 +1723,7 @@ static inline V4t M16GetColumn(M16t matrix, int column)
 #endif
 }
 
-static inline M16t GLKMatrix4SetRow(M16t matrix, int row, V4t vector)
+static inline M16t M16SetRow(M16t matrix, int row, V4t vector)
 {
     matrix.m[row] = vector.v[0];
     matrix.m[row + 4] = vector.v[1];

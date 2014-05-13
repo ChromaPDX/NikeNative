@@ -22,4 +22,6 @@
 
 @property (nonatomic) int fuel;
 
+-(void)setPlayer:(Player*)p WithCompletionBlock:(void (^)())block;
+
 @end

@@ -8,7 +8,7 @@ typedef struct NKVertexArray{
     V3t vertex;
     V3t normal;
     V2t texCoord;
-   // C4t color;
+  //  C4t color;
 } NKVertexArray;
 
 @interface NKVertexBuffer : NSObject
@@ -16,6 +16,7 @@ typedef struct NKVertexArray{
 - (id)initWithSize:(GLsizeiptr)size
               data:(const GLvoid *)data
              setup:(void(^)())geometrySetupBlock;
+
 -(instancetype)initWithVertexData:(const GLvoid *)data ofSize:(GLsizeiptr)size;
 
 +(instancetype)defaultCube;

@@ -17,7 +17,7 @@
         
         
 
-        _playerHands = [NSMutableDictionary dictionary];
+       // _managerHands = [NSMutableDictionary dictionary];
  
         self.name = @"ACTION WINDOW";
         
@@ -112,7 +112,7 @@
 
 
 -(BOOL)cardIsMine:(Card*)card {
-    if ([card.deck.player.manager isEqual:_delegate.game.me]) return 1;
+    if ([card.deck.manager isEqual:_delegate.game.me]) return 1;
     return 0;
 }
 
@@ -129,7 +129,7 @@
 
 -(CardSprite*)spriteForCard:(Card*)c {
     
-    PlayerHand *hand = [_playerHands objectForKey:c.deck.player];
+    ManagerHand *hand = _managerHand; //[_managerHands objectForKey:c.deck.player];
     
     if (hand) {
         
@@ -144,11 +144,16 @@
 
 -(void)cleanup {
     
-    for (PlayerHand *hand in _playerHands.allValues) {
-        [self removeCardsForPlayer:hand.player animated:YES WithCompletionBlock:^{}];
-    }
-
-    _playerHands = [NSMutableDictionary dictionary];
+    [self removeCardsAnimated:YES WithCompletionBlock:^{_managerHand = nil;
+    }];
+    
+//    for (PlayerHand *hand in _managerHands.allValues) {
+//        [self removeCardsForPlayer:hand.player animated:YES WithCompletionBlock:^{}];
+//    }
+//
+//    _managerHands = [NSMutableDictionary dictionary];
+    
+    
     
 }
 
@@ -172,20 +177,20 @@
 
 -(void)cardDoubleTap:(CardSprite*)card {
 
-    PlayerHand* ph =   [_playerHands objectForKey:card.model.deck.player];
+    //PlayerHand* ph = [_managerHands objectForKey:card.model.deck.player];
     
     float dur = FAST_ANIM_DUR;
     
-    if (!ph.bigCards) {
+    if (!_managerHand.bigCards) {
         BigCards* big = [[BigCards alloc]initWithColor:NKCLEAR size:S2Make(w, h*3.)];
-        big.delegate = ph;
+        big.delegate = _managerHand;
         
-        ph.bigCards = big;
+        _managerHand.bigCards = big;
         big.scrollDirectionVertical = false;
         big.name = @"BIG CARD SCROLLER";
         
-        for (CardSprite *cs in ph.myCards) {
-            NKScrollNode* node = [[NKScrollNode alloc] initWithParent:ph.bigCards autoSizePct:(2./ph.myCards.count)];
+        for (CardSprite *cs in _managerHand.myCards) {
+            NKScrollNode* node = [[NKScrollNode alloc] initWithParent:_managerHand.bigCards autoSizePct:(2./_managerHand.myCards.count)];
             [node setTexture:[NKTexture textureWithImageNamed:[cs.model fileNameForBigCard]]];
             [node setColor:NKWHITE];
             [big addCard:node];
@@ -196,10 +201,10 @@
         [self runAction:[NKAction resizeToWidth:w height:h*7.5 duration:dur]];
         
         [big setPosition3d:V3Make(0, -h*2.5, 0)];
-        [ph addChild:big];
+        [_managerHand addChild:big];
         [big runAction:[NKAction move3dTo:V3Make(0, h*2.15, 0) duration:dur]];
         
-        int cardNum = [ph.myCards indexOfObject:[self spriteForCard:card.model]];
+        int cardNum = [_managerHand.myCards indexOfObject:[self spriteForCard:card.model]];
         [big scrollToChild:cardNum  duration:FAST_ANIM_DUR];
         [(GameScene*)self.scene playSoundWithKey:@"cardExpand"];
         
@@ -216,14 +221,14 @@
     
     float dur = CARD_ANIM_DUR;
     
-    PlayerHand* ph =   [_playerHands objectForKey:_selectedCard.deck.player];
+    //PlayerHand* ph =   [_managerHands objectForKey:_selectedCard.deck.player];
     
     NKAction *fadeLower = [NKAction group:@[[NKAction fadeAlphaTo:0. duration:dur],
                                             [NKAction move3dBy:V3Make(0, -h*.5, 0) duration:dur]]];
     
-    [ph.bigCards runAction:fadeLower completion:^{
-         [ph.bigCards removeFromParent];
-        ph.bigCards = nil;
+    [_managerHand.bigCards runAction:fadeLower completion:^{
+         [_managerHand.bigCards removeFromParent];
+        _managerHand.bigCards = nil;
     }];
     [self runAction:[NKAction resizeToWidth:w height:_delegate.size.height*.15 duration:dur]];
     
@@ -233,13 +238,13 @@
 -(void)setSelectedCard:(Card *)selectedCard {
     
     if (selectedCard) {
-         [[_playerHands objectForKey:selectedCard.deck.player] shuffleAroundCard:[self spriteForCard:selectedCard]];
+         [_managerHand shuffleAroundCard:[self spriteForCard:selectedCard]];
     }
     
-    PlayerHand* ph =   [_playerHands objectForKey:selectedCard.deck.player];
-    BigCards *big = ph.bigCards;
+    //PlayerHand* ph =   [_managerHand objectForKey:selectedCard.deck.player];
+    BigCards *big = _managerHand.bigCards;
     
-    int cardNum = [ph.myCards indexOfObject:[self spriteForCard:selectedCard]];
+    int cardNum = [_managerHand.myCards indexOfObject:[self spriteForCard:selectedCard]];
     
     [big scrollToChild:cardNum duration:FAST_ANIM_DUR];
 
@@ -247,10 +252,12 @@
     
 }
 
--(void)removeCardsForPlayer:(Player*)p animated:(BOOL)animated WithCompletionBlock:(void (^)())block{
+-(void)removeCardsAnimated:(BOOL)animated WithCompletionBlock:(void (^)())block{
     
-    PlayerHand *hand = [_playerHands objectForKey:p];
-    
+    if (_managerHand) {
+
+    ManagerHand *hand = _managerHand;//[_managerHands objectForKey:p];
+        
     if (hand.bigCards) {
         [hand.bigCards runAction:[NKAction move3dTo:V3Make(0, -h*2., 0) duration:FAST_ANIM_DUR] completion:^{
             hand.bigCards = nil;
@@ -265,38 +272,47 @@
         [hand removeFromParent];
         block();
     }];
+        
+    }
     
     
 }
 
--(void)refreshCardsForPlayer:(Player *)p WithCompletionBlock:(void (^)())block{
-    if (_selectedPlayer){
-        [self removeCardsForPlayer:_selectedPlayer animated:YES WithCompletionBlock:^{}];
-    }
-    
-    _selectedPlayer = p;
+-(void)refreshCardsForManager:(Manager *)m WithCompletionBlock:(void (^)())block {
 
-    if (p) {
-        PlayerHand *nHand = [[PlayerHand alloc] initWithPlayer:p delegate:self];
+    if (m) {
         
-        [_playerHands setObject:nHand forKey:p];
+        if (!_managerHand) {
+
+            _managerHand = [[ManagerHand alloc] initWithManager:m delegate:self];
+            
+            [self addChild:_managerHand];
+            
+ 
+            
+            NSLog(@"init manager hand %d", _managerHand.myCards.count);
+            
+        }
         
-        [self addChild:nHand];
-        
-        [nHand sortCardsAnimated:true WithCompletionBlock:^{
+        [_managerHand sortCardsAnimated:true WithCompletionBlock:^{
             block();
         }];
         
+        
     }
     else {
-        block();
+        [self removeCardsAnimated:true WithCompletionBlock:^{
+            _managerHand = nil;
+            block();
+        }];
     }
 
 }
 
 -(void)sortCardsForPlayer:(Player*)p animated:(BOOL)animated WithCompletionBlock:(void (^)())block{
  
-    [[_playerHands objectForKey:_selectedCard.deck.player] sortCards];
+    [_managerHand sortCards];
+    //[[_managerHands objectForKey:_selectedCard.deck.player] sortCards];
     
 }
 
@@ -304,16 +320,17 @@
     
     NKTouchState hit = [super touchUp:location id:touchId];
     if (hit == 2) {
-        [[_playerHands objectForKey:_selectedCard.deck.player] sortCards];
+        [_managerHand sortCards];
+        //[[_managerHands objectForKey:_selectedCard.deck.player] sortCards];
     }
     return hit;
 }
 
 @end
 
-@implementation PlayerHand
+@implementation ManagerHand
 
--(instancetype)initWithPlayer:(Player*)p delegate:(UXWindow*)delegate {
+-(instancetype)initWithManager:(Manager *)m delegate:(UXWindow *)delegate {
     self = [super init];
     
     if (self){
@@ -324,40 +341,44 @@
         
         self.userInteractionEnabled = true;
         
-         _delegate = delegate;
+        _delegate = delegate;
         self.size = delegate.size;
-        _player = p;
+        _manager = m;
        
         
-        cardSize.width = (1. / (p.cardSlots+2)) * w;
+        cardSize.width = (1. / (5+2)) * w;
         cardSize.height = (cardSize.width * (100. / 70.));
         
-        _playerName = [[NKLabelNode alloc]initWithSize:S2Make(cardSize.width*2., cardSize.height) FontNamed:@"Arial Black.ttf"];
-        _playerName.fontSize = 20;
-        _playerName.text = p.name;
+//        _playerName = [[NKLabelNode alloc]initWithSize:S2Make(cardSize.width*2., cardSize.height) FontNamed:@"Arial Black.ttf"];
+//        _playerName.fontSize = 20;
+//        _playerName.text = p.name;
         
-        [self addChild:_playerName];
+       // [self addChild:_playerName];
         
-        [_playerName setPosition3d:V3Make(w,0,2)];
+        //[_playerName setPosition3d:V3Make(w,0,2)];
         
-        for (Card* c in p.moveDeck.inHand) {
+        for (Card*c in m.allCardsInHand){
             [self addCard:c];
         }
         
-        if (p.manager.hasPossesion){
-            for (Card* c in p.kickDeck.inHand) {
-                [self addCard:c];
-            }
-        }
-        else {
-            for (Card* c in p.challengeDeck.inHand) {
-                [self addCard:c];
-            }
-        }
-        
-        for (Card* c in p.specialDeck.inHand) {
-            [self addCard:c];
-        }
+//        for (Card* c in m.moveDeck.inHand) {
+//            [self addCard:c];
+//        }
+//        
+//        if (m.hasPossesion){
+//            for (Card* c in p.kickDeck.inHand) {
+//                [self addCard:c];
+//            }
+//        }
+//        else {
+//            for (Card* c in p.challengeDeck.inHand) {
+//                [self addCard:c];
+//            }
+//        }
+//        
+//        for (Card* c in p.specialDeck.inHand) {
+//            [self addCard:c];
+//        }
         
         [self sortCards];
         
@@ -383,6 +404,7 @@
     // NSLog(@"** adding card %@ from %@", card.name, card.deck.name);
     
     CardSprite* newCard = [[CardSprite alloc] initWithTexture:nil color:nil size:cardSize];
+    newCard.delegate = self.delegate.delegate;
     
     newCard.model = card;
     newCard.window = _delegate;
@@ -417,13 +439,12 @@
 
 -(void)shuffleAroundCard:(CardSprite*)card {
     
-    float offSet = cardSize.width * -1.1;
+    float offSet = cardSize.width * -2.2;
     float nscale = 1.;
     
     for (int i = 0; i < _myCards.count; i++) {
         
         CardSprite *cs = _myCards[i];
-        
         
         [cs setAlpha:1.];
         cs.order = i;
@@ -484,7 +505,7 @@
         [cs setAlpha:1.];
         
         //cs.origin = P2Make((w*.3) - ((cardSize.width*.15 + (w*.125)* (2./_myCards.count) ) * i),0);
-        cs.origin = P2Make(cardSize.width * 1.1 * (i-1), 0);
+        cs.origin = P2Make(cardSize.width * 1.1 * (i-2), 0);
         
         if (animated) {
             
@@ -508,9 +529,12 @@
     
     if (animated) {
         
-    [_playerName runAction:[NKAction move3dTo:V3Make( (_playerName.size.width * .4) - w*.5, -h*.4, 2) duration:CARD_ANIM_DUR] completion:^{
+//    [_playerName runAction:[NKAction move3dTo:V3Make( (_playerName.size.width * .4) - w*.5, -h*.4, 2) duration:CARD_ANIM_DUR] completion:^{
+//            block();
+//    }];
+        [self runAction:[NKAction delayFor:CARD_ANIM_DUR] completion:^{
             block();
-    }];
+        }];
 
     }
     

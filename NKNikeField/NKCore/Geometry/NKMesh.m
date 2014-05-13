@@ -529,7 +529,6 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
         return [[NKStaticDraw meshesCache]objectForKey:pstring];
     }
     
-    
     self = [super init];
     
     if (self) {
@@ -556,7 +555,13 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
             break;
             
         case NKPrimitiveRect:
-            [self defaultRect];
+            if (NK_GL_VERSION == 2) {
+                vertexBuffer = [NKVertexBuffer defaultRect];
+                numberOfVertices = 6;
+            }
+            else {
+                [self defaultRect];
+            }
             //  [self sphereWithStacks:16 slices:16 squash:1.];
             break;
         default:
@@ -564,6 +569,7 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
     }
     
     [[NKStaticDraw meshesCache] setObject:self forKey:pstring];
+        
     NSLog(@"add primitive: %@ to mesh cache with %d vertices", pstring, numberOfVertices);
         
     }
@@ -571,11 +577,7 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
 }
 
 -(void)defaultRect {
-    if (NK_GL_VERSION == 2) {
-        vertexBuffer = [NKVertexBuffer defaultRect];
-        numberOfVertices = 6;
-    }
-    else {
+
     
         numberOfVertices = 4;
         
@@ -617,7 +619,6 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
             memcpy(vertexColors+(i), &col[0], sizeof(C4t));
         }
         
-    }
 }
 
 -(void)sphereWithStacks:(GLint)stacks slices:(GLint)slices squash:(GLfloat)squash

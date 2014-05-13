@@ -25,14 +25,6 @@
         //self.scene = [[DevMenu alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
         //self.scene = [[Pregame alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
 
-        
-        //GameScene *scene = [[GameScene alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
-        //self.scene = scene;
-        
-        //[[scene game] startAIGame];
-        
-        self.scene.nkView = self;
-      
         //self.animationInterval = 1.0 / 60.;
         
         [self startAnimation];

@@ -172,7 +172,7 @@
         glEnableVertexAttribArray(glName);
         [_attributes setValue:@(glName) forKey:attrName];
         
-        NSLog(@"shader setup slot %d, string %@",glName, attrName);
+        //NSLog(@"shader setup slot %d, string %@",glName, attrName);
     }
     
     NSMutableDictionary *uniformLocations = [NSMutableDictionary dictionaryWithCapacity:self.uniformNames.count];
@@ -307,9 +307,15 @@
 {
     if (self.glPointer)
     {
+        NSLog(@"unload shader %d", self.glPointer);
         glDeleteProgram(self.glPointer);
         self.glPointer = 0;
     }
+}
+
+-(void)dealloc {
+
+    [self unload];
 }
 
 - (void)use

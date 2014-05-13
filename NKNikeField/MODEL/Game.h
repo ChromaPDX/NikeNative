@@ -14,7 +14,7 @@
 //#define CHEAT
 #define NEWPLAYER @"New Player"
 
-@class NKGameScene;
+@class GameScene;
 @class BoardNode;
 @class BoardTile;
 @class PlayerSprite;
@@ -46,69 +46,68 @@ typedef enum RTMessageType {
 } RTMessageType;
 
 
-@protocol GameSceneProtocol <NSObject>
-
-// SETUP BOARD
-
--(void)cleanupGameBoard;
--(void)setRotationForManager:(Manager*)m;
--(void)setupGameBoard;
--(void)incrementGameBoardPosition:(NSInteger)xOffset;
--(void)refreshScoreBoard;
--(void)moveBallToLocation:(BoardLocation*)location;
-
--(float)rotationForManager:(Manager*)m;
-
-// GAME CENTER
-
--(void)setMyTurn:(BOOL)myTurn;
--(void)setWaiting:(BOOL)waiting;
--(void)rtIsActive:(BOOL)active;
--(void)receiveRTPacket;
-
--(void)addNetworkUIForEvent:(GameEvent*)event;
--(void)cleanUpUIForSequence:(GameSequence*)sequence;
-
--(void)opponentBeganCardTouch:(Card*)card atPoint:(P2t)point;
--(void)opponentMovedCardTouch:(Card*)card atPoint:(P2t)point;
-
-// CARDS
-
--(void)setSelectedCard:(Card*)card;
--(void)setSelectedPlayer:(Card*)player;
-
--(void)showCardPath:(NSArray*)path;
-
--(void)sortHandForManager:(Manager *)manager animated:(BOOL)animated;
-
--(void)addCardToBoardScene:(Card *)card;
--(void)addCardToBoardScene:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block;
--(void)removePlayerFromBoard:(PlayerSprite *)person animated:(BOOL)animated withCompletionBlock:(void (^)())block;
-
--(void)addCardToHand:(Card *)card;
--(void)removeCardFromHand:(Card *)card;
-
--(void)applyBlurWithCompletionBlock:(void (^)())block;
--(void)removeBlurWithCompletionBlock:(void (^)())block;
-
-// AI SELECTION
--(void)AISelectedPlayer:(Player *)selectedPlayer;
--(void)AISelectedCard:(Card *)selectedCard;
--(void)AISelectedLocation:(BoardLocation*)selectedLocation;
-
-// ANIMATION
--(void)finishSequenceWithCompletionBlock:(void (^)())block;
--(void)animateEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
--(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block;
--(void)rollEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
--(void)refreshUXWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block;
--(void)refreshSequencePoints;
--(void)presentTrophyWithCompletionBlock:(void (^)())block;
--(void)fadeOutHUD;
-
-
-
-@end
+//@protocol GameSceneProtocol <NSObject>
+//
+//// SETUP BOARD
+//
+//-(void)cleanupGameBoard;
+//-(void)setRotationForManager:(Manager*)m;
+//-(void)setupGameBoard;
+//-(void)incrementGameBoardPosition:(NSInteger)xOffset;
+//-(void)refreshScoreBoard;
+//-(void)moveBallToLocation:(BoardLocation*)location;
+//
+//-(float)rotationForManager:(Manager*)m;
+//
+//// GAME CENTER
+//
+//-(void)setMyTurn:(BOOL)myTurn;
+//-(void)setWaiting:(BOOL)waiting;
+//-(void)rtIsActive:(BOOL)active;
+//-(void)receiveRTPacket;
+//
+//-(void)addNetworkUIForEvent:(GameEvent*)event;
+//-(void)cleanUpUIForSequence:(GameSequence*)sequence;
+//
+//-(void)opponentBeganCardTouch:(Card*)card atPoint:(P2t)point;
+//-(void)opponentMovedCardTouch:(Card*)card atPoint:(P2t)point;
+//
+//// CARDS
+//
+//-(void)setSelectedCard:(Card*)card;
+//-(void)setSelectedPlayer:(Card*)player;
+//
+//-(void)showCardPath:(NSArray*)path;
+//
+//-(void)sortHandForManager:(Manager *)manager animated:(BOOL)animated;
+//
+//-(void)addCardToBoardScene:(Card *)card;
+//-(void)addCardToBoardScene:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block;
+//-(void)removePlayerFromBoard:(PlayerSprite *)person animated:(BOOL)animated withCompletionBlock:(void (^)())block;
+//
+//-(void)addCardToHand:(Card *)card;
+//-(void)removeCardFromHand:(Card *)card;
+//
+//-(void)applyBlurWithCompletionBlock:(void (^)())block;
+//-(void)removeBlurWithCompletionBlock:(void (^)())block;
+//
+//// AI SELECTION
+//-(void)AISelectedPlayer:(Player *)selectedPlayer;
+//-(void)AISelectedCard:(Card *)selectedCard;
+//-(void)AISelectedLocation:(BoardLocation*)selectedLocation;
+//
+//// ANIMATION
+//-(void)finishSequenceWithCompletionBlock:(void (^)())block;
+//-(void)animateEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
+//-(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block;
+//-(void)rollEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
+//-(void)refreshSequencePoints;
+//-(void)presentTrophyWithCompletionBlock:(void (^)())block;
+//-(void)fadeOutHUD;
+//
+//
+//
+//@end
 
 @protocol GameCenterProtocol <NSObject>
 
@@ -131,7 +130,7 @@ typedef enum RTMessageType {
 
 @property (nonatomic, strong) id <GameCenterProtocol> gcController;
 @property (nonatomic) NSUInteger rtmatchid;
-@property (nonatomic, strong) id <GameSceneProtocol> gameScene;
+@property (nonatomic, strong) GameScene* gameScene;
 @property (nonatomic, strong) GameSequence *currentEventSequence;
 
 // MAIN UX INTERACTION
@@ -206,10 +205,9 @@ typedef enum RTMessageType {
 -(NSSet*)temporaryEnchantments;
 
 -(GameEvent*)canPlayCard:(Card*)card atLocation:(BoardLocation*)location;
--(GameEvent*)requestPlayerSequenceAtLocation:(BoardLocation*)location;
--(GameEvent*)addPlayerEventToSequence:(GameSequence*)sequence from:(BoardLocation *)startLocation to:(BoardLocation*)location withType:(EventType)type;
--(GameEvent*)addGeneralEventToSequence:(GameSequence*)sequence forManager:(Manager*)m withType:(EventType)type;
--(GameEvent*)addEventToSequence:(GameSequence*)sequence fromCardOrPlayer:(Card*)card toLocation:(BoardLocation*)location withType:(EventType)type;
+
+-(GameEvent*)addDeployEventToSequence:(GameSequence*)sequence forManager:(Manager*)m toLocation:(BoardLocation*)location withType:(EventType)type;
+-(GameEvent*)addCardEventToSequence:(GameSequence*)sequence withCard:(Card*)card forPlayer:(Player*)player toLocation:(BoardLocation*)location withType:(EventType)type;
 
 -(Player*)playerAtLocation:(BoardLocation*)location;
 

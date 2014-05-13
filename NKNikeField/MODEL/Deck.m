@@ -13,19 +13,26 @@
 
 @implementation Deck
 
--(id)init{
+-(instancetype)initEmptyForManager:(Manager*)m WithType:(CardCategory)category {
     self = [super init];
     if(self){
+        _manager = m;
+        _category = category;
+        _allCards = @[];
+        _inGame = @[];
+        _inHand = @[];
+        _theDeck = @[];
+        _discarded = @[];
     }
     return self;
 }
 
--(id)initWithPlayer:(Player*)p type:(CardCategory)category
-{
-    self = [super init];
-    if(self){
-        _category = category;
+-(instancetype)initWithManager:(Manager*)m cardsForCategory:(CardCategory)category {
 
+    self = [self initEmptyForManager:m WithType:category];
+    
+    if(self){
+        
         switch (_category) {
             case CardCategoryKick:
                 _allCards = @[[[Card alloc] initWithDeck:self],
@@ -72,10 +79,6 @@
                 break;
                 
         }
-        
-        
-          [self setPlayer:p];
-        
 //        _allCards = @[[[Card alloc] initWithType:kCardCategoryPlayerKeeper Manager:m],
 //                    [[Card alloc] initWithType:kCardCategoryPlayerForward Manager:m],
 //                    [[Card alloc] initWithType:kCardCategoryPlayerForward Manager:m],
@@ -142,6 +145,8 @@
     return self;
 }
 
+
+
 -(NSString*)name{
     switch (_category) {
         case CardCategoryChallenge:return @"CHALLENGE DECK";
@@ -196,6 +201,7 @@
     // ASSIGN LOCATION
     
     for (int i = 0; i < cardsMutable.count; ++i){
+        [cardsMutable[i] setDeck:self];
         [cardsMutable[i] setLocation:[BoardLocation pX:100+shuffleCount Y:i]];
           //  NSLog(@"%d :%@", i, [cardsMutable[i] name]);
     }
@@ -249,22 +255,23 @@
 }
 
 -(void)drawNewCardIfEmptyForEvent:(GameEvent*)event {
-    if (_category != CardCategorySpecial) {
-        if (!_inHand.count) {
-            [self turnOverNextCardForEvent:event];
-        }
-    }
-    else {
-        if (_inHand.count < 2) {
-            [self turnOverNextCardForEvent:event];
-        }
-    }
-
-    
+    [self turnOverNextCardForEvent:event];
+//    if (_category != CardCategorySpecial) {
+//        if (!_inHand.count) {
+//            [self turnOverNextCardForEvent:event];
+//        }
+//    }
+//    else {
+//        if (_inHand.count < 2) {
+//            [self turnOverNextCardForEvent:event];
+//        }
+//    }
 }
+
 -(Card*)turnOverNextCardForEvent:(GameEvent*)event{
     
     if (!_theDeck.count) {
+        NSLog(@"no cards, re-shuffling from graveyard");
         [self shuffleWithSeed:event.seed fromDeck:_discarded];
         _discarded = nil;
     }
@@ -287,6 +294,7 @@
     if (!card) {
         NSLog(@"ERROR DIDN'T GET A CARD FROM DECK");
     }
+    
     return card;
 }
 
@@ -401,7 +409,7 @@
 #pragma NSCODER
 
 -(void)setPlayer:(Player *)player {
-    _player = player;
+    //_player = player;
     
     for (Card* c in _allCards){
         c.deck = self;
@@ -416,7 +424,7 @@
         return nil;
     }
     
-    _player = [decoder decodeObjectForKey:NSFWKeyPlayer];
+   // _player = [decoder decodeObjectForKey:NSFWKeyPlayer];
     _allCards = [decoder decodeObjectForKey:@"theDeck"];
     
     return self;
@@ -424,7 +432,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
     
-    [encoder encodeObject:_player forKey:NSFWKeyPlayer];
+    //[encoder encodeObject:_player forKey:NSFWKeyPlayer];
     [encoder encodeObject:_allCards forKey:@"theDeck"];
     
 }

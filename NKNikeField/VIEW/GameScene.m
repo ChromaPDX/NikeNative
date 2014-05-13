@@ -339,30 +339,31 @@ float PARTICLE_SCALE;
     [self setSelectedPlayer:player];
 }
 
--(void)setSelectedPlayer:(Player *)selectedPlayer {
+-(void)setSelectedPlayer:(Player*)selectedPlayer {
     
     if (![selectedPlayer.manager isEqual:_game.me]) {
         [self playSoundWithKey:@"enemyTap"];
     }
-    else {
     
-    if ([_game canUsePlayer:selectedPlayer]) {
+    else {
         
-        if (_selectedCard) {
-            [self setSelectedCard:nil];
+        if ([_game canUsePlayer:selectedPlayer]) {
+            
+            if (_selectedCard) {
+                [self setSelectedCard:nil];
+            }
+            
+            [self playSoundWithKey:@"playerTap"];
+            
+            [self showPlayerSelection:selectedPlayer];
+            
+            _selectedPlayer = selectedPlayer;
+            
+        }
+        else {
+            [self playSoundWithKey:@"badTouch"];
         }
         
-        [self playSoundWithKey:@"playerTap"];
-        
-        [self showPlayerSelection:selectedPlayer];
-        
-        _selectedPlayer = selectedPlayer;
-        
-    }
-    else {
-        [self playSoundWithKey:@"badTouch"];
-    }
-    
     }
 }
 
@@ -384,7 +385,7 @@ float PARTICLE_SCALE;
     _selectedPlayer = selectedPlayer;
     _game.selectedPlayer = selectedPlayer;
     
-    for (Card *c in selectedPlayer.allCardsInHand) { // RESET CARDS
+    for (Card *c in selectedPlayer.manager.allCardsInHand) { // RESET CARDS
         c.AIShouldUse = true;
     }
     
@@ -411,7 +412,7 @@ float PARTICLE_SCALE;
     
     [_uxWindow setSelectedCard:selectedCard];
     
-    [self showCardPath:[_selectedCard validatedSelectionSet]];
+    [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer]];
     
     [self runAction:[NKAction moveByX:0 y:0 duration:AI_SPEED] completion:^{
         [_game AIChooseLocationForCard:selectedCard];
@@ -697,11 +698,10 @@ float PARTICLE_SCALE;
                             [card removeAllActions];
                             [card runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]completion:^{
                                 [card removeFromParent];
+                                block();
                             }];
-                            block();
-                        
                         }];
-
+                        
                     }];
                     
                 }];
@@ -864,7 +864,11 @@ float PARTICLE_SCALE;
        // }];
         
     }
-    
+    else if (event.type == kEventEndTurn){
+        [_uxWindow refreshCardsForManager:nil WithCompletionBlock:^{
+            block();
+        }];
+    }
     
     else {
         block();
@@ -969,16 +973,25 @@ float PARTICLE_SCALE;
 
 
 -(void)refreshUXWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block {
-    
-    if (!_uxWindow.alpha) {
-        [_uxWindow runAction:[NKAction fadeAlphaTo:1. duration:.5]];
-        [_uxTopBar runAction:[NKAction fadeAlphaTo:1. duration:.5]];
+
+    if (p) {
+        
+        NSLog(@"refresh UX window");
+        
+        _selectedPlayer = p;
+        _uxWindow.selectedPlayer = p;
+        
+        if (!_uxWindow.alpha) {
+            [_uxWindow runAction:[NKAction fadeAlphaTo:1. duration:.5]];
+            [_uxTopBar runAction:[NKAction fadeAlphaTo:1. duration:.5]];
+        }
+        
+        [_uxWindow refreshCardsForManager:p.manager WithCompletionBlock:^{
+            block();
+        }];
+        
+        [_uxTopBar setPlayer:p WithCompletionBlock:^{}];
     }
-    
-    [_uxWindow refreshCardsForPlayer:p WithCompletionBlock:^{
-        block();
-    }];
-    [_uxTopBar refreshCardsForPlayer:p WithCompletionBlock:^{}];
     
 }
 

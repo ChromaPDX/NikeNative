@@ -15,12 +15,8 @@
     if (self) {
         _manager = m;
         _faction = rand()%4 + 1;
+        _effects = [[NSMutableDictionary alloc]init];
     }
-    _frozen = FALSE;
-    _noLegs = FALSE;
-    _noLegsCount = 0;
-    _deRez = FALSE;
-    _newDeal = FALSE;
     return self;
 }
 
@@ -28,10 +24,10 @@
     
     _cardSlots = 4;
     
-    _moveDeck = [[Deck alloc]initWithPlayer:self type:CardCategoryMove];
-    _kickDeck = [[Deck alloc]initWithPlayer:self type:CardCategoryKick];
-    _challengeDeck = [[Deck alloc]initWithPlayer:self type:CardCategoryChallenge];
-    _specialDeck = [[Deck alloc]initWithPlayer:self type:CardCategorySpecial];
+    _moveDeck = [[Deck alloc] initWithManager:_manager cardsForCategory:CardCategoryMove];
+    _kickDeck = [[Deck alloc] initWithManager:_manager cardsForCategory:CardCategoryKick];
+    _challengeDeck = [[Deck alloc] initWithManager:_manager cardsForCategory:CardCategoryChallenge];
+    _specialDeck = [[Deck alloc] initWithManager:_manager cardsForCategory:CardCategorySpecial];
     
 }
 
@@ -110,33 +106,33 @@
     
 }
 
--(NSArray*)allCardsInHand {
-    return [[[_moveDeck.inHand arrayByAddingObjectsFromArray:_kickDeck.inHand]arrayByAddingObjectsFromArray:_challengeDeck.inHand]arrayByAddingObjectsFromArray:_specialDeck.inHand];
-}
+//-(NSArray*)allCardsInHand {
+//    return [[[_moveDeck.inHand arrayByAddingObjectsFromArray:_kickDeck.inHand]arrayByAddingObjectsFromArray:_challengeDeck.inHand]arrayByAddingObjectsFromArray:_specialDeck.inHand];
+//}
+//
+//-(NSArray*)allCardsInDeck {
+//    return [[[_moveDeck.theDeck arrayByAddingObjectsFromArray:_kickDeck.theDeck]arrayByAddingObjectsFromArray:_challengeDeck.theDeck]arrayByAddingObjectsFromArray:_specialDeck.theDeck];
+//}
 
--(NSArray*)allCardsInDeck {
-    return [[[_moveDeck.theDeck arrayByAddingObjectsFromArray:_kickDeck.theDeck]arrayByAddingObjectsFromArray:_challengeDeck.theDeck]arrayByAddingObjectsFromArray:_specialDeck.theDeck];
-}
-
--(Card*)cardInHandAtlocation:(BoardLocation*)location {
-    
-    for (Card* inHand in [self allCardsInHand]) {
-        if ([inHand.location isEqual:location]) {
-            return inHand;
-        }
-    }
-    return Nil;
-}
-
--(Card*)cardInDeckAtLocation:(BoardLocation*)location {
-    
-    for (Card* inDeck in [self allCardsInDeck]) {
-        if ([inDeck.location isEqual:location]) {
-            return inDeck;
-        }
-    }
-    return Nil;
-}
+//-(Card*)cardInHandAtlocation:(BoardLocation*)location {
+//    
+//    for (Card* inHand in [self allCardsInHand]) {
+//        if ([inHand.location isEqual:location]) {
+//            return inHand;
+//        }
+//    }
+//    return Nil;
+//}
+//
+//-(Card*)cardInDeckAtLocation:(BoardLocation*)location {
+//    
+//    for (Card* inDeck in [self allCardsInDeck]) {
+//        if ([inDeck.location isEqual:location]) {
+//            return inDeck;
+//        }
+//    }
+//    return Nil;
+//}
 
 
 -(void)setBall:(Card *)ball {
@@ -292,29 +288,29 @@
     NSArray *kickPath;
     NSArray *movePath;
     Card* kickCard;
-    if(player.kickDeck.inHand && [player.kickDeck.inHand count]){
-        kickCard = player.kickDeck.inHand[0];
+    if(player.manager.kickDeck.inHand && [player.manager.kickDeck.inHand count]){
+        kickCard = player.manager.kickDeck.inHand[0];
     }
     else{
         return NULL;
     }
     
     if(kickCard){
-        kickPath = kickCard.selectionSet;
+        kickPath = [kickCard selectionSetForPlayer:player];
     }
     else{
         return retPath;
     }
     if(kickPath){
         Card* moveCard;
-        if(self.moveDeck.inHand && [player.moveDeck.inHand count]){
-            moveCard = self.moveDeck.inHand[0];
+        if(self.manager.moveDeck.inHand && [player.manager.moveDeck.inHand count]){
+            moveCard = self.manager.moveDeck.inHand[0];
         }
         else{
             return NULL;
         }
         if(moveCard){
-            movePath = moveCard.selectionSet;
+            movePath = [moveCard selectionSetForPlayer:player];
             if(movePath){
                 // NSArray *intersectPath = [BoardLocation setIntersect:movePath withSet:kickPath];
                 NSArray *intersectPath = [BoardLocation  tileSetIntersect:movePath withTileSet:kickPath];
@@ -346,10 +342,10 @@
 }
 
 -(NSArray*)pathToOpenFieldClosestToLocationInPassRange:(BoardLocation *)location{
-    Card *moveCard = self.moveDeck.inHand[0];
+    Card *moveCard = self.manager.moveDeck.inHand[0];
     if(!moveCard) return NULL;
     
-    NSArray *moveSet = [moveCard validatedSelectionSet];
+    NSArray *moveSet = [moveCard validatedSelectionSetForPlayer:self];
     //NSLog(@"pathToOpenFieldClosestToLocation, moveSet.count = %d", [moveSet count]);
     if(!moveSet){
         return NULL;
@@ -363,7 +359,7 @@
     
     // get the player with possesions valid kick moves, see if we can stay within that set
     Player *playerWithBall = [self.manager playerWithBall];
-    NSArray *possesionKickSet = [playerWithBall validatedSelectionSet];
+    NSArray *possesionKickSet = [playerWithBall validatedSelectionSetForPlayer:self];
     NSLog(@"pathToOpenFieldClosestToLocationInPassRange:");
     BOOL found = FALSE;
     int teammateDistance = 2;
@@ -440,10 +436,10 @@
 
 
 -(NSArray*)pathToOpenFieldClosestToLocation:(BoardLocation *)location{
-    Card *moveCard = self.moveDeck.inHand[0];
+    Card *moveCard = self.manager.moveDeck.inHand[0];
     if(!moveCard) return NULL;
     
-    NSArray *moveSet = moveCard.validatedSelectionSet;
+    NSArray *moveSet = [moveCard validatedSelectionSetForPlayer:self];
     //NSLog(@"pathToOpenFieldClosestToLocation, moveSet.count = %d", [moveSet count]);
     if(!moveSet){
         return NULL;
@@ -510,9 +506,9 @@
 
 -(BOOL)isInShootingRange{
     Card *kickCard;
-    if(self.kickDeck.inHand && [self.kickDeck.inHand count]){
-        kickCard = self.kickDeck.inHand[0];
-        NSArray *kickSelect = [kickCard validatedSelectionSet];
+    if(self.manager.kickDeck.inHand && [self.manager.kickDeck.inHand count]){
+        kickCard = self.manager.kickDeck.inHand[0];
+        NSArray *kickSelect = [kickCard validatedSelectionSetForPlayer:self];
         if([kickSelect containsObject:self.manager.goal]){
             return TRUE;
         }
@@ -529,8 +525,8 @@
 -(NSArray*)playersInPassRange{
     NSMutableArray* retPlayers = [NSMutableArray array];
     NSArray* players = [self.manager playersClosestToBall];
-    Card *passCard = self.kickDeck.inHand[0];
-    NSArray *selSet = [passCard validatedSelectionSet];
+    Card *passCard = self.manager.kickDeck.inHand[0];
+    NSArray *selSet = [passCard validatedSelectionSetForPlayer:self];
     for(Player *p in players){
         if([selSet containsObject:p.location]){
             [retPlayers addObject:p];
@@ -582,7 +578,7 @@
 
 -(BOOL)canMoveToChallenge{
     NSArray* pathToChallenge = [self pathToClosestAdjacentBoardLocation:_ball.location];
-    Card* moveCard = self.moveDeck.inHand[0];
+    Card* moveCard = self.manager.moveDeck.inHand[0];
     if(!pathToChallenge){
         return FALSE;
     }

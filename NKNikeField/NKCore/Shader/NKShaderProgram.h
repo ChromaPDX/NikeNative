@@ -10,7 +10,7 @@
 
 // ATTRIBUTES
 
-typedef NS_ENUM(GLint, GLKVertexAttrib)
+typedef NS_ENUM(GLint, NKVertexAttrib)
 {
     NKVertexAttribPosition,
     NKVertexAttribNormal,
@@ -107,8 +107,8 @@ static NSString *const nkVertexHeader = SHADER_STRING
  attribute vec2 a_texCoord0;
  attribute vec2 a_texCoord1;
  
- uniform mat4 u_modelViewProjectionMatrix;
- uniform mat3 u_normalMatrix;
+ uniform highp mat4 u_modelViewProjectionMatrix;
+ uniform highp mat3 u_normalMatrix;
  uniform lowp int u_useUniformColor;
  uniform lowp int u_numTextures;
  uniform vec4 u_color;
@@ -130,8 +130,8 @@ static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
  attribute vec2 a_texCoord0;
  attribute vec2 a_texCoord1;
  
- uniform mat4 u_modelViewProjectionMatrix;
- uniform mat3 u_normalMatrix;
+ uniform highp mat4 u_modelViewProjectionMatrix;
+ uniform highp mat3 u_normalMatrix;
  uniform lowp int u_useUniformColor;
  uniform lowp int u_numTextures;
  uniform vec4 u_color;

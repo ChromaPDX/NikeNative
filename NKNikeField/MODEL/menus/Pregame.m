@@ -1,7 +1,8 @@
 
 #import "Pregame.h"
 #import "NodeKitten.h"
-#import "GameScene.h"
+#import "NikeNodeHeaders.h"
+#import "Game.h"
 #import "Menus.h"
 
 
