@@ -28,7 +28,7 @@
 @property (nonatomic) bool isAI;
 @property (nonatomic) bool preditiveAnalysis;
 @property (nonatomic) int teamSide;
-@property (nonatomic) int ActionPoints;
+@property (nonatomic) int energy;
 
 // Meta Data
 

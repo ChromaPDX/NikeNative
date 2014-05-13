@@ -285,6 +285,9 @@
             
             // ADD MAIN ACTION
             
+            // ADD DISCARD EVENT
+            [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventPlayCard];
+            
             if (_selectedCard.category == CardCategoryMove) {
                 [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventMove];
             }
@@ -333,9 +336,6 @@
                 
             }
             
-            
-            // ADD DISCARD EVENT
-            [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventPlayCard];
             
             [self performSequence:_currentEventSequence record:YES animate:YES];
             

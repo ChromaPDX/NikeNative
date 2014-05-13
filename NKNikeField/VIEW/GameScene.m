@@ -691,19 +691,19 @@ float PARTICLE_SCALE;
                 V3t dest = [[_gameTiles objectForKey:event.location] getGlobalPosition];
                 
                 NKAction *grow = [NKAction group:@[
-                                                   [NKAction move3dTo:V3Make(dest.x, dest.y - _uxWindow.position.y, 0) duration:CARD_ANIM_DUR],
-                                                   [NKAction scaleTo:1.5 duration:CARD_ANIM_DUR]]];
+                                                   [NKAction move3dTo:V3Make(dest.x, dest.y - _uxWindow.position.y, 0) duration:FAST_ANIM_DUR],
+                                                   [NKAction scaleTo:1.5 duration:FAST_ANIM_DUR]]];
                 
                 [card runAction:grow completion:^{
                     
                     [self playSoundWithKey:@"cardPlay"];
                     
-                    [card runAction:[NKAction delayFor:CARD_ANIM_DUR] completion:^{
+                    [card runAction:[NKAction delayFor:FAST_ANIM_DUR] completion:^{
                         
                         NKAction *fall = [NKAction group:@[
-                                                           [NKAction move3dTo:V3Make(dest.x, dest.y - _uxWindow.position.y, dest.z) duration:CARD_ANIM_DUR],
-                                                           [NKAction rotate3dByAngle:V3Make(-26, 0, 0) duration:CARD_ANIM_DUR],
-                                                           [NKAction scaleTo:1. duration:CARD_ANIM_DUR],
+                                                           [NKAction move3dTo:V3Make(dest.x, dest.y - _uxWindow.position.y, dest.z) duration:FAST_ANIM_DUR],
+                                                           [NKAction rotate3dByAngle:V3Make(-26, 0, 0) duration:FAST_ANIM_DUR],
+                                                           [NKAction scaleTo:1. duration:FAST_ANIM_DUR],
                                                            ]];
 
                         [card runAction:fall completion:^{

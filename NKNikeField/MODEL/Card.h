@@ -62,8 +62,8 @@ enum AI_ACTION_TYPE {
 
 @property (nonatomic, strong) NSString *name;
 
-@property (nonatomic) NSInteger actionPointCost;
-@property (nonatomic) NSInteger actionPointEarn;
+@property (nonatomic) NSInteger energyCost;
+@property (nonatomic) NSInteger energyEarn;
 @property (nonatomic) NSInteger level;
 @property (nonatomic) NSInteger range;
 @property (nonatomic) bool locked;

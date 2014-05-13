@@ -232,7 +232,6 @@
 		61D6E88918FDB5B70017A389 /* GameEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E78E18FDB5B70017A389 /* GameEvent.m */; };
 		61D6E88C18FDB5B70017A389 /* Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E79418FDB5B70017A389 /* Manager.m */; };
 		61D6E88E18FDB5B70017A389 /* MenuPlayerProfileScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E79918FDB5B70017A389 /* MenuPlayerProfileScene.m */; };
-		61D6E88F18FDB5B70017A389 /* MenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E79C18FDB5B70017A389 /* MenuScene.m */; };
 		61D6E89218FDB5B70017A389 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E7A318FDB5B70017A389 /* Player.m */; };
 		61D6E8A318FDB5B70017A389 /* AlertSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E7C418FDB5B70017A389 /* AlertSprite.m */; };
 		61D6E8A418FDB5B70017A389 /* BallSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E7C618FDB5B70017A389 /* BallSprite.m */; };
@@ -574,8 +573,6 @@
 		61D6E79818FDB5B70017A389 /* MenuPlayerProfileScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuPlayerProfileScene.h; sourceTree = "<group>"; };
 		61D6E79918FDB5B70017A389 /* MenuPlayerProfileScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuPlayerProfileScene.m; sourceTree = "<group>"; };
 		61D6E79A18FDB5B70017A389 /* Menus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menus.h; sourceTree = "<group>"; };
-		61D6E79B18FDB5B70017A389 /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
-		61D6E79C18FDB5B70017A389 /* MenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuScene.m; sourceTree = "<group>"; };
 		61D6E79D18FDB5B70017A389 /* ModelHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelHeaders.h; sourceTree = "<group>"; };
 		61D6E7A218FDB5B70017A389 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		61D6E7A318FDB5B70017A389 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
@@ -1341,8 +1338,6 @@
 				61D6E78F18FDB5B70017A389 /* GlobalTypes.h */,
 				61D6E79318FDB5B70017A389 /* Manager.h */,
 				61D6E79418FDB5B70017A389 /* Manager.m */,
-				61D6E79B18FDB5B70017A389 /* MenuScene.h */,
-				61D6E79C18FDB5B70017A389 /* MenuScene.m */,
 				61D6E79D18FDB5B70017A389 /* ModelHeaders.h */,
 				61D6E7A218FDB5B70017A389 /* Player.h */,
 				61D6E7A318FDB5B70017A389 /* Player.m */,
@@ -1657,7 +1652,6 @@
 				29D8926A190AA65E008FBD5F /* deflate.c in Sources */,
 				2934BDE8191B166300A33DBF /* perlin.c in Sources */,
 				61A257C218FDE998001B7F67 /* NKMesh.m in Sources */,
-				61D6E88F18FDB5B70017A389 /* MenuScene.m in Sources */,
 				61D6E8A618FDB5B70017A389 /* ButtonSprite.m in Sources */,
 				29BF481E1911667900487EBD /* NKCoreTextNode.m in Sources */,
 				61D6E88E18FDB5B70017A389 /* MenuPlayerProfileScene.m in Sources */,

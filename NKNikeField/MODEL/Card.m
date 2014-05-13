@@ -93,9 +93,9 @@
     if(self){
         _deck = deck;
         _abilities = [[Abilities alloc]init];
-        _actionPointEarn = 0;
-        _actionPointCost = 0;
         _aiActionType = NONE;
+        _energyCost = 0;
+        
         switch (_deck.category) {
             case CardCategoryMove:
                 [self getRandomMoveAttributes];
@@ -115,6 +115,10 @@
        
         _range = _level;
         if (_level > 3) _level = 3;
+        
+        if (_deck.category == CardCategorySpecial) {
+            _energyCost = _level*100;
+        }
         
     }
     return self;
@@ -651,8 +655,8 @@
     
     _name = [decoder decodeObjectForKey:NSFWKeyName];
         
-    _actionPointEarn = [decoder decodeIntForKey:NSFWKeyActionPointEarn];
-    _actionPointCost = [decoder decodeIntForKey:NSFWKeyActionPointCost];
+    _energyEarn = [decoder decodeIntForKey:NSFWKeyActionPointEarn];
+    _energyCost = [decoder decodeIntForKey:NSFWKeyActionPointCost];
     _level = [decoder decodeIntForKey:NSFWKeyCardLevel];
     _range = [decoder decodeIntForKey:NSFWKeyCardRange];
         
@@ -672,8 +676,8 @@
 
     [encoder encodeObject:_name forKey:NSFWKeyName];
     
-    [encoder encodeInteger:_actionPointEarn forKey:NSFWKeyActionPointEarn];
-    [encoder encodeInteger:_actionPointCost forKey:NSFWKeyActionPointCost];
+    [encoder encodeInteger:_energyEarn forKey:NSFWKeyActionPointEarn];
+    [encoder encodeInteger:_energyCost forKey:NSFWKeyActionPointCost];
     [encoder encodeInteger:_level forKey:NSFWKeyCardLevel];
     [encoder encodeInteger:_range forKey:NSFWKeyCardRange];
     
