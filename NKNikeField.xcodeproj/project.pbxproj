@@ -127,7 +127,7 @@
 		3B247D8C1922A26000A6EFDB /* FuelRingColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D761922A26000A6EFDB /* FuelRingColor.png */; };
 		3B247D8D1922A26000A6EFDB /* LevelBarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D771922A26000A6EFDB /* LevelBarEmpty.png */; };
 		3B247D8E1922A26000A6EFDB /* LevelBarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D781922A26000A6EFDB /* LevelBarFull.png */; };
-		3B247D8F1922A26000A6EFDB /* Screen_Menu2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D791922A26000A6EFDB /* Screen_Menu2.png */; };
+		3B247D8F1922A26000A6EFDB /* Screen_Menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D791922A26000A6EFDB /* Screen_Menu.png */; };
 		3B247D901922A26000A6EFDB /* Screen_MenuEnergy.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7A1922A26000A6EFDB /* Screen_MenuEnergy.png */; };
 		3B247D911922A26000A6EFDB /* Screen_Pregame.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7B1922A26000A6EFDB /* Screen_Pregame.png */; };
 		3B247D921922A26000A6EFDB /* Screen_RecapLostNoText.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7C1922A26000A6EFDB /* Screen_RecapLostNoText.png */; };
@@ -447,7 +447,7 @@
 		3B247D761922A26000A6EFDB /* FuelRingColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelRingColor.png; sourceTree = "<group>"; };
 		3B247D771922A26000A6EFDB /* LevelBarEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LevelBarEmpty.png; sourceTree = "<group>"; };
 		3B247D781922A26000A6EFDB /* LevelBarFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LevelBarFull.png; sourceTree = "<group>"; };
-		3B247D791922A26000A6EFDB /* Screen_Menu2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Menu2.png; sourceTree = "<group>"; };
+		3B247D791922A26000A6EFDB /* Screen_Menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Menu.png; sourceTree = "<group>"; };
 		3B247D7A1922A26000A6EFDB /* Screen_MenuEnergy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_MenuEnergy.png; sourceTree = "<group>"; };
 		3B247D7B1922A26000A6EFDB /* Screen_Pregame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Pregame.png; sourceTree = "<group>"; };
 		3B247D7C1922A26000A6EFDB /* Screen_RecapLostNoText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_RecapLostNoText.png; sourceTree = "<group>"; };
@@ -1243,7 +1243,7 @@
 				3B247D761922A26000A6EFDB /* FuelRingColor.png */,
 				3B247D771922A26000A6EFDB /* LevelBarEmpty.png */,
 				3B247D781922A26000A6EFDB /* LevelBarFull.png */,
-				3B247D791922A26000A6EFDB /* Screen_Menu2.png */,
+				3B247D791922A26000A6EFDB /* Screen_Menu.png */,
 				3B247D7A1922A26000A6EFDB /* Screen_MenuEnergy.png */,
 				3B247D7B1922A26000A6EFDB /* Screen_Pregame.png */,
 				3B247D7C1922A26000A6EFDB /* Screen_RecapLostNoText.png */,
@@ -1648,7 +1648,7 @@
 				3B247D851922A26000A6EFDB /* Card_Icon_RegKick.png in Resources */,
 				3B247D841922A26000A6EFDB /* Card_Icon_RegChal.png in Resources */,
 				29C42BF219105C0600441639 /* slope-rattle.wav in Resources */,
-				3B247D8F1922A26000A6EFDB /* Screen_Menu2.png in Resources */,
+				3B247D8F1922A26000A6EFDB /* Screen_Menu.png in Resources */,
 				61D6E86918FDB5B70017A389 /* Challenge_L3a.png in Resources */,
 				3B247D8D1922A26000A6EFDB /* LevelBarEmpty.png in Resources */,
 				2902A06E190C7BAE008D0092 /* Faction_Kinforce_ON.png in Resources */,
