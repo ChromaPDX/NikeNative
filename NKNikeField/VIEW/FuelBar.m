@@ -19,7 +19,7 @@
     NKTexture *imageContainer = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"FuelBar_Container.png"]];
     NKSpriteNode *fuelContainer = [[NKSpriteNode alloc] initWithTexture:imageContainer];
     [fuelContainer setYScale:1.15];
-    [fuelContainer setXScale:1.03];
+    [fuelContainer setXScale:1];
     [fuelContainer setPosition:P2Make(0, .5)];
     [fuelContainer setZPosition:2];
     

@@ -117,7 +117,7 @@
             [self setManager:p.manager];
         }
         [fuelLabel setText:[NSString stringWithFormat:@"ENERGY : %d",p.manager.energy]];
-        [_fuelBar setFill:((float)p.manager.energy)/5000.00];
+        [_fuelBar setFill:((float)p.manager.energy)/1000.00];
         
         for (PlayerSprite* ps in _playerSprites) {
             
