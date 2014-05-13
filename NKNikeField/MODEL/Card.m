@@ -88,13 +88,42 @@
     }
 }
 
+-(void)getEnergyCost{
+    switch(self.specialTypeCategory){
+        case CardSpecialCategoryDeRez:
+            self.energyCost = 1000;
+            return;
+        case CardSpecialCategoryBlock:
+            self.energyCost = 200;
+            return;
+        case CardSpecialCategoryFreeze:
+            self.energyCost = 200;
+            return;
+        case CardSpecialCategoryNewDeal:
+            self.energyCost = 50;
+            return;
+        case CardSpecialCategoryNoLegs:
+            self.energyCost = 100;
+            return;
+        case CardSpecialCategoryPredictiveAnalysis:
+            self.energyCost = 50;
+            return;
+        case CardSpecialCategorySuccubus:
+            self.energyCost = 100;
+            return;
+        default:
+            self.energyCost = 0;
+            return;
+    }
+}
+
 -(id)initWithDeck:(Deck*)deck {
     self = [super init];
     if(self){
         _deck = deck;
         _abilities = [[Abilities alloc]init];
         _aiActionType = NONE;
-        _energyCost = 0;
+        //_energyCost = 0;
         
         switch (_deck.category) {
             case CardCategoryMove:
@@ -112,6 +141,8 @@
             default:
                 break;
         }
+        [self getEnergyCost];
+
        
         _range = _level;
         if (_level > 3) _level = 3;

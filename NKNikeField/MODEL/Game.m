@@ -970,7 +970,7 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
             if (event.card.deck.player) {
                 event.card.deck.player.used = true;
             }
-            
+            self.me.energy -= event.card.energyCost;
             [event.card discard];
         }
         

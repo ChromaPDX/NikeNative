@@ -114,6 +114,28 @@
 		29D892C1190AC707008FBD5F /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D892C0190AC707008FBD5F /* libsqlite3.0.dylib */; };
 		3B10CB45191D44B30057305E /* Card_Icon_SpecGeneral.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B10CB44191D44B30057305E /* Card_Icon_SpecGeneral.png */; };
 		3B2361FF190020FA00056AE2 /* MenuStartVS.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2361FE190020FA00056AE2 /* MenuStartVS.m */; };
+		3B247D821922A26000A6EFDB /* Background_05_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D6C1922A26000A6EFDB /* Background_05_13.png */; };
+		3B247D831922A26000A6EFDB /* ButtonNikeConnect.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D6D1922A26000A6EFDB /* ButtonNikeConnect.png */; };
+		3B247D841922A26000A6EFDB /* Card_Icon_RegChal.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D6E1922A26000A6EFDB /* Card_Icon_RegChal.png */; };
+		3B247D851922A26000A6EFDB /* Card_Icon_RegKick.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D6F1922A26000A6EFDB /* Card_Icon_RegKick.png */; };
+		3B247D861922A26000A6EFDB /* Card_Icon_RegMove.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D701922A26000A6EFDB /* Card_Icon_RegMove.png */; };
+		3B247D871922A26000A6EFDB /* Card_Icon_SpecChal.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D711922A26000A6EFDB /* Card_Icon_SpecChal.png */; };
+		3B247D881922A26000A6EFDB /* Card_Icon_SpecGeneral.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D721922A26000A6EFDB /* Card_Icon_SpecGeneral.png */; };
+		3B247D891922A26000A6EFDB /* Card_Icon_SpecKick.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D731922A26000A6EFDB /* Card_Icon_SpecKick.png */; };
+		3B247D8A1922A26000A6EFDB /* Card_Icon_SpecMove.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D741922A26000A6EFDB /* Card_Icon_SpecMove.png */; };
+		3B247D8B1922A26000A6EFDB /* FuelRingCase.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D751922A26000A6EFDB /* FuelRingCase.png */; };
+		3B247D8C1922A26000A6EFDB /* FuelRingColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D761922A26000A6EFDB /* FuelRingColor.png */; };
+		3B247D8D1922A26000A6EFDB /* LevelBarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D771922A26000A6EFDB /* LevelBarEmpty.png */; };
+		3B247D8E1922A26000A6EFDB /* LevelBarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D781922A26000A6EFDB /* LevelBarFull.png */; };
+		3B247D8F1922A26000A6EFDB /* Screen_Menu2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D791922A26000A6EFDB /* Screen_Menu2.png */; };
+		3B247D901922A26000A6EFDB /* Screen_MenuEnergy.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7A1922A26000A6EFDB /* Screen_MenuEnergy.png */; };
+		3B247D911922A26000A6EFDB /* Screen_Pregame.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7B1922A26000A6EFDB /* Screen_Pregame.png */; };
+		3B247D921922A26000A6EFDB /* Screen_RecapLostNoText.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7C1922A26000A6EFDB /* Screen_RecapLostNoText.png */; };
+		3B247D931922A26000A6EFDB /* Screen_RecapWinNoText.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7D1922A26000A6EFDB /* Screen_RecapWinNoText.png */; };
+		3B247D941922A26000A6EFDB /* Screen_Splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7E1922A26000A6EFDB /* Screen_Splash.png */; };
+		3B247D951922A26000A6EFDB /* ScreenSync_01A.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7F1922A26000A6EFDB /* ScreenSync_01A.png */; };
+		3B247D961922A26000A6EFDB /* ScreenSync_02A.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D801922A26000A6EFDB /* ScreenSync_02A.png */; };
+		3B247D971922A26000A6EFDB /* ScreenSync_03A.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D811922A26000A6EFDB /* ScreenSync_03A.png */; };
 		3B41EE0F190C0FFC00837DC0 /* MainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B41EE0E190C0FFC00837DC0 /* MainMenu.m */; };
 		3B6BF23B190E854F0082628E /* RecapMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6BF23A190E854F0082628E /* RecapMenu.m */; };
 		3B6BF23D191016200082628E /* fuelbar_fuel.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF23C191016200082628E /* fuelbar_fuel.png */; };
@@ -128,12 +150,8 @@
 		3B9275EB191D378100381A52 /* SpecialCards_Challenge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B9275E7191D378100381A52 /* SpecialCards_Challenge.png */; };
 		3BC5A7CF19193E9600414544 /* FuelBar_Container.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7CE19193E9600414544 /* FuelBar_Container.png */; };
 		3BC5A7D21919914800414544 /* FuelBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5A7D11919914800414544 /* FuelBar.m */; };
-		3BC5A7D6191AA9F400414544 /* Screen_RecapLostNoText.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7D3191AA9F400414544 /* Screen_RecapLostNoText.png */; };
-		3BC5A7D7191AA9F400414544 /* Screen_RecapWinNoText.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7D4191AA9F400414544 /* Screen_RecapWinNoText.png */; };
-		3BC5A7D8191AA9F400414544 /* Screen_PregameNoText.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7D5191AA9F400414544 /* Screen_PregameNoText.png */; };
 		3BC5A7DB191ABEE200414544 /* RecapMenuWin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5A7DA191ABEE200414544 /* RecapMenuWin.m */; };
 		3BC5A7DD191AC03E00414544 /* Pregame.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5A7DC191AC03E00414544 /* Pregame.m */; };
-		3BC5A7E0191ADA5000414544 /* screen_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7DF191ADA5000414544 /* screen_menu.png */; };
 		6198A359190068660083EA5D /* UXTopBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6198A358190068660083EA5D /* UXTopBar.m */; };
 		6198A35B1900727C0083EA5D /* lock-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 6198A35A1900727C0083EA5D /* lock-4.png */; };
 		61A257C118FDE998001B7F67 /* NKMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578418FDE998001B7F67 /* NKMaterial.m */; };
@@ -416,6 +434,28 @@
 		3B10CB44191D44B30057305E /* Card_Icon_SpecGeneral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_SpecGeneral.png; sourceTree = "<group>"; };
 		3B2361FD190020E500056AE2 /* MenuStartVS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuStartVS.h; sourceTree = "<group>"; };
 		3B2361FE190020FA00056AE2 /* MenuStartVS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuStartVS.m; sourceTree = "<group>"; };
+		3B247D6C1922A26000A6EFDB /* Background_05_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background_05_13.png; sourceTree = "<group>"; };
+		3B247D6D1922A26000A6EFDB /* ButtonNikeConnect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonNikeConnect.png; sourceTree = "<group>"; };
+		3B247D6E1922A26000A6EFDB /* Card_Icon_RegChal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_RegChal.png; sourceTree = "<group>"; };
+		3B247D6F1922A26000A6EFDB /* Card_Icon_RegKick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_RegKick.png; sourceTree = "<group>"; };
+		3B247D701922A26000A6EFDB /* Card_Icon_RegMove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_RegMove.png; sourceTree = "<group>"; };
+		3B247D711922A26000A6EFDB /* Card_Icon_SpecChal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_SpecChal.png; sourceTree = "<group>"; };
+		3B247D721922A26000A6EFDB /* Card_Icon_SpecGeneral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_SpecGeneral.png; sourceTree = "<group>"; };
+		3B247D731922A26000A6EFDB /* Card_Icon_SpecKick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_SpecKick.png; sourceTree = "<group>"; };
+		3B247D741922A26000A6EFDB /* Card_Icon_SpecMove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_SpecMove.png; sourceTree = "<group>"; };
+		3B247D751922A26000A6EFDB /* FuelRingCase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelRingCase.png; sourceTree = "<group>"; };
+		3B247D761922A26000A6EFDB /* FuelRingColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelRingColor.png; sourceTree = "<group>"; };
+		3B247D771922A26000A6EFDB /* LevelBarEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LevelBarEmpty.png; sourceTree = "<group>"; };
+		3B247D781922A26000A6EFDB /* LevelBarFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LevelBarFull.png; sourceTree = "<group>"; };
+		3B247D791922A26000A6EFDB /* Screen_Menu2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Menu2.png; sourceTree = "<group>"; };
+		3B247D7A1922A26000A6EFDB /* Screen_MenuEnergy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_MenuEnergy.png; sourceTree = "<group>"; };
+		3B247D7B1922A26000A6EFDB /* Screen_Pregame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Pregame.png; sourceTree = "<group>"; };
+		3B247D7C1922A26000A6EFDB /* Screen_RecapLostNoText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_RecapLostNoText.png; sourceTree = "<group>"; };
+		3B247D7D1922A26000A6EFDB /* Screen_RecapWinNoText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_RecapWinNoText.png; sourceTree = "<group>"; };
+		3B247D7E1922A26000A6EFDB /* Screen_Splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Splash.png; sourceTree = "<group>"; };
+		3B247D7F1922A26000A6EFDB /* ScreenSync_01A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ScreenSync_01A.png; sourceTree = "<group>"; };
+		3B247D801922A26000A6EFDB /* ScreenSync_02A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ScreenSync_02A.png; sourceTree = "<group>"; };
+		3B247D811922A26000A6EFDB /* ScreenSync_03A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ScreenSync_03A.png; sourceTree = "<group>"; };
 		3B41EE0D190C0FF200837DC0 /* MainMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenu.h; sourceTree = "<group>"; };
 		3B41EE0E190C0FFC00837DC0 /* MainMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenu.m; sourceTree = "<group>"; };
 		3B6BF239190E85410082628E /* RecapMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecapMenu.h; sourceTree = "<group>"; };
@@ -436,14 +476,10 @@
 		3BC5A7CE19193E9600414544 /* FuelBar_Container.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelBar_Container.png; sourceTree = "<group>"; };
 		3BC5A7D0191990EA00414544 /* FuelBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuelBar.h; sourceTree = "<group>"; };
 		3BC5A7D11919914800414544 /* FuelBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuelBar.m; sourceTree = "<group>"; };
-		3BC5A7D3191AA9F400414544 /* Screen_RecapLostNoText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_RecapLostNoText.png; sourceTree = "<group>"; };
-		3BC5A7D4191AA9F400414544 /* Screen_RecapWinNoText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_RecapWinNoText.png; sourceTree = "<group>"; };
-		3BC5A7D5191AA9F400414544 /* Screen_PregameNoText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_PregameNoText.png; sourceTree = "<group>"; };
 		3BC5A7D9191ABED900414544 /* RecapMenuWin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecapMenuWin.h; sourceTree = "<group>"; };
 		3BC5A7DA191ABEE200414544 /* RecapMenuWin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecapMenuWin.m; sourceTree = "<group>"; };
 		3BC5A7DC191AC03E00414544 /* Pregame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pregame.m; sourceTree = "<group>"; };
 		3BC5A7DE191AC04A00414544 /* Pregame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pregame.h; sourceTree = "<group>"; };
-		3BC5A7DF191ADA5000414544 /* screen_menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screen_menu.png; sourceTree = "<group>"; };
 		6198A357190068660083EA5D /* UXTopBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UXTopBar.h; sourceTree = "<group>"; };
 		6198A358190068660083EA5D /* UXTopBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UXTopBar.m; sourceTree = "<group>"; };
 		6198A35A1900727C0083EA5D /* lock-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock-4.png"; sourceTree = "<group>"; };
@@ -1194,10 +1230,28 @@
 		61D6E6C918FDB5B70017A389 /* Menus */ = {
 			isa = PBXGroup;
 			children = (
-				3BC5A7DF191ADA5000414544 /* screen_menu.png */,
-				3BC5A7D3191AA9F400414544 /* Screen_RecapLostNoText.png */,
-				3BC5A7D4191AA9F400414544 /* Screen_RecapWinNoText.png */,
-				3BC5A7D5191AA9F400414544 /* Screen_PregameNoText.png */,
+				3B247D6C1922A26000A6EFDB /* Background_05_13.png */,
+				3B247D6D1922A26000A6EFDB /* ButtonNikeConnect.png */,
+				3B247D6E1922A26000A6EFDB /* Card_Icon_RegChal.png */,
+				3B247D6F1922A26000A6EFDB /* Card_Icon_RegKick.png */,
+				3B247D701922A26000A6EFDB /* Card_Icon_RegMove.png */,
+				3B247D711922A26000A6EFDB /* Card_Icon_SpecChal.png */,
+				3B247D721922A26000A6EFDB /* Card_Icon_SpecGeneral.png */,
+				3B247D731922A26000A6EFDB /* Card_Icon_SpecKick.png */,
+				3B247D741922A26000A6EFDB /* Card_Icon_SpecMove.png */,
+				3B247D751922A26000A6EFDB /* FuelRingCase.png */,
+				3B247D761922A26000A6EFDB /* FuelRingColor.png */,
+				3B247D771922A26000A6EFDB /* LevelBarEmpty.png */,
+				3B247D781922A26000A6EFDB /* LevelBarFull.png */,
+				3B247D791922A26000A6EFDB /* Screen_Menu2.png */,
+				3B247D7A1922A26000A6EFDB /* Screen_MenuEnergy.png */,
+				3B247D7B1922A26000A6EFDB /* Screen_Pregame.png */,
+				3B247D7C1922A26000A6EFDB /* Screen_RecapLostNoText.png */,
+				3B247D7D1922A26000A6EFDB /* Screen_RecapWinNoText.png */,
+				3B247D7E1922A26000A6EFDB /* Screen_Splash.png */,
+				3B247D7F1922A26000A6EFDB /* ScreenSync_01A.png */,
+				3B247D801922A26000A6EFDB /* ScreenSync_02A.png */,
+				3B247D811922A26000A6EFDB /* ScreenSync_03A.png */,
 			);
 			path = Menus;
 			sourceTree = "<group>";
@@ -1494,7 +1548,9 @@
 				61D6E7FF18FDB5B70017A389 /* tile_bottomright.png in Resources */,
 				29C42BE619105C0600441639 /* expand.aiff in Resources */,
 				61D6E7FD18FDB5B70017A389 /* tile_bottom.png in Resources */,
+				3B247D891922A26000A6EFDB /* Card_Icon_SpecKick.png in Resources */,
 				29C42BDD19105C0600441639 /* kickoff.aiff in Resources */,
+				3B247D8E1922A26000A6EFDB /* LevelBarFull.png in Resources */,
 				29D89291190AC3B0008FBD5F /* diagonals.png in Resources */,
 				61D6E88018FDB5B70017A389 /* PlayerIndicator_PlayerSHADOW.png in Resources */,
 				61D6E80318FDB5B70017A389 /* tile_right.png in Resources */,
@@ -1503,23 +1559,27 @@
 				61D6E87118FDB5B70017A389 /* Special_L2a.png in Resources */,
 				3B6BF2441911416C0082628E /* LOGO_Icon_Bola.png in Resources */,
 				61D6E86B18FDB5B70017A389 /* Kick_L2a.png in Resources */,
+				3B247D831922A26000A6EFDB /* ButtonNikeConnect.png in Resources */,
 				3B6BF23D191016200082628E /* fuelbar_fuel.png in Resources */,
 				61D6E85718FDB5B70017A389 /* Card_Icon_Chal_L3.png in Resources */,
 				61D6E87C18FDB5B70017A389 /* PlayerIndicator_HUD.png in Resources */,
 				29C42BE719105C0600441639 /* FattNedA4.wav in Resources */,
 				29C42BF619105C0600441639 /* DotMatrix-Pang-84.wav in Resources */,
+				3B247D961922A26000A6EFDB /* ScreenSync_02A.png in Resources */,
 				61A257D718FDE998001B7F67 /* chromeKittenSmall.png in Resources */,
 				61D6E87518FDB5B70017A389 /* ball_Texture.png in Resources */,
 				29C42BF819105C0600441639 /* Androyd-Bulbtone-41.wav in Resources */,
 				29C42BE819105C0600441639 /* PlucknWiggleA#1.wav in Resources */,
 				61D6E86618FDB5B70017A389 /* Card_Icon_SpecM_L3.png in Resources */,
 				61D6E7F818FDB5B70017A389 /* tile_3bottom.png in Resources */,
+				3B247D931922A26000A6EFDB /* Screen_RecapWinNoText.png in Resources */,
 				3B9275EB191D378100381A52 /* SpecialCards_Challenge.png in Resources */,
 				3B9275E9191D378100381A52 /* SpecialCards_Kick.png in Resources */,
 				61D6E87618FDB5B70017A389 /* CardType_HUD.png in Resources */,
 				29D89292190AC3B0008FBD5F /* diagonals@2x.png in Resources */,
 				61D6E86418FDB5B70017A389 /* Card_Icon_SpecM_L1.png in Resources */,
 				61D6E86018FDB5B70017A389 /* Card_Icon_SpecC_L3.png in Resources */,
+				3B247D971922A26000A6EFDB /* ScreenSync_03A.png in Resources */,
 				61D6E86D18FDB5B70017A389 /* Move_L1a.png in Resources */,
 				3B6BF246191144280082628E /* LOGO_Icon_Bola_small.png in Resources */,
 				61A257DC18FDE998001B7F67 /* skysphere.png in Resources */,
@@ -1530,11 +1590,13 @@
 				61D6E80118FDB5B70017A389 /* tile_left.png in Resources */,
 				61D6E7FC18FDB5B70017A389 /* tile_all.png in Resources */,
 				297E6C2519097F4F00369BDF /* blank_texture.png in Resources */,
+				3B247D8C1922A26000A6EFDB /* FuelRingColor.png in Resources */,
 				29C42BEE19105C0600441639 /* Androyd-Agitake-42.wav in Resources */,
 				61D6E87918FDB5B70017A389 /* Field_Layer02.png in Resources */,
 				29C42BE319105C0600441639 /* FattNedC2.wav in Resources */,
 				61D6E87318FDB5B70017A389 /* Special_L3b.png in Resources */,
 				61D6E80018FDB5B70017A389 /* tile_horizontal.png in Resources */,
+				3B247D821922A26000A6EFDB /* Background_05_13.png in Resources */,
 				61D6E85618FDB5B70017A389 /* Card_Icon_Chal_L2.png in Resources */,
 				61D6E87D18FDB5B70017A389 /* PlayerIndicator_Layer01.png in Resources */,
 				29C42BED19105C0600441639 /* anomaly_19.wav in Resources */,
@@ -1545,22 +1607,20 @@
 				61D6E80518FDB5B70017A389 /* tile_topleft.png in Resources */,
 				61D6E86A18FDB5B70017A389 /* Kick_L1a.png in Resources */,
 				29C42BE019105C0600441639 /* goal_easter_egg.mp3 in Resources */,
-				3BC5A7E0191ADA5000414544 /* screen_menu.png in Resources */,
 				29C42BE919105C0600441639 /* PlucknWiggleA#2.wav in Resources */,
 				29090EE8190ED80C00BE6B92 /* bottom_bar.png in Resources */,
-				3BC5A7D8191AA9F400414544 /* Screen_PregameNoText.png in Resources */,
 				61D6E85D18FDB5B70017A389 /* Card_Icon_Move_L3.png in Resources */,
 				29090EEC190ED98B00BE6B92 /* Halo_Marks_glow.png in Resources */,
 				61D6E7F918FDB5B70017A389 /* tile_3left.png in Resources */,
 				29090EEE190ED98B00BE6B92 /* Halo.png in Resources */,
 				61D6E80418FDB5B70017A389 /* tile_top.png in Resources */,
 				29C42BF019105C0600441639 /* contract.aiff in Resources */,
+				3B247D861922A26000A6EFDB /* Card_Icon_RegMove.png in Resources */,
 				61D6E86F18FDB5B70017A389 /* Move_L3a.png in Resources */,
 				2902A072190C7BAE008D0092 /* Faction_Psyke_ON.png in Resources */,
 				3B9275E8191D378100381A52 /* SpecialCards_Move.png in Resources */,
 				61D6E85B18FDB5B70017A389 /* Card_Icon_Move_L1.png in Resources */,
 				61D6E7FA18FDB5B70017A389 /* tile_3right.png in Resources */,
-				3BC5A7D7191AA9F400414544 /* Screen_RecapWinNoText.png in Resources */,
 				61D6E86818FDB5B70017A389 /* Challenge_L2a.png in Resources */,
 				29C42BEC19105C0600441639 /* Mercurian-BrainWasher-42.wav in Resources */,
 				29C42BDF19105C0600441639 /* goal.aiff in Resources */,
@@ -1569,21 +1629,28 @@
 				3B9275EA191D378100381A52 /* SpecialCards_General.png in Resources */,
 				61D6E87718FDB5B70017A389 /* Field_Goal.png in Resources */,
 				61D6E87018FDB5B70017A389 /* Special_L1a.png in Resources */,
-				3BC5A7D6191AA9F400414544 /* Screen_RecapLostNoText.png in Resources */,
 				61D6E46518FDAE110017A389 /* Main_iPad.storyboard in Resources */,
+				3B247D951922A26000A6EFDB /* ScreenSync_01A.png in Resources */,
 				61D6E7FE18FDB5B70017A389 /* tile_bottomleft.png in Resources */,
 				61D6E7FB18FDB5B70017A389 /* tile_3top.png in Resources */,
 				29D89294190AC3B0008FBD5F /* HEADER_WEB.png in Resources */,
 				29090EE6190ED77500BE6B92 /* top_bar.png in Resources */,
 				29C42BE219105C0600441639 /* swish.aiff in Resources */,
 				29C42BDE19105C0600441639 /* 03 Bass [A$AP Rocky].mp3 in Resources */,
+				3B247D871922A26000A6EFDB /* Card_Icon_SpecChal.png in Resources */,
 				2902A06C190C7BAE008D0092 /* Faction_Genmod_OFF.png in Resources */,
 				29D89297190AC3B0008FBD5F /* nike.sqlite in Resources */,
+				3B247D881922A26000A6EFDB /* Card_Icon_SpecGeneral.png in Resources */,
 				61D6E85A18FDB5B70017A389 /* Card_Icon_Kick_L3.png in Resources */,
+				3B247D921922A26000A6EFDB /* Screen_RecapLostNoText.png in Resources */,
 				61D6E80218FDB5B70017A389 /* tile_none.png in Resources */,
 				61D6E85F18FDB5B70017A389 /* Card_Icon_SpecC_L2.png in Resources */,
+				3B247D851922A26000A6EFDB /* Card_Icon_RegKick.png in Resources */,
+				3B247D841922A26000A6EFDB /* Card_Icon_RegChal.png in Resources */,
 				29C42BF219105C0600441639 /* slope-rattle.wav in Resources */,
+				3B247D8F1922A26000A6EFDB /* Screen_Menu2.png in Resources */,
 				61D6E86918FDB5B70017A389 /* Challenge_L3a.png in Resources */,
+				3B247D8D1922A26000A6EFDB /* LevelBarEmpty.png in Resources */,
 				2902A06E190C7BAE008D0092 /* Faction_Kinforce_ON.png in Resources */,
 				2902A074190C7BAE008D0092 /* Faction_Sention_OFF.png in Resources */,
 				61D6E85C18FDB5B70017A389 /* Card_Icon_Move_L2.png in Resources */,
@@ -1591,17 +1658,21 @@
 				61D6E86218FDB5B70017A389 /* Card_Icon_SpecK_L2.png in Resources */,
 				29C42BF719105C0600441639 /* Androyd-Alert-84.wav in Resources */,
 				61D6E85518FDB5B70017A389 /* Card_Icon_Chal_L1.png in Resources */,
+				3B247D901922A26000A6EFDB /* Screen_MenuEnergy.png in Resources */,
 				61D6E87218FDB5B70017A389 /* Special_L3a.png in Resources */,
 				61A257D818FDE998001B7F67 /* moon.png in Resources */,
+				3B247D8A1922A26000A6EFDB /* Card_Icon_SpecMove.png in Resources */,
 				29C42BEF19105C0600441639 /* high6-b.wav in Resources */,
 				2902A071190C7BAE008D0092 /* Faction_Psyke_OFF.png in Resources */,
 				61A257D618FDE998001B7F67 /* chromeKitten.png in Resources */,
 				6198A35B1900727C0083EA5D /* lock-4.png in Resources */,
 				29090EED190ED98B00BE6B92 /* Halo_Marks.png in Resources */,
 				29C42BEB19105C0600441639 /* KnifeMachine-MindEraser-42.wav in Resources */,
+				3B247D941922A26000A6EFDB /* Screen_Splash.png in Resources */,
 				29C42BE419105C0600441639 /* Tom-FMD-TomiVoz-Lo-127.wav in Resources */,
 				61D6E86518FDB5B70017A389 /* Card_Icon_SpecM_L2.png in Resources */,
 				2902A06D190C7BAE008D0092 /* Faction_Genmod_ON.png in Resources */,
+				3B247D911922A26000A6EFDB /* Screen_Pregame.png in Resources */,
 				29C42BDB19105C0600441639 /* 30 PWSteal.Ldpinch.D.mp3 in Resources */,
 				3B10CB45191D44B30057305E /* Card_Icon_SpecGeneral.png in Resources */,
 				61D6E46A18FDAE120017A389 /* Images.xcassets in Resources */,
@@ -1610,6 +1681,7 @@
 				61D6E86718FDB5B70017A389 /* Challenge_L1a.png in Resources */,
 				61D6E80618FDB5B70017A389 /* tile_topright.png in Resources */,
 				61D6E46218FDAE110017A389 /* Main_iPhone.storyboard in Resources */,
+				3B247D8B1922A26000A6EFDB /* FuelRingCase.png in Resources */,
 				2902A06F190C7BAE008D0092 /* Faction_Kinforce_OFF.png in Resources */,
 				61D6E87418FDB5B70017A389 /* Background_Field.png in Resources */,
 				29C42BF419105C0600441639 /* lock.aiff in Resources */,
