@@ -88,6 +88,9 @@
     
     _me = [[Manager alloc] initWithGame:self];
     _opponent = [[Manager alloc] initWithGame:self];
+
+    _me.energy = 1000;
+    _opponent.energy = 1000;
     
     _score = [BoardLocation pX:0 Y:0];
     
@@ -1244,7 +1247,7 @@
             
         }
         else if (event.type == kEventBlock){  //  BLOCK
-            
+            [event.manager.game.blockedBoardLocations addObject:event.location];
         }
         else if (event.type == kEventDeRez){  //  DEREZ
             [event.playerReceiving.effects setObject:@1 forKey:Card_DeRez];

@@ -476,11 +476,11 @@
     }
     
     else if (self.category == CardCategoryChallenge) {
-        if(self.challengeCategory == CardChallengeCategoryRook){
-            accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
-        }
-        else if (self.challengeCategory == CardChallengeCategoryBishop){
-            accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range] mutableCopy];
+        //if(self.challengeCategory == CardChallengeCategoryRook){
+        //    accessible = [[aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
+        //}
+        if (self.challengeCategory == CardChallengeCategoryBishop){
+            accessible = [[aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range] mutableCopy];
         }
         else if (self.challengeCategory == CardChallengeCategoryHorizantal){
             accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
