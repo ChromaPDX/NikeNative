@@ -865,7 +865,6 @@
 
 -(BOOL)performEvent:(GameEvent*)event {
     
-    
     event.wasSuccessful = true;
     
     
@@ -1389,7 +1388,10 @@
 
 -(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
 
+    //@ERIC WE CAN NO LONGER DEPEND ON THIS EXISTING
     Card* moveCard = p.manager.moveDeck.inHand[0];
+    //so we need the AI to search for what cards it has first, rather than assuming
+    // it has a cetain type of card. This will crash if it doesn't find the card.
     
     // CHECK FOR LOOSE BALL
     if(![p.manager playerWithBall] && ![p.manager.opponent playerWithBall]){
@@ -1400,12 +1402,13 @@
     
     if (p.manager.hasPossesion) {
         
-        Card* kickCard = p.manager.kickDeck.inHand[0];
-        
         NSLog(@"AI is choosing card for Player: %@ location = %@ ballLocaiton = %@", p.name, p.location, p.manager.game.ball.location);
         
         // OFFENSE
         if (p.ball) {
+            
+            Card* kickCard = p.manager.kickDeck.inHand[0];
+            
             // HAS BALL
             if ([p isInShootingRange ]){
                 // CAN SHOOT ON GOAL
