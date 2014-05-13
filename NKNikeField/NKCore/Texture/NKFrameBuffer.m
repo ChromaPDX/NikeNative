@@ -183,10 +183,6 @@
     [self unbind];
 }
 
--(void)presentInContext:(EAGLContext*)context {
-    glBindRenderbufferOES(GL_RENDERBUFFER, _frameBuffer);
-	[context presentRenderbuffer:GL_RENDERBUFFER];
-}
 
 - (void)unbind
 {
@@ -195,17 +191,16 @@
 
 -(void)dealloc {
 
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
         glDeleteFramebuffersOES(1, &_frameBuffer);
-        //viewFramebuffer = 0;
         glDeleteRenderbuffersOES(1, &_renderBuffer);
-        //viewRenderbuffer = 0;
-        
+
         if(_depthBuffer)
         {
             glDeleteRenderbuffersOES(1, &_depthBuffer);
             _depthBuffer = 0;
         }
-    
 }
 - (GLuint)bindTexture:(int)texLoc
 {

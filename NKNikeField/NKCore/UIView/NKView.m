@@ -171,7 +171,7 @@ GLfloat gCubeVertexData[216] =
 	[self destroyFramebuffer];
     NSLog(@"rebuilding framebuffer");
 	[self createFramebuffer];
-	//[self drawView];
+	[self drawView];
 }
 
 -(void)destroyFramebuffer {
@@ -310,9 +310,9 @@ static const GLubyte Indices[] = {
 - (void)setupVBOs {
     
     //vertexBuffer = [[NKVertexBuffer alloc] initWithVertexData:vertices ofSize:sizeof(vertices)];
-    vertexBuffer = [NKVertexBuffer defaultRect];
+    //vertexBuffer = [NKVertexBuffer defaultRect];
     
-    texture = [NKTexture textureWithImageNamed:@"sdf"];
+    //texture = [NKTexture textureWithImageNamed:@"sdf"];
     
 }
 
@@ -335,7 +335,6 @@ static int rotate = 0;
 // Updates the OpenGL view when the timer fires
 - (void)drawView
 {
-    
     F1t dt = (CFAbsoluteTimeGetCurrent() - lastTime) * 1000.;
     //NSLog(@"%d frame rate", (int)(1000. / dt));
     
@@ -387,7 +386,9 @@ static int rotate = 0;
         }
     }
 
-    [frameBuffer presentInContext:context];
+    glBindRenderbufferOES(GL_RENDERBUFFER, frameBuffer.frameBuffer);
+	[context presentRenderbuffer:GL_RENDERBUFFER];
+    
     
 }
 

@@ -83,12 +83,13 @@
         
         _model = model;
         
-        if (model.validatedSelectionSet) {
-            self.color = [self colorForCategory];
-        }
-        else {
-             self.color = [NKColor colorWithRed:.5 green:.5 blue:.5 alpha:1.];
-        }
+        self.color = V2YELLOW;
+//        if ([model validatedSelectionSetForPlayer:_delegate.selectedPlayer]){
+//            self.color = [self colorForCategory];
+//        }
+//        else {
+//             self.color = [NKColor colorWithRed:.5 green:.5 blue:.5 alpha:1.];
+//        }
         
         [self setCorrectTexture];
         

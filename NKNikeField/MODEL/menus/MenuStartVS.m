@@ -9,7 +9,7 @@
 #import "MenuStartVS.h"
 #import "NodeKitten.h"
 #import "GameScene.h"
-
+#import "Game.h"
 
 
 @implementation MenuStartVS

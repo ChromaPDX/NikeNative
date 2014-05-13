@@ -100,7 +100,7 @@
     [self addChild:cardImg];
     
     [cardImg setZPosition:2];
-    NSLog(@"add cardImg");
+    //NSLog(@"add cardImg");
     
     if (_model.ball) {
         

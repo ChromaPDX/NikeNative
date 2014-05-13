@@ -10,7 +10,7 @@
 #import "NodeKitten.h"
 #import "GameScene.h"
 #import "NikeViewController.h"
-
+#import "Game.h"
 
 @implementation MainMenu
 

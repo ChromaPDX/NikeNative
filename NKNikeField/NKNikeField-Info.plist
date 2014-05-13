@@ -53,6 +53,7 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Arial Black.ttf</string>
 		<string>Coe.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>

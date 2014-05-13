@@ -110,7 +110,7 @@
     
 }
 
--(void)refreshCardsForPlayer:(Player *)p WithCompletionBlock:(void (^)())block {
+-(void)setPlayer:(Player *)p WithCompletionBlock:(void (^)())block {
     if (p) {
         
         if (![p.manager isEqual:_manager]) {

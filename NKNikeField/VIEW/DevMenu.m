@@ -11,6 +11,7 @@
 #import "GameScene.h"
 #import "Menus.h"
 #import "SyncScene.h"
+#import "Game.h"
 
 @implementation DevMenu 
 

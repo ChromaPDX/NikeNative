@@ -9,7 +9,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <GameKit/GameKit.h>
 #import "ModelHeaders.h"
-
+#import "GameScene.h"
 
 #define LOAD_TIME 1.0
 #define NKColor UIColor
@@ -25,13 +25,13 @@
 -(id) init{
     self = [super init];
     if(self){
-
+        
     }
     return self;
 }
 
 -(void)playTouchSound{
-   // AudioServicesPlaySystemSound(touchSound);
+    // AudioServicesPlaySystemSound(touchSound);
 }
 
 #pragma mark - INITIAL SETUP of THE GAME
@@ -88,9 +88,6 @@
     
     _me = [[Manager alloc] initWithGame:self];
     _opponent = [[Manager alloc] initWithGame:self];
-
-    _me.energy = 1000;
-    _opponent.energy = 1000;
     
     _score = [BoardLocation pX:0 Y:0];
     
@@ -142,7 +139,7 @@
     NSLog(@"running new game action");
     
     [self performSequence:_currentEventSequence record:YES animate:YES];
-
+    
     
 }
 
@@ -207,7 +204,7 @@
             [_gcController initRealTimeConnection];
         }
         
-       // [self replayLastTurn];
+        // [self replayLastTurn];
         
     }];
     
@@ -238,18 +235,14 @@
                     self.selectedPlayer = player;
                     
                     return 1;
-                    
                 }
                 
             }
             
             else {
-                
                 if (_currentEventSequence) {
                     [_gameScene cleanUpUIForSequence:_currentEventSequence];
                 }
-                
-                
             }
             
             
@@ -265,19 +258,24 @@
 
 
 -(void)setSelectedCard:(Card *)selectedCard {
-    
     if (_myTurn) {
         
         if (!_animating) {
+
+            if (_selectedPlayer) {
+                
             
             _selectedCard = selectedCard;
+            //_selectedCard.playerPerforming = _selectedPlayer;
             
-            [_gameScene showCardPath:[selectedCard validatedSelectionSet]];
+            if  (selectedCard){
+                [_gameScene showCardPath:[selectedCard validatedSelectionSetForPlayer:_selectedPlayer]];
+            }
+                
+            }
+            
         }
     }
-    
-    
-    
 }
 
 -(void)setSelectedLocation:(BoardLocation *)selectedLocation {
@@ -287,58 +285,55 @@
             _currentEventSequence = [GameSequence sequence];
             
             // ADD MAIN ACTION
-            
             // ADD DISCARD EVENT
-            [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventPlayCard];
+            [self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventPlayCard];
+            
+            GameEvent* playerEvent =  [self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventPlayCard];
             
             if (_selectedCard.category == CardCategoryMove) {
-                [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventMove];
+                playerEvent.type = kEventMove;
             }
             
             else if (_selectedCard.category == CardCategoryKick){
                 if ([selectedLocation isEqual:_selectedPlayer.manager.goal]) {
-                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventKickGoal];
+                    playerEvent.type = kEventKickGoal;
                     GameEvent* resetPlayers = [GameEvent event];
                     resetPlayers.type = kEventResetPlayers;
                     resetPlayers.manager = _selectedPlayer.manager;
                     [_currentEventSequence.GameEvents addObject:resetPlayers];
-              
-
                 }
                 else {
-                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventKickPass];
+                    playerEvent.type = kEventKickPass;
                 }
             }
             
             else if (_selectedCard.category == CardCategoryChallenge){
-                [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventChallenge];
+                playerEvent.type = kEventChallenge;
             }
             
             else if (_selectedCard.category == CardCategorySpecial){
                 if(_selectedCard.specialTypeCategory == CardSpecialCategoryFreeze){
-                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventFreeze];
+                    playerEvent.type = kEventFreeze;
                 }
                 else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryNoLegs){
-                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventNoLegs];
+                    playerEvent.type = kEventNoLegs;
                 }
                 else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryBlock){
-                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventBlock];
+                    playerEvent.type = kEventBlock;
                 }
                 else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryDeRez){
-                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventDeRez];
+                    playerEvent.type = kEventDeRez;
                 }
                 else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryNewDeal){
-                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventNewDeal];
+                    playerEvent.type = kEventNewDeal;
                 }
                 else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryPredictiveAnalysis){
-                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventPredictiveAnalysis];
+                    playerEvent.type = kEventPredictiveAnalysis;
                 }
                 else  if(_selectedCard.specialTypeCategory == CardSpecialCategorySuccubus){
-                    [self addEventToSequence:_currentEventSequence fromCardOrPlayer:_selectedCard toLocation:selectedLocation withType:kEventSuccubus];
+                    playerEvent.type = kEventSuccubus;
                 }
-                
             }
-            
             
             [self performSequence:_currentEventSequence record:YES animate:YES];
             
@@ -410,27 +405,18 @@
     
 }
 
--(GameEvent*)addEventToSequence:(GameSequence*)sequence fromCardOrPlayer:(Card*)card toLocation:(BoardLocation*)location withType:(EventType)type {
-    
-    
+-(GameEvent*)addDeployEventToSequence:(GameSequence*)sequence forManager:(Manager*)m toLocation:(BoardLocation*)location withType:(EventType)type {
     
     GameEvent *event = [GameEvent event];
     
-    if ([card isKindOfClass:[Player class]]) { // IS A PLAYER
-        event.playerPerforming = (Player*)card;
-        event.manager = event.playerPerforming.manager;
-        event.deck = nil;
-        event.type = kEventAddPlayer;
-        event.startingLocation = [card.location copy];
-        NSLog(@"adding deploy event");
-    }
     
-    else if (card){ // IS CARD
-        event.card = card; // also sets other stuff
-        event.startingLocation = [card.deck.player.location copy];
-    }
+
+    event.manager = m;
+    event.type = kEventAddPlayer;
+    //event.startingLocation = [card.location copy];
+    NSLog(@"adding deploy event");
     
-    event.type = type;
+    
     event.location = [location copy];
     
     [sequence.GameEvents addObject:event];
@@ -441,6 +427,26 @@
     
 }
 
+-(GameEvent*)addCardEventToSequence:(GameSequence*)sequence withCard:(Card*)card forPlayer:(Player*)player toLocation:(BoardLocation*)location withType:(EventType)type {
+
+    GameEvent *event = [GameEvent event];
+    
+    event.playerPerforming = player;
+    event.card = card; // also sets other stuff
+    event.startingLocation = [player.location copy];
+    event.location = [location copy];
+    
+    event.deck = card.deck;
+    
+    event.type = type;
+   
+    [sequence.GameEvents addObject:event];
+    
+    event.cost = 0;
+    
+    return event;
+    
+}
 
 -(GameEvent*)addDrawEventToSequence:(GameSequence*)sequence forManager:(Manager*)m {
     
@@ -459,8 +465,8 @@
     
     GameEvent *shuffle = [GameEvent event];
     shuffle.deck = d;
-    shuffle.playerPerforming = d.player;
-    shuffle.manager = d.player.manager;
+    //shuffle.playerPerforming = d.player;
+    shuffle.manager = d.manager;
     shuffle.type = kEventShuffleDeck;
     
     
@@ -687,7 +693,7 @@
     if (shouldRecordSequence){
         
         [_gameScene refreshUXWindowForPlayer:nil withCompletionBlock:^{}];
-
+        
         
         [_gameScene cleanUpUIForSequence:sequence];
         
@@ -764,7 +770,7 @@
                                 }
                                 
                                 [_gameScene setSelectedPlayer:playerToSelect];
-        
+                                
                             }
                             
                             [self saveTurnWithCompletionBlock:^{
@@ -861,9 +867,9 @@
 
 -(BOOL)performEvent:(GameEvent*)event {
     
- 
+    
     event.wasSuccessful = true;
-
+    
     
     // FIRST INHERIT WHO IS INVOLVED FROM PERSISTENT LOCATIONS
     
@@ -876,8 +882,8 @@
     if (event.type == kEventStartTurn){
         event.manager.myTurn = true;
         for (Player* p in event.manager.players.inGame) {
-            if(p.frozen){
-                p.frozen = FALSE;
+            if(p.effects[Card_Freeze]){
+                [p.effects removeObjectForKey:Card_Freeze];
             }
             else{
                 p.used = false;
@@ -887,24 +893,80 @@
         [self assignBallIfPossible];
         
     }
-
-else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
+    
+    else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
         
-        for (Player* p in event.manager.players.inGame) {
-            [p.moveDeck drawNewCardIfEmptyForEvent:event];
-            [p.kickDeck drawNewCardIfEmptyForEvent:event];
-            [p.challengeDeck drawNewCardIfEmptyForEvent:event];
-            [p.specialDeck drawNewCardIfEmptyForEvent:event];
-            [p.specialDeck drawNewCardIfEmptyForEvent:event];
-            if(p.deRez){
-                NSMutableArray *arCopy = [event.manager.players.inGame mutableCopy];
-                [arCopy removeObject:p];
-                event.manager.players.inGame = arCopy;
+        // THIS IS LEGACY, SWITCHING TO SINGLE 5 CARD HAND
+        
+        
+        //        for (Player* p in event.manager.players.inGame) {
+        //            [p.moveDeck drawNewCardIfEmptyForEvent:event];
+        //            [p.kickDeck drawNewCardIfEmptyForEvent:event];
+        //            [p.challengeDeck drawNewCardIfEmptyForEvent:event];
+        //            [p.specialDeck drawNewCardIfEmptyForEvent:event];
+        //            [p.specialDeck drawNewCardIfEmptyForEvent:event];
+        //            if(p.effects[Card_DeRez]){
+        //                NSMutableArray *arCopy = [event.manager.players.inGame mutableCopy];
+        //                [arCopy removeObject:p];
+        //                event.manager.players.inGame = arCopy;
+        //            }
+        //
+        //        }
+        
+       // NSLog(@"draw cards: %d", event.manager.allCardsInHand.count);
+        
+        //        NSLog(@"Manager move cards: %d", event.manager.moveDeck.theDeck.count);
+        //        NSLog(@"Manager kick cards: %d", event.manager.kickDeck.theDeck.count);
+        //        NSLog(@"Manager challenge cards: %d", event.manager.challengeDeck.theDeck.count);
+        //        NSLog(@"Manager special cards: %d", event.manager.specialDeck.theDeck.count);
+        //  
+
+        Card*c;
+        
+        for (int i = 0; i < 3; i++){
+            if (event.manager.allCardsInHand.count < 5) {
+                [event.manager.moveDeck turnOverNextCardForEvent:event];
             }
-            
         }
         
-        //NSLog(@"Game.m : drawing card %@ for:%@", newCard.name, event.manager.name);
+        if (event.manager.allCardsInHand.count < 5) {
+            if (event.manager.hasPossesion) {
+                [event.manager.kickDeck turnOverNextCardForEvent:event];
+            }
+            else {
+                [event.manager.challengeDeck turnOverNextCardForEvent:event];
+            }
+        }
+        
+        for (int i = 0; i < 2; i++){
+            
+            if (event.manager.allCardsInHand.count < 5) {
+
+                switch ([event.manager.moveDeck randomForIndex:event.seed + i] % 3) {
+
+                    case 0:
+                        c = [event.manager.kickDeck turnOverNextCardForEvent:event];
+                        break;
+                        
+                    case 1:
+                        c = [event.manager.challengeDeck turnOverNextCardForEvent:event];
+                        break;
+                        
+                    case 2:
+                        c = [event.manager.specialDeck turnOverNextCardForEvent:event];
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
+            }
+        }
+        
+        for (Card *c in event.manager.allCardsInHand) {
+             NSLog(@"drew cards %d: %@",event.manager.allCardsInHand.count, c.name);
+        }
+        //NSLog(@"drew cards: %d", event.manager.allCardsInHand.count);
         
     }
     
@@ -929,11 +991,37 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
         [_players addObject:newPlayer];
         
         if ([event.manager.players playCardFromDeck:newPlayer]){
-            NSLog (@"putting player on field, shufflingcards");
-            [newPlayer.moveDeck shuffleWithSeed:event.seed fromDeck:newPlayer.moveDeck.allCards];
-            [newPlayer.kickDeck shuffleWithSeed:event.seed fromDeck:newPlayer.kickDeck.allCards];
-            [newPlayer.challengeDeck shuffleWithSeed:event.seed fromDeck:newPlayer.challengeDeck.allCards];
-            [newPlayer.specialDeck shuffleWithSeed:event.seed fromDeck:newPlayer.specialDeck.allCards];
+            
+            NSLog (@"player on field %d", event.manager.players.inGame.count);
+            
+            // LEGACY
+            
+            //            [newPlayer.moveDeck shuffleWithSeed:event.seed fromDeck:newPlayer.moveDeck.allCards];
+            //            [newPlayer.kickDeck shuffleWithSeed:event.seed fromDeck:newPlayer.kickDeck.allCards];
+            //            [newPlayer.challengeDeck shuffleWithSeed:event.seed fromDeck:newPlayer.challengeDeck.allCards];
+            //            [newPlayer.specialDeck shuffleWithSeed:event.seed fromDeck:newPlayer.specialDeck.allCards];
+            
+            // COMBINING ALL CARDS FOR MANAGER
+            
+            NSMutableArray* combinedMove = [newPlayer.moveDeck.allCards mutableCopy];
+            [combinedMove addObjectsFromArray:event.manager.moveDeck.theDeck];
+            [event.manager.moveDeck shuffleWithSeed:event.seed fromDeck:combinedMove];
+            
+            NSMutableArray* combinedKick = [newPlayer.kickDeck.allCards mutableCopy];
+            [combinedKick addObjectsFromArray:event.manager.kickDeck.theDeck];
+            [event.manager.kickDeck shuffleWithSeed:event.seed fromDeck:combinedKick];
+            
+            NSMutableArray* combinedChallenge = [newPlayer.challengeDeck.allCards mutableCopy];
+            [combinedChallenge addObjectsFromArray:event.manager.challengeDeck.theDeck];
+            [event.manager.challengeDeck shuffleWithSeed:event.seed fromDeck:combinedChallenge];
+            
+            NSMutableArray* combinedSpecial = [newPlayer.specialDeck.allCards mutableCopy];
+            [combinedSpecial addObjectsFromArray:event.manager.specialDeck.theDeck];
+            [event.manager.specialDeck shuffleWithSeed:event.seed fromDeck:combinedSpecial];
+            
+        }
+        else {
+            NSLog(@"**ERROR didn't play from deck");
         }
         
         event.playerPerforming = newPlayer;
@@ -967,8 +1055,8 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
     else if (event.type == kEventPlayCard) {
         
         if (event.card) {
-            if (event.card.deck.player) {
-                event.card.deck.player.used = true;
+            if (event.playerPerforming) {
+                event.playerPerforming.used = true;
             }
             self.me.energy -= event.card.energyCost;
             [event.card discard];
@@ -992,13 +1080,11 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
     
     else if (event.type == kEventEndTurn){
         
-        for (Player *p in event.manager.players.inGame) {
-            for (Card* c in [p allCardsInHand]) {
-                if (!c.locked) {
-                         [c discard];
-                }
+
+        for (Card* c in [event.manager allCardsInHand]) {
+            if (!c.locked) {
+                [c discard];
             }
-            
         }
         
         [self purgeTemporaryEnchantments];
@@ -1010,8 +1096,8 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
     else if (event.type == kEventResetPlayers){
         
         for (Player *p in event.manager.players.inGame) {
-            if(p.newDeal){
-                p.newDeal=FALSE;
+            if(p.effects[Card_NewDeal]){
+                [p.effects removeObjectForKey:Card_NewDeal];
             }
             else{
                 p.used = TRUE;
@@ -1033,7 +1119,7 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
                 }
                 else {
                     p2.ball = _ball;
-                     [p2 setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)]];
+                    [p2 setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)]];
                 }
             }
             
@@ -1075,26 +1161,26 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
     
     if (event.wasSuccessful) {
         
-       if (event.isRunningEvent) {
+        if (event.isRunningEvent) {
             
             event.playerPerforming.location = [event.location copy];
             
             // DRIBBLE
-           if (!_ball.enchantee) { // NO ONE HAS BALL, PICK UP IF THERE
-               
-               AStar* star = [[AStar alloc] initWithColumns:7 Rows:10 ObstaclesCells:nil];
-               NSArray *path = [star pathFromAtoB:event.startingLocation B:event.location NeighborhoodType:NeighborhoodTypeRook];
-               
-               if ([path containsObject:_ball.location]) {
-                   [event.playerPerforming setBall:_ball];
-               }
-               
-               if ([event.startingLocation isEqual:_ball.location]) {
-                   [event.playerPerforming setBall:_ball];
-               }
-               
-           }
-           
+            if (!_ball.enchantee) { // NO ONE HAS BALL, PICK UP IF THERE
+                
+                AStar* star = [[AStar alloc] initWithColumns:7 Rows:10 ObstaclesCells:nil];
+                NSArray *path = [star pathFromAtoB:event.startingLocation B:event.location NeighborhoodType:NeighborhoodTypeRook];
+                
+                if ([path containsObject:_ball.location]) {
+                    [event.playerPerforming setBall:_ball];
+                }
+                
+                if ([event.startingLocation isEqual:_ball.location]) {
+                    [event.playerPerforming setBall:_ball];
+                }
+                
+            }
+            
             if (event.playerPerforming.ball) { // HAVE BALL, BRING IT WITH ME
                 _ball.location = [event.location copy];
             }
@@ -1115,24 +1201,24 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
             
             // RUN
             
-
-
+            
+            
             
         }
         
-       else if (event.type == kEventKickPass){ // PASS
-           //NSLog(@"pass!");
-           [event.playerPerforming setBall:Nil];
-
-           event.playerReceiving = [self playerAtLocation:event.location];
-           if (event.playerReceiving) {
-               Player *p = event.playerReceiving;
-               [p setBall:_ball];
-           }
-           else {
-               [_ball setLocation:event.location];
-           }
-       }
+        else if (event.type == kEventKickPass){ // PASS
+            //NSLog(@"pass!");
+            [event.playerPerforming setBall:Nil];
+            
+            event.playerReceiving = [self playerAtLocation:event.location];
+            if (event.playerReceiving) {
+                Player *p = event.playerReceiving;
+                [p setBall:_ball];
+            }
+            else {
+                [_ball setLocation:event.location];
+            }
+        }
         
         else if (event.type == kEventKickGoal){ // SHOOT
             
@@ -1146,35 +1232,37 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
         }
 #pragma mark special card events
         else if (event.type == kEventFreeze){  //  FREEZE
+            [event.playerReceiving.effects setObject:@1 forKey:Card_Freeze];
             event.playerReceiving.used = TRUE;
-            event.playerReceiving.frozen = TRUE;
         }
         else if (event.type == kEventNoLegs){  //  NO LEGS
-            event.playerReceiving.noLegs = TRUE;
+            [event.playerReceiving.effects setObject:@1 forKey:Card_NoLegs];
         }
         else if (event.type == kEventSuccubus){  //  SUCCUBUS
-            event.manager.opponent.actionPointsEarned -= 100;
-            event.manager.actionPointsEarned += 50;
-
-        }
-        else if (event.type == kEventBlock){  //  BLOCK
-            [event.manager.game.blockedBoardLocations addObject:event.location];
-        }
-        else if (event.type == kEventDeRez){  //  DEREZ
-            //event.playerReceiving.deRez = TRUE;
-            event.playerReceiving.deRez = FALSE;
+            event.manager.opponent.energy -= 100;
+            event.manager.energy += 50;
             
         }
-        else if (event.type == kEventNewDeal){  //  NEWDEAL
-            [event.playerPerforming.deck shuffleWithSeed:event.seed fromDeck:event.playerPerforming.deck.allCards];
-            event.playerPerforming.newDeal = TRUE;
+        else if (event.type == kEventBlock){  //  BLOCK
+            
         }
+        else if (event.type == kEventDeRez){  //  DEREZ
+            [event.playerReceiving.effects setObject:@1 forKey:Card_DeRez];
+        }
+        
+        else if (event.type == kEventNewDeal){  //  NEWDEAL
+            //[event.playerPerforming.deck shuffleWithSeed:event.seed fromDeck:event.playerPerforming.deck.allCards];
+            [event.playerReceiving.effects setObject:@1 forKey:Card_NewDeal];
+        }
+        
         else if (event.type == kEventPredictiveAnalysis){  //  PREDICTIVE ANALASYS
             event.playerPerforming.manager.opponent.preditiveAnalysis = TRUE;
+            
             for(Player *p in event.playerPerforming.manager.opponent.players.allCards){
                 Card *challengeCard = p.challengeDeck.allCards[0];
-                NSLog(@"Challenge Card %@ SelectionSet = %@", challengeCard, [challengeCard selectionSet]);
-                [_gameScene showCardPath:[challengeCard selectionSet]];
+                //NSLog(@"Challenge Card %@ SelectionSet = %@", challengeCard, [challengeCard selectionSet]);
+                
+               // [_gameScene showCardPath:[challengeCard selectionSet]];
                 
             }
         }
@@ -1197,7 +1285,7 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
             else {
                 NSLog(@"challenge fail !!");
             }
-
+            
         }
         
         else if (event.type == kEventKickGoal || event.type == kEventKickPass){ // FAILED SHOT OR PASS
@@ -1215,7 +1303,7 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
 
 
 -(void)logEvent:(GameEvent*)event{
-
+    
     if (event.playerPerforming) {
         NSLog(@">>%d %@ is %@ >> %d,%d to %d,%d", event.index, event.playerPerforming.name, event.name, event.startingLocation.x, event.startingLocation.y, event.location.x, event.location.y);
         if (!event.wasSuccessful) {
@@ -1229,7 +1317,7 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
         NSLog(@">>%d %@ for %@", event.index, event.name, event.manager.name);
     }
     
-
+    
     
 }
 
@@ -1302,10 +1390,9 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
 }
 
 -(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
-    NSLog(@"AI is choosing card for Player: %@ location = %@ ballLocaiton = %@", p.name, p.location, p.manager.game.ball.location);
-    Card* kickCard = p.kickDeck.inHand[0];
-    Card* moveCard = p.moveDeck.inHand[0];
 
+    Card* moveCard = p.manager.moveDeck.inHand[0];
+    
     // CHECK FOR LOOSE BALL
     if(![p.manager playerWithBall] && ![p.manager.opponent playerWithBall]){
         moveCard.aiActionType = MOVE_TO_BALL;
@@ -1313,15 +1400,19 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
         return;
     }
     
-    
     if (p.manager.hasPossesion) {
+        
+        Card* kickCard = p.manager.kickDeck.inHand[0];
+        
+        NSLog(@"AI is choosing card for Player: %@ location = %@ ballLocaiton = %@", p.name, p.location, p.manager.game.ball.location);
+        
         // OFFENSE
         if (p.ball) {
             // HAS BALL
             if ([p isInShootingRange ]){
                 // CAN SHOOT ON GOAL
                 kickCard.aiActionType = SHOOT_ON_GOAL;
-                //[_gameScene AISelectedLocation:kickCard.deck.player.manager.goal];
+                //[_gameScene AISelectedLocation:kickCard.playerPerforming.manager.goal];
                 [_gameScene AISelectedCard:kickCard];
                 return;
             }
@@ -1368,7 +1459,6 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
         }
         else {
             // DOES NOT HAVE BALL
-            Card* moveCard = p.moveDeck.inHand[0];
             moveCard.aiActionType = MOVE_TO_GOAL_IN_PASS_RANGE;
             [_gameScene AISelectedCard:moveCard];
             return;
@@ -1377,13 +1467,12 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
     }
     else {
         // DEFENSE
-        Card* challengeCard = p.challengeDeck.inHand[0];
-        Card* moveCard = p.moveDeck.inHand[0];
+        Card* challengeCard = p.manager.challengeDeck.inHand[0];
         
         NSLog(@"AIChooseCardForPlayer: challengeCard = %@", challengeCard.name);
-        NSLog(@"AIChooseCardForPlayer: challengeCard validatedSelectionSet = %@", [challengeCard validatedSelectionSet]);
+        NSLog(@"AIChooseCardForPlayer: challengeCard validatedSelectionSet = %@", [challengeCard validatedSelectionSetForPlayer:p]);
         
-        if ([[challengeCard validatedSelectionSet] count]) {
+        if ([[challengeCard validatedSelectionSetForPlayer:p] count]) {
             // CAN CHALLENGE
             challengeCard.aiActionType = CHALLENGE;
             [_gameScene AISelectedCard:challengeCard];
@@ -1398,7 +1487,7 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
                 return;
             }
             else{
-                 // CAN NOT MOVE TO CHALLENGE
+                // CAN NOT MOVE TO CHALLENGE
                 NSArray *pathToGoal = [p pathToGoal];
                 NSArray *pathToBall = [p pathToBall];
                 if([pathToGoal count] > [pathToBall count]){
@@ -1414,7 +1503,7 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
                     return;
                 }
             }
-        } 
+        }
         
     }
 }
@@ -1425,7 +1514,8 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
     Player *passToPlayer;
     NSArray *playersCloserToGoal;
     NSMutableArray* pathToGoalUnverified;
-    Player *p = c.deck.player;
+    Player *p = _selectedPlayer;
+    
     // NSLog(@"in AIChooseLocationForCard, aiActionType = %d", c.aiActionType);
     switch (c.aiActionType){
         case NONE:
@@ -1451,10 +1541,10 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
             }
             else {
                 NSLog(@"AI HAS NO VALID MOVE: STAY");
-                [_gameScene AISelectedLocation:c.deck.player.location];
+                [_gameScene AISelectedLocation:_selectedPlayer.location];
                 return;
             }
-
+            
             break;
         case MOVE_TO_GOAL:
             NSLog(@"*********************************************AI: MOVE TO GOAL");
@@ -1476,7 +1566,7 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
             }
             else {
                 NSLog(@"AI HAS NO VALID MOVE: STAY");
-                [_gameScene AISelectedLocation:c.deck.player.location];
+                [_gameScene AISelectedLocation:_selectedPlayer.location];
                 return;
             }
             break;
@@ -1494,33 +1584,33 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
             }
             else {
                 NSLog(@"AI HAS NO VALID MOVE: STAY");
-                [_gameScene AISelectedLocation:c.deck.player.location];
+                [_gameScene AISelectedLocation:_selectedPlayer.location];
                 return;
             }
             break;
-
+            
         case SHOOT_ON_GOAL:
             NSLog(@"*********************************************AI: SHOOT ON GOAL");
-            [_gameScene AISelectedLocation:c.deck.player.manager.goal];
+            [_gameScene AISelectedLocation:_selectedPlayer.manager.goal];
             return;
             break;
         case PASS_TO_PLAYER_IN_SHOOTING_RANGE:
             NSLog(@"*********************************************AI: PASS TO PLAYER IN SHOOTING RANGE");
-            passToPlayer = [c.deck.player passToAvailablePlayerInShootingRange];
+            passToPlayer = [_selectedPlayer passToAvailablePlayerInShootingRange];
             if(passToPlayer){
                 NSLog(@"pass to player: %@", passToPlayer.name);
-                if ([c.validatedSelectionSet containsObject:passToPlayer.location]) {
+                if ([[c validatedSelectionSetForPlayer:_selectedPlayer] containsObject:passToPlayer.location]) {
                     [_gameScene AISelectedLocation:passToPlayer.location];
                 }
                 return;
             }
             
             NSLog(@"AI HAS NO VALID PASS: TRY A MOVE CARD");
-            [_gameScene AISelectedCard:c.deck.player.moveDeck.inHand[0]];
+            [_gameScene AISelectedCard:_selectedPlayer.manager.moveDeck.inHand[0]];
             return;
             
         case PASS_TO_GOAL:
-            playersCloserToGoal = [c.deck.player playersAvailableInKickRangeCloserToGoal];
+            playersCloserToGoal = [_selectedPlayer playersAvailableInKickRangeCloserToGoal];
             if(playersCloserToGoal){
                 Player *p = playersCloserToGoal[0];
                 NSLog(@"*********************************************AI: PASS TOWARDS GOAL");
@@ -1529,7 +1619,7 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
             }
             
             NSLog(@"AI HAS NO VALID PASS: TRY A MOVE CARD");
-            [_gameScene AISelectedCard:c.deck.player.moveDeck.inHand[0]];
+            [_gameScene AISelectedCard:_selectedPlayer.manager.moveDeck.inHand[0]];
             return;
             
             break;
@@ -1550,17 +1640,17 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
             }
             else {
                 NSLog(@"AI HAS NO VALID MOVE: STAY");
-                [_gameScene AISelectedLocation:c.deck.player.location];
+                [_gameScene AISelectedLocation:_selectedPlayer.location];
                 return;
             }
             break;
         case MOVE_TO_BALL:
             NSLog(@"*********************************************AI: MOVE TO BALL");
-            //NSArray *pathToBall = [c.deck.player pathToClosestAdjacentBoardLocation:_ball.location];
+            //NSArray *pathToBall = [c.playerPerforming pathToClosestAdjacentBoardLocation:_ball.location];
             pathToBall = [[p pathToOpenFieldClosestToLocation:_ball.location] mutableCopy];
             [pathToGoal removeObject:p.manager.goal];
             [pathToGoal removeObject:p.manager.opponent.goal];
-        
+            
             if(pathToBall && [pathToBall count]){
                 BoardLocation *newLoc;
                 newLoc = [pathToBall objectAtIndex:[pathToBall count]-1];
@@ -1569,13 +1659,13 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
             }
             else {
                 NSLog(@"pathToBall = NULL, AI HAS NO VALID MOVE: STAY");
-                [_gameScene AISelectedLocation:c.deck.player.location];
+                [_gameScene AISelectedLocation:_selectedPlayer.location];
                 return;
             }
             break;
     }
     NSLog(@"AI HAS NO VALID MOVE: STAY");
-    [_gameScene AISelectedLocation:c.deck.player.location];
+    [_gameScene AISelectedLocation:_selectedPlayer.location];
     return;
 }
 
@@ -1856,16 +1946,13 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
     
     for (int i = 0; i<3; i++) {
         
-        GameEvent* spawn = [self addEventToSequence:sequence fromCardOrPlayer:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+1] withType:kEventAddPlayer];
-        spawn.manager = [self managerForTeamSide:0];
+        GameEvent* spawn = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:0] toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+1]  withType:kEventAddPlayer];
         
-        GameEvent* spawn2 = [self addEventToSequence:sequence fromCardOrPlayer:nil toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-2] withType:kEventAddPlayer];
-        spawn2.manager = [self managerForTeamSide:1];
-        
+        GameEvent* spawn2 = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:1] toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-2]  withType:kEventAddPlayer];
         
         if (i == 1) {
-                [spawn2 setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-1]];
-                //spawn2.ball = _ball;
+            [spawn2 setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-1]];
+            //spawn2.ball = _ball;
         }
         
     }
@@ -2059,700 +2146,700 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
 
 -(void)sendSequence:(GameSequence*)sequence perform:(BOOL)perform {
     
-//    if (_myTurn || perform) {
-//        
-//        
-//        if (_rtmatch) {
-//            
-//            NSMutableData* packet = [[NSMutableData alloc]init];
-//            
-//            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
-//            
-//            int type;
-//            
-//            if (perform) {
-//                type = RTMessagePerformSequence;
-//            }
-//            else {
-//                type = RTMessageShowSequence;
-//            }
-//            
-//            [archiver encodeInt:type forKey:@"type"];
-//            [archiver encodeObject:sequence forKey:@"sequence"];
-//            
-//            [archiver finishEncoding];
-//            
-//            NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
-//            
-//            [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
-//            
-//        }
-//        
-//        
-//    }
+    //    if (_myTurn || perform) {
+    //
+    //
+    //        if (_rtmatch) {
+    //
+    //            NSMutableData* packet = [[NSMutableData alloc]init];
+    //
+    //            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
+    //
+    //            int type;
+    //
+    //            if (perform) {
+    //                type = RTMessagePerformSequence;
+    //            }
+    //            else {
+    //                type = RTMessageShowSequence;
+    //            }
+    //
+    //            [archiver encodeInt:type forKey:@"type"];
+    //            [archiver encodeObject:sequence forKey:@"sequence"];
+    //
+    //            [archiver finishEncoding];
+    //
+    //            NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
+    //
+    //            [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
+    //
+    //        }
+    //
+    //
+    //    }
     
 }
 
 
 /*
--(void)setCurrentManagerFromMatch {
-    
-    NSString *player = _match.currentParticipant.playerID;
-    
-    if ([[GKLocalPlayer localPlayer].playerID isEqualToString:player]) {
-        
-        NSLog(@"Game.m : current Manager is : %@", _me.name);
-        _scoreBoardManager = _me;
-    }
-    else {
-        
-        NSLog(@"Game.m : current Manager is : %@", _opponent.name);
-        _scoreBoardManager = _opponent;
-    }
-    
-    
-}
-
-
-
--(NSString*)myId {
-    return [GKLocalPlayer localPlayer].playerID;
-}
-
--(NSString*)opponentID {
-    
-    for (GKPlayer *p in _match.participants) {
-        if (![p.playerID isEqualToString:[self myId]]) {
-            if (p.playerID) {
-                return p.playerID;
-            }
-            else return NEWPLAYER;
-        }
-    }
-    
-    return NEWPLAYER;
-    
-}
-
-
-
--(void)fetchThisTurnSequences {
-    
-    
-    [_match loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error){
-        
-        if (!_animating) {
-            NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:[matchData gzipInflate]];
-            //NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:matchData];
-            
-            [self loadSequencesFromUnarchiver:unarchiver];
-            
-            [self checkMyTurn];
-            [self checkRTConnection];
-            
-            if ([self catchUpOnSequences]){
-                
-                
-                
-            }
-            
-        }
-        
-        else {
-            NSLog(@"animating, wait . . .");
-            // double delayInSeconds = 2.0;
-            // dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            // dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            // [self fetchThisTurnSequences];
-            // });
-        }
-        
-        
-        
-    }];
-    
-    
-    
-}
-
--(BOOL)catchUpOnSequences {
-    
-    
-    
-    if (sequenceIndex == 0) {
-        [self replayLastTurn];
-        return 0;
-    }
-    
-    NSLog(@"--- LOADED CURRENT ACTIONS ---");
-    
-    NSArray *allSequences = [self allSequencesLinear];
-    
-    NSLog(@"%d TOTAL, %d ALREADY PERFORMED", allSequences.count, sequenceIndex);
-    
-    int difference = allSequences.count - sequenceIndex;
-    
-    if (allSequences.count == sequenceIndex) {
-        NSLog(@"FETCH IS CURRENT");
-        
-        if (!_thisTurnSequences) {
-            _thisTurnSequences = [NSMutableArray array];
-        }
-        
-        if (!_thisTurnSequences.count) {
-            NSLog(@"NO ACTIONS FOR THIS TURN");
-            if ([self checkMyTurn]) {
-                // BEGINNING OF MY TURN
-                [self startMyTurn];
-            }
-            
-        }
-        
-        return 1;
-    }
-    
-    else if (allSequences.count < sequenceIndex){
-        NSLog(@"FETCH IS OLDER THAN RT, CHECK BACK SHORTLY");
-        
-        double delayInSeconds = 5.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self fetchThisTurnSequences];
-        });
-        
-        return 0;
-    }
-    
-    // SOMETHING FOR CATCH UP
-    else { // sequences > index
-        
-        NSLog(@"FETCH IS NEW by %d new sequences", difference);
-        
-        _sequenceHeap = [NSMutableArray array];
-        
-        NSMutableArray *allSequences = [self allSequencesLinear];
-        
-        for (int i = 0; i < difference; i ++){
-            
-            [_sequenceHeap addObject:[allSequences lastObject]];
-            [allSequences removeLastObject];
-            
-        }
-        
-        [self performSequence:[_sequenceHeap lastObject] record:NO animate:YES];
-        
-        
-    }
-    
-    // else {
-    // NSLog(@"FETCH IS REALLY NEW");
-    // [self logCurrentGameData];
-    // [self wipeBoard];
-    // [self refreshGameBoard];
-    // [self restoreGameWithData:_match];
-    // [self replayLastTurn];
-    // }
-    
-    
-    
-    return 0;
-    
-}
-
-
--(void)replayGame:(BOOL)animate {
-    
-    [_gameScene setWaiting:NO];
-    
-    self.myTurn = NO;
-    
-    NSLog(@"Game.m : performSequenceSequence : starting sequence sequence");
-    
-    NSLog(@"Game has %d total sequences", [self totalGameSequences]);
-    
-    _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
-    
-    if (_thisTurnSequences) {
-        [_turnHeap addObject:_thisTurnSequences];
-    }
-    
-    if (_history) {
-        
-        for (int i = 0; i < _history.count; i++)
-            [_turnHeap addObject:_history[_history.count - (i + 1)]];
-    }
-    
-    // GET MANAGER FOR TURN
-    
-    [self wipeBoard];
-    
-    if (animate) {
-        
-        [self refreshGameBoard];
-        [self enumerateTurnHeapAnimate:YES];
-        
-    }
-    
-    else {
-        
-        [self enumerateTurnHeapAnimate:NO];
-        
-    }
-    
-    
-}
-
--(void)replayLastTurn {
-    
-    [_gameScene setWaiting:NO];
-    
-    self.myTurn = NO;
-    
-    NSLog(@"------------ REPLAY HISTORY ------------");
-    
-    sequenceIndex = 0;
-    
-    [self wipeBoard];
-    [self refreshGameBoard];
-    
-    _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
-    
-    if (_history) {
-        
-        NSArray* allButLast = [self allButLastTurn];
-        
-        if (allButLast.count) {
-            for (int i = 0; i < allButLast.count; i++){
-                [_turnHeap addObject:allButLast[allButLast.count - (i + 1)]];
-            }
-        }
-        
-        NSLog(@"Game has %d total sequences", [self totalGameSequences]);
-        NSLog(@"non-animate sequences %d", [self sequenceCountForArray:allButLast]);
-        NSLog(@"animate sequences %d", [[_history lastObject] count] + _thisTurnSequences.count);
-        
-    }
-    else {
-        NSLog(@"------------ NO HISTORY YET ------------");
-    }
-    
-    
-    if (_turnHeap.count) {
-        NSLog(@"------------ NON-ANIMATE RESTORE ------------");
-        [self enumerateTurnHeapAnimate:NO];
-        NSLog(@"------------ REBUILD VISUALS ------------");
-        [self buildBoardFromCurrentState];
-    }
-    
-    
-    // THEN
-    
-    
-    _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
-    
-    NSLog(@"------------ ANIMATE REPLAY ------------");
-    NSLog(@"Game has %d total sequences", [self totalGameSequences]);
-    NSLog(@"already restored %d sequences", [self sequenceCountForArray:[self allButLastTurn]]);
-    NSLog(@"animate %d from last turn", [[_history lastObject] count]);
-    NSLog(@"animate %d from this turn", [_thisTurnSequences count]);
-    
-    
-    
-    if (_thisTurnSequences.count) {
-        [_turnHeap addObject:_thisTurnSequences];
-    }
-    
-    
-    //NSArray* allButLast = [self allButLastTurn]; // CHECK THAT WE DID HAVE ONE THAT DIDN'T GET PLAYED
-    
-    if (_history.count) {
-        [_turnHeap addObject:[_history lastObject]];
-    }
-    
-    if (_turnHeap.count) { // BETTER BE YES
-        NSLog(@"------------ BEGIN ANIMATING ------------");
-        [self enumerateTurnHeapAnimate:YES];
-    }
-    
-    else {
-        NSLog(@"------------ SOMETHING WENT HORRIBLY WRONG ------------");
-        
-    }
-    
-    
-}
-
--(void)replayLastSequence {
-    
-    [_gameScene setWaiting:NO];
-    
-    self.myTurn = NO;
-    
-    NSLog(@"------------ REPLAY HISTORY ------------");
-    
-    sequenceIndex = 0;
-    
-    [self wipeBoard];
-    [self refreshGameBoard];
-    
-    NSMutableArray* allSequences = [self allSequencesLinear];
-    
-    GameSequence *last = [allSequences lastObject];
-    
-    [allSequences removeLastObject];
-    
-    _sequenceHeap = [NSMutableArray array];
-    
-    for (int i = 0; i < allSequences.count; i++){
-        [_sequenceHeap addObject:allSequences[allSequences.count - (i + 1)]];
-    }
-    
-    [self performSequence:[_sequenceHeap lastObject] record:NO animate:NO];
-    
-    [self buildBoardFromCurrentState];
-    
-    [self performSequence:last record:NO animate:YES];
-    
-    
-}
-
-
-#pragma mark - TB NETWORK EVENTS
-
--(BOOL)checkMyTurn{
-    
-    if (!_animating) {
-        
-        if ([_match.currentParticipant.playerID
-             isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
-            // It's your turn!
-            
-            self.myTurn = YES;
-            
-            return NO;
-            
-        } else {
-            // It's not your turn, just display the game state.
-            
-            self.myTurn = NO;
-            
-            
-            
-        }
-        
-    }
-    
-    return NO;
-    
-}
-
-
-#pragma mark - RT NETWORK EVENTS
-
--(void)rtIsActive:(BOOL)active {
-    
-    rtIsActive = active;
-    
-    if (active) {
-        
-    }
-    
-    
-    
-}
-
--(void)setRtmatch:(GKMatch *)rtmatch {
-    
-    if (!_rtmatch && rtmatch) {
-        [self fetchThisTurnSequences];
-    }
-    
-    _rtmatch = rtmatch;
-    
-    
-}
-
--(BOOL)checkRTConnection {
-    
-    if (_rtmatch) {
-        
-        if (_rtmatch.playerIDs.count) {
-            NSLog(@"RT IS INACTIVE");
-            [_gameScene rtIsActive:YES];
-            return 1;
-        }
-        
-    }
-    
-    NSLog(@"RT IS INACTIVE, FIRING UP");
-    
-    [_gcController initRealTimeConnection];
-    
-    [_gameScene rtIsActive:NO];
-    return 0;
-    
-}
-
--(void)receiveRTPacket:(NSData*)packet {
-    
-    
-    if (!_animating) {
-        
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:packet];
-        
-        RTMessageType type = [unarchiver decodeIntForKey:@"type"];
-        
-        //NSLog(@"receiving packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
-        
-        [_gameScene receiveRTPacket];
-        
-        if (type == RTMessageNone) {
-            return;
-        }
-        
-        else if (type == RTMessagePerformSequence) {
-            
-            GameSequence *sequence = [unarchiver decodeObjectForKey:@"sequence"];
-            
-            if (sequence.index == sequenceIndex+1) { // WE ARE CURRENT
-                
-                [self setUpPointersForSequenceArray:sequence];
-                
-                
-                
-                [self performSequence:sequence record:NO animate:YES];
-                
-            }
-            
-            else {
-                NSLog(@"NOT IN SYNC - CATCHING UP IF POSSIBLE LATEST ACTION");
-                [self fetchThisTurnSequences];
-                
-            }
-            
-            
-        }
-        else if (type == RTMessageShowSequence) {
-            
-            
-            GameSequence *sequence = [unarchiver decodeObjectForKey:@"sequence"];
-            
-            [self setUpPointersForSequenceArray:sequence];
-            
-            for (GameEvent* e in sequence.GameEvents) {
-                [self getPlayerPointersForEvent:e];
-            }
-            
-            _currentEventSequence = sequence;
-            
-            [_gameScene addNetworkUIForEvent:[_currentEventSequence.GameEvents lastObject]];
-            
-            
-        }
-        
-        else if (type == RTMessageCancelSequence){
-            
-            [self clearSelection];
-            
-        }
-        
-        else if (type == RTMessageCheckTurn){
-            
-            
-            [self fetchThisTurnSequences];
-            
-            
-        }
-        
-        else if (type == RTMessageSortCards){
-            
-            
-            [_gameScene sortHandForManager:_opponent animated:YES];
-            
-            
-        }
-        
-        else if (type == RTMessageBeginCardTouch || type == RTMessageMoveCardTouch){
-            
-            // BoardLocation *location = [unarchiver decodeObjectForKey:@"location"];
-            // //Card *c = [self cardInHandForManager:_opponent location:location];
-            //
-            // P2ttouch = [unarchiver decodeCGPointForKey:@"touch"];
-            // CGSize inSize = [unarchiver decodeCGSizeForKey:@"bounds"];
-            // CGSize outSize = [[UIScreen mainScreen] bounds].size;
-            //
-            // float xScale = outSize.width / inSize.width;
-            // float yScale = outSize.height / inSize.height;
-            //
-            // P2tpos = P2Make(touch.x * xScale, touch.y * yScale);
-            //
-            // if (type == RTMessageBeginCardTouch) {
-            //
-            // [_gameScene opponentBeganCardTouch:c atPoint:pos];
-            //
-            // }
-            //
-            // else if (type == RTMessageMoveCardTouch) {
-            //
-            // [_gameScene opponentMovedCardTouch:c atPoint:pos];
-            //
-            // }
-            
-        }
-        
-        else if (type == RTMessagePlayer) {
-            
-        }
-        
-    }
-    
-    else {
-        
-        NSLog(@"already animating, check back later . . .");
-    }
-    
-    
-}
-
-
-
--(void)sendRTPacketWithType:(RTMessageType)type point:(BoardLocation*)location {
-    
-    if (_myTurn) {
-        if (_rtmatch) {
-            
-            NSMutableData* packet = [[NSMutableData alloc]init];
-            
-            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
-            
-            [archiver encodeInt:type forKey:@"type"];
-            [archiver encodeObject:location forKey:@"location"];
-            
-            [archiver finishEncoding];
-            NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
-            
-            [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
-            
-            
-        }
-    }
-    
-}
-
--(void)sendRTPacketWithCard:(Card*)c point:(P2t)touch began:(BOOL)began{
-    
-    if (_myTurn) {
-        
-        if (_rtmatch) {
-            
-            RTMessageType type;
-            if (began) {
-                type = RTMessageBeginCardTouch;
-            }
-            else{
-                type = RTMessageMoveCardTouch;
-            }
-            
-            NSMutableData* packet = [[NSMutableData alloc]init];
-            
-            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
-            
-            [archiver encodeInt:type forKey:@"type"];
-            [archiver encodeObject:c.location forKey:@"location"];
-            [archiver encodeP2:touch forKey:@"touch"];
-            [archiver encodeCGSize:[[UIScreen mainScreen] bounds].size forKey:@"bounds"];
-            
-            [archiver finishEncoding];
-            NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
-            
-            [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
-            
-        }
-    }
-    
-}
-
--(NSString*)stringForMessageType:(RTMessageType)type {
-    NSString *stype;
-    
-    if (type == RTMessagePlayer) {
-        stype = @"RTMessagePlayer";
-    }
-    else if (type == RTMessageBeginCardTouch) {
-        stype = @"RTMessageBeginCardTouch";
-    }
-    else if (type == RTMessageMoveCardTouch) {
-        stype = @"RTMessageMoveCardTouch";
-    }
-    else if (type == RTMessagePerformSequence) {
-        stype = @"RTMessagePerformSequence";
-    }
-    else if (type == RTMessageShowSequence) {
-        stype = @"RTMessageShowSequence";
-    }
-    else if (type == RTMessageCancelSequence) {
-        stype = @"RTMessageCancelSequence";
-    }
-    else if (type == RTMessageCheckTurn) {
-        stype = @"RTMessageCheckTurn";
-    }
-    
-    else {
-        stype = @"RT-TYPE-UNKNOWN";
-    }
-    return stype;
-    
-}
-*/
+ -(void)setCurrentManagerFromMatch {
+ 
+ NSString *player = _match.currentParticipant.playerID;
+ 
+ if ([[GKLocalPlayer localPlayer].playerID isEqualToString:player]) {
+ 
+ NSLog(@"Game.m : current Manager is : %@", _me.name);
+ _scoreBoardManager = _me;
+ }
+ else {
+ 
+ NSLog(@"Game.m : current Manager is : %@", _opponent.name);
+ _scoreBoardManager = _opponent;
+ }
+ 
+ 
+ }
+ 
+ 
+ 
+ -(NSString*)myId {
+ return [GKLocalPlayer localPlayer].playerID;
+ }
+ 
+ -(NSString*)opponentID {
+ 
+ for (GKPlayer *p in _match.participants) {
+ if (![p.playerID isEqualToString:[self myId]]) {
+ if (p.playerID) {
+ return p.playerID;
+ }
+ else return NEWPLAYER;
+ }
+ }
+ 
+ return NEWPLAYER;
+ 
+ }
+ 
+ 
+ 
+ -(void)fetchThisTurnSequences {
+ 
+ 
+ [_match loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error){
+ 
+ if (!_animating) {
+ NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:[matchData gzipInflate]];
+ //NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:matchData];
+ 
+ [self loadSequencesFromUnarchiver:unarchiver];
+ 
+ [self checkMyTurn];
+ [self checkRTConnection];
+ 
+ if ([self catchUpOnSequences]){
+ 
+ 
+ 
+ }
+ 
+ }
+ 
+ else {
+ NSLog(@"animating, wait . . .");
+ // double delayInSeconds = 2.0;
+ // dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+ // dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+ // [self fetchThisTurnSequences];
+ // });
+ }
+ 
+ 
+ 
+ }];
+ 
+ 
+ 
+ }
+ 
+ -(BOOL)catchUpOnSequences {
+ 
+ 
+ 
+ if (sequenceIndex == 0) {
+ [self replayLastTurn];
+ return 0;
+ }
+ 
+ NSLog(@"--- LOADED CURRENT ACTIONS ---");
+ 
+ NSArray *allSequences = [self allSequencesLinear];
+ 
+ NSLog(@"%d TOTAL, %d ALREADY PERFORMED", allSequences.count, sequenceIndex);
+ 
+ int difference = allSequences.count - sequenceIndex;
+ 
+ if (allSequences.count == sequenceIndex) {
+ NSLog(@"FETCH IS CURRENT");
+ 
+ if (!_thisTurnSequences) {
+ _thisTurnSequences = [NSMutableArray array];
+ }
+ 
+ if (!_thisTurnSequences.count) {
+ NSLog(@"NO ACTIONS FOR THIS TURN");
+ if ([self checkMyTurn]) {
+ // BEGINNING OF MY TURN
+ [self startMyTurn];
+ }
+ 
+ }
+ 
+ return 1;
+ }
+ 
+ else if (allSequences.count < sequenceIndex){
+ NSLog(@"FETCH IS OLDER THAN RT, CHECK BACK SHORTLY");
+ 
+ double delayInSeconds = 5.0;
+ dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+ [self fetchThisTurnSequences];
+ });
+ 
+ return 0;
+ }
+ 
+ // SOMETHING FOR CATCH UP
+ else { // sequences > index
+ 
+ NSLog(@"FETCH IS NEW by %d new sequences", difference);
+ 
+ _sequenceHeap = [NSMutableArray array];
+ 
+ NSMutableArray *allSequences = [self allSequencesLinear];
+ 
+ for (int i = 0; i < difference; i ++){
+ 
+ [_sequenceHeap addObject:[allSequences lastObject]];
+ [allSequences removeLastObject];
+ 
+ }
+ 
+ [self performSequence:[_sequenceHeap lastObject] record:NO animate:YES];
+ 
+ 
+ }
+ 
+ // else {
+ // NSLog(@"FETCH IS REALLY NEW");
+ // [self logCurrentGameData];
+ // [self wipeBoard];
+ // [self refreshGameBoard];
+ // [self restoreGameWithData:_match];
+ // [self replayLastTurn];
+ // }
+ 
+ 
+ 
+ return 0;
+ 
+ }
+ 
+ 
+ -(void)replayGame:(BOOL)animate {
+ 
+ [_gameScene setWaiting:NO];
+ 
+ self.myTurn = NO;
+ 
+ NSLog(@"Game.m : performSequenceSequence : starting sequence sequence");
+ 
+ NSLog(@"Game has %d total sequences", [self totalGameSequences]);
+ 
+ _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
+ 
+ if (_thisTurnSequences) {
+ [_turnHeap addObject:_thisTurnSequences];
+ }
+ 
+ if (_history) {
+ 
+ for (int i = 0; i < _history.count; i++)
+ [_turnHeap addObject:_history[_history.count - (i + 1)]];
+ }
+ 
+ // GET MANAGER FOR TURN
+ 
+ [self wipeBoard];
+ 
+ if (animate) {
+ 
+ [self refreshGameBoard];
+ [self enumerateTurnHeapAnimate:YES];
+ 
+ }
+ 
+ else {
+ 
+ [self enumerateTurnHeapAnimate:NO];
+ 
+ }
+ 
+ 
+ }
+ 
+ -(void)replayLastTurn {
+ 
+ [_gameScene setWaiting:NO];
+ 
+ self.myTurn = NO;
+ 
+ NSLog(@"------------ REPLAY HISTORY ------------");
+ 
+ sequenceIndex = 0;
+ 
+ [self wipeBoard];
+ [self refreshGameBoard];
+ 
+ _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
+ 
+ if (_history) {
+ 
+ NSArray* allButLast = [self allButLastTurn];
+ 
+ if (allButLast.count) {
+ for (int i = 0; i < allButLast.count; i++){
+ [_turnHeap addObject:allButLast[allButLast.count - (i + 1)]];
+ }
+ }
+ 
+ NSLog(@"Game has %d total sequences", [self totalGameSequences]);
+ NSLog(@"non-animate sequences %d", [self sequenceCountForArray:allButLast]);
+ NSLog(@"animate sequences %d", [[_history lastObject] count] + _thisTurnSequences.count);
+ 
+ }
+ else {
+ NSLog(@"------------ NO HISTORY YET ------------");
+ }
+ 
+ 
+ if (_turnHeap.count) {
+ NSLog(@"------------ NON-ANIMATE RESTORE ------------");
+ [self enumerateTurnHeapAnimate:NO];
+ NSLog(@"------------ REBUILD VISUALS ------------");
+ [self buildBoardFromCurrentState];
+ }
+ 
+ 
+ // THEN
+ 
+ 
+ _turnHeap = [[NSMutableArray alloc]initWithCapacity:25];
+ 
+ NSLog(@"------------ ANIMATE REPLAY ------------");
+ NSLog(@"Game has %d total sequences", [self totalGameSequences]);
+ NSLog(@"already restored %d sequences", [self sequenceCountForArray:[self allButLastTurn]]);
+ NSLog(@"animate %d from last turn", [[_history lastObject] count]);
+ NSLog(@"animate %d from this turn", [_thisTurnSequences count]);
+ 
+ 
+ 
+ if (_thisTurnSequences.count) {
+ [_turnHeap addObject:_thisTurnSequences];
+ }
+ 
+ 
+ //NSArray* allButLast = [self allButLastTurn]; // CHECK THAT WE DID HAVE ONE THAT DIDN'T GET PLAYED
+ 
+ if (_history.count) {
+ [_turnHeap addObject:[_history lastObject]];
+ }
+ 
+ if (_turnHeap.count) { // BETTER BE YES
+ NSLog(@"------------ BEGIN ANIMATING ------------");
+ [self enumerateTurnHeapAnimate:YES];
+ }
+ 
+ else {
+ NSLog(@"------------ SOMETHING WENT HORRIBLY WRONG ------------");
+ 
+ }
+ 
+ 
+ }
+ 
+ -(void)replayLastSequence {
+ 
+ [_gameScene setWaiting:NO];
+ 
+ self.myTurn = NO;
+ 
+ NSLog(@"------------ REPLAY HISTORY ------------");
+ 
+ sequenceIndex = 0;
+ 
+ [self wipeBoard];
+ [self refreshGameBoard];
+ 
+ NSMutableArray* allSequences = [self allSequencesLinear];
+ 
+ GameSequence *last = [allSequences lastObject];
+ 
+ [allSequences removeLastObject];
+ 
+ _sequenceHeap = [NSMutableArray array];
+ 
+ for (int i = 0; i < allSequences.count; i++){
+ [_sequenceHeap addObject:allSequences[allSequences.count - (i + 1)]];
+ }
+ 
+ [self performSequence:[_sequenceHeap lastObject] record:NO animate:NO];
+ 
+ [self buildBoardFromCurrentState];
+ 
+ [self performSequence:last record:NO animate:YES];
+ 
+ 
+ }
+ 
+ 
+ #pragma mark - TB NETWORK EVENTS
+ 
+ -(BOOL)checkMyTurn{
+ 
+ if (!_animating) {
+ 
+ if ([_match.currentParticipant.playerID
+ isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
+ // It's your turn!
+ 
+ self.myTurn = YES;
+ 
+ return NO;
+ 
+ } else {
+ // It's not your turn, just display the game state.
+ 
+ self.myTurn = NO;
+ 
+ 
+ 
+ }
+ 
+ }
+ 
+ return NO;
+ 
+ }
+ 
+ 
+ #pragma mark - RT NETWORK EVENTS
+ 
+ -(void)rtIsActive:(BOOL)active {
+ 
+ rtIsActive = active;
+ 
+ if (active) {
+ 
+ }
+ 
+ 
+ 
+ }
+ 
+ -(void)setRtmatch:(GKMatch *)rtmatch {
+ 
+ if (!_rtmatch && rtmatch) {
+ [self fetchThisTurnSequences];
+ }
+ 
+ _rtmatch = rtmatch;
+ 
+ 
+ }
+ 
+ -(BOOL)checkRTConnection {
+ 
+ if (_rtmatch) {
+ 
+ if (_rtmatch.playerIDs.count) {
+ NSLog(@"RT IS INACTIVE");
+ [_gameScene rtIsActive:YES];
+ return 1;
+ }
+ 
+ }
+ 
+ NSLog(@"RT IS INACTIVE, FIRING UP");
+ 
+ [_gcController initRealTimeConnection];
+ 
+ [_gameScene rtIsActive:NO];
+ return 0;
+ 
+ }
+ 
+ -(void)receiveRTPacket:(NSData*)packet {
+ 
+ 
+ if (!_animating) {
+ 
+ NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:packet];
+ 
+ RTMessageType type = [unarchiver decodeIntForKey:@"type"];
+ 
+ //NSLog(@"receiving packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
+ 
+ [_gameScene receiveRTPacket];
+ 
+ if (type == RTMessageNone) {
+ return;
+ }
+ 
+ else if (type == RTMessagePerformSequence) {
+ 
+ GameSequence *sequence = [unarchiver decodeObjectForKey:@"sequence"];
+ 
+ if (sequence.index == sequenceIndex+1) { // WE ARE CURRENT
+ 
+ [self setUpPointersForSequenceArray:sequence];
+ 
+ 
+ 
+ [self performSequence:sequence record:NO animate:YES];
+ 
+ }
+ 
+ else {
+ NSLog(@"NOT IN SYNC - CATCHING UP IF POSSIBLE LATEST ACTION");
+ [self fetchThisTurnSequences];
+ 
+ }
+ 
+ 
+ }
+ else if (type == RTMessageShowSequence) {
+ 
+ 
+ GameSequence *sequence = [unarchiver decodeObjectForKey:@"sequence"];
+ 
+ [self setUpPointersForSequenceArray:sequence];
+ 
+ for (GameEvent* e in sequence.GameEvents) {
+ [self getPlayerPointersForEvent:e];
+ }
+ 
+ _currentEventSequence = sequence;
+ 
+ [_gameScene addNetworkUIForEvent:[_currentEventSequence.GameEvents lastObject]];
+ 
+ 
+ }
+ 
+ else if (type == RTMessageCancelSequence){
+ 
+ [self clearSelection];
+ 
+ }
+ 
+ else if (type == RTMessageCheckTurn){
+ 
+ 
+ [self fetchThisTurnSequences];
+ 
+ 
+ }
+ 
+ else if (type == RTMessageSortCards){
+ 
+ 
+ [_gameScene sortHandForManager:_opponent animated:YES];
+ 
+ 
+ }
+ 
+ else if (type == RTMessageBeginCardTouch || type == RTMessageMoveCardTouch){
+ 
+ // BoardLocation *location = [unarchiver decodeObjectForKey:@"location"];
+ // //Card *c = [self cardInHandForManager:_opponent location:location];
+ //
+ // P2ttouch = [unarchiver decodeCGPointForKey:@"touch"];
+ // CGSize inSize = [unarchiver decodeCGSizeForKey:@"bounds"];
+ // CGSize outSize = [[UIScreen mainScreen] bounds].size;
+ //
+ // float xScale = outSize.width / inSize.width;
+ // float yScale = outSize.height / inSize.height;
+ //
+ // P2tpos = P2Make(touch.x * xScale, touch.y * yScale);
+ //
+ // if (type == RTMessageBeginCardTouch) {
+ //
+ // [_gameScene opponentBeganCardTouch:c atPoint:pos];
+ //
+ // }
+ //
+ // else if (type == RTMessageMoveCardTouch) {
+ //
+ // [_gameScene opponentMovedCardTouch:c atPoint:pos];
+ //
+ // }
+ 
+ }
+ 
+ else if (type == RTMessagePlayer) {
+ 
+ }
+ 
+ }
+ 
+ else {
+ 
+ NSLog(@"already animating, check back later . . .");
+ }
+ 
+ 
+ }
+ 
+ 
+ 
+ -(void)sendRTPacketWithType:(RTMessageType)type point:(BoardLocation*)location {
+ 
+ if (_myTurn) {
+ if (_rtmatch) {
+ 
+ NSMutableData* packet = [[NSMutableData alloc]init];
+ 
+ NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
+ 
+ [archiver encodeInt:type forKey:@"type"];
+ [archiver encodeObject:location forKey:@"location"];
+ 
+ [archiver finishEncoding];
+ NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
+ 
+ [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
+ 
+ 
+ }
+ }
+ 
+ }
+ 
+ -(void)sendRTPacketWithCard:(Card*)c point:(P2t)touch began:(BOOL)began{
+ 
+ if (_myTurn) {
+ 
+ if (_rtmatch) {
+ 
+ RTMessageType type;
+ if (began) {
+ type = RTMessageBeginCardTouch;
+ }
+ else{
+ type = RTMessageMoveCardTouch;
+ }
+ 
+ NSMutableData* packet = [[NSMutableData alloc]init];
+ 
+ NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:packet];
+ 
+ [archiver encodeInt:type forKey:@"type"];
+ [archiver encodeObject:c.location forKey:@"location"];
+ [archiver encodeP2:touch forKey:@"touch"];
+ [archiver encodeCGSize:[[UIScreen mainScreen] bounds].size forKey:@"bounds"];
+ 
+ [archiver finishEncoding];
+ NSLog(@"sending packet of type: %@ size %d", [self stringForMessageType:type], packet.length);
+ 
+ [_rtmatch sendDataToAllPlayers:packet withDataMode:GKMatchSendDataReliable error:nil];
+ 
+ }
+ }
+ 
+ }
+ 
+ -(NSString*)stringForMessageType:(RTMessageType)type {
+ NSString *stype;
+ 
+ if (type == RTMessagePlayer) {
+ stype = @"RTMessagePlayer";
+ }
+ else if (type == RTMessageBeginCardTouch) {
+ stype = @"RTMessageBeginCardTouch";
+ }
+ else if (type == RTMessageMoveCardTouch) {
+ stype = @"RTMessageMoveCardTouch";
+ }
+ else if (type == RTMessagePerformSequence) {
+ stype = @"RTMessagePerformSequence";
+ }
+ else if (type == RTMessageShowSequence) {
+ stype = @"RTMessageShowSequence";
+ }
+ else if (type == RTMessageCancelSequence) {
+ stype = @"RTMessageCancelSequence";
+ }
+ else if (type == RTMessageCheckTurn) {
+ stype = @"RTMessageCheckTurn";
+ }
+ 
+ else {
+ stype = @"RT-TYPE-UNKNOWN";
+ }
+ return stype;
+ 
+ }
+ */
 
 #pragma mark - ARCHIVING
 
 - (void)restoreGameWithData:(NSData*)comp {
     
-//    NSLog(@"compressed size: %d", comp.length);
-//    NSData *data = [comp gzipInflate];
-//    
-//    //NSData *data = comp;
-//    NSLog(@"uncompressed size: %d", data.length);
-//    
-//    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
-//    
-//    _matchInfo = [[unarchiver decodeObjectForKey:@"matchInfo"] mutableCopy];
-//    
-//    [_matchInfo setObject:[NSNumber numberWithInt:_history.count] forKey:@"turns"];
-//    
-//    _rtmatchid = [[_matchInfo objectForKey:@"rtmatchid"]unsignedIntegerValue];
-//    //BOARD_LENGTH = [[_matchInfo objectForKey:@"boardLength"]intValue];
-//    
-//    NSLog(@"(* (* (* unpack rt id %lu *) *) *)", (unsigned long)_rtmatchid);
-//    
-//    //[self checkRTConnection];
-//    
-//    for (GKTurnBasedParticipant *p in _match.participants) {
-//        if (p.playerID) {
-//            
-//            if ([p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
-//                _me = [unarchiver decodeObjectForKey:[GKLocalPlayer localPlayer].playerID];
-//            }
-//            
-//            else {
-//                _opponent = [unarchiver decodeObjectForKey:p.playerID];
-//            }
-//        }
-//        
-//    }
-//    
-//    if (!_opponent) {
-//        _opponent = [unarchiver decodeObjectForKey:NEWPLAYER];
-//        
-//    }
-//    
-//    else if (!_me) {
-//        _me = [unarchiver decodeObjectForKey:NEWPLAYER];
-//    }
-//    
-//    
-//    [self loadSequencesFromUnarchiver:unarchiver];
+    //    NSLog(@"compressed size: %d", comp.length);
+    //    NSData *data = [comp gzipInflate];
+    //
+    //    //NSData *data = comp;
+    //    NSLog(@"uncompressed size: %d", data.length);
+    //
+    //    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
+    //
+    //    _matchInfo = [[unarchiver decodeObjectForKey:@"matchInfo"] mutableCopy];
+    //
+    //    [_matchInfo setObject:[NSNumber numberWithInt:_history.count] forKey:@"turns"];
+    //
+    //    _rtmatchid = [[_matchInfo objectForKey:@"rtmatchid"]unsignedIntegerValue];
+    //    //BOARD_LENGTH = [[_matchInfo objectForKey:@"boardLength"]intValue];
+    //
+    //    NSLog(@"(* (* (* unpack rt id %lu *) *) *)", (unsigned long)_rtmatchid);
+    //
+    //    //[self checkRTConnection];
+    //
+    //    for (GKTurnBasedParticipant *p in _match.participants) {
+    //        if (p.playerID) {
+    //
+    //            if ([p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
+    //                _me = [unarchiver decodeObjectForKey:[GKLocalPlayer localPlayer].playerID];
+    //            }
+    //
+    //            else {
+    //                _opponent = [unarchiver decodeObjectForKey:p.playerID];
+    //            }
+    //        }
+    //
+    //    }
+    //
+    //    if (!_opponent) {
+    //        _opponent = [unarchiver decodeObjectForKey:NEWPLAYER];
+    //
+    //    }
+    //
+    //    else if (!_me) {
+    //        _me = [unarchiver decodeObjectForKey:NEWPLAYER];
+    //    }
+    //
+    //
+    //    [self loadSequencesFromUnarchiver:unarchiver];
     
     
     
@@ -2810,57 +2897,57 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
 - (NSData*)saveGameToData {
     
     NSMutableData* data = [[NSMutableData alloc] init];
-//    
-//    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-//    
-//    for (GKTurnBasedParticipant *p in _match.participants) {
-//        
-//        
-//        if ([p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
-//            [archiver encodeObject:_me forKey:[GKLocalPlayer localPlayer].playerID];
-//            [_matchInfo setObject:[self metaDataForManager:_me] forKey:[GKLocalPlayer localPlayer].playerID];
-//            //NSLog(@"archiving %@ me to: %@", key, [NSString stringWithFormat:@"%@%@",key,[GKLocalPlayer localPlayer].playerID]);
-//        }
-//        
-//        else {
-//            if (p.playerID) {
-//                [_matchInfo setObject:[self metaDataForManager:_opponent] forKey:p.playerID];
-//                [_matchInfo removeObjectForKey:NEWPLAYER];
-//                
-//                [archiver encodeObject:_opponent forKey:p.playerID];
-//                // NSLog(@"archiving %@ op to: %@", key, [NSString stringWithFormat:@"%@%@",key,p.playerID]);
-//            }
-//            else {
-//                [_matchInfo setObject:[self metaDataForManager:_opponent] forKey:NEWPLAYER];
-//                [archiver encodeObject:_opponent forKey:NEWPLAYER];
-//                //NSLog(@"archiving %@ op to: %@", key, [NSString stringWithFormat:@"%@%@",key,NEWPLAYER]);
-//            }
-//            
-//        }
-//        
-//    }
-//    
-//    NSLog(@"------ SAVING . . .");
-//    [self logCurrentGameData];
-//    
-//    
-//    [archiver encodeObject:_history forKey:@"history"];
-//    [archiver encodeObject:_thisTurnSequences forKey:@"thisTurnSequences"];
-//    
-//    
-//    
-//    // MATCH DATA
-//    
-//    [_matchInfo setObject:[NSNumber numberWithInt:_history.count] forKey:@"turns"];
-//    
-//    [archiver encodeObject:_matchInfo forKey:@"matchInfo"];
-//    
-//    
-//    
-//    [archiver finishEncoding];
-//    
-//    NSLog(@"match data size: %d", data.length);
-//    
+    //
+    //    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+    //
+    //    for (GKTurnBasedParticipant *p in _match.participants) {
+    //
+    //
+    //        if ([p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
+    //            [archiver encodeObject:_me forKey:[GKLocalPlayer localPlayer].playerID];
+    //            [_matchInfo setObject:[self metaDataForManager:_me] forKey:[GKLocalPlayer localPlayer].playerID];
+    //            //NSLog(@"archiving %@ me to: %@", key, [NSString stringWithFormat:@"%@%@",key,[GKLocalPlayer localPlayer].playerID]);
+    //        }
+    //
+    //        else {
+    //            if (p.playerID) {
+    //                [_matchInfo setObject:[self metaDataForManager:_opponent] forKey:p.playerID];
+    //                [_matchInfo removeObjectForKey:NEWPLAYER];
+    //
+    //                [archiver encodeObject:_opponent forKey:p.playerID];
+    //                // NSLog(@"archiving %@ op to: %@", key, [NSString stringWithFormat:@"%@%@",key,p.playerID]);
+    //            }
+    //            else {
+    //                [_matchInfo setObject:[self metaDataForManager:_opponent] forKey:NEWPLAYER];
+    //                [archiver encodeObject:_opponent forKey:NEWPLAYER];
+    //                //NSLog(@"archiving %@ op to: %@", key, [NSString stringWithFormat:@"%@%@",key,NEWPLAYER]);
+    //            }
+    //
+    //        }
+    //
+    //    }
+    //
+    //    NSLog(@"------ SAVING . . .");
+    //    [self logCurrentGameData];
+    //
+    //
+    //    [archiver encodeObject:_history forKey:@"history"];
+    //    [archiver encodeObject:_thisTurnSequences forKey:@"thisTurnSequences"];
+    //
+    //
+    //
+    //    // MATCH DATA
+    //
+    //    [_matchInfo setObject:[NSNumber numberWithInt:_history.count] forKey:@"turns"];
+    //
+    //    [archiver encodeObject:_matchInfo forKey:@"matchInfo"];
+    //
+    //
+    //
+    //    [archiver finishEncoding];
+    //
+    //    NSLog(@"match data size: %d", data.length);
+    //
     return data;
     
     //return [data gzipDeflate];
@@ -2913,35 +3000,35 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
     
     [self prepEndTurn];
     
-//    NSUInteger currentIndex = [_match.participants
-//                               indexOfObject:_match.currentParticipant];
-//    
-//    GKTurnBasedParticipant *nextParticipant;
-//    
-//    nextParticipant = [_match.participants objectAtIndex:
-//                       ((currentIndex + 1) % [_match.participants count ])];
-//    
-//    [_match endTurnWithNextParticipants:@[nextParticipant] turnTimeout:GKTurnTimeoutNone matchData:[self saveGameToData] completionHandler:^(NSError *error) {
-//        if (error) {
-//            NSLog(@"%@", error);
-//        }
-//        
-//        NSLog(@"Game.m : endTurn : ENDING TURN: NEXT IS: %@", nextParticipant.playerID);
-//        NSLog(@"**** ACTIONS: %d EVENTS:%d ****", [self totalGameSequences], [self totalEvents]);
-//        
-//        _myTurn = NO;
-//        [self setCurrentManagerFromMatch];
-//        
-//        [_gameScene refreshScoreBoard];
-//        
-//        
-//        double delayInSeconds = 1.0;
-//        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//            [self sendRTPacketWithType:RTMessageCheckTurn point:nil];
-//        });
-//        
-//    }];
+    //    NSUInteger currentIndex = [_match.participants
+    //                               indexOfObject:_match.currentParticipant];
+    //
+    //    GKTurnBasedParticipant *nextParticipant;
+    //
+    //    nextParticipant = [_match.participants objectAtIndex:
+    //                       ((currentIndex + 1) % [_match.participants count ])];
+    //
+    //    [_match endTurnWithNextParticipants:@[nextParticipant] turnTimeout:GKTurnTimeoutNone matchData:[self saveGameToData] completionHandler:^(NSError *error) {
+    //        if (error) {
+    //            NSLog(@"%@", error);
+    //        }
+    //
+    //        NSLog(@"Game.m : endTurn : ENDING TURN: NEXT IS: %@", nextParticipant.playerID);
+    //        NSLog(@"**** ACTIONS: %d EVENTS:%d ****", [self totalGameSequences], [self totalEvents]);
+    //
+    //        _myTurn = NO;
+    //        [self setCurrentManagerFromMatch];
+    //
+    //        [_gameScene refreshScoreBoard];
+    //
+    //
+    //        double delayInSeconds = 1.0;
+    //        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    //        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    //            [self sendRTPacketWithType:RTMessageCheckTurn point:nil];
+    //        });
+    //
+    //    }];
     
 }
 
@@ -2978,69 +3065,69 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
     
     NSLog(@"game.m : endGame : victory %d", victory);
     
-//    // DO GAME CENTER SHIT
-//    
-//    NSString *opID;
-//    GKScore *opScore;
-//    
-//    for (GKTurnBasedParticipant *p in _match.participants) {
-//        if (![p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID ]) { // Opponent
-//            opID = p.playerID;
-//            
-//            opScore = [[GKScore alloc] initWithLeaderboardIdentifier:@"nsfwLeaders" forPlayer:opID];
-//            
-//            if (victory) {
-//                p.matchOutcome = GKTurnBasedMatchOutcomeLost;
-//            }
-//            else {
-//                p.matchOutcome = GKTurnBasedMatchOutcomeWon;
-//            }
-//            
-//        }
-//        else { // me
-//            if (victory) {
-//                p.matchOutcome = GKTurnBasedMatchOutcomeWon;
-//            }
-//            else {
-//                p.matchOutcome = GKTurnBasedMatchOutcomeLost;
-//            }
-//            
-//        }
-//    }
-//    
-//    GKScore *meScore = [[GKScore alloc] initWithLeaderboardIdentifier:@"nsfwLeaders"];
-//    
-//    
-//    if (_me.teamSide) {
-//        [meScore setValue:_score.y];
-//        [opScore setValue:_score.x];
-//    }
-//    else {
-//        [meScore setValue:_score.x];
-//        [opScore setValue:_score.y];
-//    }
-//    
-//    if (opID) {
-//        NSLog(@"game.m : endGame : ending without valid Opponent!");
-//        [_match endMatchInTurnWithMatchData:[self saveGameToData] scores:@[meScore, opScore] achievements:Nil completionHandler:^(NSError *error){
-//            [_match loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error){
-//                _myTurn = NO;
-//            }];
-//            
-//        }];
-//    }
-//    
-//    else {
-//        NSLog(@"game.m : endGame : ending with valid Opponent!");
-//        [_match endMatchInTurnWithMatchData:[self saveGameToData] scores:@[meScore] achievements:Nil completionHandler:^(NSError *error){
-//            _myTurn = NO;
-//        }];
-//    }
-//    
-//    //#warning lame o work around for game center
-//    //UIWindow *window = [UIApplication sharedApplication].keyWindow;
-//    // SKViewController *rootViewController = (SKViewController*)window.rootViewController;
-//    // [rootViewController performSelector:@selector(showGK) withObject:Nil afterDelay:2.0];
+    //    // DO GAME CENTER SHIT
+    //
+    //    NSString *opID;
+    //    GKScore *opScore;
+    //
+    //    for (GKTurnBasedParticipant *p in _match.participants) {
+    //        if (![p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID ]) { // Opponent
+    //            opID = p.playerID;
+    //
+    //            opScore = [[GKScore alloc] initWithLeaderboardIdentifier:@"nsfwLeaders" forPlayer:opID];
+    //
+    //            if (victory) {
+    //                p.matchOutcome = GKTurnBasedMatchOutcomeLost;
+    //            }
+    //            else {
+    //                p.matchOutcome = GKTurnBasedMatchOutcomeWon;
+    //            }
+    //
+    //        }
+    //        else { // me
+    //            if (victory) {
+    //                p.matchOutcome = GKTurnBasedMatchOutcomeWon;
+    //            }
+    //            else {
+    //                p.matchOutcome = GKTurnBasedMatchOutcomeLost;
+    //            }
+    //
+    //        }
+    //    }
+    //
+    //    GKScore *meScore = [[GKScore alloc] initWithLeaderboardIdentifier:@"nsfwLeaders"];
+    //
+    //
+    //    if (_me.teamSide) {
+    //        [meScore setValue:_score.y];
+    //        [opScore setValue:_score.x];
+    //    }
+    //    else {
+    //        [meScore setValue:_score.x];
+    //        [opScore setValue:_score.y];
+    //    }
+    //
+    //    if (opID) {
+    //        NSLog(@"game.m : endGame : ending without valid Opponent!");
+    //        [_match endMatchInTurnWithMatchData:[self saveGameToData] scores:@[meScore, opScore] achievements:Nil completionHandler:^(NSError *error){
+    //            [_match loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error){
+    //                _myTurn = NO;
+    //            }];
+    //
+    //        }];
+    //    }
+    //
+    //    else {
+    //        NSLog(@"game.m : endGame : ending with valid Opponent!");
+    //        [_match endMatchInTurnWithMatchData:[self saveGameToData] scores:@[meScore] achievements:Nil completionHandler:^(NSError *error){
+    //            _myTurn = NO;
+    //        }];
+    //    }
+    //
+    //    //#warning lame o work around for game center
+    //    //UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    //    // SKViewController *rootViewController = (SKViewController*)window.rootViewController;
+    //    // [rootViewController performSelector:@selector(showGK) withObject:Nil afterDelay:2.0];
     
 }
 
@@ -3052,78 +3139,78 @@ else if (event.type == kEventDraw || event.type == kEventStartTurnDraw) {
 
 -(void)getSortedPlayerNames {
     
-//    NSMutableArray *ids = [NSMutableArray array];
-//    
-//    for (GKPlayer *p in _match.participants) {
-//        if (p.playerID) {
-//            [ids addObject:p.playerID];
-//        }
-//    }
-//    
-//    [GKPlayer loadPlayersForIdentifiers:ids withCompletionHandler:^(NSArray *players, NSError *error) {
-//        if (error != nil)
-//        {
-//            NSLog(@"Error receiving player data");
-//            // Handle the error.
-//        }
-//        if (players != nil)
-//        {
-//            
-//            NSString *myName;
-//            NSString *opponentName;
-//            
-//            for (GKPlayer *p in players) {
-//                
-//                if ([p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
-//                    
-//                    myName = p.displayName;
-//                    
-//                }
-//            }
-//            
-//            for (GKPlayer *p in players) {
-//                
-//                if (![p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
-//                    
-//                    opponentName = p.displayName;
-//                    
-//                }
-//            }
-//            
-//            if (_me) {
-//                if (!opponentName) opponentName = NEWPLAYER;
-//                if (_me.teamSide == 0) {
-//                    _playerNames = @[myName, opponentName];
-//                }
-//                else {
-//                    _playerNames = @[opponentName, myName];
-//                }
-//                
-//            }
-//            
-//            NSLog(@"player names %@", _playerNames);
-//            
-//        }
-//    }];
+    //    NSMutableArray *ids = [NSMutableArray array];
+    //
+    //    for (GKPlayer *p in _match.participants) {
+    //        if (p.playerID) {
+    //            [ids addObject:p.playerID];
+    //        }
+    //    }
+    //
+    //    [GKPlayer loadPlayersForIdentifiers:ids withCompletionHandler:^(NSArray *players, NSError *error) {
+    //        if (error != nil)
+    //        {
+    //            NSLog(@"Error receiving player data");
+    //            // Handle the error.
+    //        }
+    //        if (players != nil)
+    //        {
+    //
+    //            NSString *myName;
+    //            NSString *opponentName;
+    //
+    //            for (GKPlayer *p in players) {
+    //
+    //                if ([p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
+    //
+    //                    myName = p.displayName;
+    //
+    //                }
+    //            }
+    //
+    //            for (GKPlayer *p in players) {
+    //
+    //                if (![p.playerID isEqualToString:[GKLocalPlayer localPlayer].playerID]) {
+    //
+    //                    opponentName = p.displayName;
+    //
+    //                }
+    //            }
+    //
+    //            if (_me) {
+    //                if (!opponentName) opponentName = NEWPLAYER;
+    //                if (_me.teamSide == 0) {
+    //                    _playerNames = @[myName, opponentName];
+    //                }
+    //                else {
+    //                    _playerNames = @[opponentName, myName];
+    //                }
+    //
+    //            }
+    //
+    //            NSLog(@"player names %@", _playerNames);
+    //
+    //        }
+    //    }];
 }
 
 //-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-//    
+//
 //    [_gameScene setWaiting:NO];
-//    
+//
 //    if (buttonIndex) {
-//        
+//
 //        [self replayGame:YES];
-//        
+//
 //    }
-//    
+//
 //    else {
-//        
+//
 //        [self replayGame:NO];
-//        
-//        
+//
+//
 //    }
-//    
+//
 //}
 
 

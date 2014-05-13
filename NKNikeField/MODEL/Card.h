@@ -12,6 +12,8 @@
 
 #pragma mark NSCODER
 
+// PERSISTENT ATTRIBUTES
+
 #define NSFWKeyType @"type"
 #define NSFWKeyManager @"manager"
 #define NSFWKeyPlayer @"player"
@@ -59,7 +61,6 @@ enum AI_ACTION_TYPE {
 @property (nonatomic) CardKickCategory kickCategory;
 @property (nonatomic) CardChallengeCategory challengeCategory;
 
-
 @property (nonatomic, strong) NSString *name;
 
 @property (nonatomic) NSInteger energyCost;
@@ -90,12 +91,13 @@ enum AI_ACTION_TYPE {
 
 // AI CONVENIENCE
 
--(NSArray*)validatedSelectionSet;
--(NSArray*)selectionSet;
+-(NSArray*)validatedSelectionSetForPlayer:(Player*)p;
+-(NSArray*)selectionSetForPlayer:(Player*)p;
 -(NSArray*)validatedPath:(NSArray*)path;
 
 @property (nonatomic, weak) Deck *deck;
 @property (nonatomic, weak) Player *enchantee;
+
 
 -(void)play;
 -(void)discard;

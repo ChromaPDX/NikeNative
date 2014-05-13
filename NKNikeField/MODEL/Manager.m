@@ -20,22 +20,34 @@
         NSLog(@"new manager init");
         NSMutableArray *playersMutable = [[NSMutableArray alloc]init];
         
-        _players = [[Deck alloc]init];
+        _players = [[Deck alloc]initWithManager:self cardsForCategory:CardCategoryPlayer];
+        
+        [self initDecks];
         _game = game;
+        
         for (int p = 0; p < 3; p++) {
+            
             Player* player = [[Player alloc]initWithManager:self];
             player.name = [NSString stringWithFormat:@"PLAYER %d",p+1];
             player.deck = _players;
             [player generateDefaultCards];
             
             [playersMutable addObject:player];
-           
         }
         
         _players.allCards = [playersMutable copy];
     }
     
     return self;
+}
+
+-(void)initDecks {
+
+    _moveDeck = [[Deck alloc]initEmptyForManager:self WithType:CardCategoryMove];
+    _kickDeck = [[Deck alloc]initEmptyForManager:self WithType:CardCategoryKick];
+    _challengeDeck = [[Deck alloc]initEmptyForManager:self WithType:CardCategoryChallenge];
+    _specialDeck = [[Deck alloc]initEmptyForManager:self WithType:CardCategorySpecial];
+    
 }
 
 -(void)setTeamSide:(int)teamSide {
@@ -60,8 +72,8 @@
     _color = [decoder decodeObjectForKey:@"color"];
    // _deck = [decoder decodeObjectForKey:@"deck"];
     
-    _actionPointsEarned = [decoder decodeIntForKey:@"actionPointsEarned"];
-    _actionPointsSpent = [decoder decodeIntForKey:@"actionPointsSpent"];
+    _energyEarned = [decoder decodeIntForKey:@"actionPointsEarned"];
+    _energySpent = [decoder decodeIntForKey:@"actionPointsSpent"];
     _attemptedGoals = [decoder decodeIntForKey:@"attemptedGoals"];
     _successfulGoals = [decoder decodeIntForKey:@"successfulGoals"];
     _attemptedPasses = [decoder decodeIntForKey:@"attemptedPasses"];
@@ -86,8 +98,8 @@
     
     [encoder encodeObject:_name forKey:@"name"];
     [encoder encodeObject:_color forKey:@"color"];
-    [encoder encodeInt:_actionPointsEarned forKey:@"actionPointsEarned"];
-    [encoder encodeInt:_actionPointsSpent forKey:@"actionPointsSpent"];
+    [encoder encodeInt:_energyEarned forKey:@"actionPointsEarned"];
+    [encoder encodeInt:_energySpent forKey:@"actionPointsSpent"];
     [encoder encodeInt:_attemptedGoals forKey:@"attemptedGoals"];
     [encoder encodeInt:_successfulGoals forKey:@"successfulGoals"];
     [encoder encodeInt:_attemptedPasses forKey:@"attemptedPasses"];
@@ -131,6 +143,22 @@
     
     return m;
 }
+
+#pragma mark - THE DECK
+
+-(NSArray*)allCardsInHand {
+    return [[[_moveDeck.inHand arrayByAddingObjectsFromArray:_kickDeck.inHand]arrayByAddingObjectsFromArray:_challengeDeck.inHand]arrayByAddingObjectsFromArray:_specialDeck.inHand];
+}
+
+-(NSArray*)allCardsInDeck {
+    return [[[_moveDeck.theDeck arrayByAddingObjectsFromArray:_kickDeck.theDeck]arrayByAddingObjectsFromArray:_challengeDeck.theDeck]arrayByAddingObjectsFromArray:_specialDeck.theDeck];
+}
+
+-(Card*)drawCard {
+    return nil;
+}
+
+#pragma mark - PLAYERS ON FIELD
 
 -(NSArray*)playersClosestToBall{
     NSMutableArray* obstacles = [[NSMutableArray alloc] init];
@@ -223,7 +251,6 @@
 }
 
 -(Manager*)opponent{
-
     if ([_game.me isEqual:self]){
         return _game.opponent;
     }

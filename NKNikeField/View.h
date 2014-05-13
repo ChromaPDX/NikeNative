@@ -8,9 +8,6 @@
 
 #import "NKView.h"
 
-#import <GLKit/GLKit.h>
-
-
 @interface View : NKView
 
 

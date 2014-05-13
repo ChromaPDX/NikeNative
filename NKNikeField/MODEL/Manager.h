@@ -20,8 +20,9 @@
 
 // PERSISTENT PROPERTIES
 
-@property (nonatomic) Deck* players;
+@property (nonatomic, strong) Deck* players;
 @property (nonatomic, strong) NSString *name;
+
 // Game Engine
 
 @property (nonatomic) bool myTurn;
@@ -30,13 +31,20 @@
 @property (nonatomic) int teamSide;
 @property (nonatomic) int energy;
 
+// Hand
+
+@property (nonatomic, strong) Deck *kickDeck;
+@property (nonatomic, strong) Deck *challengeDeck;
+@property (nonatomic, strong) Deck *moveDeck;
+@property (nonatomic, strong) Deck *specialDeck;
+
 // Meta Data
 
 //@property (nonatomic) NSMutableArray *cardsInGame;
 @property (nonatomic, strong) NKColor *color;
 
-@property (nonatomic) int actionPointsEarned;
-@property (nonatomic) int actionPointsSpent;
+@property (nonatomic) int energyEarned;
+@property (nonatomic) int energySpent;
 @property (nonatomic) int attemptedGoals;
 @property (nonatomic) int successfulGoals;
 @property (nonatomic) int attemptedPasses;
@@ -53,11 +61,16 @@
 @property (nonatomic, weak) Game *game;
 
 -(bool)hasPossesion;
--(Card*)cardInDeckAtLocation:(BoardLocation*)location;
--(Card*)cardInHandAtlocation:(BoardLocation*)location;
-
 -(BoardLocation*)goal;
 -(Manager*)opponent;
+
+#pragma mark - DECK
+
+-(NSArray*)allCardsInHand;
+-(NSArray*)allCardsInDeck;
+-(Card*)drawCard; // TO:DO probability based on Faction
+
+#pragma mark - FIELD
 
 -(NSArray*)playersClosestToBall;
 -(NSArray*)playersClosestToGoal;

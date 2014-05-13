@@ -23,7 +23,6 @@
 
 - (void)bind;
 - (void)bind:(void(^)())drawingBlock;
--(void)presentInContext:(EAGLContext*)context;
 
 - (void)unbind;
 - (GLuint)bindTexture:(int)texLoc;

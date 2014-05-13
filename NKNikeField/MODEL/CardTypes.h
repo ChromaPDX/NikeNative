@@ -22,17 +22,6 @@ typedef NS_ENUM(int32_t, CardCategory) {
     CardCategoryGeneral
 };
 
-typedef NS_ENUM(int32_t, CardSpecialCategory) {
-    CardSpecialCategoryNull = 0,
-    CardSpecialCategoryFreeze = 1,
-    CardSpecialCategoryNoLegs = 2,
-    CardSpecialCategorySuccubus = 3,
-    CardSpecialCategoryBlock = 4,
-    CardSpecialCategoryDeRez = 5,
-    CardSpecialCategoryNewDeal = 6,
-    CardSpecialCategoryPredictiveAnalysis = 7
-};
-
 typedef NS_ENUM(int32_t, CardMoveCategory) {
     CardMoveCategoryNull = 0,
     CardMoveCategoryBishop = 1,
@@ -56,6 +45,27 @@ typedef NS_ENUM(int32_t, CardChallengeCategory) {
     CardChallengeCategoryVertical = 2,
     CardChallengeCategoryHorizantal = 3
 };
+
+// SPECIALS
+
+typedef NS_ENUM(int32_t, CardSpecialCategory) {
+    CardSpecialCategoryNull = 0,
+    CardSpecialCategoryFreeze = 1,
+    CardSpecialCategoryNoLegs = 2,
+    CardSpecialCategorySuccubus = 3,
+    CardSpecialCategoryBlock = 4,
+    CardSpecialCategoryDeRez = 5,
+    CardSpecialCategoryNewDeal = 6,
+    CardSpecialCategoryPredictiveAnalysis = 7
+};
+
+#define Card_Freeze @"freeze"
+#define Card_NoLegs @"noLegs"
+#define Card_Succubus @"succubus"
+#define Card_Block @"block"
+#define Card_DeRez @"deRez"
+#define Card_NewDeal @"newDeal"
+#define Card_PredictiveAnalysis @"predictiveAnalysis"
 
 typedef NS_ENUM(int32_t, EventType) {
     kNullAction,

@@ -33,23 +33,6 @@
     return self;
 }
 
-//- (id)init
-//{
-//    self = [super init];
-//    if ( self )
-//    {
-//        self.fovVertRadians = DEGREES_TO_RADIANS(65.0f);
-//        CGSize screenSize = [UIScreen mainScreen].bounds.size;
-//        self.aspect = screenSize.width / screenSize.height; // Use screen bounds as default
-//        self.nearZ = 0.1f;
-//        self.farZ = 1000.0f;
-//        self.target = V3Make(0, 0, 0);
-//        self.eye = V3Make(0, 0, -3.0f);
-//        self.up = V3Make(0, 1, 0);
-//    }
-//    return self;
-//}
-
 - (M16t)projectionMatrix
 {
     if (dirty) {
@@ -87,10 +70,6 @@
     _normalMatrix = M9IdentityMake();
     
     glEnable(GL_DEPTH_TEST);
-    
-//    glEnable(GL_ALPHA_TEST);
-//    glAlphaFunc(GL_GREATER, .1);
-    
     glEnable(GL_BLEND);
     
     glGetError(); // Clear error codes
