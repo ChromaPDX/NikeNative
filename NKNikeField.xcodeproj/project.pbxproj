@@ -1230,9 +1230,28 @@
 		61D6E6C918FDB5B70017A389 /* Menus */ = {
 			isa = PBXGroup;
 			children = (
-				3BC5A7D3191AA9F400414544 /* Screen_RecapLostNoText.png */,
-				3BC5A7D4191AA9F400414544 /* Screen_RecapWinNoText.png */,
-				3BC5A7D5191AA9F400414544 /* Screen_PregameNoText.png */,
+				3B247D6C1922A26000A6EFDB /* Background_05_13.png */,
+				3B247D6D1922A26000A6EFDB /* ButtonNikeConnect.png */,
+				3B247D6E1922A26000A6EFDB /* Card_Icon_RegChal.png */,
+				3B247D6F1922A26000A6EFDB /* Card_Icon_RegKick.png */,
+				3B247D701922A26000A6EFDB /* Card_Icon_RegMove.png */,
+				3B247D711922A26000A6EFDB /* Card_Icon_SpecChal.png */,
+				3B247D721922A26000A6EFDB /* Card_Icon_SpecGeneral.png */,
+				3B247D731922A26000A6EFDB /* Card_Icon_SpecKick.png */,
+				3B247D741922A26000A6EFDB /* Card_Icon_SpecMove.png */,
+				3B247D751922A26000A6EFDB /* FuelRingCase.png */,
+				3B247D761922A26000A6EFDB /* FuelRingColor.png */,
+				3B247D771922A26000A6EFDB /* LevelBarEmpty.png */,
+				3B247D781922A26000A6EFDB /* LevelBarFull.png */,
+				3B247D791922A26000A6EFDB /* Screen_Menu.png */,
+				3B247D7A1922A26000A6EFDB /* Screen_MenuEnergy.png */,
+				3B247D7B1922A26000A6EFDB /* Screen_Pregame.png */,
+				3B247D7C1922A26000A6EFDB /* Screen_RecapLostNoText.png */,
+				3B247D7D1922A26000A6EFDB /* Screen_RecapWinNoText.png */,
+				3B247D7E1922A26000A6EFDB /* Screen_Splash.png */,
+				3B247D7F1922A26000A6EFDB /* ScreenSync_01A.png */,
+				3B247D801922A26000A6EFDB /* ScreenSync_02A.png */,
+				3B247D811922A26000A6EFDB /* ScreenSync_03A.png */,
 			);
 			path = Menus;
 			sourceTree = "<group>";
