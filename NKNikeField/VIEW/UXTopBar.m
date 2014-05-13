@@ -27,14 +27,14 @@
         cardSize.width =  55; //(1. / (7)) * w;
         cardSize.height = 55; //(cardSize.width * (67. / 65.));
         
-        FuelBar *fuelBar = [[FuelBar alloc] init];
-        [fuelBar setPosition:P2Make(-80, 10)];
-        [fuelBar setFill:.5];
+        _fuelBar = [[FuelBar alloc] init];
+        [_fuelBar setPosition:P2Make(-80, 10)];
+        [_fuelBar setFill:0];
         
         fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
         fuelLabel.fontSize = 18;
         [fuelLabel setColor:V2YELLOW];
-        [fuelLabel setText:@"ENERGY : 2250"];
+        [fuelLabel setText:[NSString stringWithFormat:@"ENERGY : %d",self.manager.game.me.energy]];  
         [fuelLabel setPosition:P2Make(-165, -50)];
         [fuelLabel setZPosition:3];
         
@@ -44,7 +44,7 @@
         [logo setPosition:P2Make(-270, -5)];
         [logo setZPosition:4];
 
-        [self addChild:fuelBar];
+        [self addChild:_fuelBar];
         [self addChild:fuelLabel];
         [self addChild:logo];
 
@@ -116,6 +116,8 @@
         if (![p.manager isEqual:_manager]) {
             [self setManager:p.manager];
         }
+        [fuelLabel setText:[NSString stringWithFormat:@"ENERGY : %d",p.manager.energy]];
+        [_fuelBar setFill:((float)p.manager.energy)/5000.00];
         
         for (PlayerSprite* ps in _playerSprites) {
             

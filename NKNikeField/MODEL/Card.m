@@ -47,7 +47,7 @@
 
 -(void)getRandomChallengeAttributes {
     _level = 1;
-    _challengeCategory = rand()%4 + 1;
+    _challengeCategory = rand()%3 + 1;
     _kickCategory = CardKickCategoryNull;
     _moveCategory = CardMoveCategoryNull;
     _specialCategory = CardCategoryNull;
@@ -464,10 +464,10 @@
     }
     
     else if (self.category == CardCategoryChallenge) {
-        if(self.challengeCategory == CardChallengeCategoryRook){
-            accessible = [[aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
-        }
-        else if (self.challengeCategory == CardChallengeCategoryBishop){
+        //if(self.challengeCategory == CardChallengeCategoryRook){
+        //    accessible = [[aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
+        //}
+        if (self.challengeCategory == CardChallengeCategoryBishop){
             accessible = [[aStar cellsAccesibleFrom:_deck.player.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range] mutableCopy];
         }
         else if (self.challengeCategory == CardChallengeCategoryHorizantal){

@@ -51,10 +51,10 @@ typedef NS_ENUM(int32_t, CardKickCategory) {
 
 typedef NS_ENUM(int32_t, CardChallengeCategory) {
     CardChallengeCategoryNull = 0,
-    CardChallengeCategoryRook = 1,
-    CardChallengeCategoryBishop = 2,
-    CardChallengeCategoryVertical = 3,
-    CardChallengeCategoryHorizantal = 4
+  //  CardChallengeCategoryRook = 1,
+    CardChallengeCategoryBishop = 1,
+    CardChallengeCategoryVertical = 2,
+    CardChallengeCategoryHorizantal = 3
 };
 
 typedef NS_ENUM(int32_t, EventType) {

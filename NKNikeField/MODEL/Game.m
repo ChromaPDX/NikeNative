@@ -89,6 +89,9 @@
     _me = [[Manager alloc] initWithGame:self];
     _opponent = [[Manager alloc] initWithGame:self];
 
+    _me.energy = 1000;
+    _opponent.energy = 1000;
+    
     _score = [BoardLocation pX:0 Y:0];
     
     [_me setColor:V2BLUE];

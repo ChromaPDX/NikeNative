@@ -39,7 +39,7 @@
     size.width = self.size.width * fill;
     [fuel setSize: size];
     R4t frame = [fuel getDrawFrame];
-    P2t point = P2Make(frame.x, 0);
+    P2t point = P2Make((-self.size.width/2) + frame.size.width/2, 0);
     [fuel setPosition:point];
    // CGPoint newPoint = CGPointMake(frame.x + )
 
