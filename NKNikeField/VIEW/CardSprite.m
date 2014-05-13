@@ -112,15 +112,15 @@
 -(void)showLabels{
     NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
     
-    /*text.fontSize = 20;
+    text.fontSize = 20;
     text.fontColor = V2ORANGE;
     [text setSize:S2Make(500,100)];
     //[text setZPosition:1];
-    [text setText:[NSString stringWithFormat:@"%d", self.model.actionPointCost]];
+    [text setText:[NSString stringWithFormat:@"%d", self.model.energyCost]];
     //[text setText:@"test"];
-    [text setPosition:P2Make(0, -40)];
+    [text setPosition:P2Make(0, 5)];
     [self addChild:text];
-    */
+    
     
     text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
     text.fontSize = 16;

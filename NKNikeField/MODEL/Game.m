@@ -1061,7 +1061,7 @@
             if (event.playerPerforming) {
                 event.playerPerforming.used = true;
             }
-            
+            self.me.energy -= event.card.energyCost;
             [event.card discard];
         }
         

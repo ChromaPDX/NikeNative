@@ -8,7 +8,9 @@
 
 #import "UXWindow.h"
 
+
 @class GameScene;
+@class FuelBar;
 
 @interface UXTopBar : NKSpriteNode {
     S2t cardSize;
