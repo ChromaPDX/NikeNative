@@ -19,6 +19,8 @@
 @property (nonatomic, weak) GameScene *delegate;
 @property (nonatomic, weak) Manager *manager;
 @property (nonatomic, strong) NSMutableArray* playerSprites;
+@property (nonatomic, strong) FuelBar *fuelBar;
+
 
 @property (nonatomic) int fuel;
 

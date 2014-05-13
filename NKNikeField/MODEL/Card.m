@@ -47,7 +47,7 @@
 
 -(void)getRandomChallengeAttributes {
     _level = 1;
-    _challengeCategory = rand()%4 + 1;
+    _challengeCategory = rand()%3 + 1;
     _kickCategory = CardKickCategoryNull;
     _moveCategory = CardMoveCategoryNull;
     _specialCategory = CardCategoryNull;

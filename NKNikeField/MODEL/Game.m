@@ -117,6 +117,8 @@
     
     self.myTurn = YES;
     
+    _blockedBoardLocations = [[NSMutableArray alloc] init];
+    
     [_gameScene setupGameBoard];
     
     NSLog(@"gameboard setup");

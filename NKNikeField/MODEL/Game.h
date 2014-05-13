@@ -137,6 +137,8 @@ typedef enum RTMessageType {
 @property (nonatomic, weak) Player *selectedPlayer;
 @property (nonatomic, weak) Card *selectedCard;
 @property (nonatomic, weak) BoardLocation *selectedLocation;
+@property (nonatomic, strong) NSMutableArray *blockedBoardLocations;
+
 
 @property (nonatomic, strong) NSMutableArray *players;
 
