@@ -575,15 +575,8 @@
                 }
                 return accessible;
             case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
-                accessible = [[NSMutableArray alloc] init];
-                [accessible addObject:p.location];
-                return accessible;
-                break;
-                
-                default:
-                 NSLog(@"**ERROR no card special category");
-                break;
-        }
+                accessible = [[self.game allBoardLocations] mutableCopy];
+            }
         
         
         if(self.category == CardCategorySpecial && self.specialTypeCategory == CardSpecialCategoryBlock){

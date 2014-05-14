@@ -527,7 +527,12 @@
             }
         }
     }
-    return NULL;
+    if([playersInPassRange count]){
+        return playersInPassRange[0];
+    }
+    else{
+        return NULL;
+    }
 }
 
 -(NSArray *)playersAvailableCloserToGoal{

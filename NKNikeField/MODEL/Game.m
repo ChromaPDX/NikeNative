@@ -1432,8 +1432,6 @@
     Card* challengeCard = [p.manager cardInHandOfCategory:CardCategoryChallenge];
     Card* specialCard = [p.manager cardInHandOfCategory:CardCategorySpecial];
     
-    
-    
     // CHECK FOR LOOSE BALL
     if(![p.manager playerWithBall] && ![p.manager.opponent playerWithBall]){
         if(moveCard){
@@ -1513,7 +1511,8 @@
     }
     else {
         // DEFENSE
-        Card* challengeCard = p.manager.challengeDeck.inHand[0];
+        
+        //Card* challengeCard = p.manager.challengeDeck.inHand[0];
         
         NSLog(@"AIChooseCardForPlayer: challengeCard = %@", challengeCard.name);
         NSLog(@"AIChooseCardForPlayer: challengeCard validatedSelectionSet = %@", [challengeCard validatedSelectionSetForPlayer:p]);
