@@ -866,6 +866,28 @@
     
 }
 
+-(void)forceEndTurnForAI {
+    for (Player*p in _opponent.players.inGame) {
+        p.used = true;
+    }
+    [self recordSequence:[self endTurnSequenceForManager:_opponent] withCompletionBlock:^{
+        GameSequence* passTurn = [GameSequence sequence];
+        [self addStartTurnEventsToSequence:passTurn forManager:_me];
+        [self performSequence:passTurn record:true animate:true];
+    }];
+}
+
+-(void)forceEndTurnForPlayer {
+    for (Player*p in _me.players.inGame) {
+        p.used = true;
+    }
+    [self recordSequence:[self endTurnSequenceForManager:_me] withCompletionBlock:^{
+        GameSequence* passTurn = [GameSequence sequence];
+        [self addStartTurnEventsToSequence:passTurn forManager:_opponent];
+        [self performSequence:passTurn record:true animate:true];
+    }];
+}
+
 #pragma mark - PERFORM EVENT
 
 -(BOOL)performEvent:(GameEvent*)event {
@@ -1341,6 +1363,7 @@
 -(void)AIChoosePlayerForManager:(Manager*)m { // called from end sequence, if we have unused player
     NSLog(@"AI: %@ : is choosing a player", m.name);
     
+    
     if (m.hasPossesion) { // OFFENSE
         
         // player with ball
@@ -1396,7 +1419,27 @@
 
 -(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
 
-    Card* moveCard = p.manager.moveDeck.inHand[0];
+    //Card* moveCard = p.manager.moveDeck.inHand[0];
+    
+    Card* moveCard;
+    Card* kickCard;
+    for (Card *c in p.manager.allCardsInHand) {
+        if (c.category == CardCategoryMove) {
+            moveCard = c;
+        }
+        if (c.category == CardCategoryKick) {
+            kickCard = c;
+        }
+    }
+    
+    
+    
+    if (moveCard) {
+        
+    }
+    if (kickCard) {
+        
+    }
     
     // CHECK FOR LOOSE BALL
     if(![p.manager playerWithBall] && ![p.manager.opponent playerWithBall]){
