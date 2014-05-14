@@ -1441,6 +1441,11 @@
         }
     }
     
+    if(specialCard){
+        [_gameScene AISelectedCard:specialCard];
+        return;
+    }
+
     if (p.manager.hasPossesion) {
         
         //Card* kickCard = p.manager.kickDeck.inHand[0];
@@ -1554,7 +1559,6 @@
         }
         
     }
-    
     NSLog(@"AI failed to select a card");
 }
 
@@ -1565,6 +1569,11 @@
     NSArray *playersCloserToGoal;
     NSMutableArray* pathToGoalUnverified;
     Player *p = _selectedPlayer;
+    
+    if(c.category == CardCategorySpecial){
+        NSArray *setSpecial = [c selectionSetForPlayer:<#(Player *)#>]
+        return;
+    }
     
     // NSLog(@"in AIChooseLocationForCard, aiActionType = %d", c.aiActionType);
     switch (c.aiActionType){
