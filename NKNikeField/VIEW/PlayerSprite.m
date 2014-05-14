@@ -118,7 +118,7 @@
         [self removeChildNamed:@"ball"];
     }
     
-    self.userInteractionEnabled = false;
+    //self.userInteractionEnabled = false;
 }
 
 -(void)setHighlighted:(bool)highlighted {
@@ -240,13 +240,14 @@
 
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     
-    NKTouchState touchState = [super touchUp:location id:touchId];
-    
-    if (touchState == NKTouchIsFirstResponder){
+//    NKTouchState touchState = [super touchUp:location id:touchId];
+//    
+//    if (touchState == NKTouchIsFirstResponder){
         [_delegate playerSpriteDidSelectPlayer:self.model];
-    }
-
-    return touchState;
+//    }
+//
+//    return touchState;
+    return false;
 }
 
 

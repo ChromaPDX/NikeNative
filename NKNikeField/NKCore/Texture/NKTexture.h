@@ -34,16 +34,16 @@ typedef NS_OPTIONS(UInt8, NKTextureMapStyle) {
 @property (nonatomic) bool shouldResizeToTexture;
 @property (nonatomic) NKTextureMapStyle textureMapStyle;
 
+
 +(instancetype) textureWithImageNamed:(NSString*)name;
 +(instancetype) textureWithImage:(NKImage*)image;
 
 +(instancetype) textureWithString:(NSString *)string ForLabelNode:(NKLabelNode*)node;
 +(instancetype) textureWithString:(NSString *)string ForLabelNode:(NKLabelNode *)node inBackGroundWithCompletionBlock:(void (^)())block;
 
-//+(instancetype) textureWithString:(NSString *)text fontNamed:(NSString*)name color:(NKColor*)textColor Size:(S2t)size fontSize:(CGFloat)fontSize completion:(void (^)())block;
-
-
 +(instancetype) textureWithPVRNamed:(NSString*)name size:(S2t)size;
+
+-(instancetype)initWithSize:(S2t)size;
 
 -(void)updateWithTimeSinceLast:(F1t) dt;
 

@@ -441,6 +441,13 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
     
 }
 
+-(void)draw {
+    [vertexBuffer bind:^{
+        glDrawArrays(vertexBuffer.drawMode, 0, vertexBuffer.numberOfElements);
+    }];
+
+}
+
 -(void) drawWithColor:(C4t)color {
     
     if (NK_GL_VERSION == 2) {

@@ -1390,6 +1390,8 @@
         
     }
     
+    NSLog(@"AI failed to select a player");
+    
 }
 
 -(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
@@ -1509,6 +1511,8 @@
         }
         
     }
+    
+    NSLog(@"AI failed to select a card");
 }
 
 -(void)AIChooseLocationForCard:(Card*) c { // called from UI after card has been selected
@@ -2075,9 +2079,10 @@
 
 
 -(void)clearSelection {
-    _selectedCard = nil;
-    _selectedLocation = nil;
-    _selectedPlayer = nil;
+    _gameScene.selectedPlayer = nil;
+    _gameScene.selectedCard = nil;
+    _gameScene.selectedBoardTile = nil;
+    
     _currentEventSequence = nil;
 }
 

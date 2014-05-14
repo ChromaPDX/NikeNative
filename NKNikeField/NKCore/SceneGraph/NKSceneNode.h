@@ -26,13 +26,16 @@
  ***********************************************************************/
 
 #import "NKNode.h"
+#import "NKAlertSprite.h"
 
 @class NKView;
 @class NKCamera;
 @class NKShaderProgram;
 @class NKVertexBuffer;
+@class NKAlertSprite;
+@class NKFrameBuffer;
 
-@interface NKSceneNode : NKNode
+@interface NKSceneNode : NKNode <NKAlertSpriteDelegate>
 
 {
     int fps;
@@ -43,6 +46,11 @@
     M16t modelMatrix;
     
     NKVertexBuffer *axes;
+    
+    NSMutableDictionary* hitColorMap;
+    float uidR;
+    float uidG;
+    float uidB;
 }
 
 @property (nonatomic) void *view;
@@ -50,11 +58,19 @@
 @property (nonatomic) BOOL shouldRasterize;
 @property (nonatomic) UIColor *backgroundColor;
 @property (nonatomic) UIColor *borderColor;
+
 @property (nonatomic, strong) NKCamera *camera;
-@property (nonatomic, weak) NKView *nkView;
+@property (nonatomic, weak) NKAlertSprite *alertSprite;
+@property (nonatomic, weak)   NKView *nkView;
 @property (nonatomic, strong) NKShaderProgram *activeShader;
 
+@property (nonatomic, strong) NKShaderProgram *hitDetectShader;
+@property (nonatomic, strong) NKFrameBuffer *hitDetectBuffer;
+
 -(instancetype) initWithSize:(S2t)size;
+
+
+-(void)drawForHitDetection;
 
 - (void)draw;
 // encompasses 3 states
@@ -66,6 +82,8 @@
 -(void)pushMultiplyMatrix:(M16t)matrix;
 -(void)pushScale:(V3t)scale;
 -(void)popMatrix;
+
+-(void)getUidColorForNode:(NKNode*)node;
 
 // DRAW STATE SHADOWING
 @property (nonatomic) NKBlendMode blendModeState;
