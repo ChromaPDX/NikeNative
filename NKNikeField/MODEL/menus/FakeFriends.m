@@ -14,7 +14,7 @@
                                     NULL] mutableCopy];
     
     for(int i = 0; i < numNames; i++){
-        int randVal = rand()%[listOfNames count];
+        int randVal = arc4random()%[listOfNames count];
         [retArray addObject:[listOfNames objectAtIndex:randVal]];
         [listOfNames removeObjectAtIndex:randVal];
     }

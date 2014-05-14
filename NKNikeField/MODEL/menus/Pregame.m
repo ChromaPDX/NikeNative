@@ -23,11 +23,31 @@
         //V3t rot =
         //table.node->setOrientation
         
-        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_PregameNoText.png"]];
+        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_Pregame.png"]];
         UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
         [table setHighlightColor:highlightColor];
         table.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
+        
+        FuelBar *fuelBar = [[FuelBar alloc] init];
+        [fuelBar setPosition:P2Make(-64, 516)];
+        [fuelBar setFill:0];
+        [fuelBar setFill:1];
+
+        
+        [self addChild:fuelBar];
+        
+        NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
+
+        text.fontSize = 30;
+        text.fontColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
+        [text setSize:S2Make(500,100)];
+        [text setZPosition:1];
+       // [text setText:[listOfNames objectAtIndex:0]];
+        [text setText:@"1000E"];
+        [text setPosition:P2Make(-81, 385)];
+        [self addChild:text];
+
         
         [NKSoundManager loadSoundFileNamed:@"Androyd-Bulbtone-41.wav"];
         [NKSoundManager loadSoundFileNamed:@"03 Bass [A$AP Rocky].mp3"];

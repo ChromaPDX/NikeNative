@@ -12,5 +12,6 @@
 #import "RecapMenuLoss.h"
 #import "Pregame.h"
 #import "FakeFriends.h"
+#import "FuelBar.h"
 
 
