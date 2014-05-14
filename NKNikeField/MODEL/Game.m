@@ -1443,6 +1443,7 @@
     
     if(specialCard){
         [_gameScene AISelectedCard:specialCard];
+        specialCard.aiActionType = SPECIAL_CARD;
         return;
     }
 
@@ -1721,6 +1722,12 @@
                 NSLog(@"pathToBall = NULL, AI HAS NO VALID MOVE: STAY");
                 [_gameScene AISelectedLocation:_selectedPlayer.location];
                 return;
+            }
+            break;
+        case SPECIAL_CARD:
+            pathToBall = [[c selectionSetForPlayer:p] mutableCopy];
+            if(pathToBall && [pathToBall count]){
+                [_gameScene AISelectedLocation:pathToBall[0]];
             }
             break;
     }

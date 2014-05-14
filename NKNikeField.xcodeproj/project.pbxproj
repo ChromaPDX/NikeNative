@@ -448,13 +448,13 @@
 		3B2361FE190020FA00056AE2 /* MenuStartVS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuStartVS.m; sourceTree = "<group>"; };
 		3B247D6C1922A26000A6EFDB /* Background_05_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background_05_13.png; sourceTree = "<group>"; };
 		3B247D6D1922A26000A6EFDB /* ButtonNikeConnect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonNikeConnect.png; sourceTree = "<group>"; };
-		3B247D6E1922A26000A6EFDB /* Card_Icon_RegChal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_RegChal.png; sourceTree = "<group>"; };
-		3B247D6F1922A26000A6EFDB /* Card_Icon_RegKick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_RegKick.png; sourceTree = "<group>"; };
-		3B247D701922A26000A6EFDB /* Card_Icon_RegMove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_RegMove.png; sourceTree = "<group>"; };
-		3B247D711922A26000A6EFDB /* Card_Icon_SpecChal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_SpecChal.png; sourceTree = "<group>"; };
-		3B247D721922A26000A6EFDB /* Card_Icon_SpecGeneral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_SpecGeneral.png; sourceTree = "<group>"; };
-		3B247D731922A26000A6EFDB /* Card_Icon_SpecKick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_SpecKick.png; sourceTree = "<group>"; };
-		3B247D741922A26000A6EFDB /* Card_Icon_SpecMove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_SpecMove.png; sourceTree = "<group>"; };
+		3B247D6E1922A26000A6EFDB /* Card_Icon_RegChal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Card_Icon_RegChal.png; path = ../Menus/Card_Icon_RegChal.png; sourceTree = "<group>"; };
+		3B247D6F1922A26000A6EFDB /* Card_Icon_RegKick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Card_Icon_RegKick.png; path = ../Menus/Card_Icon_RegKick.png; sourceTree = "<group>"; };
+		3B247D701922A26000A6EFDB /* Card_Icon_RegMove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Card_Icon_RegMove.png; path = ../Menus/Card_Icon_RegMove.png; sourceTree = "<group>"; };
+		3B247D711922A26000A6EFDB /* Card_Icon_SpecChal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Card_Icon_SpecChal.png; path = ../Menus/Card_Icon_SpecChal.png; sourceTree = "<group>"; };
+		3B247D721922A26000A6EFDB /* Card_Icon_SpecGeneral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Card_Icon_SpecGeneral.png; path = ../Menus/Card_Icon_SpecGeneral.png; sourceTree = "<group>"; };
+		3B247D731922A26000A6EFDB /* Card_Icon_SpecKick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Card_Icon_SpecKick.png; path = ../Menus/Card_Icon_SpecKick.png; sourceTree = "<group>"; };
+		3B247D741922A26000A6EFDB /* Card_Icon_SpecMove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Card_Icon_SpecMove.png; path = ../Menus/Card_Icon_SpecMove.png; sourceTree = "<group>"; };
 		3B247D751922A26000A6EFDB /* FuelRingCase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelRingCase.png; sourceTree = "<group>"; };
 		3B247D761922A26000A6EFDB /* FuelRingColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelRingColor.png; sourceTree = "<group>"; };
 		3B247D771922A26000A6EFDB /* LevelBarEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LevelBarEmpty.png; sourceTree = "<group>"; };
@@ -1255,13 +1255,6 @@
 				3B247D6C1922A26000A6EFDB /* Background_05_13.png */,
 				3B34228E19242048000AAC68 /* ButtonEndTurn.png */,
 				3B247D6D1922A26000A6EFDB /* ButtonNikeConnect.png */,
-				3B247D6E1922A26000A6EFDB /* Card_Icon_RegChal.png */,
-				3B247D6F1922A26000A6EFDB /* Card_Icon_RegKick.png */,
-				3B247D701922A26000A6EFDB /* Card_Icon_RegMove.png */,
-				3B247D711922A26000A6EFDB /* Card_Icon_SpecChal.png */,
-				3B247D721922A26000A6EFDB /* Card_Icon_SpecGeneral.png */,
-				3B247D731922A26000A6EFDB /* Card_Icon_SpecKick.png */,
-				3B247D741922A26000A6EFDB /* Card_Icon_SpecMove.png */,
 				3B247D751922A26000A6EFDB /* FuelRingCase.png */,
 				3B247D761922A26000A6EFDB /* FuelRingColor.png */,
 				3B34228F19242048000AAC68 /* InGameBackdrop.png */,
@@ -1316,6 +1309,13 @@
 			children = (
 				61D6E74F18FDB5B70017A389 /* Card_Icon_Chal_L1.png */,
 				61D6E75018FDB5B70017A389 /* Card_Icon_Chal_L2.png */,
+				3B247D6E1922A26000A6EFDB /* Card_Icon_RegChal.png */,
+				3B247D6F1922A26000A6EFDB /* Card_Icon_RegKick.png */,
+				3B247D701922A26000A6EFDB /* Card_Icon_RegMove.png */,
+				3B247D711922A26000A6EFDB /* Card_Icon_SpecChal.png */,
+				3B247D721922A26000A6EFDB /* Card_Icon_SpecGeneral.png */,
+				3B247D731922A26000A6EFDB /* Card_Icon_SpecKick.png */,
+				3B247D741922A26000A6EFDB /* Card_Icon_SpecMove.png */,
 				61D6E75118FDB5B70017A389 /* Card_Icon_Chal_L3.png */,
 				61D6E75218FDB5B70017A389 /* Card_Icon_Kick_L1.png */,
 				61D6E75318FDB5B70017A389 /* Card_Icon_Kick_L2.png */,

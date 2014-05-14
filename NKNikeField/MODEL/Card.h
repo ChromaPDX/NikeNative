@@ -39,7 +39,8 @@ enum AI_ACTION_TYPE {
     MOVE_TO_CHALLENGE = 6,
     MOVE_TO_DEFENDGOAL = 7,
     MOVE_TO_BALL = 8,
-    MOVE_TO_GOAL_IN_PASS_RANGE = 9
+    MOVE_TO_GOAL_IN_PASS_RANGE = 9,
+    SPECIAL_CARD = 10
 };
 
 @class BoardLocation;
