@@ -299,7 +299,13 @@
             
             else if (_selectedCard.category == CardCategoryKick){
                 if ([selectedLocation isEqual:_selectedPlayer.manager.goal]) {
-                    playerEvent.type = kEventKickGoal;
+                    if(_selectedPlayer.game.me == _selectedPlayer.manager){
+                        playerEvent.type = kEventKickGoal;
+                    }
+                    else{
+                        playerEvent.type = kEventKickGoalLoss;
+                    }
+                    
                     GameEvent* resetPlayers = [GameEvent event];
                     resetPlayers.type = kEventResetPlayers;
                     resetPlayers.manager = _selectedPlayer.manager;
@@ -1245,7 +1251,7 @@
             }
         }
         
-        else if (event.type == kEventKickGoal){ // SHOOT
+        else if (event.type == kEventKickGoal || event.type == kEventKickGoalLoss){ // SHOOT
             
             if (!_score) {
                 _score = [BoardLocation pX:0 Y:0];
@@ -1313,7 +1319,7 @@
             
         }
         
-        else if (event.type == kEventKickGoal || event.type == kEventKickPass){ // FAILED SHOT OR PASS
+        else if (event.type == kEventKickGoal || event.type == kEventKickGoalLoss || event.type == kEventKickPass){ // FAILED SHOT OR PASS
             [event.playerPerforming setBall:Nil];
             _ball.enchantee = Nil;
             _ball.location = [event scatter];
@@ -1421,43 +1427,32 @@
 
     //Card* moveCard = p.manager.moveDeck.inHand[0];
     
-    Card* moveCard;
-    Card* kickCard;
-    for (Card *c in p.manager.allCardsInHand) {
-        if (c.category == CardCategoryMove) {
-            moveCard = c;
-        }
-        if (c.category == CardCategoryKick) {
-            kickCard = c;
-        }
-    }
+    Card* moveCard = [p.manager cardInHandOfCategory:CardCategoryMove];
+    Card* kickCard = [p.manager cardInHandOfCategory:CardCategoryKick];
+    Card* challengeCard = [p.manager cardInHandOfCategory:CardCategoryChallenge];
+    Card* specialCard = [p.manager cardInHandOfCategory:CardCategorySpecial];
     
     
-    
-    if (moveCard) {
-        
-    }
-    if (kickCard) {
-        
-    }
     
     // CHECK FOR LOOSE BALL
     if(![p.manager playerWithBall] && ![p.manager.opponent playerWithBall]){
-        moveCard.aiActionType = MOVE_TO_BALL;
-        [_gameScene AISelectedCard:moveCard];
-        return;
+        if(moveCard){
+            moveCard.aiActionType = MOVE_TO_BALL;
+            [_gameScene AISelectedCard:moveCard];
+            return;
+        }
     }
     
     if (p.manager.hasPossesion) {
         
-        Card* kickCard = p.manager.kickDeck.inHand[0];
+        //Card* kickCard = p.manager.kickDeck.inHand[0];
         
         NSLog(@"AI is choosing card for Player: %@ location = %@ ballLocaiton = %@", p.name, p.location, p.manager.game.ball.location);
         
         // OFFENSE
         if (p.ball) {
             // HAS BALL
-            if ([p isInShootingRange ]){
+            if ([p isInShootingRange ] && kickCard){
                 // CAN SHOOT ON GOAL
                 kickCard.aiActionType = SHOOT_ON_GOAL;
                 //[_gameScene AISelectedLocation:kickCard.playerPerforming.manager.goal];
@@ -1467,7 +1462,7 @@
             else{
                 //CAN NOT SHOOT ON GOAL
                 Player *passToPlayer = [p passToAvailablePlayerInShootingRange];
-                if(passToPlayer){
+                if(passToPlayer && kickCard){
                     // CAN PASS TO PLAYER IN SHOOTING RANGE
                     kickCard.aiActionType = PASS_TO_PLAYER_IN_SHOOTING_RANGE;
                     [_gameScene AISelectedCard:kickCard];
@@ -1477,7 +1472,7 @@
                     // CAN NOT PASS TO PLAYER IN SHOOTING RANGE
                     NSArray *pathToGoal = [moveCard validatedPath:[p pathToGoal]];
                     // NSArray *pathToGoal = [p pathToOpenFieldClosestToLocation:p.manager.goal];
-                    if(pathToGoal){
+                    if(pathToGoal && moveCard){
                         // CAN MOVE IN SHOOTING RANGE
                         moveCard.aiActionType = MOVE_TO_GOAL;
                         [_gameScene AISelectedCard:moveCard];
@@ -1486,7 +1481,7 @@
                     else{
                         //CAN NOT MOVE IN SHOOTING RANGE
                         NSArray *playersCloserToGoal = [p playersAvailableInKickRangeCloserToGoal];
-                        if(playersCloserToGoal){
+                        if(playersCloserToGoal && kickCard){
                             // CAN PASS TO AVAILABLE PLAYER CLOSER TO GOAL
                             kickCard.aiActionType = PASS_TO_GOAL;
                             [_gameScene AISelectedCard:kickCard];
@@ -1494,9 +1489,11 @@
                         }
                         else{
                             // CAN NOT PASS TO GOAL
-                            moveCard.aiActionType = MOVE_TO_GOAL;
-                            [_gameScene AISelectedCard:moveCard];
-                            return;
+                            if(moveCard){
+                                moveCard.aiActionType = MOVE_TO_GOAL;
+                                [_gameScene AISelectedCard:moveCard];
+                                return;
+                            }
                         }
                         
                     }
@@ -1507,10 +1504,11 @@
         }
         else {
             // DOES NOT HAVE BALL
-            moveCard.aiActionType = MOVE_TO_GOAL_IN_PASS_RANGE;
-            [_gameScene AISelectedCard:moveCard];
-            return;
-            
+            if(moveCard){
+                moveCard.aiActionType = MOVE_TO_GOAL_IN_PASS_RANGE;
+                [_gameScene AISelectedCard:moveCard];
+                return;
+            }
         }
     }
     else {
@@ -1520,15 +1518,16 @@
         NSLog(@"AIChooseCardForPlayer: challengeCard = %@", challengeCard.name);
         NSLog(@"AIChooseCardForPlayer: challengeCard validatedSelectionSet = %@", [challengeCard validatedSelectionSetForPlayer:p]);
         
-        if ([[challengeCard validatedSelectionSetForPlayer:p] count]) {
+        if (challengeCard && [[challengeCard validatedSelectionSetForPlayer:p] count]) {
             // CAN CHALLENGE
             challengeCard.aiActionType = CHALLENGE;
             [_gameScene AISelectedCard:challengeCard];
             return;
         }
+        
         else{
             // CAN NOT CHALLENGE
-            if([p canMoveToChallenge]){
+            if(moveCard && [p canMoveToChallenge]){
                 // CAN MOVE TO CHALLENGE
                 moveCard.aiActionType = MOVE_TO_CHALLENGE;
                 [_gameScene AISelectedCard:moveCard];
@@ -1538,17 +1537,19 @@
                 // CAN NOT MOVE TO CHALLENGE
                 NSArray *pathToGoal = [p pathToGoal];
                 NSArray *pathToBall = [p pathToBall];
-                if([pathToGoal count] > [pathToBall count]){
+                if(moveCard && [pathToGoal count] > [pathToBall count]){
                     // IS CLOSER TO BALL THAN GOAL
                     moveCard.aiActionType = MOVE_TO_BALL;
                     [_gameScene AISelectedCard:moveCard];
                     return;
                 }
                 else{
-                    // IS CLOSER TO GOAL THAN BALL
-                    moveCard.aiActionType = MOVE_TO_DEFENDGOAL;
-                    [_gameScene AISelectedCard:moveCard];
-                    return;
+                    if(moveCard){
+                        // IS CLOSER TO GOAL THAN BALL
+                        moveCard.aiActionType = MOVE_TO_DEFENDGOAL;
+                        [_gameScene AISelectedCard:moveCard];
+                        return;
+                    }
                 }
             }
         }

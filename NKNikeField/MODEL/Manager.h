@@ -66,6 +66,7 @@
 
 #pragma mark - DECK
 
+-(Card*)cardInHandOfCategory:(int) category;
 -(NSArray*)allCardsInHand;
 -(NSArray*)allCardsInDeck;
 -(Card*)drawCard; // TO:DO probability based on Faction

@@ -84,6 +84,7 @@ typedef NS_ENUM(int32_t, EventType) {
     kEventPlayCard,
     kEventKickPass,
     kEventKickGoal,
+    kEventKickGoalLoss,
     kEventChallenge,
     kEventMove,
     kEventAddSpecial,

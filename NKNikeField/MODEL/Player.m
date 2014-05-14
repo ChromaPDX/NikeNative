@@ -287,41 +287,26 @@
     NSArray *retPath;
     NSArray *kickPath;
     NSArray *movePath;
-    Card* kickCard;
-    if(player.manager.kickDeck.inHand && [player.manager.kickDeck.inHand count]){
-        kickCard = player.manager.kickDeck.inHand[0];
-    }
-    else{
-        return NULL;
-    }
+    Card* kickCard = [player.manager cardInHandOfCategory:CardCategoryKick];
+    if(!kickCard) return retPath;
     
-    if(kickCard){
-        kickPath = [kickCard selectionSetForPlayer:player];
-    }
-    else{
-        return retPath;
-    }
+    kickPath = [kickCard selectionSetForPlayer:player];
+    
     if(kickPath){
-        Card* moveCard;
-        if(self.manager.moveDeck.inHand && [player.manager.moveDeck.inHand count]){
-            moveCard = self.manager.moveDeck.inHand[0];
-        }
-        else{
-            return NULL;
-        }
-        if(moveCard){
-            movePath = [moveCard selectionSetForPlayer:player];
-            if(movePath){
-                // NSArray *intersectPath = [BoardLocation setIntersect:movePath withSet:kickPath];
-                NSArray *intersectPath = [BoardLocation  tileSetIntersect:movePath withTileSet:kickPath];
-                if(intersectPath){
-                    BoardLocation *closestLocation = [self closestLocationInTileSet:intersectPath];
-                    if(closestLocation){
-                        retPath = [self pathToBoardLocation:closestLocation];
-                    }
+        Card* moveCard = [player.manager cardInHandOfCategory:CardCategoryMove];
+        if(!moveCard) return retPath;
+        movePath = [moveCard selectionSetForPlayer:player];
+        if(movePath){
+            // NSArray *intersectPath = [BoardLocation setIntersect:movePath withSet:kickPath];
+            NSArray *intersectPath = [BoardLocation  tileSetIntersect:movePath withTileSet:kickPath];
+            if(intersectPath){
+                BoardLocation *closestLocation = [self closestLocationInTileSet:intersectPath];
+                if(closestLocation){
+                    retPath = [self pathToBoardLocation:closestLocation];
                 }
             }
         }
+        
         else{
             return retPath;
         }

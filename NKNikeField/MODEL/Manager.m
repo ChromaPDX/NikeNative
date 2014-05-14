@@ -147,6 +147,17 @@
 
 #pragma mark - THE DECK
 
+
+-(Card*)cardInHandOfCategory:(int) thisCategory{
+    for (Card* c in self.allCardsInHand) {
+        // choose best card of each type
+        if (c.category == thisCategory) {
+            return c;
+        }
+    }
+    return NULL;
+}
+
 -(NSArray*)allCardsInHand {
     return [[[_moveDeck.inHand arrayByAddingObjectsFromArray:_kickDeck.inHand]arrayByAddingObjectsFromArray:_challengeDeck.inHand]arrayByAddingObjectsFromArray:_specialDeck.inHand];
 }

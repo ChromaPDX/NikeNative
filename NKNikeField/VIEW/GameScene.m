@@ -569,7 +569,7 @@ float PARTICLE_SCALE;
         
     }
     
-    else if (event.type == kEventKickPass || event.type == kEventKickGoal) {
+    else if (event.type == kEventKickPass || event.type == kEventKickGoal || event.type == kEventKickGoalLoss) {
         
         NKEmitterNode *enchant = [[NKEmitterNode alloc] init];
         
@@ -579,7 +579,7 @@ float PARTICLE_SCALE;
         PlayerSprite* receiver = [playerSprites objectForKey:event.playerReceiving];
         
         float locScale = .5;
-        if (event.type == kEventKickGoal) {
+        if (event.type == kEventKickGoal || event.type == kEventKickGoalLoss) {
             locScale = 1.;
         }
         
@@ -628,7 +628,7 @@ float PARTICLE_SCALE;
                 }
                 
                 // SUCCESSFUL GOAL
-                else if (event.type == kEventKickGoal && event.wasSuccessful) {
+                else if ((event.type == kEventKickGoalLoss || event.type == kEventKickGoal) && event.wasSuccessful) {
                     
                     [self playSoundWithKey:@"playerShoot"];
                     
@@ -649,21 +649,40 @@ float PARTICLE_SCALE;
                         }];
                      }];
                      */
-                    [self.ballSprite runAction:move completion:^(){
-                        NSLog(@"GameScene.m : animateEvent : GOAL");
-                        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"GOAL_text.png"]];
-                        NKSpriteNode* goal = [[NKSpriteNode alloc] initWithTexture:image];
-                        [self addChild:goal];
-                        
-                        [self playSoundWithKey:@"goal"];
-                        
-                        
-                        [self runAction:[NKAction fadeAlphaTo:0 duration:2.5] completion:^{
-                            [_game endGame];
-                            RecapMenuWin *recapMenu = [[RecapMenuWin alloc] init];
-                            [self.nkView setScene:[recapMenu initWithSize:self.size]];
+                    if(event.type == kEventKickGoal){
+                        [self.ballSprite runAction:move completion:^(){
+                            NSLog(@"GameScene.m : animateEvent : GOAL");
+                            NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"GOAL_text.png"]];
+                            NKSpriteNode* goal = [[NKSpriteNode alloc] initWithTexture:image];
+                            [self addChild:goal];
+                            
+                            [self playSoundWithKey:@"goal"];
+                            
+                            
+                            [self runAction:[NKAction fadeAlphaTo:0 duration:2.5] completion:^{
+                                [_game endGame];
+                                RecapMenuWin *recapMenu = [[RecapMenuWin alloc] init];
+                                [self.nkView setScene:[recapMenu initWithSize:self.size]];
+                            }];
                         }];
-                    }];
+                    }
+                    else if(event.type == kEventKickGoalLoss){
+                        [self.ballSprite runAction:move completion:^(){
+                            NSLog(@"GameScene.m : animateEvent : GOAL");
+                            NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"GOAL_text.png"]];
+                            NKSpriteNode* goal = [[NKSpriteNode alloc] initWithTexture:image];
+                            [self addChild:goal];
+                            
+                            [self playSoundWithKey:@"goal"];
+                            
+                            
+                            [self runAction:[NKAction fadeAlphaTo:0 duration:2.5] completion:^{
+                                [_game endGame];
+                                RecapMenuLoss *recapMenu = [[RecapMenuLoss alloc] init];
+                                [self.nkView setScene:[recapMenu initWithSize:self.size]];
+                            }];
+                        }];
+                    }
                 }
                 
                 else { // FAILED PASS OR FAILED GOAL
