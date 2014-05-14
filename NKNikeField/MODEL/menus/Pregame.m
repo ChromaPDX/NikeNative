@@ -29,10 +29,12 @@
         [table setHighlightColor:highlightColor];
         table.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
         
-        FuelBar *fuelBar = [[FuelBar alloc] init];
+        fuelBar = [[FuelBar alloc] init];
         [fuelBar setPosition:P2Make(-64, 516)];
+        // @LEIF - not sure why the animation isn't working here?
         [fuelBar setFill:0];
         [fuelBar setFill:1];
+
 
         
         [self addChild:fuelBar];
@@ -48,10 +50,6 @@
         [text setPosition:P2Make(-81, 385)];
         [self addChild:text];
 
-        
-        [NKSoundManager loadSoundFileNamed:@"Androyd-Bulbtone-41.wav"];
-        [NKSoundManager loadSoundFileNamed:@"03 Bass [A$AP Rocky].mp3"];
-        [NKSoundManager playMusicNamed:@"03 Bass [A$AP Rocky].mp3"];
         
         NSArray *listOfNames = [FakeFriends getNamesForText:3];
         NKLabelNode *bigText = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
