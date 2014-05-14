@@ -925,24 +925,24 @@ void ofNode::resetTransform() {
 
 -(void)setAlpha:(F1t)alpha {
     intAlpha = alpha;
-    [self setRecursiveAlpha];
+    _alpha = alpha;
 }
 
--(void)setRecursiveAlpha {
-    _alpha = [self recursiveParentAlpha];
+-(void)setRecursiveAlpha:(F1t)alpha {
+    
+    intAlpha = alpha;
+    [self recursiveAlpha:1.];
+    
+}
+
+-(void)recursiveAlpha:(F1t)alpha{
+    
+    _alpha = intAlpha * alpha;
     
     for (NKNode* n in intChildren) {
-        [n setRecursiveAlpha];
+        [n recursiveAlpha:(_alpha)];
     }
-}
-
--(F1t)recursiveParentAlpha{
-    if (!_parent) {
-        return intAlpha;
-    }
-    else {
-        return intAlpha * [_parent recursiveParentAlpha];
-    }
+    
 }
 
 #pragma mark - ACTIONS

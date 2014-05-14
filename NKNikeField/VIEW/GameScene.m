@@ -188,13 +188,17 @@ float PARTICLE_SCALE;
     [_gameBoardNode setPosition3d:V3Make(0,h*.5,0)];
     _gameBoardNode.userInteractionEnabled = true;
     _gameBoardNode.name = @"Game Board";
+    [_gameBoardNode setAlpha:.3];
     
     NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer02"] color:NKWHITE size:_gameBoardNode.size];
     
-    [lines setBlendMode:NKBlendModeAdd];
+    //[lines setBlendMode:NKBlendModeAdd];
     
     [_gameBoardNode addChild:lines];
+    
     [lines setPosition3d:V3Make(0,0,2)];
+    
+    [lines setAlpha:0.3];
     
     for(int i = 0; i < BOARD_WIDTH; i++){
         for(int j = 0; j < BOARD_LENGTH; j++){
@@ -204,8 +208,10 @@ float PARTICLE_SCALE;
             
             square.delegate = self;
             
+            [square setAlpha:.3];
+            
             [_gameBoardNode addChild:square];
-            [_gameBoardNode setAlpha:.3];
+            
             [_gameTiles setObject:square forKey:square.location];
             
             [square setPosition3d:V3Make((i+.5)*TILE_WIDTH - (TILE_WIDTH*BOARD_WIDTH*.5), ((j+.5)*TILE_HEIGHT) - (TILE_HEIGHT*BOARD_LENGTH*.5),6) ];

@@ -95,7 +95,12 @@ typedef void (^CompletionBlock)(void);
     F1t intAlpha;
 }
 
+#pragma mark - NODE TREE
+
+@property (nonatomic, weak) NKSceneNode* scene;
+@property (nonatomic, weak) NKNode *parent;
 @property (nonatomic, strong) NSArray *children;
+@property (nonatomic, copy) NSString *name;
 
 #pragma mark - POSITION PROPERTIES
 
@@ -103,6 +108,7 @@ typedef void (^CompletionBlock)(void);
 @property (nonatomic) V3t anchorPoint3d;
 @property (nonatomic) F1t zRotation;
 @property (nonatomic) V3t upVector;
+
 #pragma mark - STATE + INTERACTION PROPERTIES
 
 @property (nonatomic, getter = isPaused) BOOL paused;
@@ -110,21 +116,20 @@ typedef void (^CompletionBlock)(void);
 @property (nonatomic) bool userInteractionEnabled;
 @property (nonatomic) bool useShaderOnSelfOnly;
 
+#pragma mark - BLEND
+
 @property (nonatomic) NKBlendMode blendMode;
 @property (nonatomic) NKCullFaceMode cullFace;
 
 @property (nonatomic) F1t alpha;
--(void)setRecursiveAlpha;
-
-@property (nonatomic, weak) NKNode *parent;
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, weak) NKSceneNode* scene;
+-(void)setRecursiveAlpha:(F1t)alpha;
 
 #pragma mark - SHADER PROPERTIES
-@property (nonatomic)  NKFbo *depthFbo;
+
 @property (nonatomic, strong) NKShaderProgram *shader;
 
 #pragma mark - HIERARCHY METHODS
+
 - (void)addChild:(NKNode *)node;
 - (void)removeChild:(NKNode *)node;
 - (void)removeChildNamed:(NSString *)name;
@@ -171,6 +176,7 @@ typedef void (^CompletionBlock)(void);
 
 -(int)numVisibleNodes;
 -(int)numNodes;
+
 
 #pragma mark - SHADER / FBO
 
