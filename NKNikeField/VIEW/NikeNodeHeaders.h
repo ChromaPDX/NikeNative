@@ -20,7 +20,6 @@
 #import "CardSprite.h"
 #import "ButtonSprite.h"
 #import "BallSprite.h"
-#import "AlertSprite.h"
 
 #import "Menus.h"
 

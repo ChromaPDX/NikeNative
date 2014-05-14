@@ -27,9 +27,11 @@
 -(instancetype)initWithManager:(Manager*)m delegate:(UXWindow*)delegate;
 -(void)addCard:(Card*)card;
 -(void)removeCard:(Card*)card;
--(void)sortCards;
 -(void)sortCardsAnimated:(BOOL)animated WithCompletionBlock:(void (^)())block;
--(void)shuffleAroundCard:(CardSprite*)card;
+
+-(void)shuffleAroundCard:(Card*)card;
+-(void)shuffleAroundCardSprite:(CardSprite *)card;
+
 @end
 
 @interface UXWindow : NKSpriteNode
@@ -49,6 +51,7 @@
 @property (nonatomic, strong) AlertSprite *alert;
 
 -(void)refreshCardsForManager:(Manager *)m WithCompletionBlock:(void (^)())block;
+-(void)removeCardsAnimated:(BOOL)animated WithCompletionBlock:(void (^)())block;
 
 -(void)cardTouchMoved:(CardSprite*)card atPoint:(P2t)point;
 -(void)cardTouchBegan:(CardSprite*)card atPoint:(P2t)point;

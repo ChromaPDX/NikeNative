@@ -734,7 +734,7 @@
                     sequence.completionBlock();
                 }
                 
-                [_gameScene finishSequenceWithCompletionBlock:^{
+       
                     
                     _animating = NO;
                     
@@ -788,7 +788,7 @@
                     
                     
                     
-                }];
+         
             }
             
             else {
@@ -848,9 +848,9 @@
             
             if (animate) {
                 
-                [_gameScene finishSequenceWithCompletionBlock:^{
-                    [self enumerateTurnHeapAnimate:animate];
-                }];
+    
+                [self enumerateTurnHeapAnimate:animate];
+ 
                 
             }
             
@@ -864,6 +864,28 @@
         
     }
     
+}
+
+-(void)forceEndTurnForAI {
+    for (Player*p in _opponent.players.inGame) {
+        p.used = true;
+    }
+    [self recordSequence:[self endTurnSequenceForManager:_opponent] withCompletionBlock:^{
+        GameSequence* passTurn = [GameSequence sequence];
+        [self addStartTurnEventsToSequence:passTurn forManager:_me];
+        [self performSequence:passTurn record:true animate:true];
+    }];
+}
+
+-(void)forceEndTurnForPlayer {
+    for (Player*p in _me.players.inGame) {
+        p.used = true;
+    }
+    [self recordSequence:[self endTurnSequenceForManager:_me] withCompletionBlock:^{
+        GameSequence* passTurn = [GameSequence sequence];
+        [self addStartTurnEventsToSequence:passTurn forManager:_opponent];
+        [self performSequence:passTurn record:true animate:true];
+    }];
 }
 
 #pragma mark - PERFORM EVENT
@@ -1341,6 +1363,7 @@
 -(void)AIChoosePlayerForManager:(Manager*)m { // called from end sequence, if we have unused player
     NSLog(@"AI: %@ : is choosing a player", m.name);
     
+    
     if (m.hasPossesion) { // OFFENSE
         
         // player with ball
@@ -1390,11 +1413,33 @@
         
     }
     
+    NSLog(@"AI failed to select a player");
+    
 }
 
 -(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
 
-    Card* moveCard = p.manager.moveDeck.inHand[0];
+    //Card* moveCard = p.manager.moveDeck.inHand[0];
+    
+    Card* moveCard;
+    Card* kickCard;
+    for (Card *c in p.manager.allCardsInHand) {
+        if (c.category == CardCategoryMove) {
+            moveCard = c;
+        }
+        if (c.category == CardCategoryKick) {
+            kickCard = c;
+        }
+    }
+    
+    
+    
+    if (moveCard) {
+        
+    }
+    if (kickCard) {
+        
+    }
     
     // CHECK FOR LOOSE BALL
     if(![p.manager playerWithBall] && ![p.manager.opponent playerWithBall]){
@@ -1509,6 +1554,8 @@
         }
         
     }
+    
+    NSLog(@"AI failed to select a card");
 }
 
 -(void)AIChooseLocationForCard:(Card*) c { // called from UI after card has been selected
@@ -2075,9 +2122,10 @@
 
 
 -(void)clearSelection {
-    _selectedCard = nil;
-    _selectedLocation = nil;
-    _selectedPlayer = nil;
+    _gameScene.selectedPlayer = nil;
+    _gameScene.selectedCard = nil;
+    _gameScene.selectedBoardTile = nil;
+    
     _currentEventSequence = nil;
 }
 

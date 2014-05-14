@@ -7,6 +7,7 @@
 //
 #import "NKFrameBuffer.h"
 #import "UIImage+GLBuffer.h"
+#import "NKTexture.h"
 
 @implementation NKFrameBuffer
 
@@ -50,6 +51,7 @@
             return nil;
         }
 
+       // _renderTexture = [[NKTexture alloc]initWithSize:S2Make(_width, _height)];
 //        // Offscreen position framebuffer texture target
 //        glGenTextures(1, &_locRenderTexture);
 //        glBindTexture(GL_TEXTURE_2D, _locRenderTexture);
@@ -79,6 +81,11 @@
     self = [super init];
     
     if(self){
+        
+        NSLog(@"init 2ndary frame buffer");
+        
+        _width = width;
+        _height = height;
         
         // 1 // Create the framebuffer and bind it.
         
@@ -111,26 +118,32 @@
             return false;
         }
         
-        // Offscreen position framebuffer texture target
-        glGenTextures(1, &_locRenderTexture);
-        glBindTexture(GL_TEXTURE_2D, _locRenderTexture);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _size.width, _size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        _renderTexture = [[NKTexture alloc]initWithSize:S2Make(_width, _height)];
+
         
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _locRenderTexture, 0);
+//        // Offscreen position framebuffer texture target
+//        glGenTextures(1, &_locRenderTexture);
+//        glBindTexture(GL_TEXTURE_2D, _locRenderTexture);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _size.width, _size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+//        glBindTexture(GL_TEXTURE_2D, 0);
+//        
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _renderTexture.glTexLocation, 0);
         
         // Always check that our framebuffer is ok
         if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {
-            NKCheckGLError(@"Creating framebuffer");
+            NSLog(@"ERROR Creating framebuffer");
             return nil;
         }
         
+        
     }
+    
+    NSLog(@"successfully made texture / framebuffer: %d", _renderBuffer);
     
     return self;
     
@@ -202,15 +215,30 @@
             _depthBuffer = 0;
         }
 }
-- (GLuint)bindTexture:(int)texLoc
-{
-    glEnable(GL_TEXTURE_2D);
-    glActiveTexture(texLoc);
-    glBindTexture(GL_TEXTURE_2D, self.locRenderTexture);
-    return self.locRenderTexture;
-}
+//- (GLuint)bindTexture:(int)texLoc
+//{
+//    glEnable(GL_TEXTURE_2D);
+//    glActiveTexture(texLoc);
+//    glBindTexture(GL_TEXTURE_2D, self.locRenderTexture);
+//    return self.locRenderTexture;
+//}
 
 #pragma mark - Accessing Data
+
+- (void)colorAtPoint:(P2t)point buffer:(uB4t*)buf{
+
+    NSLog(@"read pixels at %d, %d", (int)point.x, (int)point.y);
+
+    [self bind];
+    
+    glReadPixels((int)point.x, (int)point.y,
+                 1, 1,
+                 GL_RGBA, GL_UNSIGNED_BYTE, buf);
+    
+    [self unbind];
+
+    
+}
 
 - (void)pixelValuesInRect:(CGRect)cropRect buffer:(GLubyte *)pixelBuffer
 {

@@ -24,6 +24,7 @@
         [self setPosition3d:V3Make(0, 0, 0)];
         
         _upVector = V3Make(0, 1, 0);
+        _uidColor = [NKColor colorWithRed:0 green:0 blue:0 alpha:1.];
         
         _anchorPoint3d = V3Make(.5, .5, .5);
         _hidden = false;
@@ -59,14 +60,11 @@
         intChildren = [[NSMutableArray alloc]init];
     }
     
-
     NSMutableArray *temp = [intChildren mutableCopy];
     
     if (![temp containsObject:child]) {
         [temp addObject:child];
         [child setParent:self];
-        
-
     }
     
     intChildren = temp;
@@ -83,6 +81,10 @@
         }
         
         _scene = _parent.scene;
+        
+        [_scene getUidColorForNode:self];
+        
+        //NSLog(@"hit color: %@", self.uidColor);
         return _parent.scene;
     }
     
@@ -131,11 +133,13 @@
         [_parent setUserInteractionEnabled:true];
     }
     
-    
 }
+
 -(void)setParent:(NKNode *)parent {
 
     _parent = parent;
+    
+    self.scene;
     
     if (self.userInteractionEnabled && _parent) {
         [_parent setUserInteractionEnabled:true];
@@ -508,7 +512,28 @@
     [self end];
 }
 
+-(void)drawForHitDetection {
+    
+    [self.scene pushMultiplyMatrix:localTransformMatrix];
+    
+    if (self.userInteractionEnabled) {
+        [self customDrawForHitDetection];
+    }
+
+    for (NKNode *child in intChildren) {
+        if (!child.isHidden) {
+            [child drawForHitDetection];
+        }
+    }
+    
+    [self.scene popMatrix];
+}
+
 -(void)customDraw {
+    // OVERRIDE IN SUB CLASS
+}
+
+-(void)customDrawForHitDetection {
     // OVERRIDE IN SUB CLASS
 }
 
@@ -560,19 +585,53 @@
 //    return p;
 //}
 
+-(P2t)inverseProjectedPoint:(P2t)location {
+    
+    M16t globalTransform = [self getGlobalTransformMatrix];
+    
+//    bool isInvertible;
+    
+    V3t transformed = V3MultiplyM16(globalTransform, V3Make(location.x, location.y, 0));
+    
+//    if (!isInvertible) {
+//        NSLog(@"node inversion failed");
+//    }
+    
+    P2t p = P2Make(transformed.x, transformed.y);
+
+    return p;
+    
+}
 -(bool)containsPoint:(P2t)location {
     
-    P2t p = location;
-    //P2tp = [self transformedPoint:location];
+    // OLD METHOD
+    // ADDING LOCAL TRANSFORMATION
     
-    //NSLog(@"world coords: %f %f %f", p.x, p.y, p.z);
+//    P2t p = location;
+//    //P2tp = [self transformedPoint:location];
+//    
+//    //NSLog(@"world coords: %f %f %f", p.x, p.y, p.z);
+//    
+//    R4t r = [self getWorldFrame];
+//    
+//    //bool withinArea = false;
+//    if ( p.x > r.x && p.x < r.x + r.size.width && p.y > r.y && p.y < r.y + r.size.height)
+//    {
+//       // [self logCoords];
+//        return true;
+//    }
+//    return false;
     
-    R4t r = [self getWorldFrame];
+    P2t p = [self inverseProjectedPoint:location];
+    
+    V3t globalPos = [self getGlobalPosition];
+    
+    R4t r = R4Make(globalPos.x - _size3d.x * _anchorPoint3d.x, globalPos.y - _size3d.y *_anchorPoint3d.y, _size3d.x, _size3d.y);
     
     //bool withinArea = false;
     if ( p.x > r.x && p.x < r.x + r.size.width && p.y > r.y && p.y < r.y + r.size.height)
     {
-       // [self logCoords];
+        // [self logCoords];
         return true;
     }
     return false;
@@ -955,74 +1014,78 @@ void ofNode::resetTransform() {
 -(NKTouchState)touchDown:(P2t)location id:(int)touchId {
     // OVERRIDE, CALL SUPER
     
-    NKTouchState hit = NKTouchNone;
-
-    if (_userInteractionEnabled){
-        
-        if ([self containsPoint:location]) {
-            hit = NKTouchIsFirstResponder;
-        }
-        
-        for (int i = intChildren.count-1; i >= 0; i--){
-            if ([intChildren[i] touchDown:location id:touchId] > 0) {
-                return NKTouchContainsFirstResponder;
-            }
-        }
-        
-        if (hit == NKTouchIsFirstResponder){
-               NSLog(@"touch down %@ %f, %f",self.name, location.x, location.y);
-        }
-    }
-    
-    return hit;
+//    NKTouchState hit = NKTouchNone;
+//
+//    if (_userInteractionEnabled){
+//        
+//        if ([self containsPoint:location]) {
+//            hit = NKTouchIsFirstResponder;
+//        }
+//        
+//        for (int i = intChildren.count-1; i >= 0; i--){
+//            if ([intChildren[i] touchDown:location id:touchId] > 0) {
+//                return NKTouchContainsFirstResponder;
+//            }
+//        }
+//        
+//        if (hit == NKTouchIsFirstResponder){
+//               NSLog(@"touch down %@ %f, %f",self.name, location.x, location.y);
+//        }
+//    }
+//    
+//    return hit;
+    return false;
 }
 
 -(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
     // OVERRIDE, CALL SUPER
     
-    NKTouchState hit = NKTouchNone;
-    
-    if (_userInteractionEnabled){
-        
-        if ([self containsPoint:location]) {
-            hit = NKTouchIsFirstResponder;
-        }
-        
-        for (int i = intChildren.count-1; i >= 0; i--){
-            if ([intChildren[i] touchMoved:location id:touchId] > 0) {
-                return NKTouchContainsFirstResponder;
-            }
-        }
-        
-    }
-    
-    return hit;
+//    NKTouchState hit = NKTouchNone;
+//    
+//    if (_userInteractionEnabled){
+//        
+//        if ([self containsPoint:location]) {
+//            hit = NKTouchIsFirstResponder;
+//        }
+//        
+//        for (int i = intChildren.count-1; i >= 0; i--){
+//            if ([intChildren[i] touchMoved:location id:touchId] > 0) {
+//                return NKTouchContainsFirstResponder;
+//            }
+//        }
+//        
+//    }
+//    
+//    return hit;
+    return false;
 }
 
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     // OVERRIDE, CALL SUPER
     
-    NKTouchState hit = NKTouchNone;
-    
-    if (_userInteractionEnabled){
-        
-        if ([self containsPoint:location]) {
-            hit = NKTouchIsFirstResponder;
-        }
-        
-        for (int i = intChildren.count-1; i >= 0; i--){
-            if ([intChildren[i] touchUp:location id:touchId] > 0) {
-                return NKTouchContainsFirstResponder;
-            }
-        }
-        
-    }
-    
-    if (hit >= NKTouchIsFirstResponder){
-        NSLog(@"touch up %@ %f, %f", self.name, location.x, location.y);
-    }
-    
-    return hit;
+//    NKTouchState hit = NKTouchNone;
+//    
+//    if (_userInteractionEnabled){
+//        
+//        if ([self containsPoint:location]) {
+//            hit = NKTouchIsFirstResponder;
+//        }
+//        
+//        for (int i = intChildren.count-1; i >= 0; i--){
+//            if ([intChildren[i] touchUp:location id:touchId] > 0) {
+//                return NKTouchContainsFirstResponder;
+//            }
+//        }
+//        
+//    }
+//    
+//    if (hit >= NKTouchIsFirstResponder){
+//        V2t p2 = [self inverseProjectedPoint:location];
+//        NSLog(@"touch up %@ %f, %f", self.name, p2.x, p2.y);
+//    }
+//    
+//    return hit;
+    return false;
 }
 
 

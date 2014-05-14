@@ -175,27 +175,9 @@
     return self;
 }
 
--(NKTouchState)touchDown:(P2t)location id:(int)touchId {
-    NKTouchState hit = [super touchMoved:location id:touchId];
-    
-    cachedPosition = self.position;
-    lastTouch = location;
-    return hit;
-    
-}
 
--(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
-    NKTouchState hit = [super touchMoved:location id:touchId];
-    if (hit == 2) {
-        if (location.y < lastTouch.y) {
-            self.position = P2Make(self.position.x, self.position.y - (lastTouch.y - location.y));
-            lastTouch = location;
-        }
-    }
-    
-    return hit;
-    
-}
+
+
 
 -(void)showLocked {
     if (![self childNodeWithName:@"lock"]) {
@@ -223,11 +205,29 @@
     }
 }
 
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
+-(NKTouchState)touchDown:(P2t)location id:(int)touchId {
+   // NKTouchState hit = [super touchMoved:location id:touchId];
     
-    NKTouchState hit = [super touchUp:location id:touchId];
-    if (hit == 2) {
-        
+    cachedPosition = self.position;
+    lastTouch = location;
+    //return hit;
+    
+    return NKTouchIsFirstResponder;
+}
+
+-(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
+
+        if (location.y < lastTouch.y) {
+            self.position = P2Make(self.position.x, self.position.y - (lastTouch.y - location.y));
+            lastTouch = location;
+        }
+    
+    return NKTouchIsFirstResponder;
+    
+}
+
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
+
         if (self.position.y < cachedPosition.y - (h*.125)) {
             [self toggleLocked];
             [self runAction:[NKAction moveTo:cachedPosition duration:FAST_ANIM_DUR]];
@@ -251,8 +251,8 @@
                 [(GameScene*)self.scene playSoundWithKey:@"badTouch"];
             }
         }
-    }
-    return hit;
+    
+    return NKTouchIsFirstResponder;
 }
 
 -(NKAction*)goBack {

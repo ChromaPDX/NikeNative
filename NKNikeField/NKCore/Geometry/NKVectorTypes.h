@@ -64,6 +64,14 @@ typedef struct {
 	GLushort	i3;
 } I3t; // INDEX 3
 
+union _uB4t
+{
+    struct {GLubyte r,g,b,a;};
+    GLubyte u[4];
+};
+
+typedef union _uB4t uB4t;
+
 typedef struct {
 	V3t	v1;
 	V3t	v2;

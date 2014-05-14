@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger, NKPrimitive) {
 
 - (void)drawSelf;
 
+-(void)draw;
 -(void) drawWithTexture:(NKTexture*)texture color:(C4t)color;
 -(void) drawWithColor:(C4t)color;
 

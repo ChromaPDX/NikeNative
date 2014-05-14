@@ -138,18 +138,22 @@
 
 //convert from screen to camera
 -(V3t)s2w:(P2t)ScreenXY {
-    
     V3t CameraXYZ;
-    CameraXYZ.x = 4.0f * (ScreenXY.x - 0) / self.scene.size.width - 1.0f;
-    CameraXYZ.y = 1.0f - 4.0f*(ScreenXY.y - 0) /self.scene.size.height;
-    //CameraXYZ.z = ScreenXYZ.z;
     
+    CameraXYZ.x = ((ScreenXY.x * 4.) / self.scene.size.width) - 1.;
+    CameraXYZ.y = 1. - ((ScreenXY.y * 4.) / self.scene.size.height);
+    CameraXYZ.z = self.position3d.z;
+    
+    //CameraXYZ.z = ScreenXYZ.z;
+    NSLog(@"noralized screen coords %f %f %f", CameraXYZ.x, CameraXYZ.y, CameraXYZ.z);
     //get inverse camera matrix
     M16t inverseCamera = M16InvertColumnMajor([self projectionMatrix], NULL);
     
     //convert camera to world
+    V3t p = V3MultiplyM16(inverseCamera, CameraXYZ);
     
-    return V3MultiplyM16(inverseCamera, CameraXYZ);
+    NSLog(@"camera coords %f %f %f", p.x, p.y, p.z);
+    return p;
 }
 
 -(P2t)screenToWorld:(P2t)p {

@@ -26,6 +26,7 @@
 		2934BDE2191ADCE700A33DBF /* NKFrameBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934BDE1191ADCE700A33DBF /* NKFrameBuffer.m */; };
 		2934BDE5191ADDE600A33DBF /* UIImage+GLBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934BDE4191ADDE600A33DBF /* UIImage+GLBuffer.m */; };
 		2934BDE8191B166300A33DBF /* perlin.c in Sources */ = {isa = PBXBuildFile; fileRef = 2934BDE6191B166300A33DBF /* perlin.c */; };
+		294D0F0619234F1100324814 /* NKAlertSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D0F0519234F1100324814 /* NKAlertSprite.m */; };
 		297E6C2519097F4F00369BDF /* blank_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 297E6C2419097F4F00369BDF /* blank_texture.png */; };
 		29BF47FE1911666500487EBD /* NKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FA1911666500487EBD /* NKView.m */; };
 		29BF47FF1911666500487EBD /* NKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FC1911666500487EBD /* NKViewController.m */; };
@@ -251,7 +252,6 @@
 		61D6E88C18FDB5B70017A389 /* Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E79418FDB5B70017A389 /* Manager.m */; };
 		61D6E88E18FDB5B70017A389 /* MenuPlayerProfileScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E79918FDB5B70017A389 /* MenuPlayerProfileScene.m */; };
 		61D6E89218FDB5B70017A389 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E7A318FDB5B70017A389 /* Player.m */; };
-		61D6E8A318FDB5B70017A389 /* AlertSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E7C418FDB5B70017A389 /* AlertSprite.m */; };
 		61D6E8A418FDB5B70017A389 /* BallSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E7C618FDB5B70017A389 /* BallSprite.m */; };
 		61D6E8A518FDB5B70017A389 /* BoardTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E7C818FDB5B70017A389 /* BoardTile.m */; };
 		61D6E8A618FDB5B70017A389 /* ButtonSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D6E7CA18FDB5B70017A389 /* ButtonSprite.m */; };
@@ -298,6 +298,8 @@
 		2934BDE4191ADDE600A33DBF /* UIImage+GLBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+GLBuffer.m"; sourceTree = SOURCE_ROOT; };
 		2934BDE6191B166300A33DBF /* perlin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = perlin.c; sourceTree = "<group>"; };
 		2934BDE7191B166300A33DBF /* perlin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = perlin.h; sourceTree = "<group>"; };
+		294D0F0419234F1100324814 /* NKAlertSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKAlertSprite.h; sourceTree = "<group>"; };
+		294D0F0519234F1100324814 /* NKAlertSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKAlertSprite.m; sourceTree = "<group>"; };
 		297E6C2419097F4F00369BDF /* blank_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank_texture.png; sourceTree = "<group>"; };
 		29855333191B16F700166585 /* NKMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NKMath.h; sourceTree = "<group>"; };
 		29BF47F91911666500487EBD /* NKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKView.h; sourceTree = "<group>"; };
@@ -612,8 +614,6 @@
 		61D6E79D18FDB5B70017A389 /* ModelHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelHeaders.h; sourceTree = "<group>"; };
 		61D6E7A218FDB5B70017A389 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		61D6E7A318FDB5B70017A389 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
-		61D6E7C318FDB5B70017A389 /* AlertSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertSprite.h; sourceTree = "<group>"; };
-		61D6E7C418FDB5B70017A389 /* AlertSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertSprite.m; sourceTree = "<group>"; };
 		61D6E7C518FDB5B70017A389 /* BallSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallSprite.h; sourceTree = "<group>"; };
 		61D6E7C618FDB5B70017A389 /* BallSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BallSprite.m; sourceTree = "<group>"; };
 		61D6E7C718FDB5B70017A389 /* BoardTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardTile.h; sourceTree = "<group>"; };
@@ -700,6 +700,8 @@
 		29BF48001911667900487EBD /* SceneGraph */ = {
 			isa = PBXGroup;
 			children = (
+				294D0F0419234F1100324814 /* NKAlertSprite.h */,
+				294D0F0519234F1100324814 /* NKAlertSprite.m */,
 				29BF48011911667900487EBD /* NKCamera.h */,
 				29BF48021911667900487EBD /* NKCamera.m */,
 				29BF48031911667900487EBD /* NKCoreTextNode.h */,
@@ -1434,8 +1436,6 @@
 		61D6E7C218FDB5B70017A389 /* FIELD SCENE */ = {
 			isa = PBXGroup;
 			children = (
-				61D6E7C318FDB5B70017A389 /* AlertSprite.h */,
-				61D6E7C418FDB5B70017A389 /* AlertSprite.m */,
 				61D6E7C518FDB5B70017A389 /* BallSprite.h */,
 				61D6E7C618FDB5B70017A389 /* BallSprite.m */,
 				61D6E7C718FDB5B70017A389 /* BoardTile.h */,
@@ -1735,6 +1735,7 @@
 				61D6E8AA18FDB5B70017A389 /* GameScene.m in Sources */,
 				29D89274190AA65E008FBD5F /* uncompr.c in Sources */,
 				29BF48231911667900487EBD /* NKNodeAnimationHandler.m in Sources */,
+				294D0F0619234F1100324814 /* NKAlertSprite.m in Sources */,
 				292BB0CF191431E400AFE938 /* NKShaderProgram.m in Sources */,
 				29D89272190AA65E008FBD5F /* inftrees.c in Sources */,
 				61A257DB18FDE998001B7F67 /* NKTextureManager.m in Sources */,
@@ -1797,7 +1798,6 @@
 				29BF47FE1911666500487EBD /* NKView.m in Sources */,
 				29D89271190AA65E008FBD5F /* inflate.c in Sources */,
 				29D89293190AC3B0008FBD5F /* GraphScreens.m in Sources */,
-				61D6E8A318FDB5B70017A389 /* AlertSprite.m in Sources */,
 				61D6E88618FDB5B70017A389 /* Card.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,15 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+@class NKTexture;
+
 @interface NKFrameBuffer : NSObject
 
 @property (nonatomic, readonly) CGSize size;
 @property (nonatomic, readonly) GLuint frameBuffer;
 @property (nonatomic, readonly) GLuint renderBuffer;
 @property (nonatomic, readonly) GLuint depthBuffer;
-@property (nonatomic, readonly) GLuint locRenderTexture;
+
 @property (nonatomic) GLint width;
 @property (nonatomic) GLint height;
+
+@property (nonatomic,strong) NKTexture *renderTexture;
 
 - (id)initWithContext:(EAGLContext *)context layer:(id<EAGLDrawable>)layer;
 -(instancetype)initWithWidth:(GLuint)width height:(GLuint)height;
@@ -27,6 +31,10 @@
 - (void)unbind;
 - (GLuint)bindTexture:(int)texLoc;
 - (UIImage *)imageAtRect:(CGRect)cropRect;
+
+
+- (void)colorAtPoint:(P2t)point buffer:(uB4t*)buf;
+
 - (void)pixelValuesInRect:(CGRect)cropRect buffer:(GLubyte *)pixelBuffer;
 
 @end

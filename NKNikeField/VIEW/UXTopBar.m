@@ -48,8 +48,6 @@
         [self addChild:fuelLabel];
         [self addChild:logo];
 
-        
-       
         //        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
 //        fuelLabel.fontSize = 36;
 //        
@@ -144,12 +142,16 @@
     // NSLog(@"** adding card %@ from %@", card.name, card.deck.name);
     
     PlayerSprite* ps = [[PlayerSprite alloc] initWithTexture:nil color:NKCLEAR size:cardSize];
+    
+    ps.userInteractionEnabled = true;
+    
     ps.model = p;
+    ps.delegate = self.delegate;
     
     [_playerSprites addObject:ps];
     
     [self addChild:ps];
-    [ps setPosition3d:V3Make(0,0,0)];
+    [ps setPosition3d:V3Make(0,0,1)];
     
     if (block) {
         block();
@@ -164,24 +166,24 @@
 }
 
 -(NKTouchState) touchUp:(P2t)location id:(int)touchId {
-    NKTouchState hit = [super touchUp:location id:touchId];
+    //NKTouchState hit = [super touchUp:location id:touchId];
     
-    for (PlayerSprite *ps in _playerSprites) {
-        if ([ps containsPoint:location]) {
-            if (!ps.model.used){
-                _delegate.selectedPlayer = ps.model;
-            }
-        }
-    }
+//    for (PlayerSprite *ps in _playerSprites) {
+//        if ([ps containsPoint:location]) {
+//            if (!ps.model.used){
+//                self.delegate.selectedPlayer = ps.model;
+//            }
+//        }
+//    }
     
     if ([fuelLabel containsPoint:location]) {
-        GameStatsViewController *stats = [[GameStatsViewController alloc]initWithGame:_delegate.game style:UITableViewStyleGrouped];
-        [_delegate.nkView.controller presentViewController:stats animated:YES completion:^{
+        GameStatsViewController *stats = [[GameStatsViewController alloc]initWithGame:self.delegate.game style:UITableViewStyleGrouped];
+        [self.delegate.nkView.controller presentViewController:stats animated:YES completion:^{
             
         }];
     }
     
-    return hit;
+    return false;
 }
 
 @end

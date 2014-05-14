@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Chroma. All rights reserved.
 //
 
-#import "AlertSprite.h"
+#import "NKAlertSprite.h"
 
-@implementation AlertSprite
+@implementation NKAlertSprite
 
 -(instancetype)initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(S2t)size    {
     

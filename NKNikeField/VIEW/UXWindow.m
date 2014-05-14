@@ -168,6 +168,12 @@
     [super end];
 }
 
+-(void)drawForHitDetection {
+    glDisable(GL_DEPTH_TEST);
+    [super drawForHitDetection];
+    glEnable(GL_DEPTH_TEST);
+}
+
 -(void)cardTouchEnded:(CardSprite*)card atPoint:(P2t)point {
     
     self.selectedCard = card.model;
@@ -238,7 +244,7 @@
 -(void)setSelectedCard:(Card *)selectedCard {
     
     if (selectedCard) {
-         [_managerHand shuffleAroundCard:[self spriteForCard:selectedCard]];
+         [_managerHand shuffleAroundCard:selectedCard];
     }
     
     //PlayerHand* ph =   [_managerHand objectForKey:selectedCard.deck.player];
@@ -270,6 +276,7 @@
     
     [hand runAction:[NKAction moveByX:0 y:-hand.size.height duration:FAST_ANIM_DUR ] completion:^{
         [hand removeFromParent];
+        _managerHand = nil;
         block();
     }];
         
@@ -279,51 +286,40 @@
 }
 
 -(void)refreshCardsForManager:(Manager *)m WithCompletionBlock:(void (^)())block {
-
-    if (m) {
+    
+    if (!_managerHand) {
         
-        if (!_managerHand) {
-
-            _managerHand = [[ManagerHand alloc] initWithManager:m delegate:self];
-            
-            [self addChild:_managerHand];
-            
- 
-            
-            NSLog(@"init manager hand %d", _managerHand.myCards.count);
-            
-        }
-        
+    _managerHand = [[ManagerHand alloc] initWithManager:m delegate:self];
+    
+    [self addChild:_managerHand];
+    
+    NSLog(@"init manager hand %d", _managerHand.myCards.count);
+    
+    }
+    
+    if (_selectedCard) {
+        [_managerHand shuffleAroundCard:_selectedCard];
+        block();
+    }
+    
+    else {
         [_managerHand sortCardsAnimated:true WithCompletionBlock:^{
             block();
         }];
-        
-        
     }
-    else {
-        [self removeCardsAnimated:true WithCompletionBlock:^{
-            _managerHand = nil;
-            block();
-        }];
-    }
-
-}
-
--(void)sortCardsForPlayer:(Player*)p animated:(BOOL)animated WithCompletionBlock:(void (^)())block{
- 
-    [_managerHand sortCards];
-    //[[_managerHands objectForKey:_selectedCard.deck.player] sortCards];
     
 }
+
 
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     
-    NKTouchState hit = [super touchUp:location id:touchId];
-    if (hit == 2) {
-        [_managerHand sortCards];
+    //NKTouchState hit = [super touchUp:location id:touchId];
+    //if (hit == 2) {
+        [_delegate showCardPath:nil];
+        [_managerHand sortCardsAnimated:true WithCompletionBlock:^{}];
         //[[_managerHands objectForKey:_selectedCard.deck.player] sortCards];
-    }
-    return hit;
+    //}
+    return 0;
 }
 
 @end
@@ -380,7 +376,6 @@
 //            [self addCard:c];
 //        }
         
-        [self sortCards];
         
         //[_uxWindow sortMyCards:YES WithCompletionBlock:nil];
         
@@ -432,13 +427,19 @@
 
     CardSprite *cardToRemove = [_cardSprites objectForKey:card];
     [cardToRemove removeFromParent];
+    [_myCards removeObject:card];
     [_cardSprites removeObjectForKey:card];
 
 }
 
-
--(void)shuffleAroundCard:(CardSprite*)card {
+-(void)shuffleAroundCard:(Card*)card {
     
+    CardSprite *cs = [_cardSprites objectForKey:card];
+    [self shuffleAroundCardSprite:cs];
+}
+
+-(void)shuffleAroundCardSprite:(CardSprite *)card {
+
     float offSet = cardSize.width * -2.2;
     float nscale = 1.;
     
@@ -477,11 +478,6 @@
     
 }
 
--(void)sortCards{
-    
-    [self sortCardsAnimated:true WithCompletionBlock:^{}];
-    
-}
 
 -(void)sortCardsAnimated:(BOOL)animated WithCompletionBlock:(void (^)())block{
     
@@ -504,7 +500,7 @@
         
         [cs setAlpha:1.];
         
-        //cs.origin = P2Make((w*.3) - ((cardSize.width*.15 + (w*.125)* (2./_myCards.count) ) * i),0);
+        //cs.origin = P2Make(((cardSize.width*1.1*((int)(i-(2-cardSize))) ) * i),0);
         cs.origin = P2Make(cardSize.width * 1.1 * (i-2), 0);
         
         if (animated) {
@@ -522,6 +518,7 @@
         }
         
         else {
+            [cs setScale:1.];
             [cs setPosition3d:V3Make(cs.origin.x, cs.origin.y,2)];
         }
         

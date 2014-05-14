@@ -31,7 +31,7 @@
         self.cullFace = -1;
 
         _camera = [[NKCamera alloc]initWithScene:self];
-
+        
         self.scene = self;
         
         if (NK_GL_VERSION == 2) {
@@ -47,7 +47,14 @@
             axes = [NKVertexBuffer axes];
             self.shader = [NKShaderProgram defaultShader];
             [self.shader load];
+            
+            _hitDetectBuffer = [[NKFrameBuffer alloc] initWithWidth:self.size.width height:self.size.height];
+            
+            _hitDetectShader = [[NKShaderProgram alloc]initWithVertexSource:nkHitDetectVertexShader fragmentSource:nkHitDetectFragmentShader];
+            [_hitDetectShader load];
         }
+        
+        
         
     }
     
@@ -122,10 +129,32 @@
     [_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
 }
 
+-(void)drawForHitDetection {
+    
+    [_hitDetectBuffer bind];
+    
+    self.blendMode = NKBlendModeNone;
+    glDisable(GL_BLEND);
+    
+    _activeShader = _hitDetectShader;
+    [_activeShader use];
+    
+    glViewport(0, 0, self.size.width, self.size.height);
+    
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    [super drawForHitDetection];
+    
+    [_hitDetectBuffer unbind];
+    
+}
+
 -(void)draw {
 
+
     if (NK_GL_VERSION == 2) {
-        
+
         [_activeShader use];
         
 //        [_activeShader setMatrix4:M16IdentityMake() forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
@@ -145,8 +174,18 @@
 
        // [self drawAxes];
         // 2
+       
+#ifdef SHOW_HIT_DETECTION
+        self.blendMode = NKBlendModeNone;
+        glDisable(GL_BLEND);
         
+        _activeShader = _hitDetectShader;
+        [_activeShader use];
+        
+         [super drawForHitDetection];
+#else
         [super draw];
+#endif
 
     }
     
@@ -275,35 +314,165 @@
 //    
 //    
 //}
+
+-(void)alertDidSelectOption:(int)option {
+    if (option == 0) {
+        [self alertDidCancel];
+    }
+    // OVERRIDE IN SUBCLASS FOR OTHER OPTIONS
+}
+
+-(void)alertDidCancel {
+    [self dismissAlertAnimated:true];
+}
+
+-(void)presentAlert:(NKAlertSprite*)alert animated:(BOOL)animated {
+    
+    _alertSprite = alert;
+    
+    if (animated) {
+        [_alertSprite setPosition:P2Make(0, -self.size.height)];
+    }
+    else {
+        [_alertSprite runAction:[NKAction moveTo:P2Make(0, 0) duration:.3]];
+        [self addChild:alert];
+    }
+}
+
+-(void)dismissAlertAnimated:(BOOL)animated{
+    if (animated) {
+        [_alertSprite runAction:[NKAction moveTo:P2Make(0, -self.size.height) duration:.3] completion:^{
+            [self removeChild:_alertSprite];
+            _alertSprite = nil;
+        }];
+    }
+    else {
+        [self removeChild:_alertSprite];
+        _alertSprite = nil;
+    }
+}
+
+-(void)getUidColorForNode:(NKNode*)node {
+    
+    float min = (10./255.);
+    float max = (254./255.);
+    
+    if (!hitColorMap) {
+        hitColorMap = [[NSMutableDictionary alloc]init];
+        uidR = min;
+        uidG = min;
+        uidB = min;
+    }
+    
+    node.uidColor = [NKColor colorWithRed:uidR green:uidG blue:uidB alpha:1.];
+    [hitColorMap setObject:node forKey:node.uidColor];
+    
+    float inc = (1./255.);
+    
+    if (uidB < max) {
+        uidB+=inc;
+    }
+    else {
+        if (uidG < max) {
+            uidG+=inc;
+            uidB = min+inc;
+        }
+        else {
+            if (uidR < max) {
+                uidR += inc;
+                uidG = min+inc;;
+                uidB = min+inc;;
+            }
+            else {
+                NSLog(@"**ERROR** out of uid colors");
+            }
+        }
+    }
+    
+}
+
+-(NKNode*)hitNodeAtPoint:(P2t)location {
+    P2t normalized = P2Make((int)location.x*2., self.size.height - (int)location.y *2.);
+    
+    uB4t hitCol;
+    
+    [_hitDetectBuffer colorAtPoint:normalized buffer:&hitCol];
+    
+    //NSLog(@"hit color: %d, %d, %d", hitCol.r, hitCol.g, hitCol.b);
+    
+    NKColor *col = [NKColor colorWithRed:(hitCol.r / 255.) green:(hitCol.g / 255.) blue:(hitCol.b / 255.) alpha:1.];
+    
+    NKNode *hit = [hitColorMap objectForKey:col];
+    
+    return hit;
+}
+
+-(NKTouchState)touchDown:(P2t)location id:(int)touchId {
+
+    //P2t p = [_camera screenToWorld:location];
+    
+    if (_alertSprite) {
+        return [_alertSprite touchDown:location id:touchId];
+    }
+    else {
+        
+        NKNode *hit = [self hitNodeAtPoint:location];
+        
+        if (hit) {
+            NSLog(@"touch down node: %@", hit);
+            [hit touchDown:location id:touchId];
+        }
+        
+        return NKTouchIsFirstResponder;
+        //return [super touchDown:p id:touchId];
+    }
+}
+
+//
+-(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
+    //P2t p = [_camera screenToWorld:location];
+    if (_alertSprite) {
+        return [_alertSprite touchMoved:location id:touchId];
+    }
+    else {
+       // return [super touchMoved:p id:touchId];
+        NKNode *hit = [self hitNodeAtPoint:location];
+        
+        if (hit) {
+            NSLog(@"touch moved node: %@", hit);
+            [hit touchMoved:location id:touchId];
+        }
+        
+        return NKTouchIsFirstResponder;
+        
+    }
+}
+//
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
+
+   NKNode *hit = [self hitNodeAtPoint:location];
+    
+    if (hit) {
+        NSLog(@"touch up node: %@", hit);
+        [hit touchUp:location id:touchId];
+    }
+//    P2t p = [_camera screenToWorld:location];
+//    
+//    if (_alertSprite) {
+//        return [_alertSprite touchUp:p id:touchId];
+//    }
+//    else {
+//        return [super touchUp:p id:touchId];
+//    }
+    
+    return false;
+}
+//
 -(void)dealloc {
     if (matrixStack) {
         free(matrixStack);
     }
     
 }
-
--(NKTouchState)touchDown:(P2t)location id:(int)touchId {
-
-    P2t p = [_camera screenToWorld:location];
-    
-    return [super touchDown:p id:touchId];
-}
-//
--(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
-    P2t p = [_camera screenToWorld:location];
-    
-    return [super touchMoved:p id:touchId];
-}
-//
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-
-    P2t p = [_camera screenToWorld:location];
-    
-    NSLog(@"touch : %f %f", p.x, p.y);
-    
-    return [super touchUp:p id:touchId];
-}
-//
-
 
 @end

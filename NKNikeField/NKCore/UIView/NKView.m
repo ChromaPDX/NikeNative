@@ -91,6 +91,8 @@ GLfloat gCubeVertexData[216] =
         CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
         
         float contentScale = 1.0f;
+        drawHitEveryXFrames = 10;
+        
         if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)]) {
             contentScale = [[UIScreen mainScreen] scale];
         }
@@ -343,6 +345,15 @@ static int rotate = 0;
 	// Make sure that you are drawing to the current context
 	[EAGLContext setCurrentContext:context];
     
+    framesSinceLastHit++;
+    if (framesSinceLastHit > drawHitEveryXFrames) {
+        if (_scene) {
+            [_scene drawForHitDetection];
+        }
+        framesSinceLastHit = 0;
+    }
+
+    
     [frameBuffer bind];
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -351,7 +362,9 @@ static int rotate = 0;
     if (_scene) {
        // NSLog(@"frame time: %f1.0",dt);
         [_scene updateWithTimeSinceLast:dt];
+        
         [_scene draw];
+        //[_scene drawForHitDetection];
     }
     
     else {
@@ -470,18 +483,23 @@ static int rotate = 0;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+
+    
     for (UITouch *t in touches) {
         [_scene touchDown:P2MakeCG([t locationInView:self]) id:0];
     }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+
     for (UITouch *t in touches) {
         [_scene touchMoved:P2MakeCG([t locationInView:self]) id:0];
     }
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+
+    
     for (UITouch *t in touches) {
         [_scene touchUp:P2MakeCG([t locationInView:self]) id:0];
     }

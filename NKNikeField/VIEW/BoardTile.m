@@ -24,11 +24,12 @@
 }
 
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-    NKTouchState hit = [super touchUp:location id:touchId];
-    if (hit == 2) {
+//    NKTouchState hit = [super touchUp:location id:touchId];
+//    if (hit == 2) {
         _delegate.selectedBoardTile = self;
-    }
-    return hit;
+//    }
+//    return hit;
+    return false;
 }
 
 -(NSString*)stringForBorderTex:(BorderMask)border {

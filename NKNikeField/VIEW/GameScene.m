@@ -373,9 +373,11 @@ float PARTICLE_SCALE;
             
             _selectedPlayer = selectedPlayer;
             
-            if (_selectedCard) {
-                [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer]];
-            }
+            [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{
+                if (_selectedCard) {
+                    [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer]];
+                }
+            }];
             
         }
         else {
@@ -447,6 +449,7 @@ float PARTICLE_SCALE;
     }
     
     _selectedBoardTile = selectedBoardTile;
+    
 }
 
 -(void)AISelectedLocation:(BoardLocation*)selectedLocation {
@@ -471,12 +474,21 @@ float PARTICLE_SCALE;
     PlayerSprite* player = [playerSprites objectForKey:event.playerPerforming];
     
     if (event.type == kEventStartTurn){
+        
+        if (_selectedPlayer) {
+            [_gameBoardNode removeAllActions];
+            PlayerSprite* p2 = [playerSprites objectForKey:_selectedPlayer];
+            [_gameBoardNode runAction:[NKAction moveTo:P2Make(0, -p2.position.y + h/3.) duration:1.]];
+        }
         P2t p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:[_game allPlayerLocations]]];
         if ((-p.y + h/4.) > _gameBoardNode.position.y+100 || (-p.y + h/4.) < _gameBoardNode.position.y-100) { // filter out subtle moves
             [_gameBoardNode removeAllActions];
             [_gameBoardNode runAction:[NKAction moveTo:P2Make(0, -p.y + h/4.) duration:1.]];
         }
+        
         block();
+        
+
     }
     
     else if (event.type == kEventSetBallLocation) {
@@ -794,42 +806,12 @@ float PARTICLE_SCALE;
     
     else if (event.type == kEventStartTurnDraw) {
         
-        
-        //        if (event.playerPerforming) {
-        //
-        //            if (_game.myTurn) {
-        //
-        //
-        //                if ([event.manager isEqual:_game.me]) {
-        //
-        //                    if (_game.thisTurnActions.count < 2) { // ONLY TURN START
-        //                        NSLog(@"GameScene.m : animate TURN START : draw");
-        //
-        //                        [_uxWindow addStartTurnCard:event.playerPerforming withCompletionBlock:^{
-        //                            block();
-        //                        }];
-        //
-        //                        return;
-        //
-        //                    }
-        //                }
-        //
-        //            }
-        //
-        //
-        //            [_uxWindow addCard:event.playerPerforming animated:YES withCompletionBlock:^{
-        //                block();
-        //            }];
-        //
-        //        }
-        //
-        //        else {
-        //            block();
-        //        }
-        block();
-        
+        [_uxWindow refreshCardsForManager:event.manager WithCompletionBlock:^{
+            block();
+        }];
         
     }
+    
     else if (event.type == kEventDraw) {
         
         block();
@@ -884,7 +866,7 @@ float PARTICLE_SCALE;
         
     }
     else if (event.type == kEventEndTurn){
-        [_uxWindow refreshCardsForManager:nil WithCompletionBlock:^{
+        [_uxWindow removeCardsAnimated:true WithCompletionBlock:^{
             block();
         }];
     }
@@ -910,14 +892,6 @@ float PARTICLE_SCALE;
     return enchant;
     
 };
-
--(void)finishSequenceWithCompletionBlock:(void (^)())block {
-    //    NSLog(@"GameScene.m : finished actions, return camera to . . .");
-    //    [self cameraShouldFollowSprite:Nil withCompletionBlock:^{
-    //        block();
-    //    }];
-    block();
-}
 
 //-(void)animatePosessionFor:(Card*)card withCompletionBlock:(void (^)())block {
 //
@@ -992,24 +966,27 @@ float PARTICLE_SCALE;
 
 
 -(void)refreshUXWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block {
-
-    if (p && ![p.manager isEqual:_selectedPlayer.manager]) {
-        
-        NSLog(@"refresh UX window");
-        
-        _selectedPlayer = p;
-        _uxWindow.selectedPlayer = p;
+    
+    
+    NSLog(@"refresh UX window");
+    
+    _uxWindow.selectedPlayer = p;
+    
+    if (p) {
         
         if (!_uxWindow.alpha) {
             [_uxWindow runAction:[NKAction fadeAlphaTo:1. duration:.5]];
             [_uxTopBar runAction:[NKAction fadeAlphaTo:1. duration:.5]];
         }
         
+        
         [_uxWindow refreshCardsForManager:p.manager WithCompletionBlock:^{
             block();
         }];
         
+        
         [_uxTopBar setPlayer:p WithCompletionBlock:^{}];
+        
     }
     
 }

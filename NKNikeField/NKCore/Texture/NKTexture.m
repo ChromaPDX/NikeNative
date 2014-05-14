@@ -149,6 +149,43 @@
     
 }
 
+-(instancetype)initWithSize:(S2t)size {
+    
+    self = [super init];
+    
+    if (self) {
+        
+        int w = size.width;
+        int h = size.height;
+        
+        glActiveTexture(GL_TEXTURE0);
+        glGenTextures(1, (GLuint *)&texture[0]);
+        glBindTexture(GL_TEXTURE_2D, texture[0]);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // This is necessary for non-power-of-two textures
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        // glActiveTexture(GL_TEXTURE1);
+        // glGenFramebuffers(1, &defaultFramebuffer);
+        // glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
+        
+        glBindTexture(GL_TEXTURE_2D, texture[0]);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+        //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[0], 0);
+        
+        //        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        //
+        //        NSAssert(status == GL_FRAMEBUFFER_COMPLETE, @"Incomplete filter FBO: %d", status);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    
+    return self;
+    
+}
+
 -(instancetype) initWithImageNamed:(NSString*)name {
     self = [super init];
     
@@ -172,6 +209,7 @@
     
     return self;
 }
+
 
 - (id)initWithPVRFile:(NSString *)inFilename width:(GLuint)inWidth height:(GLuint)inHeight;
 {

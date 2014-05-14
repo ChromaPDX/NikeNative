@@ -178,6 +178,36 @@ static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
  
  );
 
+static NSString *const nkHitDetectVertexShader = SHADER_STRING
+(
+ attribute vec4 a_position;
+ 
+ uniform highp mat4 u_modelViewProjectionMatrix;
+ uniform highp mat3 u_normalMatrix;
+ uniform lowp int u_useUniformColor;
+ uniform lowp int u_numTextures;
+ uniform vec4 u_color;
+ 
+ varying lowp vec4 v_color;
+ 
+ void main()
+{
+    v_color = u_color;
+    gl_Position = u_modelViewProjectionMatrix * a_position;
+}
+ 
+ );
+
+static NSString *const nkHitDetectFragmentShader = SHADER_STRING
+(
+ varying lowp vec4 v_color;
+ 
+ void main()
+{
+    gl_FragColor = v_color;
+}
+ );
+
 static NSString *const nkDefaultTextureFragmentShader = SHADER_STRING
 (
  uniform sampler2D tex0;

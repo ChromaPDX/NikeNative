@@ -335,8 +335,11 @@
 - (void)setInt:(const GLint)i forUniform:(NSString *)uniformName
 {
     NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    glUniform1i([uniLoc intValue], i);
+    //assert(uniLoc);
+    if ([uniLoc intValue]) {
+        glUniform1i([uniLoc intValue], i);
+    }
+   
 }
 
 - (void)setMatrix3:(const M9t)mat forUniform:(NSString *)uniformName

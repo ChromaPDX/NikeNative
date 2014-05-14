@@ -101,6 +101,7 @@ typedef void (^CompletionBlock)(void);
 @property (nonatomic, weak) NKNode *parent;
 @property (nonatomic, strong) NSArray *children;
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic,strong) NKColor *uidColor;
 
 #pragma mark - POSITION PROPERTIES
 
@@ -171,6 +172,8 @@ typedef void (^CompletionBlock)(void);
 -(void)begin;
 -(void)customDraw;
 -(void)end;
+
+-(void)drawForHitDetection;
 
 -(bool)shouldCull;
 

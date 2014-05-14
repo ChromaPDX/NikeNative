@@ -100,6 +100,18 @@
     return col;
 }
 
+-(void)customDrawForHitDetection {
+    [self.scene pushScale:self.size3d];
+    
+    C4t color;
+    [self.uidColor getRed:&color.r green:&color.g blue:&color.b alpha:&color.a];
+    [self.scene.activeShader setVec4:color forUniform:UNIFORM_COLOR];
+    
+    [_mesh draw];
+    
+    [self.scene popMatrix];
+}
+
 -(void)customDraw {
     
     if (NK_GL_VERSION == 2) {

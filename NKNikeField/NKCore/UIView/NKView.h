@@ -7,6 +7,7 @@
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 
+//#define SHOW_HIT_DETECTION
 #define NK_GL_VERSION 2
 
 @class NKViewController;
@@ -33,6 +34,10 @@
     
 	NSTimer *animationTimer;
     NSTimeInterval lastTime;
+    
+    int drawHitEveryXFrames;
+    int framesSinceLastHit;
+
 	BOOL controllerSetup;
     
     

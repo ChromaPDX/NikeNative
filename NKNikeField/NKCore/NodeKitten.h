@@ -41,6 +41,7 @@
 // SPRITE NODE SUBS
 #import "NKLabelNode.h"
 #import "NKScrollNode.h"
+#import "NKAlertSprite.h"
 
 // SCOLL NODE SUBS
 #import "NKPickerNode.h"
