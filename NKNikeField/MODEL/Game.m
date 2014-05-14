@@ -1569,11 +1569,12 @@
     NSArray *playersCloserToGoal;
     NSMutableArray* pathToGoalUnverified;
     Player *p = _selectedPlayer;
-    
+    /*
     if(c.category == CardCategorySpecial){
-        NSArray *setSpecial = [c selectionSetForPlayer:<#(Player *)#>]
+        NSArray *setSpecial = [c selectionSetForPlayer:<#(Player *)#>];
         return;
     }
+    */
     
     // NSLog(@"in AIChooseLocationForCard, aiActionType = %d", c.aiActionType);
     switch (c.aiActionType){
