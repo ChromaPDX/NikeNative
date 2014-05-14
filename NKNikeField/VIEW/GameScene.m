@@ -326,7 +326,7 @@ float PARTICLE_SCALE;
             [tile.location setBorderShapeInContext:path];
             [tile setTextureForBorder:tile.location.borderShape];
             [tile setUserInteractionEnabled:true];
-            [tile runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
+            [tile runAction:[NKAction fadeAlphaTo:.5 duration:FAST_ANIM_DUR]];
         }
         
         p  = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:path]];
@@ -367,15 +367,15 @@ float PARTICLE_SCALE;
         
         if ([_game canUsePlayer:selectedPlayer]) {
             
-            if (_selectedCard) {
-                [self setSelectedCard:nil];
-            }
-            
             [self playSoundWithKey:@"playerTap"];
             
             [self showPlayerSelection:selectedPlayer];
             
             _selectedPlayer = selectedPlayer;
+            
+            if (_selectedCard) {
+                [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer]];
+            }
             
         }
         else {
@@ -993,7 +993,7 @@ float PARTICLE_SCALE;
 
 -(void)refreshUXWindowForPlayer:(Player*)p withCompletionBlock:(void (^)())block {
 
-    if (p) {
+    if (p && ![p.manager isEqual:_selectedPlayer.manager]) {
         
         NSLog(@"refresh UX window");
         
