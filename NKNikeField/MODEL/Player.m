@@ -327,7 +327,7 @@
 }
 
 -(NSArray*)pathToOpenFieldClosestToLocationInPassRange:(BoardLocation *)location{
-    Card *moveCard = self.manager.moveDeck.inHand[0];
+    Card *moveCard = [self.manager cardInHandOfCategory:CardCategoryMove];
     if(!moveCard) return NULL;
     
     NSArray *moveSet = [moveCard validatedSelectionSetForPlayer:self];
@@ -421,7 +421,7 @@
 
 
 -(NSArray*)pathToOpenFieldClosestToLocation:(BoardLocation *)location{
-    Card *moveCard = self.manager.moveDeck.inHand[0];
+    Card *moveCard = [self.manager cardInHandOfCategory:CardCategoryMove];
     if(!moveCard) return NULL;
     
     NSArray *moveSet = [moveCard validatedSelectionSetForPlayer:self];
@@ -490,17 +490,11 @@
 }
 
 -(BOOL)isInShootingRange{
-    Card *kickCard;
-    if(self.manager.kickDeck.inHand && [self.manager.kickDeck.inHand count]){
-        kickCard = self.manager.kickDeck.inHand[0];
-        NSArray *kickSelect = [kickCard validatedSelectionSetForPlayer:self];
-        if([kickSelect containsObject:self.manager.goal]){
-            return TRUE;
-        }
-        else{
-            return FALSE;
-        }
-        
+    Card *kickCard = [self.manager cardInHandOfCategory:CardCategoryKick];
+    if(!kickCard) return FALSE;
+    NSArray *kickSelect = [kickCard validatedSelectionSetForPlayer:self];
+    if([kickSelect containsObject:self.manager.goal]){
+        return TRUE;
     }
     else{
         return FALSE;
@@ -510,8 +504,9 @@
 -(NSArray*)playersInPassRange{
     NSMutableArray* retPlayers = [NSMutableArray array];
     NSArray* players = [self.manager playersClosestToBall];
-    Card *passCard = self.manager.kickDeck.inHand[0];
+    Card *passCard = [self.manager cardInHandOfCategory:CardCategoryKick];
     NSArray *selSet = [passCard validatedSelectionSetForPlayer:self];
+    if(!selSet)return retPlayers;
     for(Player *p in players){
         if([selSet containsObject:p.location]){
             [retPlayers addObject:p];
@@ -563,7 +558,6 @@
 
 -(BOOL)canMoveToChallenge{
     NSArray* pathToChallenge = [self pathToClosestAdjacentBoardLocation:_ball.location];
-    Card* moveCard = self.manager.moveDeck.inHand[0];
     if(!pathToChallenge){
         return FALSE;
     }
