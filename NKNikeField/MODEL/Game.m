@@ -1727,7 +1727,7 @@
         case SPECIAL_CARD:
             pathToBall = [[c selectionSetForPlayer:p] mutableCopy];
             if(pathToBall && [pathToBall count]){
-                [_gameScene AISelectedLocation:pathToBall[0]];
+                [_gameScene AISelectedLocation:pathToBall[arc4random()%[pathToBall count]]];
             }
             break;
     }
