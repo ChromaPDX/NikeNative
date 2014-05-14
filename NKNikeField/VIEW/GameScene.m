@@ -373,9 +373,11 @@ float PARTICLE_SCALE;
             
             _selectedPlayer = selectedPlayer;
             
-            if (_selectedCard) {
-                [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer]];
-            }
+            [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{
+                if (_selectedCard) {
+                    [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer]];
+                }
+            }];
             
         }
         else {
@@ -473,6 +475,11 @@ float PARTICLE_SCALE;
     
     if (event.type == kEventStartTurn){
         
+        if (_selectedPlayer) {
+            [_gameBoardNode removeAllActions];
+            PlayerSprite* p2 = [playerSprites objectForKey:_selectedPlayer];
+            [_gameBoardNode runAction:[NKAction moveTo:P2Make(0, -p2.position.y + h/3.) duration:1.]];
+        }
         P2t p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:[_game allPlayerLocations]]];
         if ((-p.y + h/4.) > _gameBoardNode.position.y+100 || (-p.y + h/4.) < _gameBoardNode.position.y-100) { // filter out subtle moves
             [_gameBoardNode removeAllActions];
@@ -885,14 +892,6 @@ float PARTICLE_SCALE;
     return enchant;
     
 };
-
--(void)finishSequenceWithCompletionBlock:(void (^)())block {
-    //    NSLog(@"GameScene.m : finished actions, return camera to . . .");
-    //    [self cameraShouldFollowSprite:Nil withCompletionBlock:^{
-    //        block();
-    //    }];
-    block();
-}
 
 //-(void)animatePosessionFor:(Card*)card withCompletionBlock:(void (^)())block {
 //

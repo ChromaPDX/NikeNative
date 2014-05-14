@@ -84,7 +84,7 @@
         
         [_scene getUidColorForNode:self];
         
-        NSLog(@"hit color: %@", self.uidColor);
+        //NSLog(@"hit color: %@", self.uidColor);
         return _parent.scene;
     }
     

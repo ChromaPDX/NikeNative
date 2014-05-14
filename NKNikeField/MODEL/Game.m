@@ -734,7 +734,7 @@
                     sequence.completionBlock();
                 }
                 
-                [_gameScene finishSequenceWithCompletionBlock:^{
+       
                     
                     _animating = NO;
                     
@@ -788,7 +788,7 @@
                     
                     
                     
-                }];
+         
             }
             
             else {
@@ -848,9 +848,9 @@
             
             if (animate) {
                 
-                [_gameScene finishSequenceWithCompletionBlock:^{
-                    [self enumerateTurnHeapAnimate:animate];
-                }];
+    
+                [self enumerateTurnHeapAnimate:animate];
+ 
                 
             }
             

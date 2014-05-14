@@ -310,19 +310,13 @@
     
 }
 
--(void)sortCardsForPlayer:(Player*)p animated:(BOOL)animated WithCompletionBlock:(void (^)())block{
- 
-    [_managerHand sortCards];
-    //[[_managerHands objectForKey:_selectedCard.deck.player] sortCards];
-    
-}
 
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     
     //NKTouchState hit = [super touchUp:location id:touchId];
     //if (hit == 2) {
         [_delegate showCardPath:nil];
-        [_managerHand sortCards];
+        [_managerHand sortCardsAnimated:true WithCompletionBlock:^{}];
         //[[_managerHands objectForKey:_selectedCard.deck.player] sortCards];
     //}
     return 0;
@@ -382,7 +376,6 @@
 //            [self addCard:c];
 //        }
         
-        [self sortCards];
         
         //[_uxWindow sortMyCards:YES WithCompletionBlock:nil];
         
@@ -434,6 +427,7 @@
 
     CardSprite *cardToRemove = [_cardSprites objectForKey:card];
     [cardToRemove removeFromParent];
+    [_myCards removeObject:card];
     [_cardSprites removeObjectForKey:card];
 
 }
@@ -484,11 +478,6 @@
     
 }
 
--(void)sortCards{
-    
-    [self sortCardsAnimated:true WithCompletionBlock:^{}];
-    
-}
 
 -(void)sortCardsAnimated:(BOOL)animated WithCompletionBlock:(void (^)())block{
     
@@ -511,7 +500,7 @@
         
         [cs setAlpha:1.];
         
-        //cs.origin = P2Make((w*.3) - ((cardSize.width*.15 + (w*.125)* (2./_myCards.count) ) * i),0);
+        //cs.origin = P2Make(((cardSize.width*1.1*((int)(i-(2-cardSize))) ) * i),0);
         cs.origin = P2Make(cardSize.width * 1.1 * (i-2), 0);
         
         if (animated) {
@@ -529,6 +518,7 @@
         }
         
         else {
+            [cs setScale:1.];
             [cs setPosition3d:V3Make(cs.origin.x, cs.origin.y,2)];
         }
         

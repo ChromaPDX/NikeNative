@@ -27,7 +27,6 @@
 -(instancetype)initWithManager:(Manager*)m delegate:(UXWindow*)delegate;
 -(void)addCard:(Card*)card;
 -(void)removeCard:(Card*)card;
--(void)sortCards;
 -(void)sortCardsAnimated:(BOOL)animated WithCompletionBlock:(void (^)())block;
 
 -(void)shuffleAroundCard:(Card*)card;

@@ -117,7 +117,6 @@
 -(void)AISelectedLocation:(BoardLocation*)selectedLocation;
 
 // ANIMATION
--(void)finishSequenceWithCompletionBlock:(void (^)())block;
 -(void)animateEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
 -(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block;
 -(void)rollEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
