@@ -329,13 +329,13 @@
 -(void)presentAlert:(NKAlertSprite*)alert animated:(BOOL)animated {
     
     _alertSprite = alert;
+    alert.delegate = self;
+    [self addChild:alert];
     
     if (animated) {
+      
         [_alertSprite setPosition:P2Make(0, -self.size.height)];
-    }
-    else {
         [_alertSprite runAction:[NKAction moveTo:P2Make(0, 0) duration:.3]];
-        [self addChild:alert];
     }
 }
 
@@ -437,6 +437,10 @@
 //
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
 
+    if (_alertSprite) {
+        return [_alertSprite touchUp:location id:touchId];
+    }
+    
    NKNode *hit = [self hitNodeAtPoint:location];
     
     if (hit) {

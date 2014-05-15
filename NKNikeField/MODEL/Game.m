@@ -1295,7 +1295,8 @@
         
         else if (event.type == kEventNewDeal){  //  NEWDEAL
             //[event.playerPerforming.deck shuffleWithSeed:event.seed fromDeck:event.playerPerforming.deck.allCards];
-            [event.playerReceiving.effects setObject:@1 forKey:Card_NewDeal];
+            [event.playerPerforming.effects setObject:@1 forKey:Card_NewDeal];
+            //[event.playerPerforming.manager shuffleWithSeed:event.seed fromDeck:event.playerPerforming.deck.allCards];
         }
         
         else if (event.type == kEventPredictiveAnalysis){  //  PREDICTIVE ANALASYS
