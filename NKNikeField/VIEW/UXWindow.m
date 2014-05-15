@@ -407,7 +407,7 @@
     
     [endTurnButton setPosition3d:V3Make(w,0,0)];
     
-    NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Helvetica"];
+    NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
     
     text.fontSize = 16;
     text.fontColor = V2YELLOW;

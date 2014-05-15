@@ -45,70 +45,6 @@ typedef enum RTMessageType {
     RTMessageMoveCardTouch
 } RTMessageType;
 
-
-//@protocol GameSceneProtocol <NSObject>
-//
-//// SETUP BOARD
-//
-//-(void)cleanupGameBoard;
-//-(void)setRotationForManager:(Manager*)m;
-//-(void)setupGameBoard;
-//-(void)incrementGameBoardPosition:(NSInteger)xOffset;
-//-(void)refreshScoreBoard;
-//-(void)moveBallToLocation:(BoardLocation*)location;
-//
-//-(float)rotationForManager:(Manager*)m;
-//
-//// GAME CENTER
-//
-//-(void)setMyTurn:(BOOL)myTurn;
-//-(void)setWaiting:(BOOL)waiting;
-//-(void)rtIsActive:(BOOL)active;
-//-(void)receiveRTPacket;
-//
-//-(void)addNetworkUIForEvent:(GameEvent*)event;
-//-(void)cleanUpUIForSequence:(GameSequence*)sequence;
-//
-//-(void)opponentBeganCardTouch:(Card*)card atPoint:(P2t)point;
-//-(void)opponentMovedCardTouch:(Card*)card atPoint:(P2t)point;
-//
-//// CARDS
-//
-//-(void)setSelectedCard:(Card*)card;
-//-(void)setSelectedPlayer:(Card*)player;
-//
-//-(void)showCardPath:(NSArray*)path;
-//
-//-(void)sortHandForManager:(Manager *)manager animated:(BOOL)animated;
-//
-//-(void)addCardToBoardScene:(Card *)card;
-//-(void)addCardToBoardScene:(Card *)card animated:(BOOL)animated withCompletionBlock:(void (^)())block;
-//-(void)removePlayerFromBoard:(PlayerSprite *)person animated:(BOOL)animated withCompletionBlock:(void (^)())block;
-//
-//-(void)addCardToHand:(Card *)card;
-//-(void)removeCardFromHand:(Card *)card;
-//
-//-(void)applyBlurWithCompletionBlock:(void (^)())block;
-//-(void)removeBlurWithCompletionBlock:(void (^)())block;
-//
-//// AI SELECTION
-//-(void)AISelectedPlayer:(Player *)selectedPlayer;
-//-(void)AISelectedCard:(Card *)selectedCard;
-//-(void)AISelectedLocation:(BoardLocation*)selectedLocation;
-//
-//// ANIMATION
-//-(void)finishSequenceWithCompletionBlock:(void (^)())block;
-//-(void)animateEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
-//-(void)animateBigText:(NSString*)theText withCompletionBlock:(void (^)())block;
-//-(void)rollEvent:(GameEvent*)event withCompletionBlock:(void (^)())block;
-//-(void)refreshSequencePoints;
-//-(void)presentTrophyWithCompletionBlock:(void (^)())block;
-//-(void)fadeOutHUD;
-//
-//
-//
-//@end
-
 @protocol GameCenterProtocol <NSObject>
 
 -(void)initRealTimeConnection;
@@ -139,7 +75,6 @@ typedef enum RTMessageType {
 @property (nonatomic, weak) Card *selectedCard;
 @property (nonatomic, weak) BoardLocation *selectedLocation;
 @property (nonatomic, strong) NSMutableArray *blockedBoardLocations;
-
 
 @property (nonatomic, strong) NSMutableArray *players;
 

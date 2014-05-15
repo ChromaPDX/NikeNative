@@ -802,12 +802,22 @@ float PARTICLE_SCALE;
     }
 #pragma mark - Special Cards
     else if (event.type == kEventDeRez){
+        
         PlayerSprite* p = [playerSprites objectForKey:event.playerReceiving];
         
-        [self removePlayerFromBoard:p animated:YES withCompletionBlock:^{
-            block();
-            
-        }];
+        if (event.playerReceiving.ball) {
+            [p stopPosession:^{
+                event.playerReceiving.ball = nil;
+                [self removePlayerFromBoard:p animated:YES withCompletionBlock:^{
+                    block();
+                }];
+            }];
+        }
+        else {
+            [self removePlayerFromBoard:p animated:YES withCompletionBlock:^{
+                block();
+            }];
+        }
     }
     
     else if (event.type == kEventAddSpecial) {
