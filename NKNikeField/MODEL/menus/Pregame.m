@@ -35,6 +35,8 @@
         [fuelBar setFill:0];
         [fuelBar setFill:1];
 
+        //[fuelBar setFill:1];
+
 
         
         [self addChild:fuelBar];
@@ -42,7 +44,8 @@
         NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
 
         text.fontSize = 30;
-        text.fontColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
+        //text.fontColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
+        text.fontColor = V2YELLOW;
         [text setSize:S2Make(500,100)];
         [text setZPosition:1];
        // [text setText:[listOfNames objectAtIndex:0]];
@@ -120,6 +123,11 @@
 
 -(void)cellWasDeSelected:(NKScrollNode *)cell {
     
+}
+
+-(void)updateWithTimeSinceLast:(F1t)dt {
+    [super updateWithTimeSinceLast:dt];
+    [fuelBar setFill:1];
 }
 
 @end

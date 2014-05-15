@@ -35,7 +35,7 @@
         fuelLabel.fontSize = 18;
         [fuelLabel setColor:V2YELLOW];
         [fuelLabel setText:[NSString stringWithFormat:@"ENERGY : %d",self.manager.game.me.energy]];  
-        [fuelLabel setPosition:P2Make(-165, -50)];
+        [fuelLabel setPosition:P2Make(-250+fuelLabel.size.width/2, -50)];
         [fuelLabel setZPosition:3];
         
         NKTexture *logoImage = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"LOGO_Icon_Bola_small.png"]];
