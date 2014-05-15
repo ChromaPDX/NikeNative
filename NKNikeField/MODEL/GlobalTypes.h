@@ -61,7 +61,7 @@
 
 #define DEFAULT_START_ENERGY 1000
 
-#define debugUI 1
+//#define debugUI 1
 
 #ifdef debugUI
 #define UILog NSLog

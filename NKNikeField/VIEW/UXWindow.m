@@ -464,7 +464,6 @@
     CardSprite *cardToRemove = [_cardSprites objectForKey:card];
     [_myCards removeObject:cardToRemove];
     [self sortCardsAnimated:true WithCompletionBlock:^{
-        
     }];
 }
 

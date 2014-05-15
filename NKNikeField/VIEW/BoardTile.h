@@ -19,8 +19,11 @@
 // MODEL
 @property (nonatomic, strong) BoardLocation *location;
 
+
 // VIEW
 @property (nonatomic, weak) GameScene *delegate;
+
+@property (nonatomic, strong) NKMeshNode *block;
 
 -(void)setTextureForBorder:(BorderMask)border;
 

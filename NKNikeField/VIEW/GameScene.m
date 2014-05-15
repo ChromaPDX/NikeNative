@@ -303,6 +303,18 @@ float PARTICLE_SCALE;
             [tile setUserInteractionEnabled:true];
             [tile setColor:V2RED];
             [tile setUserInteractionEnabled:false];
+            
+            if (!tile.block) {
+                tile.block = [[NKMeshNode alloc] initWithPrimitive:NKPrimitiveCube texture:nil color:V2RED size:V3MakeF(TILE_WIDTH*.5)];
+                [tile.block setZPosition:TILE_HEIGHT*.5];
+                [tile.block setAlpha:0.];
+                [tile addChild:tile.block];
+                [tile.block repeatAction:[NKAction group: @[
+                                                            [NKAction rotate3dByAngle:V3Make(random()%120,random()%120,random()%120) duration:4.],
+                                                               [NKAction sequence:@[[NKAction fadeAlphaTo:0.7 duration:2.],
+                                                                                    [NKAction fadeAlphaTo:0.2 duration:2.]]]]]];
+            }
+            
         }
         else if ([m.opponent.effects[Card_Block] containsObject:tile.location]){
             [tile removeAllActions];
@@ -310,8 +322,22 @@ float PARTICLE_SCALE;
             [tile setTextureForBorder:tile.location.borderShape];
             [tile setUserInteractionEnabled:true];
             [tile setColor:V2BLUE];
+            if (tile.block) {
+                [tile fadeOutChild:tile.block duration:1. withCompletion:^{
+                    tile.block = nil;
+                }];
+            }
+        }
+        else {
+            
+            if (tile.block) {
+                [tile fadeOutChild:tile.block duration:1. withCompletion:^{
+                    tile.block = nil;
+                }];
+            }
         }
     }
+    
 }
 
 -(void)showCardPath:(NSArray*)path forPlayer:(Player*)player{
@@ -462,6 +488,10 @@ float PARTICLE_SCALE;
 }
 
 -(void)AISelectedLocation:(BoardLocation*)selectedLocation {
+    
+    if (!selectedLocation) {
+        NSLog(@"AI SELECTED NIL LOCATION, BETTER FIX THAT HANG !!");
+    }
     
     BoardTile *selectedBoardTile = [_gameTiles objectForKey:selectedLocation];
     
@@ -827,9 +857,6 @@ float PARTICLE_SCALE;
     }
     else if (event.type == kEventBlock){
         block();
-//        [self addPlayerToBoardScene:event.playerReceiving animated:true withCompletionBlock:^{
-//            block();
-//        }];
     }
     
     else if (event.type == kEventAddSpecial) {
