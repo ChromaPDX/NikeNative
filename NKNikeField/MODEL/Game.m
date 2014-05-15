@@ -89,8 +89,8 @@
     _me = [[Manager alloc] initWithGame:self];
     _opponent = [[Manager alloc] initWithGame:self];
 
-    _me.energy = 1000;
-    _opponent.energy = 1000;
+    _me.energy = DEFAULT_START_ENERGY;
+    _opponent.energy = DEFAULT_START_ENERGY;
     
     _score = [BoardLocation pX:0 Y:0];
     
@@ -1077,11 +1077,21 @@
     else if (event.type == kEventPlayCard) {
         
         if (event.card) {
-            if (event.playerPerforming) {
+            if(event.manager.energy < event.card.energyCost){
+                NKAlertSprite *alert = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Notification_MoreE.png"] color:NKWHITE size:_gameScene.size];
+                [alert setZPosition:150];
+                [alert setScale:.88];
+                [_gameScene presentAlert:alert animated:true];
+                event.type = kNullAction;
+                //[event discard]
+            }
+            else if(event.playerPerforming) {
                 event.playerPerforming.used = true;
             }
-            event.manager.energy -= event.card.energyCost;
-            [event.card discard];
+            else{
+                event.manager.energy -= event.card.energyCost;
+                [event.card discard];
+            }
         }
         
     }

@@ -174,7 +174,7 @@
 //            if (!ps.model.used){
 //                self.delegate.selectedPlayer = ps.model;
 //            }
-//        }
+//        }x
 //    }
     
 
@@ -188,12 +188,12 @@
     R4t menuButton = R4Make(17, 1042, 70, 70);
     if(R4ContainsPoint(menuButton, location)){
         // @eric uncomment to switch back
-        //[self.scene.nkView setScene:[[MainMenu alloc]initWithSize:self.scene.size]];
+        [self.scene.nkView setScene:[[MainMenu alloc]initWithSize:self.scene.size]];
         
         // recomment this
         // pop-up example
-        NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];
-        [self.scene presentAlert:test animated:true];
+       // NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];
+       //  [self.scene presentAlert:test animated:true];
     }
     return false;
 }
