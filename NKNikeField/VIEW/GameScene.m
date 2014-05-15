@@ -375,6 +375,10 @@ float PARTICLE_SCALE;
             _selectedPlayer = selectedPlayer;
             
             [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{
+                Card *kickCard = [self.game.ball.enchantee.manager cardInHandOfCategory:CardCategoryKick];
+                if(kickCard){
+                    [self showCardPath:[kickCard validatedSelectionSetForPlayer:self.game.ball.enchantee] forPlayer:self.game.ball.enchantee];
+                }
                 if (_selectedCard) {
                     [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
                 }
