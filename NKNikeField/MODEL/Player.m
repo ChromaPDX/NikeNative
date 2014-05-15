@@ -171,6 +171,11 @@
     return retPath;
 }
 
+-(NSArray*)quickestRouteToGoal {
+    AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:[self.game allPlayerLocations]];
+    return [aStar pathFromAtoB:self.location B:self.manager.goal NeighborhoodType:NeighborhoodTypeQueen];
+}
+
 -(NSArray*)pathToGoal{
     BoardLocation *goalLocation = _manager.goal;
     NSArray *path = [self pathToClosestAdjacentBoardLocation:goalLocation];

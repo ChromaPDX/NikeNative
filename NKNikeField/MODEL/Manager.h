@@ -23,11 +23,12 @@
 @property (nonatomic, strong) Deck* players;
 @property (nonatomic, strong) NSString *name;
 
+@property (nonatomic,strong) NSMutableDictionary *effects;
+
 // Game Engine
 
 @property (nonatomic) bool myTurn;
 @property (nonatomic) bool isAI;
-@property (nonatomic) bool preditiveAnalysis;
 @property (nonatomic) int teamSide;
 @property (nonatomic) int energy;
 

@@ -96,7 +96,7 @@
 -(void)setSelectedCard:(Card*)card;
 -(void)setSelectedPlayer:(Card*)player;
 
--(void)showCardPath:(NSArray*)path;
+-(void)showCardPath:(NSArray*)path forPlayer:(Player*)player;
 
 -(void)sortHandForManager:(Manager *)manager animated:(BOOL)animated;
 

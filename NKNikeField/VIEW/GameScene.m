@@ -287,27 +287,34 @@ float PARTICLE_SCALE;
 
 -(void)cleanUpUIForSequence:(GameSequence *)sequence {
     for (BoardTile* tile in _gameTiles.allValues) {
-        if([self.game.blockedBoardLocations containsObject:tile.location]){
-          //  [tile removeAllActions];
-           // [tile setColor:V2GREEN];
-            NSArray *path = [[NSArray alloc] initWithObjects:tile.location, nil];
-            [tile.location setBorderShapeInContext:path];
-            [tile setTextureForBorder:tile.location.borderShape];
-            [tile setUserInteractionEnabled:true];
-           // [tile runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
-            [tile setColor:V2RED];
-        }
-        else{
-            [tile setColor:nil];
-        }
+        [tile setColor:nil];
         [tile setTexture:nil];
         [tile setUserInteractionEnabled:false];
     }
+    [self revealBlocksForManager:sequence.manager];
 }
 
+-(void)revealBlocksForManager:(Manager*)m {
+    for (BoardTile* tile in _gameTiles.allValues) {
+        if([m.effects[Card_Block] containsObject:tile.location]){
+            [tile removeAllActions];
+            [tile.location setBorderShapeInContext:m.effects[Card_Block]];
+            [tile setTextureForBorder:tile.location.borderShape];
+            [tile setUserInteractionEnabled:true];
+            [tile setColor:V2RED];
+            [tile setUserInteractionEnabled:false];
+        }
+        else if ([m.opponent.effects[Card_Block] containsObject:tile.location]){
+            [tile removeAllActions];
+            [tile.location setBorderShapeInContext:m.opponent.effects[Card_Block]];
+            [tile setTextureForBorder:tile.location.borderShape];
+            [tile setUserInteractionEnabled:true];
+            [tile setColor:V2BLUE];
+        }
+    }
+}
 
-
--(void)showCardPath:(NSArray*)path{
+-(void)showCardPath:(NSArray*)path forPlayer:(Player*)player{
     
     for (BoardTile* tile in _gameTiles.allValues) {
         [tile setColor:nil];
@@ -334,13 +341,7 @@ float PARTICLE_SCALE;
         [_gameBoardNode runAction:[NKAction moveTo:P2Make(0, -p.y + h/3.) duration:1.]];
     }
     
-    //    else {
-    //        p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:[_game allPlayerLocations]]];
-    //        if ((-p.y + h/4.) > _gameBoardNode.position.y+100 || (-p.y + h/4.) < _gameBoardNode.position.y-100) { // filter out subtle moves
-    //            [_gameBoardNode removeAllActions];
-    //            [_gameBoardNode runAction:[NKAction moveTo:P2Make(0, -p.y + h/4.) duration:1.]];
-    //        }
-    //    }
+    [self revealBlocksForManager:player.manager];
     
 }
 
@@ -375,7 +376,7 @@ float PARTICLE_SCALE;
             
             [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{
                 if (_selectedCard) {
-                    [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer]];
+                    [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
                 }
             }];
             
@@ -436,7 +437,7 @@ float PARTICLE_SCALE;
     
     [_uxWindow setSelectedCard:selectedCard];
     
-    [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer]];
+    [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
     
     [self runAction:[NKAction moveByX:0 y:0 duration:AI_SPEED] completion:^{
         [_game AIChooseLocationForCard:selectedCard];
@@ -818,6 +819,12 @@ float PARTICLE_SCALE;
                 block();
             }];
         }
+    }
+    else if (event.type == kEventBlock){
+        block();
+//        [self addPlayerToBoardScene:event.playerReceiving animated:true withCompletionBlock:^{
+//            block();
+//        }];
     }
     
     else if (event.type == kEventAddSpecial) {

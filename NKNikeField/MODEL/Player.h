@@ -69,10 +69,12 @@ typedef NS_ENUM(int32_t, FactionType) {
 -(NSArray*)pathToClosestAdjacentBoardLocation:(BoardLocation*)location;
 -(NSArray*)pathToBall;
 -(NSArray*)pathToGoal;
+-(NSArray*)quickestRouteToGoal;
 -(NSArray*)pathToKickRange:(Player*)player;
 -(NSArray*)pathToChallenge:(Player*)player;
 -(NSArray*)pathToOpenFieldClosestToLocationInPassRange:(BoardLocation *)location;
 -(NSArray*)pathToOpenFieldClosestToLocation:(BoardLocation*)location;
+
 -(BoardLocation*)closestLocationInTileSet:(NSArray*)tileSet;
 -(BOOL)isInShootingRange;
 -(NSArray*)playersInPassRange;

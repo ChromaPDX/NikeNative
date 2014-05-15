@@ -324,7 +324,7 @@
     
     //NKTouchState hit = [super touchUp:location id:touchId];
     //if (hit == 2) {
-        [_delegate showCardPath:nil];
+        [_delegate showCardPath:nil forPlayer:nil];
         [_managerHand sortCardsAnimated:true WithCompletionBlock:^{}];
         //[[_managerHands objectForKey:_selectedCard.deck.player] sortCards];
     //}
