@@ -340,6 +340,22 @@ float PARTICLE_SCALE;
     
 }
 
+-(void)showPossibleKickForManager:(Manager*)manager{
+    Card *kickCard = manager.game.lastKickCardSelected;
+    if(kickCard){
+        NSArray *set = [kickCard validatedSelectionSetForPlayer:self.game.ball.enchantee];
+        for (BoardLocation* loc in set) {
+            BoardTile* tile = [_gameTiles objectForKey:loc];
+            [tile removeAllActions];
+            [tile setColor:V2YELLOW];
+            [tile.location setBorderShapeInContext:set];
+            [tile setTextureForBorder:tile.location.borderShape];
+            [tile setUserInteractionEnabled:true];
+            [tile runAction:[NKAction fadeAlphaTo:.2 duration:FAST_ANIM_DUR]];
+        }
+    }
+}
+
 -(void)showCardPath:(NSArray*)path forPlayer:(Player*)player{
     
     for (BoardTile* tile in _gameTiles.allValues) {
@@ -349,7 +365,7 @@ float PARTICLE_SCALE;
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
     
-    // @eric // here [self showPossibleKickForManager:player.manager];
+    [self showPossibleKickForManager:player.manager];
     
     P2t p;
     

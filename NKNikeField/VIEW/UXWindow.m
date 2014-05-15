@@ -249,6 +249,10 @@
 
 -(void)setSelectedCard:(Card *)selectedCard {
     
+    if(selectedCard.category == CardCategoryKick && selectedCard.game.selectedPlayer == selectedCard.game.ball.enchantee){
+        selectedCard.game.lastKickCardSelected = selectedCard;
+    }
+    
     if (selectedCard) {
          [_managerHand shuffleAroundCard:selectedCard];
     }
