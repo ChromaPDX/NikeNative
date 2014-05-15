@@ -120,7 +120,7 @@
     
     self.myTurn = YES;
     
-    _blockedBoardLocations = [[NSMutableArray alloc] init];
+    //_blockedBoardLocations = [[NSMutableArray alloc] init];
     
     [_gameScene setupGameBoard];
     
@@ -272,7 +272,7 @@
             //_selectedCard.playerPerforming = _selectedPlayer;
             
             if  (selectedCard){
-                [_gameScene showCardPath:[selectedCard validatedSelectionSetForPlayer:_selectedPlayer]];
+                [_gameScene showCardPath:[selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
             }
                 
             }
@@ -1080,7 +1080,7 @@
             if (event.playerPerforming) {
                 event.playerPerforming.used = true;
             }
-            self.me.energy -= event.card.energyCost;
+            event.manager.energy -= event.card.energyCost;
             [event.card discard];
         }
         
@@ -1266,7 +1266,23 @@
             
         }
         else if (event.type == kEventBlock){  //  BLOCK
-            [event.manager.game.blockedBoardLocations addObject:event.location];
+            
+            NSMutableArray *blocks;
+            
+            if (!event.manager.opponent.effects[Card_Block]) {
+                blocks = [[NSMutableArray alloc]init];
+                [event.manager.opponent.effects setObject:blocks forKey:Card_Block];
+            }
+            else {
+                blocks = event.manager.opponent.effects[Card_Block];
+            }
+            
+            [blocks addObject:event.location];
+            
+//            Player* block = [[Player alloc] initWithManager:nil];
+//            event.playerReceiving = block;
+//            [block setLocation:event.location];
+//            [_players addObject:block];
         }
         else if (event.type == kEventDeRez){  //  DEREZ
             //[event.playerReceiving.effects setObject:@1 forKey:Card_DeRez];
@@ -1283,7 +1299,7 @@
         }
         
         else if (event.type == kEventPredictiveAnalysis){  //  PREDICTIVE ANALASYS
-            event.playerPerforming.manager.opponent.preditiveAnalysis = TRUE;
+           // event.playerPerforming.manager.opponent.preditiveAnalysis = TRUE;
             
             for(Player *p in event.playerPerforming.manager.opponent.players.allCards){
                 Card *challengeCard = p.challengeDeck.allCards[0];
@@ -1562,7 +1578,7 @@
 
 -(bool)AICanUseCard:(Card*)card{
     if (card && card.AIShouldUse) {
-        if ([card validatedSelectionSetForPlayer:_selectedPlayer]) {
+        if ([card validatedSelectionSetForPlayer:_selectedPlayer] && card.deck.manager.energy >= card.energyCost) {
             return true;
         }
         else {
@@ -1586,7 +1602,7 @@
         return;
     }
     */
-    
+    BoardLocation *loc;
     // NSLog(@"in AIChooseLocationForCard, aiActionType = %d", c.aiActionType);
     switch (c.aiActionType){
         case NONE:
@@ -1760,9 +1776,20 @@
                     }
                     break;
                     
+                case CardSpecialCategoryBlock:
+                    if (c.deck.manager.opponent.hasPossesion) {
+                        loc = [[_ball.enchantee quickestRouteToGoal] lastObject];
+                    }
+                    else {
+                        loc = [[c.deck.manager.opponent.players.inGame[0] quickestRouteToGoal] lastObject];
+                    }
+                    [_gameScene AISelectedLocation:loc];
+                    return;
+                    
                 default:
                     break;
             }
+            
             pathToBall = [[c selectionSetForPlayer:p] mutableCopy];
             if(pathToBall && [pathToBall count]){
                 [_gameScene AISelectedLocation:pathToBall[arc4random()%[pathToBall count]]];
@@ -2136,6 +2163,13 @@
         }
     }
     
+    return boardLocations;
+}
+
+-(NSArray*)allBoardLocationsButGoals {
+    NSMutableArray *boardLocations = [[self allBoardLocations] mutableCopy];
+    [boardLocations removeObject:_me.goal];
+    [boardLocations removeObject:_opponent.goal];
     return boardLocations;
 }
 

@@ -61,7 +61,7 @@
     _challengeCategory = CardChallengeCategoryNull;
     
     //_specialTypeCategory = rand() % 7 + 1;
-    _specialTypeCategory = CardSpecialCategoryDeRez;
+    _specialTypeCategory = CardSpecialCategoryBlock;
     
     switch (_specialTypeCategory) {
         case CardSpecialCategoryFreeze:
@@ -150,9 +150,7 @@
         _range = _level;
         if (_level > 3) _level = 3;
         
-        if (_deck.category == CardCategorySpecial) {
-            _energyCost = _level*100;
-        }
+        [self getEnergyCost];
         
     }
     return self;
@@ -569,10 +567,11 @@
                 }
                 break;
             case CardSpecialCategoryBlock:
-                accessible = [[self.game allBoardLocations] mutableCopy];
+                accessible = [[self.game allBoardLocationsButGoals] mutableCopy];
                 if(p.location){
                     [accessible removeObject:p.location];
                 }
+                
                 else{
                     NSLog(@"**ERROR no location for enchantee");
                 }
@@ -593,6 +592,10 @@
     }
     else{
         accessible = nil;
+    }
+    
+    if (p.manager.effects[Card_Block]) {
+        [accessible removeObjectsInArray:p.manager.effects[Card_Block]];
     }
     
     return accessible;

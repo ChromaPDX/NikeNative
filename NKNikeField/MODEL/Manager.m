@@ -15,7 +15,7 @@
 
 -(id)initWithGame:(Game*)game{
     self = [super init];
-    _preditiveAnalysis = FALSE;
+    
     if(self){
         NSLog(@"new manager init");
         NSMutableArray *playersMutable = [[NSMutableArray alloc]init];
@@ -37,6 +37,9 @@
         }
         
         _players.allCards = [playersMutable copy];
+        
+        _effects = [[NSMutableDictionary alloc]init];
+        
     }
     
     return self;
