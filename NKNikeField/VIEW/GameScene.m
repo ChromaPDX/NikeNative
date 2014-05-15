@@ -188,7 +188,7 @@ float PARTICLE_SCALE;
     [_gameBoardNode setPosition3d:V3Make(0,h*.5,0)];
     _gameBoardNode.userInteractionEnabled = true;
     _gameBoardNode.name = @"Game Board";
-    [_gameBoardNode setAlpha:.3];
+    [_gameBoardNode setTransparency:.3];
     
     NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer02"] color:NKWHITE size:_gameBoardNode.size];
     
@@ -198,7 +198,7 @@ float PARTICLE_SCALE;
     
     [lines setPosition3d:V3Make(0,0,2)];
     
-    [lines setAlpha:0.3];
+    [lines setTransparency:.3];
     
     for(int i = 0; i < BOARD_WIDTH; i++){
         for(int j = 0; j < BOARD_LENGTH; j++){
@@ -208,7 +208,7 @@ float PARTICLE_SCALE;
             
             square.delegate = self;
             
-            [square setAlpha:.3];
+            [square setTransparency:.3];
             
             [_gameBoardNode addChild:square];
             
@@ -1018,16 +1018,19 @@ float PARTICLE_SCALE;
     if (p) {
         
         if (!_uxWindow.alpha) {
+            
             [_uxWindow runAction:[NKAction fadeAlphaTo:1. duration:.5]];
-            [_uxTopBar runAction:[NKAction fadeAlphaTo:1. duration:.5]];
+            [_uxTopBar runAction:[NKAction fadeAlphaTo:1. duration:.5] completion:^{
+                block();
+            }];
+            
         }
-        
         
         [_uxWindow refreshCardsForManager:p.manager WithCompletionBlock:^{
             block();
         }];
         
-        
+
         [_uxTopBar setPlayer:p WithCompletionBlock:^{}];
         
     }

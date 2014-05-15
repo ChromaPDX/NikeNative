@@ -31,6 +31,16 @@
     // Do any additional setup after loading the view.
 }
 
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [(NKView*)self.view startAnimation];
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    NSLog(@"view will dissappear");
+    [(NKView*)self.view stopAnimation];
+    [super viewWillDisappear:animated];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

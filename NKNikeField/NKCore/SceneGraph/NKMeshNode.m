@@ -69,13 +69,17 @@
 
 -(void)setAlpha:(CGFloat)alpha {
     [super setAlpha:alpha];
-    _intColor.a = alpha;
+    _intColor.a = self.alpha;
 }
 
--(void)setRecursiveAlpha:(F1t)alpha {
-    [super setRecursiveAlpha:(F1t)alpha];
-    //_intColor = [self glColor];
-    _intColor.a = alpha;
+-(void)setTransparency:(F1t)transparency {
+    [super setTransparency:transparency];
+    _intColor.a = self.alpha;
+}
+
+-(void)recursiveAlpha:(F1t)alpha {
+    [super recursiveAlpha:alpha];
+    _intColor.a = self.alpha;
 }
 
 -(C4t)glColor {

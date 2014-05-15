@@ -130,6 +130,7 @@
 -(void)playCard:(Card *)card {
     [_managerHand playCard:card];
 }
+
 -(CardSprite*)spriteForCard:(Card*)c {
     
     ManagerHand *hand = _managerHand; //[_managerHands objectForKey:c.deck.player];
@@ -199,11 +200,13 @@
         big.name = @"BIG CARD SCROLLER";
         
         for (CardSprite *cs in _managerHand.myCards) {
-            NKScrollNode* node = [[NKScrollNode alloc] initWithParent:_managerHand.bigCards autoSizePct:(2./_managerHand.myCards.count)];
+            if (cs.model) {
+            NKScrollNode* node = [[NKScrollNode alloc] initWithParent:_managerHand.bigCards autoSizePct:(.5)];
             [node setTexture:[NKTexture textureWithImageNamed:[cs.model fileNameForBigCard]]];
             [node setColor:NKWHITE];
             [big addCard:node];
             node.name = [cs.model fileNameForBigCard];
+            }
            // node.userInteractionEnabled = false;
         }
         
@@ -291,13 +294,16 @@
 -(void)refreshCardsForManager:(Manager *)m WithCompletionBlock:(void (^)())block {
     
     if (!_managerHand) {
+
+        _managerHand = [[ManagerHand alloc] initWithManager:m delegate:self];
         
-    _managerHand = [[ManagerHand alloc] initWithManager:m delegate:self];
-    
-    [self addChild:_managerHand];
-    
-    NSLog(@"init manager hand %d", _managerHand.myCards.count);
-    
+        [self addChild:_managerHand];
+        
+//        [_managerHand setAlpha:0];
+//        [_managerHand runAction:[NKAction fadeAlphaTo:1. duration:.5]];
+        
+        NSLog(@"init manager hand %d", _managerHand.myCards.count);
+        
     }
     
     if (_selectedCard) {
@@ -364,27 +370,8 @@
                [self tempAddEndTurnCard];
         }
      
-//        for (Card* c in m.moveDeck.inHand) {
-//            [self addCard:c];
-//        }
-//        
-//        if (m.hasPossesion){
-//            for (Card* c in p.kickDeck.inHand) {
-//                [self addCard:c];
-//            }
-//        }
-//        else {
-//            for (Card* c in p.challengeDeck.inHand) {
-//                [self addCard:c];
-//            }
-//        }
-//        
-//        for (Card* c in p.specialDeck.inHand) {
-//            [self addCard:c];
-//        }
-        
-        
-        //[_uxWindow sortMyCards:YES WithCompletionBlock:nil];
+//        [self setAlpha:0];
+//        [self runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
         
     }
     else {
@@ -482,7 +469,6 @@
 }
 
 -(void)shuffleAroundCard:(Card*)card {
-    
     CardSprite *cs = [_cardSprites objectForKey:card];
     [self shuffleAroundCardSprite:cs];
 }
@@ -501,7 +487,7 @@
         
         CardSprite *cs = _myCards[i];
         
-        [cs setAlpha:1.];
+        //[cs setAlpha:1.];
         cs.order = i;
         
         
@@ -559,7 +545,7 @@
             [cs setHasShadow:NO];
         }
         
-        [cs setAlpha:1.];
+       // [cs setAlpha:1.];
         
         
         //cs.origin = P2Make(((cardSize.width*1.1*((int)(i-(2-cardSize))) ) * i),0);
@@ -635,7 +621,7 @@
     [_cards addObject:card];
     [self addChild:card];
     
-    card.userInteractionEnabled = true;
+   // card.userInteractionEnabled = true;
 }
 
 -(void)scrollToChild:(int)child duration:(F1t)duration {
@@ -649,7 +635,9 @@
 }
 
 -(void)shouldBeginRestitution {
-    [super shouldBeginRestitution];
+    ManagerHand *hand = self.delegate;
+    
+    [hand shuffleAroundCardSprite:[hand.myCards objectAtIndex:[self.children indexOfObject:self.selectedChild]]];
 }
 
 

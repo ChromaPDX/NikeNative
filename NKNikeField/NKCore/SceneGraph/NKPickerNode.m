@@ -115,26 +115,35 @@
                 self.selectedChild = n;
                 
                 int pos = [intChildren indexOfObject:n];
-
+                
                 if (self.scrollDirectionVertical) {
                     
                 }
+                
                 else {
-                   if (pos > 0 && n.position.x > n.size.width * .1 && scrollVel > 0) {
+                    if (pos > 0 && n.position.x > n.size.width * .1 && scrollVel > 0) {
                         NSLog(@"going left, %f",scrollVel);
-                            self.selectedChild = intChildren[pos-1];
+                        self.selectedChild = intChildren[pos-1];
                     }
                     else if (pos < (intChildren.count - 1 ) && n.position.x < -n.size.width * .1 && scrollVel < 0) {
-                            self.selectedChild = intChildren[pos+1];
+                        self.selectedChild = intChildren[pos+1];
                         NSLog(@"going right, %f",scrollVel);
                     }
-                    
-                    
                 }
-
+                
             }
+//            else {
+//                if (self.scrollPosition.x < self.contentSize.width){
+//                    self.selectedChild = intChildren[0];
+//                }
+//                else if (self.scrollPosition.x > 0){
+//                    self.selectedChild = [intChildren lastObject];
+//                }
+//            }
         }
         
+     
+        [self shouldBeginRestitution];
         self.scrollPhase = ScrollPhaseRestitution;
         easeIn = 12.;
         easeOut = false;
@@ -175,6 +184,16 @@
     
     return P2Make(0,0);
     
+}
+
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
+    [super touchUp:location id:touchId];
+    if (self.scrollPhase == ScrollPhaseNil) {
+        if (self.selectedChild) {
+              [self.delegate cellWasSelected:self.selectedChild];
+        }
+    }
+    return false;
 }
 
 @end

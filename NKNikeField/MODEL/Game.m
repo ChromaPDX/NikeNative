@@ -1465,7 +1465,7 @@
             else{
                 //CAN NOT SHOOT ON GOAL
                 Player *passToPlayer = [p passToAvailablePlayerInShootingRange];
-                if(passToPlayer && kickCard){
+                if(passToPlayer){
                     // CAN PASS TO PLAYER IN SHOOTING RANGE
                     kickCard.aiActionType = PASS_TO_PLAYER_IN_SHOOTING_RANGE;
                     [_gameScene AISelectedCard:kickCard];
@@ -1475,7 +1475,7 @@
                     // CAN NOT PASS TO PLAYER IN SHOOTING RANGE
                     NSArray *pathToGoal = [moveCard validatedPath:[p pathToGoal]];
                     
-                    if(pathToGoal && moveCard){
+                    if(pathToGoal && [self AICanUseCard:moveCard]){
                         // CAN MOVE IN SHOOTING RANGE
                         moveCard.aiActionType = MOVE_TO_GOAL;
                         [_gameScene AISelectedCard:moveCard];
@@ -1717,8 +1717,15 @@
             break;
         case MOVE_TO_BALL:
             NSLog(@"*********************************************AI: MOVE TO BALL");
+            
+            if ([[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] containsObject:_ball.location]) {
+                [_gameScene AISelectedLocation:_ball.location];
+                return;
+            }
+            
             //NSArray *pathToBall = [c.playerPerforming pathToClosestAdjacentBoardLocation:_ball.location];
             pathToBall = [[p pathToOpenFieldClosestToLocation:_ball.location] mutableCopy];
+            
             [pathToGoal removeObject:p.manager.goal];
             [pathToGoal removeObject:p.manager.opponent.goal];
             
@@ -1730,7 +1737,9 @@
             }
             else {
                 NSLog(@"pathToBall = NULL, AI HAS NO VALID MOVE: STAY");
-                [_gameScene AISelectedLocation:_selectedPlayer.location];
+                _selectedCard.AIShouldUse = false;
+                [self AIChooseCardForPlayer:_selectedPlayer];
+                //[_gameScene AISelectedLocation:_selectedPlayer.location];
                 return;
             }
             break;

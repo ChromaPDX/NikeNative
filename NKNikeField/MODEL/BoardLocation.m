@@ -109,9 +109,7 @@
 
 -(int)distanceToGoalForManager:(Manager*)m neighborhoodType:(int)type{
     AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:nil];
-    
     return [aStar pathFromAtoB:self B:m.goal NeighborhoodType:type].count;
-    
 }
 
 -(int)isAdjacentTo:(BoardLocation*)b {
