@@ -89,8 +89,8 @@
     _me = [[Manager alloc] initWithGame:self];
     _opponent = [[Manager alloc] initWithGame:self];
 
-    _me.energy = 1000;
-    _opponent.energy = 1000;
+    _me.energy = DEFAULT_START_ENERGY;
+    _opponent.energy = DEFAULT_START_ENERGY;
     
     _score = [BoardLocation pX:0 Y:0];
     
@@ -1080,8 +1080,13 @@
             if (event.playerPerforming) {
                 event.playerPerforming.used = true;
             }
-            event.manager.energy -= event.card.energyCost;
-            [event.card discard];
+            if(event.manager.energy < event.card.energyCost){
+                
+            }
+            else{
+                event.manager.energy -= event.card.energyCost;
+                [event.card discard];
+            }
         }
         
     }
