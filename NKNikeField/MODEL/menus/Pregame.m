@@ -11,7 +11,7 @@
 
 -(instancetype)initWithSize:(S2t)size {
     self = [super initWithSize:size];
-
+    
     if (self) {
         NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size];
         [self addChild:table];
@@ -32,13 +32,6 @@
         fuelBar = [[FuelBar alloc] init];
         [fuelBar setPosition:P2Make(-64, 516)];
         // @LEIF - not sure why the animation isn't working here?
-        [fuelBar setFill:0 animated:1];
-        [fuelBar setFill:1 animated:1];
-
-        //[fuelBar setFill:1];
-
-
-        
         [self addChild:fuelBar];
         // @Eric - add as child before setFill, needs parent for animation otherwise doesn't get animation updates.
         // also we need a way to snap and animate so I added 'animated' boolean.
@@ -47,17 +40,16 @@
         
         
         NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
-
+        
         text.fontSize = 30;
-        //text.fontColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
-        text.fontColor = V2YELLOW;
+        text.fontColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
         [text setSize:S2Make(500,100)];
         [text setZPosition:1];
-       // [text setText:[listOfNames objectAtIndex:0]];
+        // [text setText:[listOfNames objectAtIndex:0]];
         [text setText:@"1000E"];
         [text setPosition:P2Make(-81, 385)];
         [self addChild:text];
-
+        
         
         NSArray *listOfNames = [FakeFriends getNamesForText:3];
         NKLabelNode *bigText = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
@@ -92,13 +84,13 @@
     }
     
     /*
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button addTarget:self action:@selector(buttonPushed)
+     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+     [button addTarget:self action:@selector(buttonPushed)
      forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:@"Show View" forState:UIControlStateNormal];
-    button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
-    [self.view addSubview:button];
-    */
+     [button setTitle:@"Show View" forState:UIControlStateNormal];
+     button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
+     [self.view addSubview:button];
+     */
     
     return self;
 }
@@ -106,7 +98,7 @@
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchUp:location id:touchId];
     
-  
+    
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
@@ -122,17 +114,12 @@
 }
 
 -(void)cellWasSelected:(NKScrollNode *)cell {
-   // NSLog(@"MainMenu cellWasSelected: %@ was selected", cell.name);
+    // NSLog(@"MainMenu cellWasSelected: %@ was selected", cell.name);
     
 }
 
 -(void)cellWasDeSelected:(NKScrollNode *)cell {
     
-}
-
--(void)updateWithTimeSinceLast:(F1t)dt {
-    [super updateWithTimeSinceLast:dt];
-    [fuelBar setFill:1 animated:1];
 }
 
 @end
