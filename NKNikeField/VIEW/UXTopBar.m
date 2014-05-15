@@ -39,7 +39,7 @@
         [fuelLabel setZPosition:3];
         
         NKTexture *logoImage = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"LOGO_Icon_Bola_small.png"]];
-        NKSpriteNode* logo = [[NKSpriteNode alloc] initWithTexture:logoImage];
+        logo = [[NKSpriteNode alloc] initWithTexture:logoImage];
         //[logo setScale:.33];
         [logo setPosition:P2Make(-270, -5)];
         [logo setZPosition:4];
@@ -166,6 +166,7 @@
 }
 
 -(NKTouchState) touchUp:(P2t)location id:(int)touchId {
+    //P2t myLoc = location;
     //NKTouchState hit = [super touchUp:location id:touchId];
     
 //    for (PlayerSprite *ps in _playerSprites) {
@@ -176,13 +177,27 @@
 //        }
 //    }
     
+
     if ([fuelLabel containsPoint:location]) {
         GameStatsViewController *stats = [[GameStatsViewController alloc]initWithGame:self.delegate.game style:UITableViewStyleGrouped];
         [self.delegate.nkView.controller presentViewController:stats animated:YES completion:^{
             
         }];
     }
-    
+
+    R4t menuButton = R4Make(17, 1042, 70, 70);
+    if(R4ContainsPoint(menuButton, location)){
+       // NSLog(@"UXTopBar touchUP location = %fx%f", location.x, location.y);
+        //self.scene = [[MainMenu alloc]initWithSize:self.scene.size];
+        NKSceneNode *newScene;
+        newScene = [[MainMenu alloc]initWithSize:self.size];
+        [self.scene.nkView.scene = newScene;
+
+        
+
+
+
+    }
     return false;
 }
 

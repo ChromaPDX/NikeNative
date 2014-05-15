@@ -38,8 +38,6 @@ typedef NS_ENUM(int32_t, FactionType) {
 @property (nonatomic, weak) Manager *manager;
 @property (nonatomic) bool used;
 
-//@Eric, let's turn these into a NSDictionary so we can keep clean as card #'s grow
-
 @property (nonatomic,strong) NSMutableDictionary *effects;
 
 //@property (nonatomic) bool deRez;
