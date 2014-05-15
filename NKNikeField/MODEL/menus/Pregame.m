@@ -32,8 +32,8 @@
         fuelBar = [[FuelBar alloc] init];
         [fuelBar setPosition:P2Make(-64, 516)];
         // @LEIF - not sure why the animation isn't working here?
-        [fuelBar setFill:0];
-        [fuelBar setFill:1];
+        [fuelBar setFill:0 animated:1];
+        [fuelBar setFill:1 animated:1];
 
         //[fuelBar setFill:1];
 
@@ -132,7 +132,7 @@
 
 -(void)updateWithTimeSinceLast:(F1t)dt {
     [super updateWithTimeSinceLast:dt];
-    [fuelBar setFill:1];
+    [fuelBar setFill:1 animated:1];
 }
 
 @end
