@@ -190,9 +190,9 @@
        // NSLog(@"UXTopBar touchUP location = %fx%f", location.x, location.y);
         //self.scene = [[MainMenu alloc]initWithSize:self.scene.size];
         NKSceneNode *newScene;
-        newScene = [[MainMenu alloc]initWithSize:self.size];
+        newScene = [[MainMenu alloc]initWithSize:self.scene.size];
         // @leif : not sure why this isn't working...maybe there is a a better way to shut down the game?
-        // [self.scene.nkView.scene setScene:newScene];
+        [self.scene.nkView setScene:newScene];
     }
     return false;
 }
