@@ -61,7 +61,7 @@
     _challengeCategory = CardChallengeCategoryNull;
     
     //_specialTypeCategory = rand() % 7 + 1;
-    _specialTypeCategory = CardSpecialCategoryBlock;
+    _specialTypeCategory = CardSpecialCategoryFreeze;
     
     switch (_specialTypeCategory) {
         case CardSpecialCategoryFreeze:
@@ -557,6 +557,21 @@
     }
     else if (self.category == CardCategorySpecial){
         switch(self.specialTypeCategory){
+                
+                // CASES FOR MY PLAYERS
+                
+            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
+                for(Card *c in p.manager.players.inGame){
+                    if(c.location){
+                        [accessible addObject:c.location];
+                    }else{
+                        NSLog(@"**ERROR no location for player");
+                    }
+                }
+                
+                
+                // CASES FOR THEIR PLAYERS
+                
             case CardSpecialCategoryNoLegs: case CardSpecialCategoryFreeze:  case CardSpecialCategoryDeRez:
                 for(Card *c in p.manager.opponent.players.inGame){
                     if(c.location){
@@ -566,6 +581,9 @@
                     }
                 }
                 break;
+                
+                // SPECIAL / WHOLE BOARD / CASES
+                
             case CardSpecialCategoryBlock:
                 accessible = [[self.game allBoardLocationsButGoals] mutableCopy];
                 if(p.location){
@@ -576,17 +594,11 @@
                     NSLog(@"**ERROR no location for enchantee");
                 }
                 return accessible;
-            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
-                accessible = [[self.game allBoardLocations] mutableCopy];
-            }
-        
-        
-        if(self.category == CardCategorySpecial && self.specialTypeCategory == CardSpecialCategoryBlock){
-           
-        }
-        if(self.category == CardCategorySpecial &&
-           (self.specialTypeCategory == CardSpecialCategoryNewDeal || self.specialTypeCategory == CardSpecialCategoryPredictiveAnalysis)){
-           
+                
+            default:
+                NSLog(@"**ERROR missed case");
+                break;
+                
         }
 
     }

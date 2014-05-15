@@ -20,19 +20,9 @@
     
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
+     [_delegate alertDidCancel];
+    return false;
 }
 
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    
-}
-
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    [_delegate alertDidCancel];
-}
-
--(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
-    
-}
 @end

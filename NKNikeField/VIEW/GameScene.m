@@ -399,6 +399,7 @@ float PARTICLE_SCALE;
 -(void)pressedEndTurn {
     [_game pressedEndTurn];
 }
+
 #pragma mark - AI selection
 
 -(void)AISelectedPlayer:(Player *)selectedPlayer {

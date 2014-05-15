@@ -1263,7 +1263,7 @@
             event.playerReceiving.used = TRUE;
         }
         else if (event.type == kEventNoLegs){  //  NO LEGS
-            [event.playerReceiving.effects setObject:@1 forKey:Card_NoLegs];
+            [event.playerReceiving.effects setObject:@3 forKey:Card_NoLegs];
         }
         else if (event.type == kEventSuccubus){  //  SUCCUBUS
             event.manager.opponent.energy -= 100;
@@ -1300,7 +1300,8 @@
         
         else if (event.type == kEventNewDeal){  //  NEWDEAL
             //[event.playerPerforming.deck shuffleWithSeed:event.seed fromDeck:event.playerPerforming.deck.allCards];
-            [event.playerReceiving.effects setObject:@1 forKey:Card_NewDeal];
+            [event.playerPerforming.effects setObject:@1 forKey:Card_NewDeal];
+            //[event.playerPerforming.manager shuffleWithSeed:event.seed fromDeck:event.playerPerforming.deck.allCards];
         }
         
         else if (event.type == kEventPredictiveAnalysis){  //  PREDICTIVE ANALASYS
@@ -1631,12 +1632,6 @@
                 [_gameScene AISelectedLocation:newLoc];
                 return;
             }
-            else {
-                NSLog(@"AI HAS NO VALID MOVE: STAY");
-                [_gameScene AISelectedLocation:_selectedPlayer.location];
-                return;
-            }
-            
             break;
         case MOVE_TO_GOAL:
             NSLog(@"*********************************************AI: MOVE TO GOAL");
@@ -1696,10 +1691,7 @@
                 }
                 return;
             }
-            
-            NSLog(@"AI HAS NO VALID PASS: TRY A MOVE CARD");
-            [_gameScene AISelectedCard:_selectedPlayer.manager.moveDeck.inHand[0]];
-            return;
+            break;
             
         case PASS_TO_GOAL:
             playersCloserToGoal = [_selectedPlayer playersAvailableInKickRangeCloserToGoal];
@@ -1730,11 +1722,6 @@
                 [_gameScene AISelectedLocation:pathToBall[[pathToBall count]-1]];
                 return;
             }
-            else {
-                NSLog(@"AI HAS NO VALID MOVE: STAY");
-                [_gameScene AISelectedLocation:_selectedPlayer.location];
-                return;
-            }
             break;
         case MOVE_TO_BALL:
             NSLog(@"*********************************************AI: MOVE TO BALL");
@@ -1756,30 +1743,19 @@
                 [_gameScene AISelectedLocation:newLoc];
                 return;
             }
-            else {
-                NSLog(@"pathToBall = NULL, AI HAS NO VALID MOVE: STAY");
-                _selectedCard.AIShouldUse = false;
-                [self AIChooseCardForPlayer:_selectedPlayer];
-                //[_gameScene AISelectedLocation:_selectedPlayer.location];
-                return;
-            }
+            
             break;
         case SPECIAL_CARD:
             
             //@Eric let's eventually move all of this targeting to the card object, maybe as a block request or something . . .
             switch (c.specialTypeCategory) {
-                case CardSpecialCategoryDeRez:
-                    for (Player *p in c.deck.manager.opponent.players.inGame) {
-                        if (p.ball) {
-                            [_gameScene AISelectedLocation:p.location];
-                            return;
-                        }
-                    }
-                    for (Player *p in c.deck.manager.opponent.players.inGame) {
-                            [_gameScene AISelectedLocation:p.location];
-                            return;
-                    }
-                    break;
+                case CardSpecialCategoryDeRez: case CardSpecialCategoryFreeze: case CardSpecialCategoryNoLegs:
+                    [_gameScene AISelectedLocation:[c.deck.manager.opponent.bestChoiceForDisable location]];
+                    return;
+                    
+                case CardSpecialCategoryNewDeal: case CardSpecialCategorySuccubus:
+                    [_gameScene AISelectedLocation:[c.deck.manager.bestChoiceForDisable location]];
+                    return;
                     
                 case CardSpecialCategoryBlock:
                     if (c.deck.manager.opponent.hasPossesion) {
@@ -1795,14 +1771,15 @@
                     break;
             }
             
-            pathToBall = [[c selectionSetForPlayer:p] mutableCopy];
-            if(pathToBall && [pathToBall count]){
-            [_gameScene AISelectedLocation:pathToBall[0]];
-                
-            }
+//            pathToBall = [[c selectionSetForPlayer:p] mutableCopy];
+//            if(pathToBall && [pathToBall count]){
+//            [_gameScene AISelectedLocation:pathToBall[0]];
+            
+            
             break;
     }
-    NSLog(@"AI HAS NO VALID MOVE: STAY");
+
+    NSLog(@"AI HAS NO VALID CARD LOCATION: Try another card");
     c.AIShouldUse = false;
     [self AIChooseCardForPlayer:_selectedPlayer];
     //[_gameScene AISelectedLocation:_selectedPlayer.location];

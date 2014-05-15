@@ -292,6 +292,18 @@
     return NULL;
 }
 
+-(Player*)bestChoiceForDisable {
+    // players are on offense
+    for (Player* p in _players.inGame) {
+        if (p.ball) {
+            return p;
+        }
+    }
+    // players are on defense
+    return [self playersClosestToBall][0];
+    
+}
+
 -(NSArray*)playersInShootingRange{
     NSArray *players = [self playersClosestToGoal];
     NSMutableArray * retPlayers;
