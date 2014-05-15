@@ -13,7 +13,7 @@
 
 -(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(S2t)size {
     
-    self = [super initWithTexture:nil color:nil size:size];
+    self = [super initWithTexture:texture color:color size:size];
     
     if (self) {
 
@@ -83,7 +83,7 @@
         
         _model = model;
         
-        self.color = V2YELLOW;
+        self.color = [self colorForCategory];
 //        if ([model validatedSelectionSetForPlayer:_delegate.selectedPlayer]){
 //            self.color = [self colorForCategory];
 //        }
@@ -106,30 +106,29 @@
 //        default: return NKWHITE;
 //            break;
 //    }
-    return V2YELLOW;
+//    return V2YELLOW;
+    return NKWHITE;
 }
 
 -(void)showLabels{
-    NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
+    NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Helvetica"];
     
-    text.fontSize = 20;
-    text.fontColor = V2ORANGE;
-    [text setSize:S2Make(500,100)];
-    //[text setZPosition:1];
-    [text setText:[NSString stringWithFormat:@"%d", self.model.energyCost]];
-    //[text setText:@"test"];
-    [text setPosition:P2Make(0, 5)];
+    text.fontSize = 16;
+    text.fontColor = V2YELLOW;
+    [text setSize:S2Make(w,100)];
+    [text setText:[self.model descriptionForCard]];
+    [text setPosition:P2Make(0, h*.075)];
     [self addChild:text];
     
     
     text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
     text.fontSize = 16;
-    text.fontColor = V2ORANGE;
-    [text setSize:S2Make(500,100)];
-    [text setText:[self.model descriptionForCard]];
-    [text setPosition:P2Make(0, -100)];
-    //[text setZPosition:2];
+    text.fontColor = V2YELLOW;
+    [text setSize:S2Make(w,100)];
+    [text setText:[NSString stringWithFormat:@"%d", self.model.energyCost]];
 
+    [text setPosition:P2Make(0, -h*.7)];
+    //[text setZPosition:2];
     [self addChild:text];
 }
 
@@ -182,7 +181,7 @@
 -(void)showLocked {
     if (![self childNodeWithName:@"lock"]) {
         
-    NKSpriteNode *lock =  [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"lock-4"] color:self.color size:S2Make(self.size.width*.5, self.size.width*.5)];
+    NKSpriteNode *lock =  [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"lock-4"] color:V2BLUE size:S2Make(self.size.width*.5, self.size.width*.5)];
     [self addChild:lock];
     [lock setPosition:P2Make(w *.25, h*-.25)];
     lock.name = @"lock";
@@ -227,30 +226,36 @@
 }
 
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-
-        if (self.position.y < cachedPosition.y - (h*.125)) {
-            [self toggleLocked];
-            [self runAction:[NKAction moveTo:cachedPosition duration:FAST_ANIM_DUR]];
-        }
-        else {
+    
+    if (_endTurnCard) {
+        NSLog(@"end turn pressed !!");
+        [_delegate pressedEndTurn];
+        return false;
+    }
+    
+    if (self.position.y < cachedPosition.y - (h*.125)) {
+        [self toggleLocked];
+        [self runAction:[NKAction moveTo:cachedPosition duration:FAST_ANIM_DUR]];
+    }
+    else {
+        
+        if (!_model.locked) {
             
-            if (!_model.locked) {
-                
-                numtouches++;
-                if (numtouches > 1) {
-                    numtouches = 0;
-                    [_window cardDoubleTap:self];
-                }
-                else {
-                    [_window cardTouchEnded:self atPoint:location];
-                    [(GameScene*)self.scene playSoundWithKey:@"cardTap"];
-                }
-                
+            numtouches++;
+            if (numtouches > 1) {
+                numtouches = 0;
+                [_window cardDoubleTap:self];
             }
             else {
-                [(GameScene*)self.scene playSoundWithKey:@"badTouch"];
+                [_window cardTouchEnded:self atPoint:location];
+                [(GameScene*)self.scene playSoundWithKey:@"cardTap"];
             }
+            
         }
+        else {
+            [(GameScene*)self.scene playSoundWithKey:@"badTouch"];
+        }
+    }
     
     return NKTouchIsFirstResponder;
 }

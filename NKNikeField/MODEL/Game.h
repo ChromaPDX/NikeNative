@@ -134,6 +134,7 @@ typedef enum RTMessageType {
 @property (nonatomic, strong) GameSequence *currentEventSequence;
 
 // MAIN UX INTERACTION
+@property (nonatomic, weak) Manager *selectedManager;
 @property (nonatomic, weak) Player *selectedPlayer;
 @property (nonatomic, weak) Card *selectedCard;
 @property (nonatomic, weak) BoardLocation *selectedLocation;
@@ -179,6 +180,7 @@ typedef enum RTMessageType {
 -(void)endGame;
 -(void)endGameWithWinner:(BOOL)victory;
 -(BOOL)canDraw;
+-(void)pressedEndTurn;
 
 // RT PROTOCOL
 -(void)fetchThisTurnSequences;

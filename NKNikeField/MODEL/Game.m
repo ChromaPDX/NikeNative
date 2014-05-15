@@ -872,27 +872,17 @@
     
 }
 
--(void)forceEndTurnForAI {
-    for (Player*p in _opponent.players.inGame) {
+-(void)pressedEndTurn {
+    for (Player*p in _selectedManager.players.inGame) {
         p.used = true;
     }
-    [self recordSequence:[self endTurnSequenceForManager:_opponent] withCompletionBlock:^{
+    [self recordSequence:[self endTurnSequenceForManager:_selectedManager] withCompletionBlock:^{
         GameSequence* passTurn = [GameSequence sequence];
-        [self addStartTurnEventsToSequence:passTurn forManager:_me];
+        [self addStartTurnEventsToSequence:passTurn forManager:_selectedManager.opponent];
         [self performSequence:passTurn record:true animate:true];
     }];
 }
 
--(void)forceEndTurnForPlayer {
-    for (Player*p in _me.players.inGame) {
-        p.used = true;
-    }
-    [self recordSequence:[self endTurnSequenceForManager:_me] withCompletionBlock:^{
-        GameSequence* passTurn = [GameSequence sequence];
-        [self addStartTurnEventsToSequence:passTurn forManager:_opponent];
-        [self performSequence:passTurn record:true animate:true];
-    }];
-}
 
 #pragma mark - PERFORM EVENT
 
@@ -912,6 +902,7 @@
     
     if (event.type == kEventStartTurn){
         event.manager.myTurn = true;
+        _selectedManager = event.manager;
         for (Player* p in event.manager.players.inGame) {
             if(p.effects[Card_Freeze]){
                 [p.effects removeObjectForKey:Card_Freeze];
@@ -954,7 +945,7 @@
 
         Card*c;
         
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 1; i++){
             if (event.manager.allCardsInHand.count < 5) {
                 [event.manager.moveDeck turnOverNextCardForEvent:event];
             }
@@ -969,7 +960,7 @@
             }
         }
         
-        for (int i = 0; i < 2; i++){
+        for (int i = 0; i < 3; i++){
             
             if (event.manager.allCardsInHand.count < 5) {
 
@@ -1278,7 +1269,8 @@
             [event.manager.game.blockedBoardLocations addObject:event.location];
         }
         else if (event.type == kEventDeRez){  //  DEREZ
-            [event.playerReceiving.effects setObject:@1 forKey:Card_DeRez];
+            //[event.playerReceiving.effects setObject:@1 forKey:Card_DeRez];
+            [event.playerReceiving discard];
         }
         
         else if (event.type == kEventNewDeal){  //  NEWDEAL
@@ -1420,7 +1412,7 @@
     }
     
     NSLog(@"AI failed to select a player");
-    
+    [self pressedEndTurn];
 }
 
 -(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
@@ -1561,6 +1553,9 @@
         
     }
     NSLog(@"AI failed to select a card");
+    _selectedPlayer.used = true;
+    [self AIChoosePlayerForManager:_selectedManager];
+    //[self pressedEndTurn];
 }
 
 -(void)AIChooseLocationForCard:(Card*) c { // called from UI after card has been selected

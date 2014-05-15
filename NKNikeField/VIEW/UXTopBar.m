@@ -160,7 +160,7 @@
 }
 
 -(void)sortPlayers {
-    for (int i = 0; i < 3; i++){
+    for (int i = 0; i < _playerSprites.count; i++){
         [(PlayerSprite*)_playerSprites[i] setPosition:P2Make(110 + i*(cardSize.width+25), 0)];
     }
 }

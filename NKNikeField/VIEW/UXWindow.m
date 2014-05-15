@@ -360,6 +360,14 @@
             [self addCard:c];
         }
         
+        CardSprite* endTurnButton = [[CardSprite alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Icon_SpecGeneral"] color:NKWHITE size:cardSize];
+        endTurnButton.delegate = self.delegate.delegate;
+        endTurnButton.window = _delegate;
+        endTurnButton.endTurnCard = true;
+        
+        [_myCards addObject:endTurnButton];
+        [self addChild:endTurnButton];
+        
 //        for (Card* c in m.moveDeck.inHand) {
 //            [self addCard:c];
 //        }

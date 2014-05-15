@@ -395,6 +395,9 @@ float PARTICLE_SCALE;
     
 }
 
+-(void)pressedEndTurn {
+    [_game pressedEndTurn];
+}
 #pragma mark - AI selection
 
 -(void)AISelectedPlayer:(Player *)selectedPlayer {
@@ -796,6 +799,15 @@ float PARTICLE_SCALE;
         
         
         
+    }
+#pragma mark - Special Cards
+    else if (event.type == kEventDeRez){
+        PlayerSprite* p = [playerSprites objectForKey:event.playerReceiving];
+        
+        [self removePlayerFromBoard:p animated:YES withCompletionBlock:^{
+            block();
+            
+        }];
     }
     
     else if (event.type == kEventAddSpecial) {

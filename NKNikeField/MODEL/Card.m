@@ -59,7 +59,10 @@
     _kickCategory = CardKickCategoryNull;
     _moveCategory = CardMoveCategoryNull;
     _challengeCategory = CardChallengeCategoryNull;
-    _specialTypeCategory = rand() % 7 + 1;
+    
+    //_specialTypeCategory = rand() % 7 + 1;
+    _specialTypeCategory = CardSpecialCategoryDeRez;
+    
     switch (_specialTypeCategory) {
         case CardSpecialCategoryFreeze:
             self.specialCategory = CardCategoryGeneral;
@@ -286,7 +289,7 @@
         fileName = [NSString stringWithFormat:@"Card_Icon_%@", [self thumbnailImageString]];
     }
     else{
-        fileName = [NSString stringWithFormat:@"Card_Icon_%@_L%d", [self thumbnailImageString], _level];
+        fileName = [NSString stringWithFormat:@"Card_Icon_Reg%@", [self thumbnailImageString]];
     }
     return fileName;
 }
