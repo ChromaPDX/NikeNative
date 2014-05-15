@@ -7,7 +7,7 @@
 //
 
 #import "ModelHeaders.h"
-
+#import "NikeNodeHeaders.h"
 
 @interface Card (){
 }
@@ -60,8 +60,8 @@
     _moveCategory = CardMoveCategoryNull;
     _challengeCategory = CardChallengeCategoryNull;
     
-    //_specialTypeCategory = rand() % 7 + 1;
-    _specialTypeCategory = CardSpecialCategoryFreeze;
+    _specialTypeCategory = rand() % 7 + 1;
+    //_specialTypeCategory = CardSpecialCategoryBlock;
     
     switch (_specialTypeCategory) {
         case CardSpecialCategoryFreeze:
@@ -428,6 +428,14 @@
 -(NSArray*)selectionSetForPlayer:(Player*)p {
     if (!p) {
          NSLog(@"selectionSet with no player");
+        return nil;
+    }
+    
+    if (p.manager.energy < self.energyCost) {
+        if (!p.manager.isAI) {
+            NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];
+            [self.game.gameScene presentAlert:test animated:true];
+        }
         return nil;
     }
     

@@ -1262,7 +1262,7 @@
         }
         else if (event.type == kEventSuccubus){  //  SUCCUBUS
             event.manager.opponent.energy -= 100;
-            event.manager.energy += 50;
+            event.manager.energy += 150;
             
         }
         else if (event.type == kEventBlock){  //  BLOCK
@@ -1579,7 +1579,7 @@
 
 -(bool)AICanUseCard:(Card*)card{
     if (card && card.AIShouldUse) {
-        if ([card validatedSelectionSetForPlayer:_selectedPlayer] && card.deck.manager.energy >= card.energyCost) {
+        if ([card validatedSelectionSetForPlayer:_selectedPlayer]) {
             return true;
         }
         else {
