@@ -903,7 +903,20 @@
     if (event.type == kEventStartTurn){
         event.manager.myTurn = true;
         _selectedManager = event.manager;
+        
         for (Player* p in event.manager.players.inGame) {
+            
+            if (p.effects[Card_NoLegs]){
+                int noLegs = [p.effects[Card_NoLegs] intValue];
+                
+                if(noLegs <= 0){
+                    [p.effects removeObjectForKey:Card_NoLegs];
+                }
+                else{
+                    [p.effects setObject:@(noLegs--) forKey:Card_NoLegs];
+                }
+            }
+            
             if(p.effects[Card_Freeze]){
                 [p.effects removeObjectForKey:Card_Freeze];
             }
@@ -1077,21 +1090,13 @@
     else if (event.type == kEventPlayCard) {
         
         if (event.card) {
-            if(event.manager.energy < event.card.energyCost){
-                NKAlertSprite *alert = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Notification_MoreE.png"] color:NKWHITE size:_gameScene.size];
-                [alert setZPosition:150];
-                [alert setScale:.88];
-                [_gameScene presentAlert:alert animated:true];
-                event.type = kNullAction;
-                //[event discard]
-            }
-            else if(event.playerPerforming) {
+
+            if(event.playerPerforming) {
                 event.playerPerforming.used = true;
             }
-            else{
                 event.manager.energy -= event.card.energyCost;
                 [event.card discard];
-            }
+            
         }
         
     }
@@ -1268,7 +1273,7 @@
             event.playerReceiving.used = TRUE;
         }
         else if (event.type == kEventNoLegs){  //  NO LEGS
-            [event.playerReceiving.effects setObject:@3 forKey:Card_NoLegs];
+            [event.playerReceiving.effects setObject:@2 forKey:Card_NoLegs];
         }
         else if (event.type == kEventSuccubus){  //  SUCCUBUS
             event.manager.opponent.energy -= 100;
@@ -1313,7 +1318,8 @@
            // event.playerPerforming.manager.opponent.preditiveAnalysis = TRUE;
             
             for(Player *p in event.playerPerforming.manager.opponent.players.allCards){
-                Card *challengeCard = p.challengeDeck.allCards[0];
+                
+                //Card *challengeCard = p.challengeDeck.allCards[0];
                 //NSLog(@"Challenge Card %@ SelectionSet = %@", challengeCard, [challengeCard selectionSet]);
                 
                // [_gameScene showCardPath:[challengeCard selectionSet]];
@@ -1451,6 +1457,8 @@
 
 -(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
 
+     NSLog(@"AI: %@ : is choosing a card", p.name);
+    
     //Card* moveCard = p.manager.moveDeck.inHand[0];
     
     Card* moveCard = [p.manager cardInHandOfCategory:CardCategoryMove];
@@ -1459,6 +1467,7 @@
     Card* specialCard = [p.manager cardInHandOfCategory:CardCategorySpecial];
     
     // CHECK FOR LOOSE BALL
+    
     if(!_ball.enchantee){
         if([self AICanUseCard:moveCard]){
             moveCard.aiActionType = MOVE_TO_BALL;
@@ -1468,8 +1477,8 @@
     }
     
     if([self AICanUseCard:specialCard]){
-        [_gameScene AISelectedCard:specialCard];
         specialCard.aiActionType = SPECIAL_CARD;
+        [_gameScene AISelectedCard:specialCard];
         return;
     }
 
@@ -1581,6 +1590,7 @@
         }
         
     }
+    
     NSLog(@"AI failed to select a card");
     _selectedPlayer.used = true;
     [self AIChoosePlayerForManager:_selectedManager];
@@ -1656,11 +1666,6 @@
                 [_gameScene AISelectedLocation:newLoc];
                 return;
             }
-            else {
-                NSLog(@"AI HAS NO VALID MOVE: STAY");
-                [_gameScene AISelectedLocation:_selectedPlayer.location];
-                return;
-            }
             break;
         case MOVE_TO_GOAL_IN_PASS_RANGE:
             NSLog(@"*********************************************AI: MOVE TO GOAL IN PASS RANGE");
@@ -1693,8 +1698,8 @@
                 NSLog(@"pass to player: %@", passToPlayer.name);
                 if ([[c validatedSelectionSetForPlayer:_selectedPlayer] containsObject:passToPlayer.location]) {
                     [_gameScene AISelectedLocation:passToPlayer.location];
+                    return;
                 }
-                return;
             }
             break;
             
@@ -1708,15 +1713,13 @@
             }
             
             NSLog(@"AI HAS NO VALID PASS: TRY A MOVE CARD");
+            c.AIShouldUse = false;
             [_gameScene AISelectedCard:_selectedPlayer.manager.moveDeck.inHand[0]];
             return;
-            
-            break;
         case CHALLENGE:
             NSLog(@"*********************************************AI: CHALLENGE");
             [_gameScene AISelectedLocation: _ball.location];
             return;
-            break;
         case MOVE_TO_CHALLENGE:
             NSLog(@"*********************************************AI: MOVE TO CHALLENGE");
             
@@ -1750,6 +1753,7 @@
             }
             
             break;
+            
         case SPECIAL_CARD:
             
             //@Eric let's eventually move all of this targeting to the card object, maybe as a block request or something . . .
@@ -1775,20 +1779,13 @@
                 default:
                     break;
             }
-            
-//            pathToBall = [[c selectionSetForPlayer:p] mutableCopy];
-//            if(pathToBall && [pathToBall count]){
-//            [_gameScene AISelectedLocation:pathToBall[0]];
-            
-            
             break;
     }
 
     NSLog(@"AI HAS NO VALID CARD LOCATION: Try another card");
     c.AIShouldUse = false;
     [self AIChooseCardForPlayer:_selectedPlayer];
-    //[_gameScene AISelectedLocation:_selectedPlayer.location];
-    return;
+    
 }
 
 #pragma mark - REPLAY / TURN

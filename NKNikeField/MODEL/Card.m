@@ -436,6 +436,7 @@
             NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];
             [self.game.gameScene presentAlert:test animated:true];
         }
+        NSLog(@"too much energy required");
         return nil;
     }
     
@@ -444,7 +445,8 @@
     
     if (self.category == CardCategoryKick) {
         
-//        if (self.enchantee.effects[Card_NoLegs]){
+        if (self.enchantee.effects[Card_NoLegs]){
+            return nil;
 //            int noLegs = [self.enchantee.effects[Card_NoLegs] intValue];
 //            
 //            if(noLegs <= 0){
@@ -454,7 +456,7 @@
 //            else{
 //                [self.enchantee.effects setObject:@(noLegs--) forKey:Card_NoLegs];
 //            }
-//        }
+        }
         
         if (!p.ball) {
             return nil;

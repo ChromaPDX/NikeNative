@@ -485,6 +485,10 @@ float PARTICLE_SCALE;
 
 -(void)AISelectedLocation:(BoardLocation*)selectedLocation {
     
+    if (!selectedLocation) {
+        NSLog(@"AI SELECTED NIL LOCATION, BETTER FIX THAT HANG !!");
+    }
+    
     BoardTile *selectedBoardTile = [_gameTiles objectForKey:selectedLocation];
     
     if (_selectedCard) {
@@ -849,9 +853,6 @@ float PARTICLE_SCALE;
     }
     else if (event.type == kEventBlock){
         block();
-//        [self addPlayerToBoardScene:event.playerReceiving animated:true withCompletionBlock:^{
-//            block();
-//        }];
     }
     
     else if (event.type == kEventAddSpecial) {

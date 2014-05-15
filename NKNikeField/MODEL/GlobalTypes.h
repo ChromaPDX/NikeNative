@@ -59,9 +59,9 @@
 #define BALL_SCALE_BIG .5
 #define BALL_SCALE_SMALL .25
 
-#define DEFAULT_START_ENERGY 100
+#define DEFAULT_START_ENERGY 1000
 
-#define debugUI 1
+//#define debugUI 1
 
 #ifdef debugUI
 #define UILog NSLog
