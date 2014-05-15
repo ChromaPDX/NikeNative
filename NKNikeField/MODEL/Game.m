@@ -1278,7 +1278,9 @@
             [event.playerReceiving.effects setObject:@2 forKey:Card_NoLegs];
         }
         else if (event.type == kEventSuccubus){  //  SUCCUBUS
+            
             event.manager.opponent.energy -= 100;
+            if(event.manager.opponent.energy < 0) event.manager.opponent.energy = 0;
             event.manager.energy += 150;
             
         }
