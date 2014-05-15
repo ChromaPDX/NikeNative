@@ -913,7 +913,7 @@
                     [p.effects removeObjectForKey:Card_NoLegs];
                 }
                 else{
-                    [p.effects setObject:@(noLegs--) forKey:Card_NoLegs];
+                    [p.effects setObject:@(noLegs-1) forKey:Card_NoLegs];
                 }
             }
             
