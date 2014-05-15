@@ -68,9 +68,10 @@ enum AI_ACTION_TYPE {
 @property (nonatomic) NSInteger energyEarn;
 @property (nonatomic) NSInteger level;
 @property (nonatomic) NSInteger range;
-@property (nonatomic) bool locked;
 
+@property (nonatomic) bool offensive;
 @property (nonatomic) bool AIShouldUse;
+@property (nonatomic) bool locked;
 
 @property (nonatomic, strong) BoardLocation *location;
 @property (nonatomic,strong) Abilities *abilities;

@@ -140,8 +140,8 @@
 -(V3t)s2w:(P2t)ScreenXY {
     V3t CameraXYZ;
     
-    CameraXYZ.x = ((ScreenXY.x * 4.) / self.scene.size.width) - 1.;
-    CameraXYZ.y = 1. - ((ScreenXY.y * 4.) / self.scene.size.height);
+    CameraXYZ.x = ((ScreenXY.x * 2.) / self.scene.size.width) - 1.;
+    CameraXYZ.y = ((ScreenXY.y * 2.) / self.scene.size.height)- 1.;
     CameraXYZ.z = self.position3d.z;
     
     //CameraXYZ.z = ScreenXYZ.z;
@@ -176,8 +176,8 @@
 -(P2t)screenPoint:(P2t)p InNode:(NKNode*)node {
     
     V3t CameraXYZ;
-    CameraXYZ.x = 1.0f * (p.x - 0) / self.scene.size.width - 1.0f;
-    CameraXYZ.y = 1.0f - 1.0f*(p.y - 0) / self.scene.size.height;
+    CameraXYZ.x = p.x / self.scene.size.width - 1.0f;
+    CameraXYZ.y = p.y / self.scene.size.height;
     //CameraXYZ.z = ScreenXYZ.z;
     
     //get inverse camera matrix

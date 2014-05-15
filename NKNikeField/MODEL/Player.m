@@ -509,7 +509,10 @@
     if(!selSet)return retPlayers;
     for(Player *p in players){
         if([selSet containsObject:p.location]){
-            [retPlayers addObject:p];
+            if ([p.location distanceToGoalForManager:self.manager neighborhoodType:NeighborhoodTypeQueen] < [self.location distanceToGoalForManager:self.manager neighborhoodType:NeighborhoodTypeQueen]) {
+                 // Filtered for closer to goal
+                 [retPlayers addObject:p];
+            }
         }
     }
     return retPlayers;

@@ -6,6 +6,6 @@
 }
 
 - (instancetype)init;
-- (void)setFill:(float)fill;
+- (void)setFill:(float)fill animated:(bool)animated;
 
 @end

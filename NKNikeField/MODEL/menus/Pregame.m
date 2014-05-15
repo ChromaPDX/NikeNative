@@ -40,6 +40,11 @@
 
         
         [self addChild:fuelBar];
+        // @Eric - add as child before setFill, needs parent for animation otherwise doesn't get animation updates.
+        // also we need a way to snap and animate so I added 'animated' boolean.
+        [fuelBar setFill:0 animated:false];
+        [fuelBar setFill:1 animated:true];
+        
         
         NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
 
@@ -105,7 +110,7 @@
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
-    CGRect startButtonRect = CGRectMake(101, 450, 120, 50);
+    CGRect startButtonRect = CGRectMake(201, 150, 220, 100);
     CGPoint point = CGPointMake(location.x, location.y);
     if(CGRectContainsPoint(startButtonRect, point)){
         NSLog(@"start button pressed, starting game...");

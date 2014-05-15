@@ -42,6 +42,8 @@
 	<true/>
 	<key>Nike</key>
 	<dict>
+		<key>logicSuccess</key>
+		<string>${PRODUCT_NAME}://auth/success</string>
 		<key>appId</key>
 		<string>com.chroma.jumpbots</string>
 		<key>clientId</key>

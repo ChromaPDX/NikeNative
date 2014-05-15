@@ -65,9 +65,11 @@
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
-    R4t syncButtonRect = R4Make(101, 301, 120, 50);
-    R4t startButtonRect = R4Make(101, 367, 120, 50);
-    R4t HiddenAIButtonRect = R4Make(116, 151, 50, 50);
+    R4t syncButtonRect = R4Make(101*2, 500, 120*2, 100);
+    R4t startButtonRect = R4Make(101*2, 300, 120*2, 100);
+    
+    R4t HiddenAIButtonRect = R4Make(116*2, 700, 50*2, 200);
+    
     if(R4ContainsPoint(syncButtonRect, location)){
         NSLog(@"*NSYNC!");
         NikeViewController* sync = [[NikeViewController alloc]init];

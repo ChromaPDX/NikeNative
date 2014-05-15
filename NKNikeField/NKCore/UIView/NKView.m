@@ -106,6 +106,7 @@ GLfloat gCubeVertexData[216] =
         
         if (NK_GL_VERSION == 2){
         context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+        [context setMultiThreaded:true];
         }
         else {
            context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
@@ -133,10 +134,37 @@ GLfloat gCubeVertexData[216] =
         }
         
         [NKTextureManager sharedInstance];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(stopAnimation)
+                                                     name:UIApplicationWillTerminateNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(stopAnimation)
+                                                     name:UIApplicationWillResignActiveNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(stopAnimation)
+                                                     name:UIApplicationDidEnterBackgroundNotification
+                                                   object:nil];
+        
+//        [[NSNotificationCenter defaultCenter] addObserver:self
+//                                                 selector:@selector(startAnimation)
+//                                                     name:UIApplicationWillEnterForegroundNotification
+//                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(startAnimation)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];
+        
     }
     
     return self;
 }
+
 
 //-(id)initGLES
 //{
@@ -322,19 +350,32 @@ static const GLubyte Indices[] = {
 - (void)startAnimation
 
 {
-    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawView)];
-    [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+    NSLog(@"Start animating");
+    if (!animating) {
+        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawView)];
+        [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+        
+        lastTime = CFAbsoluteTimeGetCurrent();
+        animating = true;
+    }
+   
 
-    lastTime = CFAbsoluteTimeGetCurrent();
 }
 
 - (void)stopAnimation
 {
-    [_displayLink invalidate];
+     NSLog(@"Stop animating");
+    if (animating) {
+       
+        [_displayLink invalidate];
+        animating = false;
+    }
+
 }
 
 static int rotate = 0;
 // Updates the OpenGL view when the timer fires
+
 - (void)drawView
 {
     F1t dt = (CFAbsoluteTimeGetCurrent() - lastTime) * 1000.;
@@ -344,6 +385,7 @@ static int rotate = 0;
     
 	// Make sure that you are drawing to the current context
 	[EAGLContext setCurrentContext:context];
+
     
     framesSinceLastHit++;
     if (framesSinceLastHit > drawHitEveryXFrames) {
@@ -482,26 +524,30 @@ static int rotate = 0;
 	context = nil;
 }
 
+-(P2t)uiPointToNodePoint:(CGPoint)p {
+    P2t size = self.scene.size;
+    return P2Make(p.x*2, size.height - (p.y*2));
+}
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 
     
     for (UITouch *t in touches) {
-        [_scene touchDown:P2MakeCG([t locationInView:self]) id:0];
+        [_scene touchDown:[self uiPointToNodePoint:[t locationInView:self]] id:0];
     }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 
     for (UITouch *t in touches) {
-        [_scene touchMoved:P2MakeCG([t locationInView:self]) id:0];
+        [_scene touchMoved:[self uiPointToNodePoint:[t locationInView:self]] id:0];
     }
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 
-    
     for (UITouch *t in touches) {
-        [_scene touchUp:P2MakeCG([t locationInView:self]) id:0];
+        [_scene touchUp:[self uiPointToNodePoint:[t locationInView:self]] id:0];
     }
     
 }

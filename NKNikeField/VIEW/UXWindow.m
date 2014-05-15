@@ -127,6 +127,10 @@
     
 }
 
+-(void)playCard:(Card *)card {
+    [_managerHand playCard:card];
+}
+
 -(CardSprite*)spriteForCard:(Card*)c {
     
     ManagerHand *hand = _managerHand; //[_managerHands objectForKey:c.deck.player];
@@ -196,11 +200,13 @@
         big.name = @"BIG CARD SCROLLER";
         
         for (CardSprite *cs in _managerHand.myCards) {
-            NKScrollNode* node = [[NKScrollNode alloc] initWithParent:_managerHand.bigCards autoSizePct:(2./_managerHand.myCards.count)];
+            if (cs.model) {
+            NKScrollNode* node = [[NKScrollNode alloc] initWithParent:_managerHand.bigCards autoSizePct:(.5)];
             [node setTexture:[NKTexture textureWithImageNamed:[cs.model fileNameForBigCard]]];
             [node setColor:NKWHITE];
             [big addCard:node];
             node.name = [cs.model fileNameForBigCard];
+            }
            // node.userInteractionEnabled = false;
         }
         
@@ -288,13 +294,16 @@
 -(void)refreshCardsForManager:(Manager *)m WithCompletionBlock:(void (^)())block {
     
     if (!_managerHand) {
+
+        _managerHand = [[ManagerHand alloc] initWithManager:m delegate:self];
         
-    _managerHand = [[ManagerHand alloc] initWithManager:m delegate:self];
-    
-    [self addChild:_managerHand];
-    
-    NSLog(@"init manager hand %d", _managerHand.myCards.count);
-    
+        [self addChild:_managerHand];
+        
+//        [_managerHand setAlpha:0];
+//        [_managerHand runAction:[NKAction fadeAlphaTo:1. duration:.5]];
+        
+        NSLog(@"init manager hand %d", _managerHand.myCards.count);
+        
     }
     
     if (_selectedCard) {
@@ -357,27 +366,12 @@
             [self addCard:c];
         }
         
-//        for (Card* c in m.moveDeck.inHand) {
-//            [self addCard:c];
-//        }
-//        
-//        if (m.hasPossesion){
-//            for (Card* c in p.kickDeck.inHand) {
-//                [self addCard:c];
-//            }
-//        }
-//        else {
-//            for (Card* c in p.challengeDeck.inHand) {
-//                [self addCard:c];
-//            }
-//        }
-//        
-//        for (Card* c in p.specialDeck.inHand) {
-//            [self addCard:c];
-//        }
-        
-        
-        //[_uxWindow sortMyCards:YES WithCompletionBlock:nil];
+        if (!m.isAI) {
+               [self tempAddEndTurnCard];
+        }
+     
+//        [self setAlpha:0];
+//        [self runAction:[NKAction fadeAlphaTo:1. duration:FAST_ANIM_DUR]];
         
     }
     else {
@@ -385,6 +379,40 @@
     }
     
     return self;
+    
+}
+
+-(void)tempAddEndTurnCard {
+    
+    CardSprite* endTurnButton = [[CardSprite alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Icon_SpecGeneral"] color:NKWHITE size:cardSize];
+    endTurnButton.delegate = self.delegate.delegate;
+    endTurnButton.window = _delegate;
+    endTurnButton.endTurnCard = true;
+    
+    [_myCards addObject:endTurnButton];
+    [self addChild:endTurnButton];
+    
+    [endTurnButton setPosition3d:V3Make(w,0,0)];
+    
+    NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
+    
+    text.fontSize = 16;
+    text.fontColor = V2YELLOW;
+    [text setSize:S2Make(cardSize.width,100)];
+    [text setText:@"END"];
+    [text setPosition:P2Make(0, cardSize.height*.075)];
+    [endTurnButton addChild:text];
+    
+    
+    text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
+    text.fontSize = 16;
+    text.fontColor = V2YELLOW;
+    [text setSize:S2Make(cardSize.width,100)];
+    [text setText:@"TURN"];
+    
+    [text setPosition:P2Make(0, -cardSize.height*.7)];
+    //[text setZPosition:2];
+    [endTurnButton addChild:text];
     
 }
 
@@ -432,27 +460,38 @@
 
 }
 
+-(void)playCard:(Card *)card{
+    CardSprite *cardToRemove = [_cardSprites objectForKey:card];
+    [_myCards removeObject:cardToRemove];
+    [self sortCardsAnimated:true WithCompletionBlock:^{
+        
+    }];
+}
+
 -(void)shuffleAroundCard:(Card*)card {
-    
     CardSprite *cs = [_cardSprites objectForKey:card];
     [self shuffleAroundCardSprite:cs];
 }
 
 -(void)shuffleAroundCardSprite:(CardSprite *)card {
 
-    float offSet = cardSize.width * -2.2;
+    float offSet = -cardSize.width * 1.1 * (_myCards.count/2) - (cardSize.width * .1);
+    
+    if (_myCards.count % 2 == 0) {
+        offSet += cardSize.width * .55;
+    }
+    
     float nscale = 1.;
     
     for (int i = 0; i < _myCards.count; i++) {
         
         CardSprite *cs = _myCards[i];
         
-        [cs setAlpha:1.];
+        //[cs setAlpha:1.];
         cs.order = i;
         
         
         if (cs.order == card.order){
-            
             
             offSet += cardSize.width * .1;
             cs.origin = P2Make(offSet, cardSize.height*.1);
@@ -488,6 +527,14 @@
     //        [_delegate.game sendRTPacketWithType:RTMessageSortCards point:nil];
     //    }
     
+    NSLog(@"sorting %d cards",_myCards.count);
+    
+    F1t left = cardSize.width * 1.1 * (_myCards.count/2);
+    
+    if (_myCards.count % 2 == 0) {
+        left -= cardSize.width * .55;
+    }
+
     for (int i = 0; i < _myCards.count; i++) {
         
         CardSprite *cs = _myCards[i];
@@ -498,10 +545,11 @@
             [cs setHasShadow:NO];
         }
         
-        [cs setAlpha:1.];
+       // [cs setAlpha:1.];
+        
         
         //cs.origin = P2Make(((cardSize.width*1.1*((int)(i-(2-cardSize))) ) * i),0);
-        cs.origin = P2Make(cardSize.width * 1.1 * (i-2), 0);
+        cs.origin = P2Make(cardSize.width * 1.1 * i - left, 0);
         
         if (animated) {
             
@@ -573,7 +621,7 @@
     [_cards addObject:card];
     [self addChild:card];
     
-    card.userInteractionEnabled = true;
+   // card.userInteractionEnabled = true;
 }
 
 -(void)scrollToChild:(int)child duration:(F1t)duration {
@@ -587,7 +635,9 @@
 }
 
 -(void)shouldBeginRestitution {
-    [super shouldBeginRestitution];
+    ManagerHand *hand = self.delegate;
+    
+    [hand shuffleAroundCardSprite:[hand.myCards objectAtIndex:[self.children indexOfObject:self.selectedChild]]];
 }
 
 

@@ -39,7 +39,7 @@
     int framesSinceLastHit;
 
 	BOOL controllerSetup;
-    
+    bool animating;
     
     // 2.0 stuff
     GLuint _program;

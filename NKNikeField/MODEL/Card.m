@@ -59,7 +59,10 @@
     _kickCategory = CardKickCategoryNull;
     _moveCategory = CardMoveCategoryNull;
     _challengeCategory = CardChallengeCategoryNull;
-    _specialTypeCategory = rand() % 7 + 1;
+    
+    //_specialTypeCategory = rand() % 7 + 1;
+    _specialTypeCategory = CardSpecialCategoryDeRez;
+    
     switch (_specialTypeCategory) {
         case CardSpecialCategoryFreeze:
             self.specialCategory = CardCategoryGeneral;
@@ -286,7 +289,7 @@
         fileName = [NSString stringWithFormat:@"Card_Icon_%@", [self thumbnailImageString]];
     }
     else{
-        fileName = [NSString stringWithFormat:@"Card_Icon_%@_L%d", [self thumbnailImageString], _level];
+        fileName = [NSString stringWithFormat:@"Card_Icon_Reg%@", [self thumbnailImageString]];
     }
     return fileName;
 }
@@ -568,7 +571,7 @@
             case CardSpecialCategoryBlock:
                 accessible = [[self.game allBoardLocations] mutableCopy];
                 if(p.location){
-                [accessible removeObject:p.location];
+                    [accessible removeObject:p.location];
                 }
                 else{
                     NSLog(@"**ERROR no location for enchantee");
@@ -589,7 +592,7 @@
 
     }
     else{
-        accessible = NULL;
+        accessible = nil;
     }
     
     return accessible;
@@ -604,6 +607,9 @@
     
     NSArray* accessible = [self selectionSetForPlayer:p];
     
+    if (!accessible) {
+        return nil;
+    }
     // IF MOVING / KICK WE'RE DONE VALIDATING
     
     if (self.category == CardCategoryMove || self.category == CardCategoryKick || self.category == CardCategorySpecial){

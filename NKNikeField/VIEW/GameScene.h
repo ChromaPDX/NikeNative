@@ -136,4 +136,6 @@
 
 -(void)playerSpriteDidSelectPlayer:(Player*)player;
 
+-(void)pressedEndTurn;
+
 @end

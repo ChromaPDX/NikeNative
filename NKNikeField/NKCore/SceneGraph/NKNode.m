@@ -607,34 +607,34 @@
     // OLD METHOD
     // ADDING LOCAL TRANSFORMATION
     
-//    P2t p = location;
-//    //P2tp = [self transformedPoint:location];
-//    
-//    //NSLog(@"world coords: %f %f %f", p.x, p.y, p.z);
-//    
-//    R4t r = [self getWorldFrame];
-//    
-//    //bool withinArea = false;
-//    if ( p.x > r.x && p.x < r.x + r.size.width && p.y > r.y && p.y < r.y + r.size.height)
-//    {
-//       // [self logCoords];
-//        return true;
-//    }
-//    return false;
+    P2t p = location;
+    //P2tp = [self transformedPoint:location];
     
-    P2t p = [self inverseProjectedPoint:location];
+    //NSLog(@"world coords: %f %f %f", p.x, p.y, p.z);
     
-    V3t globalPos = [self getGlobalPosition];
-    
-    R4t r = R4Make(globalPos.x - _size3d.x * _anchorPoint3d.x, globalPos.y - _size3d.y *_anchorPoint3d.y, _size3d.x, _size3d.y);
+    R4t r = [self getWorldFrame];
     
     //bool withinArea = false;
     if ( p.x > r.x && p.x < r.x + r.size.width && p.y > r.y && p.y < r.y + r.size.height)
     {
-        // [self logCoords];
+       // [self logCoords];
         return true;
     }
     return false;
+    
+//    P2t p = [self inverseProjectedPoint:location];
+//    
+//    V3t globalPos = [self getGlobalPosition];
+//    
+//    R4t r = R4Make(globalPos.x - _size3d.x * _anchorPoint3d.x, globalPos.y - _size3d.y *_anchorPoint3d.y, _size3d.x, _size3d.y);
+//    
+//    //bool withinArea = false;
+//    if ( p.x > r.x && p.x < r.x + r.size.width && p.y > r.y && p.y < r.y + r.size.height)
+//    {
+//        // [self logCoords];
+//        return true;
+//    }
+//    return false;
     
 }
 
@@ -982,26 +982,29 @@ void ofNode::resetTransform() {
 
 #pragma mark - ALPHA / BLEND
 
--(void)setAlpha:(F1t)alpha {
-    intAlpha = alpha;
-    _alpha = alpha;
+-(void)setTransparency:(F1t)transparency { // just node
+    intAlpha = transparency;
+    _alpha = transparency;
 }
 
--(void)setRecursiveAlpha:(F1t)alpha {
-    
+-(void)setAlpha:(F1t)alpha {
     intAlpha = alpha;
     [self recursiveAlpha:1.];
-    
 }
 
 -(void)recursiveAlpha:(F1t)alpha{
-    
     _alpha = intAlpha * alpha;
+    
+    if (!_alpha) {
+        [self setHidden:true];
+    }
+    else {
+        [self setHidden:false];
+    }
     
     for (NKNode* n in intChildren) {
         [n recursiveAlpha:(_alpha)];
     }
-    
 }
 
 #pragma mark - ACTIONS

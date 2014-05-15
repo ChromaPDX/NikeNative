@@ -567,7 +567,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         }
         
         [node setAlpha:weightedAverage(action.startFloat, action.endFloat, completion)];
-        
+
     };
     
     return action;

@@ -123,7 +123,8 @@ typedef void (^CompletionBlock)(void);
 @property (nonatomic) NKCullFaceMode cullFace;
 
 @property (nonatomic) F1t alpha;
--(void)setRecursiveAlpha:(F1t)alpha;
+-(void)setTransparency:(F1t)transparency;
+-(void)recursiveAlpha:(F1t)alpha;
 
 #pragma mark - SHADER PROPERTIES
 

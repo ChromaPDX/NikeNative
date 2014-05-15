@@ -47,6 +47,8 @@
 @property (nonatomic, strong) NKSpriteNode *art;
 @property (nonatomic,strong) NKSpriteNode *shadow;
 
+@property (nonatomic)     bool endTurnCard;
+
 -(NSString*)fileNameForBigCard;
 -(NKColor*)colorForCategory;
 

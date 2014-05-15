@@ -92,7 +92,7 @@
         restitution = 3;
         drag = 1.5;
         
-        self.userInteractionEnabled = true;
+        self.userInteractionEnabled = false;
     }
     
     return self;
@@ -476,16 +476,14 @@
 
 -(NKTouchState) touchDown:(P2t)location id:(int) touchId
 {
-    
-  
 
-     NKTouchState hit = NKTouchNone;
+    NKTouchState hit = NKTouchNone;
     
     if (_scrollingEnabled) {
         
         if  (self.userInteractionEnabled){
             
-            if ([self containsPoint:location]) {
+            //if ([self containsPoint:location]) {
 
                 _scrollPhase = ScrollPhaseBegan;
                 
@@ -500,9 +498,7 @@
                 return NKTouchIsFirstResponder;
                 
                   NSLog(@"table touch down");
-            }
-            
-            
+            //}
             
         }
         
@@ -541,7 +537,7 @@
         
         if (self.userInteractionEnabled) {
             
-            if ([self containsPoint:location]) {
+            //if ([self containsPoint:location]) {
                 
                 hit = NKTouchIsFirstResponder;
                 
@@ -612,7 +608,7 @@
                     
                 }
                 
-            }
+          //  }
 
         }
     }

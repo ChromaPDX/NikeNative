@@ -115,6 +115,7 @@ typedef enum TransitionStyle {
 -(void)scrollToChild:(int)child duration:(F1t)duration;
 -(bool)scrollShouldStart;
 -(void)shouldBeginRestitution;
+-(void)endScroll;
 -(void)scrollDidEnd;
 -(void)tableInit;
 @end

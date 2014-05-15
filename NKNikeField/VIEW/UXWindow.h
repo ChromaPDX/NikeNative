@@ -27,6 +27,7 @@
 -(instancetype)initWithManager:(Manager*)m delegate:(UXWindow*)delegate;
 -(void)addCard:(Card*)card;
 -(void)removeCard:(Card*)card;
+-(void)playCard:(Card *)card;
 -(void)sortCardsAnimated:(BOOL)animated WithCompletionBlock:(void (^)())block;
 
 -(void)shuffleAroundCard:(Card*)card;
@@ -58,6 +59,7 @@
 -(void)cardTouchEnded:(CardSprite*)card atPoint:(P2t)point;
 
 -(void)cardDoubleTap:(CardSprite*)card;
+-(void)playCard:(Card *)card;
 
 -(BoardLocation*)canPlayCard:(Card*)card atPosition:(P2t)pos;
 
