@@ -1792,7 +1792,8 @@
             
             pathToBall = [[c selectionSetForPlayer:p] mutableCopy];
             if(pathToBall && [pathToBall count]){
-                [_gameScene AISelectedLocation:pathToBall[arc4random()%[pathToBall count]]];
+            [_gameScene AISelectedLocation:pathToBall[0]];
+                
             }
             break;
     }

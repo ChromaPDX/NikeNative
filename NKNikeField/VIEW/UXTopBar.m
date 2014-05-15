@@ -191,8 +191,8 @@
         //self.scene = [[MainMenu alloc]initWithSize:self.scene.size];
         NKSceneNode *newScene;
         newScene = [[MainMenu alloc]initWithSize:self.size];
-        //[self.scene.nkView.scene = newScene;
-
+        // @leif : not sure why this isn't working...maybe there is a a better way to shut down the game?
+        // [self.scene.nkView.scene setScene:newScene];
     }
     return false;
 }
