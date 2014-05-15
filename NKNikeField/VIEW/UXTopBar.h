@@ -16,6 +16,7 @@
     S2t cardSize;
     NKLabelNode *fuelPoints;
     NKLabelNode *fuelLabel;
+    NKSpriteNode* logo;
 }
 
 @property (nonatomic, weak) GameScene *delegate;
