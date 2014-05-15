@@ -384,7 +384,7 @@
 
 -(void)tempAddEndTurnCard {
     
-    CardSprite* endTurnButton = [[CardSprite alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Icon_SpecGeneral"] color:NKWHITE size:cardSize];
+    CardSprite* endTurnButton = [[CardSprite alloc] initWithTexture:[NKTexture textureWithImageNamed:@"ButtonEndTurn"] color:NKWHITE size:cardSize];
     endTurnButton.delegate = self.delegate.delegate;
     endTurnButton.window = _delegate;
     endTurnButton.endTurnCard = true;
@@ -394,25 +394,6 @@
     
     [endTurnButton setPosition3d:V3Make(w,0,0)];
     
-    NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
-    
-    text.fontSize = 16;
-    text.fontColor = V2YELLOW;
-    [text setSize:S2Make(cardSize.width,100)];
-    [text setText:@"END"];
-    [text setPosition:P2Make(0, cardSize.height*.075)];
-    [endTurnButton addChild:text];
-    
-    
-    text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
-    text.fontSize = 16;
-    text.fontColor = V2YELLOW;
-    [text setSize:S2Make(cardSize.width,100)];
-    [text setText:@"TURN"];
-    
-    [text setPosition:P2Make(0, -cardSize.height*.7)];
-    //[text setZPosition:2];
-    [endTurnButton addChild:text];
     
 }
 
