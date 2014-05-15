@@ -1279,9 +1279,13 @@
         }
         else if (event.type == kEventSuccubus){  //  SUCCUBUS
             
-            event.manager.opponent.energy -= 100;
-            if(event.manager.opponent.energy < 0) event.manager.opponent.energy = 0;
-            event.manager.energy += 150;
+            if(event.manager.opponent.energy - SUCCUBUS_OPPONENT_ENERGY < 0){
+                event.manager.opponent.energy = 0;
+            }
+            else{
+                event.manager.opponent.energy -= SUCCUBUS_OPPONENT_ENERGY;
+            }
+            event.manager.energy += SUCCUBUS_SELF_ENERGY;
             
         }
         else if (event.type == kEventBlock){  //  BLOCK

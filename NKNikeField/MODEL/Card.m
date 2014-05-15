@@ -633,12 +633,18 @@
         return nil;
     }
     
-    NSArray* accessible = [self selectionSetForPlayer:p];
+    NSMutableArray* accessible = [[self selectionSetForPlayer:p] mutableCopy];
     
     if (!accessible) {
         return nil;
     }
     // IF MOVING / KICK WE'RE DONE VALIDATING
+    
+    if (self.category == CardCategoryMove){
+        for(Player *p in self.game.players){
+            [accessible removeObject:p.location];
+        }
+    }
     
     if (self.category == CardCategoryMove || self.category == CardCategoryKick || self.category == CardCategorySpecial){
         return accessible;

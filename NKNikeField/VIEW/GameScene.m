@@ -342,7 +342,7 @@ float PARTICLE_SCALE;
 
 -(void)showPossibleKickForManager:(Manager*)manager{
     Card *kickCard = manager.game.lastKickCardSelected;
-    if(kickCard){
+    if(kickCard && manager.hasPossesion && kickCard.game.selectedPlayer != kickCard.game.ball.enchantee){
         NSArray *set = [kickCard validatedSelectionSetForPlayer:self.game.ball.enchantee];
         for (BoardLocation* loc in set) {
             BoardTile* tile = [_gameTiles objectForKey:loc];
