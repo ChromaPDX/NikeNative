@@ -1077,11 +1077,16 @@
     else if (event.type == kEventPlayCard) {
         
         if (event.card) {
-            if (event.playerPerforming) {
-                event.playerPerforming.used = true;
-            }
             if(event.manager.energy < event.card.energyCost){
-                
+                NKAlertSprite *alert = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Notification_MoreE.png"] color:NKWHITE size:_gameScene.size];
+                [alert setZPosition:150];
+                [alert setScale:.88];
+                [_gameScene presentAlert:alert animated:true];
+                event.type = kNullAction;
+                //[event discard]
+            }
+            else if(event.playerPerforming) {
+                event.playerPerforming.used = true;
             }
             else{
                 event.manager.energy -= event.card.energyCost;

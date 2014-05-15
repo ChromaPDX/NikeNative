@@ -187,12 +187,13 @@
 
     R4t menuButton = R4Make(17, 1042, 70, 70);
     if(R4ContainsPoint(menuButton, location)){
-       // NSLog(@"UXTopBar touchUP location = %fx%f", location.x, location.y);
-        //self.scene = [[MainMenu alloc]initWithSize:self.scene.size];
-        NKSceneNode *newScene;
-        newScene = [[MainMenu alloc]initWithSize:self.scene.size];
-        // @leif : not sure why this isn't working...maybe there is a a better way to shut down the game?
-        [self.scene.nkView setScene:newScene];
+        // @eric uncomment to switch back
+        [self.scene.nkView setScene:[[MainMenu alloc]initWithSize:self.scene.size]];
+        
+        // recomment this
+        // pop-up example
+       // NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];
+       //  [self.scene presentAlert:test animated:true];
     }
     return false;
 }
