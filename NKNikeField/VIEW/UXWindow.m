@@ -469,7 +469,6 @@
         
         if (cs.order == card.order){
             
-            
             offSet += cardSize.width * .1;
             cs.origin = P2Make(offSet, cardSize.height*.1);
             offSet += cardSize.width * 1.2;

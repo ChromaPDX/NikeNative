@@ -29,7 +29,7 @@
         
         _fuelBar = [[FuelBar alloc] init];
         [_fuelBar setPosition:P2Make(-80, 10)];
-        [_fuelBar setFill:0];
+        [_fuelBar setFill:0 animated:false];
         
         fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
         fuelLabel.fontSize = 18;
@@ -115,7 +115,7 @@
             [self setManager:p.manager];
         }
         [fuelLabel setText:[NSString stringWithFormat:@"ENERGY : %d",p.manager.energy]];
-        [_fuelBar setFill:((float)p.manager.energy)/1000.00];
+        [_fuelBar setFill:((float)p.manager.energy)/1000.00 animated:true];
         
         for (PlayerSprite* ps in _playerSprites) {
             

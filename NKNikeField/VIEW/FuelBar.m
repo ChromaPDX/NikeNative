@@ -35,27 +35,26 @@
     return self;
 }
 
-- (void)setFill:(float)fill{
+- (void)setFill:(float)fill animated:(bool)animated {
     
-    [fuel removeAllActions];
+    
     
     S2t size = fuelContainer.size;
     
     size.width = fuelContainer.size.width * fill;
-    
-    //[fuel setSize: size];
     P2t point = P2Make((-fuelContainer.size.width/2) + (size.width/2), 0);
-    //[fuel setPosition:point];
-    
+
+    if (animated) {
+
+    [fuel removeAllActions];
     [fuel runAction:[NKAction group:@[[NKAction resizeToWidth:size.width height:size.height duration:1.],
                                       [NKAction moveTo:point duration:1.]]]];
+    }
     
-   // CGPoint newPoint = CGPointMake(frame.x + )
-
-  //  [fuel runAction:[NKAction group:@[[NKAction scaleXTo:2 duration:5], [NKAction moveToX:]]]];
-    
-    //size.width = self.size.width * fill;
-    //[fuel setSize: size];
+    else {
+        fuel.size = size;
+        fuel.position = point;
+    }
     
 }
 

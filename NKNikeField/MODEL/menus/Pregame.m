@@ -32,12 +32,12 @@
         fuelBar = [[FuelBar alloc] init];
         [fuelBar setPosition:P2Make(-64, 516)];
         // @LEIF - not sure why the animation isn't working here?
-        [fuelBar setFill:0];
-        [fuelBar setFill:1];
-
-
-        
         [self addChild:fuelBar];
+        // @Eric - add as child before setFill, needs parent for animation otherwise doesn't get animation updates.
+        // also we need a way to snap and animate so I added 'animated' boolean.
+        [fuelBar setFill:0 animated:false];
+        [fuelBar setFill:1 animated:true];
+        
         
         NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
 
