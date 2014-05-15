@@ -449,17 +449,8 @@
     
     if (self.category == CardCategoryKick) {
         
-        if (self.enchantee.effects[Card_NoLegs]){
+        if (p.effects[Card_NoLegs]){
             return nil;
-//            int noLegs = [self.enchantee.effects[Card_NoLegs] intValue];
-//            
-//            if(noLegs <= 0){
-//                [self.enchantee.effects removeObjectForKey:Card_NoLegs];
-//                return nil;
-//            }
-//            else{
-//                [self.enchantee.effects setObject:@(noLegs--) forKey:Card_NoLegs];
-//            }
         }
         
         if (!p.ball) {

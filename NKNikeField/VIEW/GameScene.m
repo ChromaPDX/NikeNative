@@ -349,6 +349,8 @@ float PARTICLE_SCALE;
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
     
+    // @eric // here [self showPossibleKickForManager:player.manager];
+    
     P2t p;
     
     if  (path.count){
