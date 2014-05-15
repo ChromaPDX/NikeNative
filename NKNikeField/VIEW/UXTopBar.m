@@ -191,11 +191,7 @@
         //self.scene = [[MainMenu alloc]initWithSize:self.scene.size];
         NKSceneNode *newScene;
         newScene = [[MainMenu alloc]initWithSize:self.size];
-        [self.scene.nkView.scene = newScene;
-
-        
-
-
+        //[self.scene.nkView.scene = newScene;
 
     }
     return false;
