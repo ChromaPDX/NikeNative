@@ -127,6 +127,9 @@
     
 }
 
+-(void)playCard:(Card *)card {
+    [_managerHand playCard:card];
+}
 -(CardSprite*)spriteForCard:(Card*)c {
     
     ManagerHand *hand = _managerHand; //[_managerHands objectForKey:c.deck.player];
@@ -432,6 +435,14 @@
 
 }
 
+-(void)playCard:(Card *)card{
+    CardSprite *cardToRemove = [_cardSprites objectForKey:card];
+    [_myCards removeObject:cardToRemove];
+    [self sortCardsAnimated:true WithCompletionBlock:^{
+        
+    }];
+}
+
 -(void)shuffleAroundCard:(Card*)card {
     
     CardSprite *cs = [_cardSprites objectForKey:card];
@@ -440,7 +451,12 @@
 
 -(void)shuffleAroundCardSprite:(CardSprite *)card {
 
-    float offSet = cardSize.width * -2.2;
+    float offSet = -cardSize.width * 1.1 * (_myCards.count/2) - (cardSize.width * .1);
+    
+    if (_myCards.count % 2 == 0) {
+        offSet += cardSize.width * .55;
+    }
+    
     float nscale = 1.;
     
     for (int i = 0; i < _myCards.count; i++) {
@@ -488,6 +504,14 @@
     //        [_delegate.game sendRTPacketWithType:RTMessageSortCards point:nil];
     //    }
     
+    NSLog(@"sorting %d cards",_myCards.count);
+    
+    F1t left = cardSize.width * 1.1 * (_myCards.count/2);
+    
+    if (_myCards.count % 2 == 0) {
+        left -= cardSize.width * .55;
+    }
+
     for (int i = 0; i < _myCards.count; i++) {
         
         CardSprite *cs = _myCards[i];
@@ -500,8 +524,9 @@
         
         [cs setAlpha:1.];
         
+        
         //cs.origin = P2Make(((cardSize.width*1.1*((int)(i-(2-cardSize))) ) * i),0);
-        cs.origin = P2Make(cardSize.width * 1.1 * (i-2), 0);
+        cs.origin = P2Make(cardSize.width * 1.1 * i - left, 0);
         
         if (animated) {
             

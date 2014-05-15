@@ -33,8 +33,7 @@
 - (UIImage *)imageAtRect:(CGRect)cropRect;
 
 
-- (void)colorAtPoint:(P2t)point buffer:(uB4t*)buf;
-
+- (NKColor*)colorAtPoint:(P2t)point;
 - (void)pixelValuesInRect:(CGRect)cropRect buffer:(GLubyte *)pixelBuffer;
 
 @end

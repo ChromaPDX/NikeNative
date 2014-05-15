@@ -482,26 +482,30 @@ static int rotate = 0;
 	context = nil;
 }
 
+-(P2t)uiPointToNodePoint:(CGPoint)p {
+    P2t size = self.scene.size;
+    return P2Make(p.x*2, size.height - (p.y*2));
+}
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 
     
     for (UITouch *t in touches) {
-        [_scene touchDown:P2MakeCG([t locationInView:self]) id:0];
+        [_scene touchDown:[self uiPointToNodePoint:[t locationInView:self]] id:0];
     }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
 
     for (UITouch *t in touches) {
-        [_scene touchMoved:P2MakeCG([t locationInView:self]) id:0];
+        [_scene touchMoved:[self uiPointToNodePoint:[t locationInView:self]] id:0];
     }
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 
-    
     for (UITouch *t in touches) {
-        [_scene touchUp:P2MakeCG([t locationInView:self]) id:0];
+        [_scene touchUp:[self uiPointToNodePoint:[t locationInView:self]] id:0];
     }
     
 }

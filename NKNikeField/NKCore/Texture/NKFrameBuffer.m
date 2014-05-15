@@ -225,18 +225,21 @@
 
 #pragma mark - Accessing Data
 
-- (void)colorAtPoint:(P2t)point buffer:(uB4t*)buf{
+- (NKColor*)colorAtPoint:(P2t)point {
 
-    NSLog(@"read pixels at %d, %d", (int)point.x, (int)point.y);
+    //NSLog(@"read pixels at %d, %d", (int)point.x, (int)point.y);
 
+    uB4t hitCol;
+    
     [self bind];
     
     glReadPixels((int)point.x, (int)point.y,
                  1, 1,
-                 GL_RGBA, GL_UNSIGNED_BYTE, buf);
+                 GL_RGBA, GL_UNSIGNED_BYTE, &hitCol);
     
     [self unbind];
 
+    return [NKColor colorWithRed:(hitCol.r / 255.) green:(hitCol.g / 255.) blue:(hitCol.b / 255.) alpha:1.];
     
 }
 

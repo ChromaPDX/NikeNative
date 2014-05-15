@@ -726,6 +726,8 @@ float PARTICLE_SCALE;
                 
                 [card removeAllActions];
                 
+                [_uxWindow playCard:event.card];
+                
                 V3t dest = [[_gameTiles objectForKey:event.location] getGlobalPosition];
                 
                 NKAction *grow = [NKAction group:@[

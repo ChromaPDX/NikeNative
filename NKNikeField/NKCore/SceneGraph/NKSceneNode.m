@@ -392,24 +392,13 @@
 }
 
 -(NKNode*)hitNodeAtPoint:(P2t)location {
-    P2t normalized = P2Make((int)location.x*2., self.size.height - (int)location.y *2.);
-    
-    uB4t hitCol;
-    
-    [_hitDetectBuffer colorAtPoint:normalized buffer:&hitCol];
-    
-    //NSLog(@"hit color: %d, %d, %d", hitCol.r, hitCol.g, hitCol.b);
-    
-    NKColor *col = [NKColor colorWithRed:(hitCol.r / 255.) green:(hitCol.g / 255.) blue:(hitCol.b / 255.) alpha:1.];
-    
-    NKNode *hit = [hitColorMap objectForKey:col];
+
+    NKNode *hit = [hitColorMap objectForKey:[_hitDetectBuffer colorAtPoint:location]];
     
     return hit;
 }
 
 -(NKTouchState)touchDown:(P2t)location id:(int)touchId {
-
-    //P2t p = [_camera screenToWorld:location];
     
     if (_alertSprite) {
         return [_alertSprite touchDown:location id:touchId];
@@ -424,18 +413,16 @@
         }
         
         return NKTouchIsFirstResponder;
-        //return [super touchDown:p id:touchId];
     }
 }
 
 //
 -(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
-    //P2t p = [_camera screenToWorld:location];
+    
     if (_alertSprite) {
         return [_alertSprite touchMoved:location id:touchId];
     }
     else {
-       // return [super touchMoved:p id:touchId];
         NKNode *hit = [self hitNodeAtPoint:location];
         
         if (hit) {
@@ -456,14 +443,6 @@
         NSLog(@"touch up node: %@", hit);
         [hit touchUp:location id:touchId];
     }
-//    P2t p = [_camera screenToWorld:location];
-//    
-//    if (_alertSprite) {
-//        return [_alertSprite touchUp:p id:touchId];
-//    }
-//    else {
-//        return [super touchUp:p id:touchId];
-//    }
     
     return false;
 }
