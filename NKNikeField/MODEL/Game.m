@@ -1841,23 +1841,36 @@
             return 1;
             
         case CardSpecialCategoryFreeze:
-            if (!c.deck.manager.opponent.bestChoiceForDisable.effects[Card_Freeze]){
-                [_gameScene AISelectedLocation:[c.deck.manager.opponent.bestChoiceForDisable location]];
-                return 1;
-            } else {
-                c.locked = true; // SAVE IT
-                [[_gameScene.uxWindow spriteForCard:c] showLocked];
+            if (c.deck.manager.opponent.hasPossesion) { // DEFENSE
+                if (!c.deck.manager.opponent.bestChoiceForDisable.effects[Card_Freeze]){
+                    [_gameScene AISelectedLocation:[c.deck.manager.opponent.bestChoiceForDisable location]];
+                    return 1;
+                }
             }
+            else { // OFFENSE ONLY IF ADJACENT
+                if ([c.deck.manager.opponent.bestChoiceForDisable.location isAdjacentTo:_ball.location]) {
+                    if (!c.deck.manager.opponent.bestChoiceForDisable.effects[Card_Freeze]){
+                        [_gameScene AISelectedLocation:[c.deck.manager.opponent.bestChoiceForDisable location]];
+                        return 1;
+                    }
+                }
+            }
+            
+            c.locked = true; // SAVE IT
+            [[_gameScene.uxWindow spriteForCard:c] showLocked];
             break;
             
         case CardSpecialCategoryNoLegs:
             if (c.deck.manager.opponent.hasPossesion) {
-                if (!c.deck.manager.opponent.bestChoiceForDisable.effects[Card_NoLegs] &&
-                    !c.deck.manager.opponent.bestChoiceForDisable.effects[Card_Freeze]
+                if (!_ball.enchantee.effects[Card_NoLegs] &&
+                    !_ball.enchantee.effects[Card_Freeze]
                     ){
-                    [_gameScene AISelectedLocation:[c.deck.manager.opponent.bestChoiceForDisable location]];
+                    [_gameScene AISelectedLocation:[_ball.enchantee location]];
                     return 1;
                 }
+                
+                c.locked = true; // SAVE IT
+                [[_gameScene.uxWindow spriteForCard:c] showLocked];
             }
             // right now don't use no on OFFENSE
             break;
