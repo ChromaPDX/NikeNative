@@ -60,7 +60,7 @@
     _moveCategory = CardMoveCategoryNull;
     _challengeCategory = CardChallengeCategoryNull;
     
-    _specialTypeCategory = rand() % 7 + 1;
+    _specialTypeCategory = rand() % 6 + 1;
     //_specialTypeCategory = CardSpecialCategoryBlock;
     
     switch (_specialTypeCategory) {
@@ -76,9 +76,9 @@
         case CardSpecialCategoryDeRez:
             self.specialCategory = CardCategoryGeneral;
             break;
-        case CardSpecialCategoryNewDeal:
-            self.specialCategory = CardCategoryGeneral;
-            break;
+      //  case CardSpecialCategoryNewDeal:
+      //      self.specialCategory = CardCategoryGeneral;
+      //      break;
         case CardSpecialCategoryPredictiveAnalysis:
             self.specialCategory = CardCategoryGeneral;
             break;
@@ -102,9 +102,9 @@
         case CardSpecialCategoryFreeze:
             self.energyCost = 200;
             return;
-        case CardSpecialCategoryNewDeal:
-            self.energyCost = 50;
-            return;
+  //      case CardSpecialCategoryNewDeal:
+  //          self.energyCost = 50;
+  //          return;
         case CardSpecialCategoryNoLegs:
             self.energyCost = 100;
             return;
@@ -362,9 +362,9 @@
             case CardSpecialCategoryDeRez:
                 return @"DE-REZ";
                 break;
-            case CardSpecialCategoryNewDeal:
-                return @"NEW DEAL";
-                break;
+        //    case CardSpecialCategoryNewDeal:
+        //        return @"NEW DEAL";
+        //        break;
             case CardSpecialCategoryPredictiveAnalysis:
                 return @"ANALYZ";
             default:
@@ -572,7 +572,8 @@
                 
             // CASES FOR MY WHOLE FIELD
             
-            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
+            //case CardSpecialCategoryNewDeal:
+            case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
                 accessible = [[self.game allBoardLocationsButGoals] mutableCopy];
                 return accessible;
                 break;

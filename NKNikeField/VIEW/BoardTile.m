@@ -13,7 +13,8 @@
 
 -(instancetype)initWithTexture:(NKTexture*)texture color:(UIColor *)color size:(S2t)size {
     self = [super initWithTexture:texture color:color size:size];
-    //_borderSprite = [super initWithTexture:texture color:V2YELLOW size:size];
+    _borderSprite = [super initWithTexture:texture color:V2ORANGE size:size];
+    _borderSprite.hidden = true;
     _isDottedBorder = false;
     if (self){
       // box = (ofPlanePrimitive*)new ofBoxPrimitive(size.width, size.height, 4);
@@ -91,20 +92,27 @@
             return retval;
             break;
     }
-    
-    
-    if(self.isDottedBorder){
-        [retval appendString:@"_dotted"];
-        NSLog(@"stringForBorderText dotted value = %@", retval);
-    }
-    
-    
-    //[retval appendString:@".png"];
     return retval;
+}
+
+-(NSString*)stringForDottedBorderTex:(BorderMask)border {
+    NSMutableString *retVal = [[self stringForBorderTex:border] mutableCopy];
+    [retVal appendString:@"_dotted"];
+    NSLog(@"stringForBorderText dotted value = %@", retVal);
+    return retVal;
 }
 
 -(void)setTextureForBorder:(BorderMask)border {
     self.texture = [NKTexture textureWithImageNamed:[self stringForBorderTex:border]];
+    
+    self.borderSprite.texture =[NKTexture textureWithImageNamed:[self stringForDottedBorderTex:border]];
+    if(self.isDottedBorder){
+        self.borderSprite.hidden = FALSE;
+    }
+    else{
+        self.borderSprite.hidden = TRUE;
+    }
+    
 }
 
 @end

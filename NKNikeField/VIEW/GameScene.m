@@ -352,11 +352,11 @@ float PARTICLE_SCALE;
         for (BoardLocation* loc in set) {
             BoardTile* tile = [_gameTiles objectForKey:loc];
             tile.isDottedBorder = true;
-           // [tile setColor:V2YELLOW];
+            //[tile.borderSprite setColor:V2YELLOW];
             [tile.location setBorderShapeInContext:set];
             [tile setTextureForBorder:tile.location.borderShape];
             [tile removeAllActions];
-            [tile runAction:[NKAction fadeAlphaTo:.2 duration:FAST_ANIM_DUR]]; 
+            [tile runAction:[NKAction fadeAlphaTo:.2 duration:FAST_ANIM_DUR]];
         }
     }
 }
@@ -367,6 +367,7 @@ float PARTICLE_SCALE;
         [tile setColor:nil];
         [tile setTexture:nil];
         [tile setUserInteractionEnabled:false];
+        [tile setIsDottedBorder:false];
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
     
@@ -390,7 +391,7 @@ float PARTICLE_SCALE;
     }
     
     [self revealBlocksForManager:player.manager];
-   // [self showPossibleKickForManager:player.manager];
+  //  [self showPossibleKickForManager:player.manager];
     
 }
 

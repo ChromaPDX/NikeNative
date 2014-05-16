@@ -55,8 +55,8 @@ typedef NS_ENUM(int32_t, CardSpecialCategory) {
     CardSpecialCategorySuccubus = 3,
     CardSpecialCategoryBlock = 4,
     CardSpecialCategoryDeRez = 5,
-    CardSpecialCategoryNewDeal = 6,
-    CardSpecialCategoryPredictiveAnalysis = 7
+   // CardSpecialCategoryNewDeal = 6,
+    CardSpecialCategoryPredictiveAnalysis = 6
 };
 
 #define Card_Freeze @"freeze"
