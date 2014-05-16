@@ -69,12 +69,13 @@
 
 -(Card*)cardInHandOfCategory:(int) category;
 -(NSArray*)cardsInHandOfCategory:(int) thisCategory;
+-(NSArray*)cardsInHandOfCategory:(int)thisCategory usableByPlayer:(Player*)p;
 -(NSArray*)allCardsInHand;
 -(NSArray*)allCardsInDeck;
 -(Card*)drawCard; // TO:DO probability based on Faction
 
 #pragma mark - FIELD
-
+-(NSArray*)activePlayers;
 -(NSArray*)playersClosestToBall;
 -(NSArray*)playersClosestToGoal;
 -(NSArray*)playersInShootingRange;

@@ -75,7 +75,7 @@
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"RecapMenu touchUP location = %f,%f", location.x, location.y);
-    CGRect startButtonRect = CGRectMake(201, 150, 220, 200);
+    CGRect startButtonRect = CGRectMake(201, 100, 220, 300);
     if(CGRectContainsPoint(startButtonRect, location)){
         NKSceneNode* newScene = [[MainMenu alloc]initWithSize:self.size];
         self.nkView.scene = newScene;

@@ -384,13 +384,29 @@ float PARTICLE_SCALE;
             [tile runAction:[NKAction fadeAlphaTo:.5 duration:FAST_ANIM_DUR]];
         }
         
-        p  = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:path]];
-        [_gameBoardNode removeAllActions];
-        [_gameBoardNode runAction:[NKAction moveTo:P2Make(0, -p.y + h/3.) duration:1.]];
+        [self moveCameraToBoundingBox:path];
     }
     
     [self revealBlocksForManager:player.manager];
     
+}
+
+-(P2t) boardScrollPointForPoint:(P2t)p{
+    return P2Make(0, -p.y + h/4.);
+}
+
+-(void)moveCameraToBoundingBox:(NSArray*)locationSet {
+    
+    P2t p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:locationSet]];
+    
+    if (_gameBoardNode.position.y > [self boardScrollPointForPoint:p].y  + 50 || _gameBoardNode.position.y < [self boardScrollPointForPoint:p].y - 50) {
+        
+    [_gameBoardNode removeAllActions];
+
+    [_gameBoardNode runAction:[NKAction moveTo:[self boardScrollPointForPoint:p] duration:.5]];
+
+    }
+   
 }
 
 -(void)playerSpriteDidSelectPlayer:(Player*)player {
@@ -422,12 +438,12 @@ float PARTICLE_SCALE;
             
             _selectedPlayer = selectedPlayer;
             
+            if (!_game.selectedManager.isAI) {
+                [self moveCameraToBoundingBox:@[_selectedPlayer.location]];
+            }
+            
             [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{
-                
-//                Card *kickCard = [self.game.ball.enchantee.manager cardInHandOfCategory:CardCategoryKick];
-//                if(kickCard){
-//                    [self showCardPath:[kickCard validatedSelectionSetForPlayer:self.game.ball.enchantee] forPlayer:self.game.ball.enchantee];
-//                }
+
                 if (_selectedCard) {
                     [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
                 }

@@ -165,12 +165,26 @@
     NSMutableArray *allInCat = [[NSMutableArray alloc] init];
     for (Card* c in self.allCardsInHand) {
         // choose best card of each type
-        if (c.category == thisCategory && c.AIShouldUse) {
+        if (c.category == thisCategory && c.AIShouldUse && !c.locked) {
             [allInCat addObject:c];
         }
     }
     if (allInCat.count) {
          return allInCat;
+    }
+    return nil;
+}
+
+-(NSArray*)cardsInHandOfCategory:(int)thisCategory usableByPlayer:(Player*)p {
+    NSMutableArray *useableInCat = [[NSMutableArray alloc] init];
+    
+    for (Card *c in [self cardsInHandOfCategory:thisCategory]) {
+        if ([c validatedSelectionSetForPlayer:p]) {
+             [useableInCat addObject:c];
+        }
+    }
+    if (useableInCat.count) {
+        return useableInCat;
     }
     return nil;
 }
@@ -188,6 +202,18 @@
 }
 
 #pragma mark - PLAYERS ON FIELD
+
+-(NSArray*)activePlayers {
+    NSMutableArray *active = [[NSMutableArray alloc]init];
+    
+    for (Player *p in self.players.inGame) {
+        if (!p.used) {
+            [active addObject:p];
+        }
+    }
+    return active;
+    
+}
 
 -(NSArray*)playersClosestToBall{
     NSMutableArray* obstacles = [[NSMutableArray alloc] init];

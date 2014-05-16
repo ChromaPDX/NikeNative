@@ -82,6 +82,7 @@ typedef NS_ENUM(int32_t, FactionType) {
 -(NSArray*)playersAvailableCloserToGoal;
 -(NSArray*)playersAvailableInKickRangeCloserToGoal;
 -(BOOL)canMoveToChallenge;
+-(BOOL)isThreatened;
 -(NSDictionary*)playersDistanceAfterMove:(BoardLocation*)location;
 -(int)distanceAfterMoveToClosestPlayer:(BoardLocation *)location;
 -(int)distanceAfterMoveToClosestOpponent:(BoardLocation *)location;

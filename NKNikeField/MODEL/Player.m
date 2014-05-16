@@ -578,6 +578,15 @@
     }
 }
 
+-(BOOL)isThreatened {
+    for (Player *p in self.manager.opponent.players.inGame) {
+        if ([p.location isAdjacentTo:self.location]) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 // returns a dictionary of Player->Path pairs that correspond to the board after self moves to location
 -(NSDictionary*)playersDistanceAfterMove:(BoardLocation*)location{
     NSMutableArray *allPlayers = [self.manager.players.inGame mutableCopy];
