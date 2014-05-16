@@ -105,7 +105,7 @@
 -(void)setTextureForBorder:(BorderMask)border {
     self.texture = [NKTexture textureWithImageNamed:[self stringForBorderTex:border]];
     
-    self.borderSprite.texture =[NKTexture textureWithImageNamed:[self stringForDottedBorderTex:border]];
+    //self.borderSprite.texture =[NKTexture textureWithImageNamed:[self stringForDottedBorderTex:border]];
     if(self.isDottedBorder){
         self.borderSprite.hidden = FALSE;
     }
