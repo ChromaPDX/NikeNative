@@ -563,9 +563,12 @@
     else if (self.category == CardCategorySpecial){
         switch(self.specialTypeCategory){
                 
-                // CASES FOR MY PLAYERS
-               /*
-            case :
+            // @Eric did Mike ask for these to be whole board selection, that doesn't make any sense to me?
+                
+            // CASES FOR MY PLAYERS
+            
+            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis:
+
                 for(Card *c in p.manager.players.inGame){
                     if(c.location){
                         [accessible addObject:c.location];
@@ -573,19 +576,13 @@
                         NSLog(@"**ERROR no location for player");
                     }
                 }
-                */
                 
-                // CASES FOR WHOLE ENTIRE BOARD
-                
-                
-            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
-                accessible = [[self.game allBoardLocationsButGoals] mutableCopy];
-                return accessible;
                 break;
                 
-                // CASES FOR THEIR PLAYERS
                 
-            case CardSpecialCategoryNoLegs: case CardSpecialCategoryFreeze:  case CardSpecialCategoryDeRez:
+            // CASES FOR THEIR PLAYERS
+                
+            case CardSpecialCategoryNoLegs: case CardSpecialCategoryFreeze:  case CardSpecialCategoryDeRez: case CardSpecialCategorySuccubus:
                 for(Card *c in p.manager.opponent.players.inGame){
                     if(c.location){
                         [accessible addObject:c.location];
@@ -595,7 +592,7 @@
                 }
                 break;
                 
-                // SPECIAL / WHOLE BOARD / CASES
+            // SPECIAL / WHOLE BOARD / CASES
                 
             case CardSpecialCategoryBlock:
                 accessible = [[self.game allBoardLocationsButGoals] mutableCopy];

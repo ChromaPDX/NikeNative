@@ -736,6 +736,7 @@
                 
             }
             
+
             if (animate) { // ALL 'REAL-TIME' TURNS WILL ANSWER YES !
                 
                 if (sequence.completionBlock) {
@@ -745,7 +746,10 @@
        
                     
                     _animating = NO;
-                    
+           
+                
+                #pragma mark - end of compute cycle
+                
                     if (sequence.manager.myTurn) {
                         
                         bool playersAvailable = false;
