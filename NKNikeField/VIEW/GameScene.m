@@ -351,12 +351,14 @@ float PARTICLE_SCALE;
         NSArray *set = [kickCard validatedSelectionSetForPlayer:self.game.ball.enchantee];
         for (BoardLocation* loc in set) {
             BoardTile* tile = [_gameTiles objectForKey:loc];
-            [tile setColor:V2YELLOW];
-            [tile.location setBorderShapeInContext:set];
             tile.isDottedBorder = true;
+            //[tile setColor:V2YELLOW];
+            [tile.location setBorderShapeInContext:set];
             [tile setTextureForBorder:tile.location.borderShape];
             [tile removeAllActions];
             [tile runAction:[NKAction fadeAlphaTo:.2 duration:FAST_ANIM_DUR]];
+            [tile draw];
+ 
         }
     }
 }
@@ -370,7 +372,7 @@ float PARTICLE_SCALE;
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
     
-    [self showPossibleKickForManager:player.manager];
+    //[self showPossibleKickForManager:player.manager];
     
     P2t p;
     

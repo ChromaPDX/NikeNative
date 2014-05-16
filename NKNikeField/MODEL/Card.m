@@ -568,25 +568,19 @@
         switch(self.specialTypeCategory){
                 
             // @Eric did Mike ask for these to be whole board selection, that doesn't make any sense to me?
+            // @Leif Yes he and Marcus both did.  It follows the pattern of other games, seems more intuitive to me since these cards don't act on a manager and not players.
                 
-            // CASES FOR MY PLAYERS
+            // CASES FOR MY WHOLE FIELD
             
-            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis:
-
-                for(Card *c in p.manager.players.inGame){
-                    if(c.location){
-                        [accessible addObject:c.location];
-                    }else{
-                        NSLog(@"**ERROR no location for player");
-                    }
-                }
-                
+            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
+                accessible = [[self.game allBoardLocationsButGoals] mutableCopy];
+                return accessible;
                 break;
                 
                 
             // CASES FOR THEIR PLAYERS
                 
-            case CardSpecialCategoryNoLegs: case CardSpecialCategoryFreeze:  case CardSpecialCategoryDeRez: case CardSpecialCategorySuccubus:
+            case CardSpecialCategoryNoLegs: case CardSpecialCategoryFreeze:  case CardSpecialCategoryDeRez:
                 for(Card *c in p.manager.opponent.players.inGame){
                     if(c.location){
                         [accessible addObject:c.location];

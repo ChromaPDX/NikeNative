@@ -13,6 +13,7 @@
 
 -(instancetype)initWithTexture:(NKTexture*)texture color:(UIColor *)color size:(S2t)size {
     self = [super initWithTexture:texture color:color size:size];
+    //_borderSprite = [super initWithTexture:texture color:V2YELLOW size:size];
     _isDottedBorder = false;
     if (self){
       // box = (ofPlanePrimitive*)new ofBoxPrimitive(size.width, size.height, 4);
@@ -90,11 +91,13 @@
             return retval;
             break;
     }
-    /*
+    
+    
     if(self.isDottedBorder){
         [retval appendString:@"_dotted"];
+        NSLog(@"stringForBorderText dotted value = %@", retval);
     }
-    */
+    
     
     //[retval appendString:@".png"];
     return retval;
