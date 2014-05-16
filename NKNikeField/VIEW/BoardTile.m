@@ -13,6 +13,7 @@
 
 -(instancetype)initWithTexture:(NKTexture*)texture color:(UIColor *)color size:(S2t)size {
     self = [super initWithTexture:texture color:color size:size];
+    _isDottedBorder = false;
     if (self){
       // box = (ofPlanePrimitive*)new ofBoxPrimitive(size.width, size.height, 4);
     }
@@ -36,29 +37,67 @@
 
 -(NSString*)stringForBorderTex:(BorderMask)border {
     
+    NSMutableString* retval = [[NSMutableString alloc] init];
     switch (border) {
             
-        case BorderMaskAll: return @"tile_all.png";
-            
-        case BorderMaskBottom: return @"tile_bottom.png";
-        case BorderMaskLeft: return @"tile_left.png";
-        case BorderMaskRight: return @"tile_right.png";
-        case BorderMaskTop: return @"tile_top.png";
-            
-        case BorderMaskBottomLeft: return @"tile_bottomleft.png";
-        case BorderMaskBottomRight: return @"tile_bottomright.png";
-        case BorderMaskTopLeft: return @"tile_topleft.png";
-        case BorderMaskTopRight: return @"tile_topright.png";
-        case BorderMaskHorizontal: return @"tile_horizontal.png";
-        case BorderMaskVertical: return @"tile_vertical.png";
-            
-        case BorderMask3Bottom: return @"tile_3bottom.png";
-        case BorderMask3Left: return @"tile_3left.png";
-        case BorderMask3Right: return @"tile_3right.png";
-        case BorderMask3Top: return @"tile_3top.png";
-            
-        default: return @"tile_none";
+        case BorderMaskAll:
+            retval = [@"tile_all" mutableCopy];
+            break;
+        case BorderMaskBottom:
+            retval =  [@"tile_bottom" mutableCopy];
+            break;
+        case BorderMaskLeft:
+            retval =  [@"tile_left" mutableCopy];
+            break;
+        case BorderMaskRight:
+            retval =  [@"tile_right" mutableCopy];
+            break;
+        case BorderMaskTop:
+            retval =  [@"tile_top" mutableCopy];
+            break;
+        case BorderMaskBottomLeft:
+            retval =  [@"tile_bottomleft" mutableCopy];
+            break;
+        case BorderMaskBottomRight:
+            retval =  [@"tile_bottomright" mutableCopy];
+            break;
+        case BorderMaskTopLeft:
+            retval =  [@"tile_topleft" mutableCopy];
+            break;
+        case BorderMaskTopRight:
+            retval =  [@"tile_topright" mutableCopy];
+            break;
+        case BorderMaskHorizontal:
+            retval =  [@"tile_horizontal" mutableCopy];
+            break;
+        case BorderMaskVertical:
+            retval =  [@"tile_vertical" mutableCopy];
+            break;
+        case BorderMask3Bottom:
+            retval =  [@"tile_3bottom" mutableCopy];
+            break;
+        case BorderMask3Left:
+            retval =  [@"tile_3left" mutableCopy];
+            break;
+        case BorderMask3Right:
+            retval =  [@"tile_3right" mutableCopy];
+            break;
+        case BorderMask3Top:
+            retval =  [@"tile_3top" mutableCopy];
+            break;
+        default:
+            retval =  [@"tile_none" mutableCopy];
+            return retval;
+            break;
     }
+    /*
+    if(self.isDottedBorder){
+        [retval appendString:@"_dotted"];
+    }
+    */
+    
+    //[retval appendString:@".png"];
+    return retval;
 }
 
 -(void)setTextureForBorder:(BorderMask)border {

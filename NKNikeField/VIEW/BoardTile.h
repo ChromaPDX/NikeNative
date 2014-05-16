@@ -23,6 +23,8 @@
 // VIEW
 @property (nonatomic, weak) GameScene *delegate;
 
+@property (atomic) BOOL isDottedBorder;
+
 @property (nonatomic, strong) NKMeshNode *block;
 
 -(void)setTextureForBorder:(BorderMask)border;

@@ -349,6 +349,7 @@ float PARTICLE_SCALE;
             [tile removeAllActions];
             [tile setColor:V2YELLOW];
             [tile.location setBorderShapeInContext:set];
+            tile.isDottedBorder = true;
             [tile setTextureForBorder:tile.location.borderShape];
             [tile setUserInteractionEnabled:true];
             [tile runAction:[NKAction fadeAlphaTo:.2 duration:FAST_ANIM_DUR]];
