@@ -390,7 +390,7 @@ float PARTICLE_SCALE;
     }
     
     [self revealBlocksForManager:player.manager];
-    [self showPossibleKickForManager:player.manager];
+   // [self showPossibleKickForManager:player.manager];
     
 }
 
