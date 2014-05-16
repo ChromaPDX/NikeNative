@@ -89,8 +89,10 @@
     _me = [[Manager alloc] initWithGame:self];
     _opponent = [[Manager alloc] initWithGame:self];
 
+    /*
     _me.energy = DEFAULT_START_ENERGY;
     _opponent.energy = DEFAULT_START_ENERGY;
+    */
     
     _score = [BoardLocation pX:0 Y:0];
     
@@ -1276,8 +1278,14 @@
             [event.playerReceiving.effects setObject:@2 forKey:Card_NoLegs];
         }
         else if (event.type == kEventSuccubus){  //  SUCCUBUS
-            event.manager.opponent.energy -= 100;
-            event.manager.energy += 150;
+            
+            if(event.manager.opponent.energy - SUCCUBUS_OPPONENT_ENERGY < 0){
+                event.manager.opponent.energy = 0;
+            }
+            else{
+                event.manager.opponent.energy -= SUCCUBUS_OPPONENT_ENERGY;
+            }
+            event.manager.energy += SUCCUBUS_SELF_ENERGY;
             
         }
         else if (event.type == kEventBlock){  //  BLOCK

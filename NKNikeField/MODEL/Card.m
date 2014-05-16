@@ -433,8 +433,12 @@
     
     if (p.manager.energy < self.energyCost) {
         if (!p.manager.isAI) {
-            NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];
-            [self.game.gameScene presentAlert:test animated:true];
+            //NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];
+            //[self.game.gameScene presentAlert:test animated:true];
+            NKAlertSprite *alert = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Notification_MoreE.png"] color:NKWHITE size:self.game.gameScene.size];
+            [alert setZPosition:150];
+            [alert setScale:.88];
+            [self.game.gameScene presentAlert:alert animated:true];
         }
         NSLog(@"too much energy required");
         return nil;
@@ -560,8 +564,8 @@
         switch(self.specialTypeCategory){
                 
                 // CASES FOR MY PLAYERS
-                
-            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
+               /*
+            case :
                 for(Card *c in p.manager.players.inGame){
                     if(c.location){
                         [accessible addObject:c.location];
@@ -569,7 +573,15 @@
                         NSLog(@"**ERROR no location for player");
                     }
                 }
+                */
                 
+                // CASES FOR WHOLE ENTIRE BOARD
+                
+                
+            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
+                accessible = [[self.game allBoardLocationsButGoals] mutableCopy];
+                return accessible;
+                break;
                 
                 // CASES FOR THEIR PLAYERS
                 
@@ -621,12 +633,18 @@
         return nil;
     }
     
-    NSArray* accessible = [self selectionSetForPlayer:p];
+    NSMutableArray* accessible = [[self selectionSetForPlayer:p] mutableCopy];
     
     if (!accessible) {
         return nil;
     }
     // IF MOVING / KICK WE'RE DONE VALIDATING
+    
+    if (self.category == CardCategoryMove){
+        for(Player *p in self.game.players){
+            [accessible removeObject:p.location];
+        }
+    }
     
     if (self.category == CardCategoryMove || self.category == CardCategoryKick || self.category == CardCategorySpecial){
         return accessible;
