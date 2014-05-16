@@ -167,6 +167,7 @@
 		3B27D3BB1925BDEF00782A12 /* tile_all_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3AC1925BDEF00782A12 /* tile_all_dotted.png */; };
 		3B27D3BD1926726000782A12 /* tile_3top_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3BC1926726000782A12 /* tile_3top_dotted.png */; };
 		3B27D3BF1926736C00782A12 /* tile_bottomright_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3BE1926736C00782A12 /* tile_bottomright_dotted.png */; };
+		3B27D3C51926835800782A12 /* tile_bottomleft_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3C41926835800782A12 /* tile_bottomleft_dotted.png */; };
 		3B34229819242048000AAC68 /* ButtonEndTurn.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B34228E19242048000AAC68 /* ButtonEndTurn.png */; };
 		3B34229919242048000AAC68 /* InGameBackdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B34228F19242048000AAC68 /* InGameBackdrop.png */; };
 		3B34229A19242048000AAC68 /* Notification_MoreE.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B34229019242048000AAC68 /* Notification_MoreE.png */; };
@@ -493,6 +494,7 @@
 		3B27D3AC1925BDEF00782A12 /* tile_all_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_all_dotted.png; sourceTree = "<group>"; };
 		3B27D3BC1926726000782A12 /* tile_3top_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_3top_dotted.png; sourceTree = "<group>"; };
 		3B27D3BE1926736C00782A12 /* tile_bottomright_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_bottomright_dotted.png; sourceTree = "<group>"; };
+		3B27D3C41926835800782A12 /* tile_bottomleft_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_bottomleft_dotted.png; sourceTree = "<group>"; };
 		3B34228E19242048000AAC68 /* ButtonEndTurn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonEndTurn.png; sourceTree = "<group>"; };
 		3B34228F19242048000AAC68 /* InGameBackdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InGameBackdrop.png; sourceTree = "<group>"; };
 		3B34229019242048000AAC68 /* Notification_MoreE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Notification_MoreE.png; sourceTree = "<group>"; };
@@ -1319,6 +1321,7 @@
 				61D6E6EF18FDB5B70017A389 /* tile_bottom.png */,
 				3B27D3A81925BDEF00782A12 /* tile_bottom_dotted.png */,
 				61D6E6F018FDB5B70017A389 /* tile_bottomleft.png */,
+				3B27D3C41926835800782A12 /* tile_bottomleft_dotted.png */,
 				61D6E6F118FDB5B70017A389 /* tile_bottomright.png */,
 				3B27D3BE1926736C00782A12 /* tile_bottomright_dotted.png */,
 				61D6E6F218FDB5B70017A389 /* tile_horizontal.png */,
@@ -1587,6 +1590,7 @@
 				297CEA0C1924BDAF0043542D /* Kick_L3a.png in Resources */,
 				61A257D718FDE998001B7F67 /* chromeKittenSmall.png in Resources */,
 				61D6E87518FDB5B70017A389 /* ball_Texture.png in Resources */,
+				3B27D3C51926835800782A12 /* tile_bottomleft_dotted.png in Resources */,
 				29C42BF819105C0600441639 /* Androyd-Bulbtone-41.wav in Resources */,
 				29C42BE819105C0600441639 /* PlucknWiggleA#1.wav in Resources */,
 				61D6E7F818FDB5B70017A389 /* tile_3bottom.png in Resources */,
