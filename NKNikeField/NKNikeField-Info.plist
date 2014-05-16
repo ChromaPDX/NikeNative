@@ -29,6 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>nikecup://fuel/success</string>
 				<string>nsfw</string>
 				<string>fb274442572706946</string>
 			</array>

@@ -154,11 +154,25 @@
 -(Card*)cardInHandOfCategory:(int) thisCategory{
     for (Card* c in self.allCardsInHand) {
         // choose best card of each type
-        if (c.category == thisCategory) {
+        if (c.category == thisCategory && c.AIShouldUse) {
             return c;
         }
     }
     return NULL;
+}
+
+-(NSArray*)cardsInHandOfCategory:(int) thisCategory{
+    NSMutableArray *allInCat = [[NSMutableArray alloc] init];
+    for (Card* c in self.allCardsInHand) {
+        // choose best card of each type
+        if (c.category == thisCategory && c.AIShouldUse) {
+            [allInCat addObject:c];
+        }
+    }
+    if (allInCat.count) {
+         return allInCat;
+    }
+    return nil;
 }
 
 -(NSArray*)allCardsInHand {
@@ -307,11 +321,15 @@
 -(NSArray*)playersInShootingRange{
     NSArray *players = [self playersClosestToGoal];
     NSMutableArray * retPlayers;
-    for(Player *p in players){
-        if([p isInShootingRange]){
-            [retPlayers addObject:p];
+    
+    for (Card *c in self.kickDeck.inHand) {
+        for(Player *p in players){
+            if([p isInShootingRangeWithKickCard:c]){
+                [retPlayers addObject:p];
+            }
         }
     }
+
     return retPlayers;
 }
 

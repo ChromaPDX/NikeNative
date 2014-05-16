@@ -25,7 +25,7 @@
 @class GameEvent;
 @class GameSequence;
 
-#define AI_SPEED .75
+#define AI_SPEED .5
 
 @interface GameScene : NKSceneNode
 
