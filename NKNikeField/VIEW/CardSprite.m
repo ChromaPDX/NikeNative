@@ -174,18 +174,19 @@
     return self;
 }
 
-
-
-
-
 -(void)showLocked {
-    if (![self childNodeWithName:@"lock"]) {
-        
-    NKSpriteNode *lock =  [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"lock-4"] color:V2BLUE size:S2Make(self.size.width*.5, self.size.width*.5)];
-    [self addChild:lock];
-    [lock setPosition:P2Make(w *.25, h*-.25)];
-    lock.name = @"lock";
-        
+    if (_model.locked) {
+        if (![self childNodeWithName:@"lock"]) {
+            
+            NKSpriteNode *lock =  [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"lock-4"] color:V2BLUE size:S2Make(self.size.width*.5, self.size.width*.5)];
+            [self addChild:lock];
+            [lock setPosition:P2Make(w *.25, h*-.25)];
+            lock.name = @"lock";
+            
+        }
+    }
+    else {
+        [self removeChildNamed:@"lock"];
     }
 }
 

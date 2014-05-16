@@ -154,11 +154,25 @@
 -(Card*)cardInHandOfCategory:(int) thisCategory{
     for (Card* c in self.allCardsInHand) {
         // choose best card of each type
-        if (c.category == thisCategory) {
+        if (c.category == thisCategory && c.AIShouldUse) {
             return c;
         }
     }
     return NULL;
+}
+
+-(NSArray*)cardsInHandOfCategory:(int) thisCategory{
+    NSMutableArray *allInCat = [[NSMutableArray alloc] init];
+    for (Card* c in self.allCardsInHand) {
+        // choose best card of each type
+        if (c.category == thisCategory && c.AIShouldUse) {
+            [allInCat addObject:c];
+        }
+    }
+    if (allInCat.count) {
+         return allInCat;
+    }
+    return nil;
 }
 
 -(NSArray*)allCardsInHand {

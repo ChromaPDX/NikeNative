@@ -102,7 +102,7 @@
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
-    CGRect startButtonRect = CGRectMake(201, 150, 220, 100);
+    CGRect startButtonRect = CGRectMake(201, 150, 220, 200);
     CGPoint point = CGPointMake(location.x, location.y);
     if(CGRectContainsPoint(startButtonRect, point)){
         NSLog(@"start button pressed, starting game...");

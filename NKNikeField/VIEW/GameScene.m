@@ -297,19 +297,21 @@ float PARTICLE_SCALE;
 -(void)revealBlocksForManager:(Manager*)m {
     for (BoardTile* tile in _gameTiles.allValues) {
         if([m.effects[Card_Block] containsObject:tile.location]){
+            
             [tile removeAllActions];
             [tile.location setBorderShapeInContext:m.effects[Card_Block]];
             [tile setTextureForBorder:tile.location.borderShape];
-            [tile setUserInteractionEnabled:true];
             [tile setColor:V2RED];
             [tile setUserInteractionEnabled:false];
             
             if (!tile.block) {
-                tile.block = [[NKMeshNode alloc] initWithPrimitive:NKPrimitiveCube texture:nil color:V2RED size:V3MakeF(TILE_WIDTH*.5)];
-                [tile.block setZPosition:TILE_HEIGHT*.5];
-                [tile.block setAlpha:0.];
-                [tile addChild:tile.block];
-                [tile.block repeatAction:[NKAction group: @[
+                NKMeshNode *block = [[NKMeshNode alloc] initWithPrimitive:NKPrimitiveCube texture:nil color:V2RED size:V3MakeF(TILE_WIDTH*.5)];
+                [tile addChild:block];
+                tile.block = block;
+                [block setZPosition:TILE_HEIGHT*.5];
+                [block setAlpha:0.];
+              
+                [block repeatAction:[NKAction group: @[
                                                             [NKAction rotate3dByAngle:V3Make(random()%120,random()%120,random()%120) duration:4.],
                                                                [NKAction sequence:@[[NKAction fadeAlphaTo:0.7 duration:2.],
                                                                                     [NKAction fadeAlphaTo:0.2 duration:2.]]]]]];
@@ -317,20 +319,23 @@ float PARTICLE_SCALE;
             
         }
         else if ([m.opponent.effects[Card_Block] containsObject:tile.location]){
+            
             [tile removeAllActions];
             [tile.location setBorderShapeInContext:m.opponent.effects[Card_Block]];
             [tile setTextureForBorder:tile.location.borderShape];
-            [tile setUserInteractionEnabled:true];
             [tile setColor:V2BLUE];
             if (tile.block) {
+                [tile.block removeAllActions];
                 [tile fadeOutChild:tile.block duration:1. withCompletion:^{
                     tile.block = nil;
                 }];
             }
+            
         }
         else {
             
             if (tile.block) {
+                [tile.block removeAllActions];
                 [tile fadeOutChild:tile.block duration:1. withCompletion:^{
                     tile.block = nil;
                 }];
@@ -346,11 +351,10 @@ float PARTICLE_SCALE;
         NSArray *set = [kickCard validatedSelectionSetForPlayer:self.game.ball.enchantee];
         for (BoardLocation* loc in set) {
             BoardTile* tile = [_gameTiles objectForKey:loc];
-            [tile removeAllActions];
             [tile setColor:V2YELLOW];
             [tile.location setBorderShapeInContext:set];
             [tile setTextureForBorder:tile.location.borderShape];
-            [tile setUserInteractionEnabled:true];
+            [tile removeAllActions];
             [tile runAction:[NKAction fadeAlphaTo:.2 duration:FAST_ANIM_DUR]];
         }
     }
@@ -454,23 +458,23 @@ float PARTICLE_SCALE;
 
 -(void)AISelectedPlayer:(Player *)selectedPlayer {
     
-    //PlayerSprite *ps = [playerSprites objectForKey:selectedPlayer];
     
     [self showPlayerSelection:selectedPlayer];
     
     _selectedPlayer = selectedPlayer;
     _game.selectedPlayer = selectedPlayer;
     
-    for (Card *c in selectedPlayer.manager.allCardsInHand) { // RESET CARDS
-        c.AIShouldUse = true;
-    }
-    
     if (_selectedCard) {
         [self setSelectedCard:nil];
     }
     
     [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{
-        [_game AIChooseCardForPlayer:selectedPlayer];
+        
+        [self runAction:[NKAction delayFor:AI_SPEED] completion:^{
+            [_game AIChooseCardForPlayer:selectedPlayer];
+        }];
+        
+        
     }];
     
     
@@ -490,7 +494,7 @@ float PARTICLE_SCALE;
     
     [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
     
-    [self runAction:[NKAction moveByX:0 y:0 duration:AI_SPEED] completion:^{
+    [self runAction:[NKAction delayFor:AI_SPEED] completion:^{
         [_game AIChooseLocationForCard:selectedCard];
     }];
     
@@ -516,10 +520,17 @@ float PARTICLE_SCALE;
     BoardTile *selectedBoardTile = [_gameTiles objectForKey:selectedLocation];
     
     if (_selectedCard) {
+        [self runAction:[NKAction delayFor:AI_SPEED] completion:^{
+            
+        _selectedBoardTile = selectedBoardTile;
         _game.selectedLocation = selectedBoardTile.location;
+            
+        }];
+    }
+    else {
+        NSLog(@"AI SELECTED LOCATION WITH NIL CARD, BETTER FIX THAT HANG !!");
     }
     
-    _selectedBoardTile = selectedBoardTile;
     
 }
 
@@ -533,7 +544,6 @@ float PARTICLE_SCALE;
     PlayerSprite* player = [playerSprites objectForKey:event.playerPerforming];
     
     if (event.type == kEventStartTurn){
-        
         if (_selectedPlayer) {
             [_gameBoardNode removeAllActions];
             PlayerSprite* p2 = [playerSprites objectForKey:_selectedPlayer];
@@ -546,8 +556,6 @@ float PARTICLE_SCALE;
         }
         
         block();
-        
-
     }
     
     else if (event.type == kEventSetBallLocation) {
@@ -877,6 +885,15 @@ float PARTICLE_SCALE;
     }
     else if (event.type == kEventBlock){
         block();
+    }
+    else if (event.type == kEventNewDeal) {
+        [_uxWindow removeCardsAnimated:YES WithCompletionBlock:^{
+            _uxWindow.managerHand = nil;
+            [self refreshUXWindowForPlayer:event.playerPerforming withCompletionBlock:^{
+                block();
+            }];
+        }];
+
     }
     
     else if (event.type == kEventAddSpecial) {

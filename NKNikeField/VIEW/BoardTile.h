@@ -23,7 +23,7 @@
 // VIEW
 @property (nonatomic, weak) GameScene *delegate;
 
-@property (nonatomic, strong) NKMeshNode *block;
+@property (nonatomic, weak) NKMeshNode *block;
 
 -(void)setTextureForBorder:(BorderMask)border;
 

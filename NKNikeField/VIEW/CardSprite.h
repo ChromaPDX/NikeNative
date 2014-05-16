@@ -49,6 +49,8 @@
 
 @property (nonatomic)     bool endTurnCard;
 
+-(void)showLocked;
+
 -(NSString*)fileNameForBigCard;
 -(NKColor*)colorForCategory;
 
