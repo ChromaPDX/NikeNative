@@ -321,11 +321,15 @@
 -(NSArray*)playersInShootingRange{
     NSArray *players = [self playersClosestToGoal];
     NSMutableArray * retPlayers;
-    for(Player *p in players){
-        if([p isInShootingRange]){
-            [retPlayers addObject:p];
+    
+    for (Card *c in self.kickDeck.inHand) {
+        for(Player *p in players){
+            if([p isInShootingRangeWithKickCard:c]){
+                [retPlayers addObject:p];
+            }
         }
     }
+
     return retPlayers;
 }
 

@@ -494,8 +494,7 @@
     return retVal;
 }
 
--(BOOL)isInShootingRange{
-    Card *kickCard = [self.manager cardInHandOfCategory:CardCategoryKick];
+-(BOOL)isInShootingRangeWithKickCard:(Card*)kickCard{
     if(!kickCard) return FALSE;
     NSArray *kickSelect = [kickCard validatedSelectionSetForPlayer:self];
     if([kickSelect containsObject:self.manager.goal]){

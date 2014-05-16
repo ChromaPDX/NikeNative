@@ -89,11 +89,11 @@
     
     _me = [[Manager alloc] initWithGame:self];
     _opponent = [[Manager alloc] initWithGame:self];
-
+    
     /*
-    _me.energy = DEFAULT_START_ENERGY;
-    _opponent.energy = DEFAULT_START_ENERGY;
-    */
+     _me.energy = DEFAULT_START_ENERGY;
+     _opponent.energy = DEFAULT_START_ENERGY;
+     */
     
     _score = [BoardLocation pX:0 Y:0];
     
@@ -267,16 +267,16 @@
     if (_myTurn) {
         
         if (!_animating) {
-
+            
             if (_selectedPlayer) {
                 
-            
-            _selectedCard = selectedCard;
-            //_selectedCard.playerPerforming = _selectedPlayer;
-            
-            if  (selectedCard){
-                [_gameScene showCardPath:[selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
-            }
+                
+                _selectedCard = selectedCard;
+                //_selectedCard.playerPerforming = _selectedPlayer;
+                
+                if  (selectedCard){
+                    [_gameScene showCardPath:[selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
+                }
                 
             }
             
@@ -422,7 +422,7 @@
     GameEvent *event = [GameEvent event];
     
     
-
+    
     event.manager = m;
     event.type = kEventAddPlayer;
     //event.startingLocation = [card.location copy];
@@ -440,7 +440,7 @@
 }
 
 -(GameEvent*)addCardEventToSequence:(GameSequence*)sequence withCard:(Card*)card forPlayer:(Player*)player toLocation:(BoardLocation*)location withType:(EventType)type {
-
+    
     GameEvent *event = [GameEvent event];
     
     event.playerPerforming = player;
@@ -451,7 +451,7 @@
     event.deck = card.deck;
     
     event.type = type;
-   
+    
     [sequence.GameEvents addObject:event];
     
     event.cost = 0;
@@ -737,71 +737,71 @@
                 
             }
             
-
+            
             if (animate) { // ALL 'REAL-TIME' TURNS WILL ANSWER YES !
                 
                 if (sequence.completionBlock) {
                     sequence.completionBlock();
                 }
                 
-       
+                
+                
+                _animating = NO;
+                
+                
+#pragma mark - end of compute cycle
+                
+                if (sequence.manager.myTurn) {
                     
-                    _animating = NO;
-           
-                
-                #pragma mark - end of compute cycle
-                
-                    if (sequence.manager.myTurn) {
-                        
-                        bool playersAvailable = false;
-                        
-                        for (Player *p in sequence.manager.players.inGame) {
-                            if (!p.used) {
-                                playersAvailable = true;
-                            }
+                    bool playersAvailable = false;
+                    
+                    for (Player *p in sequence.manager.players.inGame) {
+                        if (!p.used) {
+                            playersAvailable = true;
                         }
-                        
-                        if (!playersAvailable) {
-                            [self recordSequence:[self endTurnSequenceForManager:sequence.manager] withCompletionBlock:^{
-                                GameSequence* passTurn = [GameSequence sequence];
-                                [self addStartTurnEventsToSequence:passTurn forManager:sequence.manager.opponent];
-                                [self performSequence:passTurn record:true animate:true];
-                            }];
+                    }
+                    
+                    if (!playersAvailable) {
+                        [self recordSequence:[self endTurnSequenceForManager:sequence.manager] withCompletionBlock:^{
+                            GameSequence* passTurn = [GameSequence sequence];
+                            [self addStartTurnEventsToSequence:passTurn forManager:sequence.manager.opponent];
+                            [self performSequence:passTurn record:true animate:true];
+                        }];
+                    }
+                    
+                    else {
+                        if (sequence.manager.isAI) {
+                            [self AIChoosePlayerForManager:sequence.manager];
                         }
                         
                         else {
-                            if (sequence.manager.isAI) {
-                                [self AIChoosePlayerForManager:sequence.manager];
-                            }
+                            Player* playerToSelect = [sequence.manager playerWithBall];
                             
-                            else {
-                                Player* playerToSelect = [sequence.manager playerWithBall];
-                                
-                                if (!playerToSelect || playerToSelect.used) {
-                                    for (Player *p in sequence.manager.players.inGame) {
-                                        if (!p.used) {
-                                            playerToSelect = p;
-                                        }
+                            if (!playerToSelect || playerToSelect.used) {
+                                for (Player *p in sequence.manager.players.inGame) {
+                                    if (!p.used) {
+                                        playerToSelect = p;
                                     }
                                 }
-                                
-                                [_gameScene setSelectedPlayer:playerToSelect];
-                                
                             }
                             
-                            [self saveTurnWithCompletionBlock:^{
-                                
-                                
-                                
-                            }];
+                            [_gameScene setSelectedPlayer:playerToSelect];
+                            
                         }
                         
-                        
+                        [self saveTurnWithCompletionBlock:^{
+                            
+                            
+                            
+                        }];
                     }
                     
                     
-                    
-         
+                }
+                
+                
+                
+                
             }
             
             else {
@@ -861,9 +861,9 @@
             
             if (animate) {
                 
-    
+                
                 [self enumerateTurnHeapAnimate:animate];
- 
+                
                 
             }
             
@@ -1027,12 +1027,12 @@
     else if (event.type == kEventPlayCard) {
         
         if (event.card) {
-
+            
             if(event.playerPerforming) {
                 event.playerPerforming.used = true;
             }
-                event.manager.energy -= event.card.energyCost;
-                [event.card discard];
+            event.manager.energy -= event.card.energyCost;
+            [event.card discard];
             
         }
         
@@ -1054,7 +1054,7 @@
     
     else if (event.type == kEventEndTurn){
         
-
+        
         for (Card* c in [event.manager allCardsInHand]) {
             if (!c.locked) {
                 [c discard];
@@ -1232,16 +1232,16 @@
             
             [blocks addObject:event.location];
             
-//            Player* block = [[Player alloc] initWithManager:nil];
-//            event.playerReceiving = block;
-//            [block setLocation:event.location];
-//            [_players addObject:block];
+            //            Player* block = [[Player alloc] initWithManager:nil];
+            //            event.playerReceiving = block;
+            //            [block setLocation:event.location];
+            //            [_players addObject:block];
         }
         else if (event.type == kEventDeRez){  //  DEREZ
             //[event.playerReceiving.effects setObject:@1 forKey:Card_DeRez];
-//            if (event.playerReceiving.ball) {
-//                [event.playerReceiving setBall:nil];
-//            }
+            //            if (event.playerReceiving.ball) {
+            //                [event.playerReceiving setBall:nil];
+            //            }
             [_players removeObject:event.playerReceiving];
             [event.playerReceiving discard];
         }
@@ -1257,7 +1257,7 @@
             for (Card *c in event.manager.allCardsInDeck) {
                 [c discard];
             }
-
+            
             [event.manager.kickDeck shuffleWithSeed:event.seed fromDeck:event.manager.kickDeck.discarded];
             [event.manager.moveDeck shuffleWithSeed:event.seed fromDeck:event.manager.moveDeck.discarded];
             [event.manager.challengeDeck shuffleWithSeed:event.seed fromDeck:event.manager.challengeDeck.discarded];
@@ -1269,16 +1269,16 @@
         }
         
         else if (event.type == kEventPredictiveAnalysis){  //  PREDICTIVE ANALASYS
-           // event.playerPerforming.manager.opponent.preditiveAnalysis = TRUE;
+            // event.playerPerforming.manager.opponent.preditiveAnalysis = TRUE;
             
             for(Player *p in event.playerPerforming.manager.opponent.players.allCards){
                 
-        
+                
                 
                 //Card *challengeCard = p.challengeDeck.allCards[0];
                 //NSLog(@"Challenge Card %@ SelectionSet = %@", challengeCard, [challengeCard selectionSet]);
                 
-               // [_gameScene showCardPath:[challengeCard selectionSet]];
+                // [_gameScene showCardPath:[challengeCard selectionSet]];
                 
             }
         }
@@ -1383,16 +1383,16 @@
                 else {
                     [event.manager.challengeDeck turnOverNextCardForEvent:event];
                 }
-
+                
             }
             
             else {
                 [event.manager.specialDeck turnOverNextCardForEvent:event];
             }
-
+            
         }
     }
-
+    
 }
 #pragma mark - AI DECISION TREE
 
@@ -1459,9 +1459,9 @@
 }
 
 -(void)AIChooseCardForPlayer:(Player*) p{ // called from UI after player has been selected
-
-     NSLog(@"AI: %@ : is choosing a card", p.name);
-
+    
+    NSLog(@"AI: %@ : is choosing a card", p.name);
+    
     Card* moveCard = [p.manager cardInHandOfCategory:CardCategoryMove];
     
     // CHECK FOR LOOSE BALL
@@ -1473,7 +1473,7 @@
             return;
         }
     }
-
+    
     if (p.manager.hasPossesion) {
         
         if ([self AIChooseOffenseCardForPlayer:p]) {
@@ -1481,77 +1481,82 @@
         }
         
     }
-
+    
     else {   // DEFENSE
         
         if ([self AIChooseDefenseCardForPlayer:p] ) {
             return;
         }
-       
+        
     }
     
     NSLog(@"AI failed to select a card");
     _selectedPlayer.used = true;
     [self AIChoosePlayerForManager:_selectedManager];
-
+    
 }
 
 -(bool)AIChooseOffenseCardForPlayer:(Player*) p{
     
-    Card* moveCard = [self AICheckCategoryForUsable:CardCategoryMove forManager:p.manager];
+    Card* moveCard = [self AICheckCategoryForUsable:CardCategoryMove forPlayer:p];
     
     NSLog(@"AI is choosing card for Player: %@ location = %@ ballLocaiton = %@", p.name, p.location, p.manager.game.ball.location);
     
-    Card* kickCard = [self AICheckCategoryForUsable:CardCategoryKick forManager:p.manager];
-    
     // OFFENSE
-    if (p.ball && [self AICanUseCard:kickCard]) {
+    if (p.ball) {
         
-        if ([p isInShootingRange ]){
-            // CAN SHOOT ON GOAL
-            kickCard.aiActionType = SHOOT_ON_GOAL;
-            //[_gameScene AISelectedLocation:kickCard.playerPerforming.manager.goal];
-            [_gameScene AISelectedCard:kickCard];
-            return 1;
-        }
-        else{
-            //CAN NOT SHOOT ON GOAL
-            Player *passToPlayer = [p passToAvailablePlayerInShootingRange];
-            if(passToPlayer){
-                // CAN PASS TO PLAYER IN SHOOTING RANGE
-                kickCard.aiActionType = PASS_TO_PLAYER_IN_SHOOTING_RANGE;
+        Card* kickCard = [self AICheckCategoryForUsable:CardCategoryKick forPlayer:p];
+        
+        if (kickCard) {
+            
+            if ([p isInShootingRangeWithKickCard:kickCard]){
+                // CAN SHOOT ON GOAL
+                kickCard.aiActionType = SHOOT_ON_GOAL;
+                //[_gameScene AISelectedLocation:kickCard.playerPerforming.manager.goal];
                 [_gameScene AISelectedCard:kickCard];
                 return 1;
+                
             }
             else{
-                // CAN NOT PASS TO PLAYER IN SHOOTING RANGE
-                NSArray *pathToGoal = [moveCard validatedPath:[p pathToGoal]];
-                
-                if(pathToGoal && [self AICanUseCard:moveCard]){
-                    // CAN MOVE IN SHOOTING RANGE
-                    moveCard.aiActionType = MOVE_TO_GOAL;
-                    [_gameScene AISelectedCard:moveCard];
+                //CAN NOT SHOOT ON GOAL
+                Player *passToPlayer = [p passToAvailablePlayerInShootingRange];
+                if(passToPlayer){
+                    // CAN PASS TO PLAYER IN SHOOTING RANGE
+                    kickCard.aiActionType = PASS_TO_PLAYER_IN_SHOOTING_RANGE;
+                    [_gameScene AISelectedCard:kickCard];
                     return 1;
                 }
                 else{
-                    //CAN NOT MOVE IN SHOOTING RANGE
-                    NSArray *playersCloserToGoal = [p playersAvailableInKickRangeCloserToGoal];
+                    // CAN NOT PASS TO PLAYER IN SHOOTING RANGE
+                    NSArray *pathToGoal = [moveCard validatedPath:[p pathToGoal]];
                     
-                    if(playersCloserToGoal){
-                        // CAN PASS TO AVAILABLE PLAYER CLOSER TO GOAL
-                        kickCard.aiActionType = PASS_TO_GOAL;
-                        [_gameScene AISelectedCard:kickCard];
+                    if(pathToGoal && [self AICanUseCard:moveCard]){
+                        // CAN MOVE IN SHOOTING RANGE
+                        moveCard.aiActionType = MOVE_TO_GOAL;
+                        [_gameScene AISelectedCard:moveCard];
                         return 1;
                     }
-                    
+                    else{
+                        //CAN NOT MOVE IN SHOOTING RANGE
+                        NSArray *playersCloserToGoal = [p playersAvailableInKickRangeCloserToGoal];
+                        
+                        if(playersCloserToGoal){
+                            // CAN PASS TO AVAILABLE PLAYER CLOSER TO GOAL
+                            kickCard.aiActionType = PASS_TO_GOAL;
+                            [_gameScene AISelectedCard:kickCard];
+                            return 1;
+                        }
+                        
+                    }
                 }
+                
             }
-            
         }
         
     }
     
-    Card* specialCard = [self AICheckCategoryForUsable:CardCategorySpecial forManager:p.manager];
+    
+    Card* specialCard = [self AICheckCategoryForUsable:CardCategorySpecial forPlayer:p];
     
     if([self AICanUseCard:specialCard]){
         specialCard.aiActionType = SPECIAL_CARD;
@@ -1570,7 +1575,7 @@
 
 -(bool)AIChooseDefenseCardForPlayer:(Player*) p{
     
-    Card* challengeCard = [self AICheckCategoryForUsable:CardCategoryChallenge forManager:p.manager];
+    Card* challengeCard = [self AICheckCategoryForUsable:CardCategoryChallenge forPlayer:p];
     
     if ([self AICanUseCard:challengeCard]) {
         // CAN CHALLENGE
@@ -1579,7 +1584,7 @@
         return 1;
     }
     
-    Card* moveCard = [self AICheckCategoryForUsable:CardCategoryMove forManager:p.manager];
+    Card* moveCard = [self AICheckCategoryForUsable:CardCategoryMove forPlayer:p];
     
     if ([self AICanUseCard:moveCard]) {  // validate move card
         
@@ -1591,7 +1596,7 @@
         }
     }
     
-    Card* specialCard = [self AICheckCategoryForUsable:CardCategorySpecial forManager:p.manager];
+    Card* specialCard = [self AICheckCategoryForUsable:CardCategorySpecial forPlayer:p];
     
     if([self AICanUseCard:specialCard]){
         specialCard.aiActionType = SPECIAL_CARD;
@@ -1600,7 +1605,7 @@
     }
     
     if ([self AICanUseCard:moveCard]) {  // validate move card
-
+        
         // CAN NOT MOVE TO CHALLENGE
         NSArray *pathToGoal = [p pathToGoal];
         NSArray *pathToBall = [p pathToBall];
@@ -1623,9 +1628,21 @@
 }
 
 
--(Card*)AICheckCategoryForUsable:(CardCategory)category forManager:(Manager*)m{
+-(Card*)AICheckCategoryForUsable:(CardCategory)category forPlayer:(Player*)p{
     
-    NSArray *cards= [m cardsInHandOfCategory:category];
+    NSArray *cards= [p.manager cardsInHandOfCategory:category];
+    
+    // FOR KICK LOOKS FOR POSSIBLE GOALS FIRST
+    
+    if (CardCategoryKick == category) {
+        for (Card *c in cards) {
+            if ([p isInShootingRangeWithKickCard:c]) {
+                return c;
+            }
+        }
+    }
+    
+    // SCAN ALL FOR USEABLE
     
     for (Card *c in cards) {
         if ([self AICanUseCard:c]) {
@@ -1662,12 +1679,12 @@
     NSArray *playersCloserToGoal;
     Player *p = _selectedPlayer;
     /*
-    if(c.category == CardCategorySpecial){
-        NSArray *setSpecial = [c selectionSetForPlayer:<#(Player *)#>];
-        return;
-    }
-    */
-
+     if(c.category == CardCategorySpecial){
+     NSArray *setSpecial = [c selectionSetForPlayer:<#(Player *)#>];
+     return;
+     }
+     */
+    
     // NSLog(@"in AIChooseLocationForCard, aiActionType = %d", c.aiActionType);
     switch (c.aiActionType){
         case NONE:
@@ -1804,7 +1821,7 @@
             }
             break;
     }
-
+    
     NSLog(@"AI HAS NO VALID CARD LOCATION: Try another card");
     c.AIShouldUse = false;
     [self AIChooseCardForPlayer:_selectedPlayer];

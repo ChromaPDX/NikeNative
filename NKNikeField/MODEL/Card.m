@@ -481,6 +481,10 @@
         }
     }
     
+    if (p.manager.effects[Card_Block]) {
+        [obstacles addObjectsFromArray:p.manager.effects[Card_Block]];
+    }
+    
     
     AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
     NSMutableArray *accessible = [[NSMutableArray alloc] init];
@@ -614,10 +618,6 @@
     }
     else{
         accessible = nil;
-    }
-    
-    if (p.manager.effects[Card_Block]) {
-        [accessible removeObjectsInArray:p.manager.effects[Card_Block]];
     }
     
     return accessible;
