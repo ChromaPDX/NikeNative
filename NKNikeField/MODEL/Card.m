@@ -471,6 +471,10 @@
         if (self.category == CardCategoryChallenge) {
             [obstacles removeObject:[self.game.ball.location copy]];
         }
+    
+        [obstacles addObject:self.deck.manager.opponent.goal];
+        [obstacles addObject:self.deck.manager.goal];
+        
     }
     
     else if (self.category == CardCategoryKick) {
