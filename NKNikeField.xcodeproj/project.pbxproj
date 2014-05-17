@@ -570,7 +570,7 @@
 		61D6E46118FDAE110017A389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		61D6E46418FDAE110017A389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		61D6E46918FDAE120017A389 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		61D6E46F18FDAE120017A389 /* NKNikeFieldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NKNikeFieldTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		61D6E46F18FDAE120017A389 /* nikecup.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nikecup.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		61D6E47018FDAE120017A389 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		61D6E47818FDAE120017A389 /* NKNikeFieldTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NKNikeFieldTests-Info.plist"; sourceTree = "<group>"; };
 		61D6E47A18FDAE120017A389 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1194,7 +1194,7 @@
 			isa = PBXGroup;
 			children = (
 				61D6E44B18FDAE110017A389 /* nikecup.app */,
-				61D6E46F18FDAE120017A389 /* NKNikeFieldTests.xctest */,
+				61D6E46F18FDAE120017A389 /* nikecup.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1516,7 +1516,7 @@
 			);
 			name = NKNikeFieldTests;
 			productName = NKNikeFieldTests;
-			productReference = 61D6E46F18FDAE120017A389 /* NKNikeFieldTests.xctest */;
+			productReference = 61D6E46F18FDAE120017A389 /* nikecup.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -1529,6 +1529,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Chroma Developer";
 				TargetAttributes = {
+					61D6E44A18FDAE110017A389 = {
+						DevelopmentTeam = ZJLX8USTRZ;
+					};
 					61D6E46E18FDAE120017A389 = {
 						TestTargetID = 61D6E44A18FDAE110017A389;
 					};
@@ -1962,6 +1965,8 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NKNikeField/PARSE+FB",
@@ -1975,6 +1980,7 @@
 					"$(PROJECT_DIR)/NKNikeField/NIKE",
 				);
 				PRODUCT_NAME = nikecup;
+				PROVISIONING_PROFILE = "3404F7F2-D3C0-4265-B522-65883A47FC29";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1988,6 +1994,8 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NKNikeField/PARSE+FB",
@@ -2001,6 +2009,7 @@
 					"$(PROJECT_DIR)/NKNikeField/NIKE",
 				);
 				PRODUCT_NAME = nikecup;
+				PROVISIONING_PROFILE = "3404F7F2-D3C0-4265-B522-65883A47FC29";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -2021,7 +2030,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "NKNikeFieldTests/NKNikeFieldTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = nikecup;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -2039,7 +2048,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
 				INFOPLIST_FILE = "NKNikeFieldTests/NKNikeFieldTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = nikecup;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};

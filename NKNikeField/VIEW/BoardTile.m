@@ -13,7 +13,7 @@
 
 -(instancetype)initWithTexture:(NKTexture*)texture color:(UIColor *)color size:(S2t)size {
     self = [super initWithTexture:texture color:color size:size];
-    _borderSprite = [super initWithTexture:texture color:V2ORANGE size:size];
+    _borderSprite = [[NKSpriteNode alloc] initWithTexture:texture color:V2ORANGE size:size];
     _borderSprite.hidden = true;
     _isDottedBorder = false;
     if (self){
@@ -105,9 +105,11 @@
 -(void)setTextureForBorder:(BorderMask)border {
     self.texture = [NKTexture textureWithImageNamed:[self stringForBorderTex:border]];
     
-    //self.borderSprite.texture =[NKTexture textureWithImageNamed:[self stringForDottedBorderTex:border]];
     if(self.isDottedBorder){
+        self.borderSprite.texture =[NKTexture textureWithImageNamed:[self stringForDottedBorderTex:border]];
         self.borderSprite.hidden = FALSE;
+        self.borderSprite.alpha = 1;
+        self.borderSprite.color = V2ORANGE;
     }
     else{
         self.borderSprite.hidden = TRUE;

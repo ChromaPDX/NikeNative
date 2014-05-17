@@ -356,7 +356,7 @@ float PARTICLE_SCALE;
             [tile.location setBorderShapeInContext:set];
             [tile setTextureForBorder:tile.location.borderShape];
             [tile removeAllActions];
-            [tile runAction:[NKAction fadeAlphaTo:.2 duration:FAST_ANIM_DUR]];
+            [tile runAction:[NKAction fadeAlphaTo:1 duration:FAST_ANIM_DUR]];
         }
     }
 }
@@ -364,6 +364,8 @@ float PARTICLE_SCALE;
 -(void)showCardPath:(NSArray*)path forPlayer:(Player*)player{
     
     for (BoardTile* tile in _gameTiles.allValues) {
+        [tile.location setBorderShapeInContext:path];
+        [tile setTextureForBorder:tile.location.borderShape];
         [tile setColor:nil];
         [tile setTexture:nil];
         [tile setUserInteractionEnabled:false];
@@ -371,6 +373,7 @@ float PARTICLE_SCALE;
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
     
+   // [self showPossibleKickForManager:player.manager];
 
     P2t p;
     
@@ -378,7 +381,7 @@ float PARTICLE_SCALE;
         for (BoardLocation* loc in path) {
             BoardTile* tile = [_gameTiles objectForKey:loc];
             [tile removeAllActions];
-            [tile setColor:V2GREEN];
+            if(!tile.isDottedBorder)[tile setColor:V2GREEN];
             [tile.location setBorderShapeInContext:path];
             [tile setTextureForBorder:tile.location.borderShape];
             [tile setUserInteractionEnabled:true];
@@ -391,7 +394,6 @@ float PARTICLE_SCALE;
     }
     
     [self revealBlocksForManager:player.manager];
-  //  [self showPossibleKickForManager:player.manager];
     
 }
 

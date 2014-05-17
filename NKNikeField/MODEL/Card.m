@@ -60,8 +60,9 @@
     _moveCategory = CardMoveCategoryNull;
     _challengeCategory = CardChallengeCategoryNull;
     
-    _specialTypeCategory = rand() % 6 + 1;
+    _specialTypeCategory = rand() % 7 + 1;
     //_specialTypeCategory = CardSpecialCategoryBlock;
+    //_specialTypeCategory = CardSpecialCategoryNewDeal;
     
     switch (_specialTypeCategory) {
         case CardSpecialCategoryFreeze:
@@ -76,10 +77,12 @@
         case CardSpecialCategoryDeRez:
             self.specialCategory = CardCategoryGeneral;
             break;
-      //  case CardSpecialCategoryNewDeal:
-      //      self.specialCategory = CardCategoryGeneral;
-      //      break;
+        case CardSpecialCategoryNewDeal:
+            self.specialCategory = CardCategoryGeneral;
+            break;
         case CardSpecialCategoryPredictiveAnalysis:
+            // @LEIF - predictiveAnlysis becomes newDeal for now
+            _specialTypeCategory = CardSpecialCategoryNewDeal;
             self.specialCategory = CardCategoryGeneral;
             break;
         case CardSpecialCategorySuccubus:
@@ -102,9 +105,9 @@
         case CardSpecialCategoryFreeze:
             self.energyCost = 200;
             return;
-  //      case CardSpecialCategoryNewDeal:
-  //          self.energyCost = 50;
-  //          return;
+        case CardSpecialCategoryNewDeal:
+            self.energyCost = 50;
+            return;
         case CardSpecialCategoryNoLegs:
             self.energyCost = 100;
             return;
@@ -362,9 +365,9 @@
             case CardSpecialCategoryDeRez:
                 return @"DE-REZ";
                 break;
-        //    case CardSpecialCategoryNewDeal:
-        //        return @"NEW DEAL";
-        //        break;
+            case CardSpecialCategoryNewDeal:
+                return @"NEW DEAL";
+                break;
             case CardSpecialCategoryPredictiveAnalysis:
                 return @"ANALYZ";
             default:
@@ -471,6 +474,10 @@
         if (self.category == CardCategoryChallenge) {
             [obstacles removeObject:[self.game.ball.location copy]];
         }
+        if( self.category == CardCategoryMove){
+            [obstacles addObject:self.deck.manager.opponent.goal];
+            [obstacles addObject:self.deck.manager.goal];
+        }
     }
     
     else if (self.category == CardCategoryKick) {
@@ -572,8 +579,7 @@
                 
             // CASES FOR MY WHOLE FIELD
             
-            //case CardSpecialCategoryNewDeal:
-            case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
+            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
                 accessible = [[self.game allBoardLocationsButGoals] mutableCopy];
                 return accessible;
                 break;

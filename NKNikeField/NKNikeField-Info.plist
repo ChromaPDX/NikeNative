@@ -44,9 +44,9 @@
 	<key>Nike</key>
 	<dict>
 		<key>logicSuccess</key>
-		<string>${PRODUCT_NAME}://fuel/success</string>
+		<string> nikecup://fuel/success</string>
 		<key>appId</key>
-		<string>com.chroma.nikecup</string>
+		<string>com.chroma.jumpbots</string>
 		<key>clientId</key>
 		<string>32ae5928881388e72a37bbe06d3c3fc8</string>
 		<key>loginUrlScheme</key>

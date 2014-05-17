@@ -27,7 +27,7 @@
 
 @property (nonatomic, strong) NKMeshNode *block;
 
-@property (nonatomic, weak) NKSpriteNode *borderSprite;
+@property (nonatomic, strong) NKSpriteNode *borderSprite;
 
 -(void)setTextureForBorder:(BorderMask)border;
 

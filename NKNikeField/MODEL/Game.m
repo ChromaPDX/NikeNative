@@ -336,9 +336,9 @@
                 else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryDeRez){
                     playerEvent.type = kEventDeRez;
                 }
-              //  else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryNewDeal){
-              //      playerEvent.type = kEventNewDeal;
-              //  }
+                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryNewDeal){
+                    playerEvent.type = kEventNewDeal;
+                }
                 else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryPredictiveAnalysis){
                     playerEvent.type = kEventPredictiveAnalysis;
                 }
@@ -1215,7 +1215,7 @@
             else{
                 event.manager.opponent.energy -= SUCCUBUS_OPPONENT_ENERGY;
             }
-            event.manager.energy += (SUCCUBUS_SELF_ENERGY + event.card.energyCost);
+            event.manager.energy += (SUCCUBUS_SELF_ENERGY);
             
         }
         else if (event.type == kEventBlock){  //  BLOCK
@@ -1875,17 +1875,17 @@
             // right now don't use no on OFFENSE
             break;
             
-       // case CardSpecialCategoryNewDeal:
-       //     // only use this if we don't want to play anything else
-       //     for (Card*card in c.deck.manager.allCardsInHand) {
-       //         if (c != card && card.AIShouldUse) {
-       //             c.AIShouldUse = false;
-       //             c.locked = true; // SAVE IT
-       //             [[_gameScene.uxWindow spriteForCard:c] showLocked];
-       //             [self AIChooseCardForPlayer:_selectedPlayer];
-       //             return 1;
-       //         }
-       //     }
+        case CardSpecialCategoryNewDeal:
+            // only use this if we don't want to play anything else
+            for (Card*card in c.deck.manager.allCardsInHand) {
+                if (c != card && card.AIShouldUse) {
+                    c.AIShouldUse = false;
+                    c.locked = true; // SAVE IT
+                    [[_gameScene.uxWindow spriteForCard:c] showLocked];
+                    [self AIChooseCardForPlayer:_selectedPlayer];
+                    return 1;
+                }
+            }
             [_gameScene AISelectedLocation:[c.deck.manager.bestChoiceForDisable location]];
             return 1;
             
