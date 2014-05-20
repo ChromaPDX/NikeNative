@@ -76,7 +76,7 @@
     
     if(R4ContainsPoint(syncButtonRect, location)){
         NSLog(@"*NSYNC!");
-        NikeViewController* sync = [[NikeViewController alloc]init];
+        NKViewController* sync = [[NKViewController alloc]init];
         [self.nkView.controller presentViewController:sync animated:YES completion:^{
         
         }];
