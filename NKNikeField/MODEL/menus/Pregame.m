@@ -13,21 +13,9 @@
     self = [super initWithSize:size];
     
     if (self) {
-        NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size];
-        [self addChild:table];
-        [table setPadding:P2Make(0,0)];
-        // table.scrollingEnabled = true;
-        table.scale = 1.02;  // to correct for image...this needs to be fixed
-        table.name = @"table";
-        table.delegate = self;
-        //V3t rot =
-        //table.node->setOrientation
+        NKSpriteNode *bg = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_Pregame.png"] ] color:nil size:self.size];
         
-        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_Pregame.png"]];
-        UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-        [table setTexture:image];
-        [table setHighlightColor:highlightColor];
-        table.color = NKWHITE;
+        [self addChild:bg];
         
         fuelBar = [[FuelBar alloc] init];
         [fuelBar setPosition:P2Make(-64, 516)];
@@ -102,9 +90,9 @@
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
-    CGRect startButtonRect = CGRectMake(201, 100, 220, 300);
-    CGPoint point = CGPointMake(location.x, location.y);
-    if(CGRectContainsPoint(startButtonRect, point)){
+    R4t startButtonRect = R4Make(200, 100, 400, 200);
+
+    if(R4ContainsPoint(startButtonRect, P2Make(location.x, location.y))){
         NSLog(@"start button pressed, starting game...");
         NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startSinglePlayerGame];

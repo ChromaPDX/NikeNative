@@ -8,6 +8,8 @@
 
 //#define OF_BACKED
 
+#import "NKpch.h"
+
 #ifndef NSFW_bench_GlobalTypes_h
 #define NSFW_bench_GlobalTypes_h
 
@@ -25,8 +27,10 @@
 #define BOARD_WIDTH 7
 #define BOARD_LENGTH 10
 
-#define TILE_WIDTH 96
-#define TILE_HEIGHT 116
+static int TILE_WIDTH = 96;
+static int TILE_HEIGHT = 116;
+//#define TILE_WIDTH 96
+//#define TILE_HEIGHT 116
 
 
 // ANIMATION
@@ -70,8 +74,8 @@
 #define BALL_SCALE_SMALL .25
 
 #define DEFAULT_START_ENERGY 1000
-#define SUCCUBUS_SELF_ENERGY 100
-#define SUCCUBUS_OPPONENT_ENERGY 100
+#define SUCCUBUS_SELF_ENERGY 150
+#define SUCCUBUS_OPPONENT_ENERGY 200
 
 
 //#define debugUI 1

@@ -5,7 +5,7 @@
 
 @implementation UXWindow
 
--(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(S2t)size {
+-(instancetype) initWithTexture:(NKTexture *)texture color:(NKByteColor *)color size:(S2t)size {
     
     self = [super initWithTexture:texture color:color size:size];
     

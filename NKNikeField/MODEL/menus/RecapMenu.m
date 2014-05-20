@@ -29,9 +29,9 @@
         table.delegate = self;
         NKTexture *image;
         image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_RecapWinNoText.png"]];
-        UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
+       // UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
-        [table setHighlightColor:highlightColor];
+        [table setHighlightColor:NKBLACK];
         table.color = NKWHITE;
     }
 

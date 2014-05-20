@@ -27,7 +27,7 @@
 @property (nonatomic, weak) GameScene *delegate;
 @property (nonatomic, weak) Player* model;
 
-@property (nonatomic, weak) UITouch *touch;
+//@property (nonatomic, weak) UITouch *touch;
 
 @property (nonatomic) bool highlighted;
 

@@ -25,6 +25,7 @@
 		292BB0CF191431E400AFE938 /* NKShaderProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 292BB0CE191431E400AFE938 /* NKShaderProgram.m */; };
 		2934BDE2191ADCE700A33DBF /* NKFrameBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934BDE1191ADCE700A33DBF /* NKFrameBuffer.m */; };
 		2934BDE8191B166300A33DBF /* perlin.c in Sources */ = {isa = PBXBuildFile; fileRef = 2934BDE6191B166300A33DBF /* perlin.c */; };
+		2938BBEA192BCC4D005FD2E8 /* NKImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2938BBE9192BCC4D005FD2E8 /* NKImage+Utils.m */; };
 		294D0F0619234F1100324814 /* NKAlertSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D0F0519234F1100324814 /* NKAlertSprite.m */; };
 		297CE9F71924BDAF0043542D /* Card_Icon_RegChal.png in Resources */ = {isa = PBXBuildFile; fileRef = 297CE9CD1924BDAF0043542D /* Card_Icon_RegChal.png */; };
 		297CE9F81924BDAF0043542D /* Card_Icon_RegKick.png in Resources */ = {isa = PBXBuildFile; fileRef = 297CE9CE1924BDAF0043542D /* Card_Icon_RegKick.png */; };
@@ -52,7 +53,6 @@
 		297CEA171924BDAF0043542D /* SpecialCards_Move.png in Resources */ = {isa = PBXBuildFile; fileRef = 297CE9ED1924BDAF0043542D /* SpecialCards_Move.png */; };
 		297E6C2519097F4F00369BDF /* blank_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 297E6C2419097F4F00369BDF /* blank_texture.png */; };
 		298B4E831927742C00153229 /* NKFont+CoreText.m in Sources */ = {isa = PBXBuildFile; fileRef = 298B4E801927742C00153229 /* NKFont+CoreText.m */; };
-		298B4E841927742C00153229 /* NKImage+GLBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 298B4E821927742C00153229 /* NKImage+GLBuffer.m */; };
 		29BF47FE1911666500487EBD /* NKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FA1911666500487EBD /* NKView.m */; };
 		29BF47FF1911666500487EBD /* NKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF47FC1911666500487EBD /* NKViewController.m */; };
 		29BF481D1911667900487EBD /* NKCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BF48021911667900487EBD /* NKCamera.m */; };
@@ -131,10 +131,6 @@
 		29D892AD190AC559008FBD5F /* ParseController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892A7190AC559008FBD5F /* ParseController.m */; };
 		29D892B0190AC625008FBD5F /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892AF190AC625008FBD5F /* Reachability.m */; };
 		29D892B3190AC679008FBD5F /* PAPLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892B2190AC679008FBD5F /* PAPLogInViewController.m */; };
-		29D892BC190AC6C1008FBD5F /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892B5190AC6C1008FBD5F /* UIImage+Alpha.m */; };
-		29D892BD190AC6C1008FBD5F /* UIImage+AlphaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892B7190AC6C1008FBD5F /* UIImage+AlphaAdditions.m */; };
-		29D892BE190AC6C1008FBD5F /* UIImage+ResizeAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892B9190AC6C1008FBD5F /* UIImage+ResizeAdditions.m */; };
-		29D892BF190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D892BB190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.m */; };
 		29D892C1190AC707008FBD5F /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D892C0190AC707008FBD5F /* libsqlite3.0.dylib */; };
 		29DC208A192A2DB400CFA405 /* NKColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DC2088192A2DB400CFA405 /* NKColor.m */; };
 		3B2361FF190020FA00056AE2 /* MenuStartVS.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2361FE190020FA00056AE2 /* MenuStartVS.m */; };
@@ -301,6 +297,8 @@
 		2934BDE1191ADCE700A33DBF /* NKFrameBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NKFrameBuffer.m; path = ../Texture/NKFrameBuffer.m; sourceTree = "<group>"; };
 		2934BDE6191B166300A33DBF /* perlin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = perlin.c; sourceTree = "<group>"; };
 		2934BDE7191B166300A33DBF /* perlin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = perlin.h; sourceTree = "<group>"; };
+		2938BBE8192BCC4D005FD2E8 /* NKImage+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NKImage+Utils.h"; path = "NKNikeField/NKCore/UIKitExtensions/NKImage+Utils.h"; sourceTree = SOURCE_ROOT; };
+		2938BBE9192BCC4D005FD2E8 /* NKImage+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NKImage+Utils.m"; path = "NKNikeField/NKCore/UIKitExtensions/NKImage+Utils.m"; sourceTree = SOURCE_ROOT; };
 		294D0F0419234F1100324814 /* NKAlertSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKAlertSprite.h; sourceTree = "<group>"; };
 		294D0F0519234F1100324814 /* NKAlertSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKAlertSprite.m; sourceTree = "<group>"; };
 		297CE9CD1924BDAF0043542D /* Card_Icon_RegChal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_RegChal.png; sourceTree = "<group>"; };
@@ -331,8 +329,6 @@
 		29855333191B16F700166585 /* NKMath.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NKMath.h; sourceTree = "<group>"; };
 		298B4E7F1927742C00153229 /* NKFont+CoreText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NKFont+CoreText.h"; path = "NKNikeField/NKCore/UIKitExtensions/NKFont+CoreText.h"; sourceTree = SOURCE_ROOT; };
 		298B4E801927742C00153229 /* NKFont+CoreText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NKFont+CoreText.m"; path = "NKNikeField/NKCore/UIKitExtensions/NKFont+CoreText.m"; sourceTree = SOURCE_ROOT; };
-		298B4E811927742C00153229 /* NKImage+GLBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NKImage+GLBuffer.h"; path = "NKNikeField/NKCore/UIKitExtensions/NKImage+GLBuffer.h"; sourceTree = SOURCE_ROOT; };
-		298B4E821927742C00153229 /* NKImage+GLBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NKImage+GLBuffer.m"; path = "NKNikeField/NKCore/UIKitExtensions/NKImage+GLBuffer.m"; sourceTree = SOURCE_ROOT; };
 		29BF47F91911666500487EBD /* NKView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKView.h; sourceTree = "<group>"; };
 		29BF47FA1911666500487EBD /* NKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKView.m; sourceTree = "<group>"; };
 		29BF47FB1911666500487EBD /* NKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKViewController.h; sourceTree = "<group>"; };
@@ -451,14 +447,6 @@
 		29D892AF190AC625008FBD5F /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		29D892B1190AC679008FBD5F /* PAPLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAPLogInViewController.h; sourceTree = "<group>"; };
 		29D892B2190AC679008FBD5F /* PAPLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAPLogInViewController.m; sourceTree = "<group>"; };
-		29D892B4190AC6C1008FBD5F /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
-		29D892B5190AC6C1008FBD5F /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
-		29D892B6190AC6C1008FBD5F /* UIImage+AlphaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AlphaAdditions.h"; sourceTree = "<group>"; };
-		29D892B7190AC6C1008FBD5F /* UIImage+AlphaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AlphaAdditions.m"; sourceTree = "<group>"; };
-		29D892B8190AC6C1008FBD5F /* UIImage+ResizeAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ResizeAdditions.h"; sourceTree = "<group>"; };
-		29D892B9190AC6C1008FBD5F /* UIImage+ResizeAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ResizeAdditions.m"; sourceTree = "<group>"; };
-		29D892BA190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCornerAdditions.h"; sourceTree = "<group>"; };
-		29D892BB190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCornerAdditions.m"; sourceTree = "<group>"; };
 		29D892C0190AC707008FBD5F /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		29DC2088192A2DB400CFA405 /* NKColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NKColor.m; path = NKNikeField/NKCore/UIKitExtensions/NKColor.m; sourceTree = SOURCE_ROOT; };
 		29DC2089192A2DB400CFA405 /* NKColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NKColor.h; path = NKNikeField/NKCore/UIKitExtensions/NKColor.h; sourceTree = SOURCE_ROOT; };
@@ -721,8 +709,8 @@
 				29DC2088192A2DB400CFA405 /* NKColor.m */,
 				298B4E7F1927742C00153229 /* NKFont+CoreText.h */,
 				298B4E801927742C00153229 /* NKFont+CoreText.m */,
-				298B4E811927742C00153229 /* NKImage+GLBuffer.h */,
-				298B4E821927742C00153229 /* NKImage+GLBuffer.m */,
+				2938BBE8192BCC4D005FD2E8 /* NKImage+Utils.h */,
+				2938BBE9192BCC4D005FD2E8 /* NKImage+Utils.m */,
 			);
 			name = UIKitExtensions;
 			path = UIKitExtentions;
@@ -1015,14 +1003,6 @@
 		29D89248190AA65E008FBD5F /* utility */ = {
 			isa = PBXGroup;
 			children = (
-				29D892B4190AC6C1008FBD5F /* UIImage+Alpha.h */,
-				29D892B5190AC6C1008FBD5F /* UIImage+Alpha.m */,
-				29D892B6190AC6C1008FBD5F /* UIImage+AlphaAdditions.h */,
-				29D892B7190AC6C1008FBD5F /* UIImage+AlphaAdditions.m */,
-				29D892B8190AC6C1008FBD5F /* UIImage+ResizeAdditions.h */,
-				29D892B9190AC6C1008FBD5F /* UIImage+ResizeAdditions.m */,
-				29D892BA190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.h */,
-				29D892BB190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.m */,
 				29D89249190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.h */,
 				29D8924A190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m */,
 				29D8924B190AA65E008FBD5F /* ZLib */,
@@ -1527,7 +1507,7 @@
 				ORGANIZATIONNAME = "Chroma Developer";
 				TargetAttributes = {
 					61D6E44A18FDAE110017A389 = {
-						DevelopmentTeam = 9G677D3XX8;
+						DevelopmentTeam = ZJLX8USTRZ;
 					};
 					61D6E46E18FDAE120017A389 = {
 						TestTargetID = 61D6E44A18FDAE110017A389;
@@ -1728,10 +1708,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				298B4E841927742C00153229 /* NKImage+GLBuffer.m in Sources */,
 				61D6E88918FDB5B70017A389 /* GameEvent.m in Sources */,
 				29D8926E190AA65E008FBD5F /* gzwrite.c in Sources */,
-				29D892BC190AC6C1008FBD5F /* UIImage+Alpha.m in Sources */,
 				29D892B0190AC625008FBD5F /* Reachability.m in Sources */,
 				29BF48261911667900487EBD /* NKSceneNode.m in Sources */,
 				29D89298190AC3B0008FBD5F /* NikeConnect.m in Sources */,
@@ -1744,7 +1722,6 @@
 				29D8926C190AA65E008FBD5F /* gzlib.c in Sources */,
 				3B9275DF191D12D400381A52 /* FakeFriends.m in Sources */,
 				3B6BF23B190E854F0082628E /* RecapMenu.m in Sources */,
-				29D892BD190AC6C1008FBD5F /* UIImage+AlphaAdditions.m in Sources */,
 				29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */,
 				29D8926A190AA65E008FBD5F /* deflate.c in Sources */,
 				2934BDE8191B166300A33DBF /* perlin.c in Sources */,
@@ -1787,10 +1764,10 @@
 				61D6E88818FDB5B70017A389 /* Game.m in Sources */,
 				61D6E8A718FDB5B70017A389 /* CardSprite.m in Sources */,
 				29BF47FF1911666500487EBD /* NKViewController.m in Sources */,
+				2938BBEA192BCC4D005FD2E8 /* NKImage+Utils.m in Sources */,
 				61D6E45F18FDAE110017A389 /* AppDelegate.m in Sources */,
 				61A257D418FDE998001B7F67 /* NKGaussianZ.m in Sources */,
 				3BC5A7D21919914800414544 /* FuelBar.m in Sources */,
-				29D892BE190AC6C1008FBD5F /* UIImage+ResizeAdditions.m in Sources */,
 				61D6E8A818FDB5B70017A389 /* DevMenu.m in Sources */,
 				61D6E89218FDB5B70017A389 /* Player.m in Sources */,
 				61A257DA18FDE998001B7F67 /* NKTexture.m in Sources */,
@@ -1814,7 +1791,6 @@
 				29D892AA190AC559008FBD5F /* PAPConstants.m in Sources */,
 				29BF48241911667900487EBD /* NKPickerNode.m in Sources */,
 				29D8926B190AA65E008FBD5F /* gzclose.c in Sources */,
-				29D892BF190AC6C1008FBD5F /* UIImage+RoundedCornerAdditions.m in Sources */,
 				29D89267190AA65E008FBD5F /* adler32.c in Sources */,
 				3B2361FF190020FA00056AE2 /* MenuStartVS.m in Sources */,
 				61A257C418FDE998001B7F67 /* NKVectorTypes.m in Sources */,
@@ -1961,7 +1937,8 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Leif Shackelford (7N65JCCXC2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NKNikeField/PARSE+FB",
@@ -1974,8 +1951,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/NKNikeField/NIKE",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PRODUCT_NAME = nikecup;
+				PROVISIONING_PROFILE = "FADEBCF4-9991-443D-94B9-BF90EF1C5A43";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1989,7 +1966,8 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Leif Shackelford (7N65JCCXC2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NKNikeField/PARSE+FB",
@@ -2002,8 +1980,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/NKNikeField/NIKE",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PRODUCT_NAME = nikecup;
+				PROVISIONING_PROFILE = "FADEBCF4-9991-443D-94B9-BF90EF1C5A43";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

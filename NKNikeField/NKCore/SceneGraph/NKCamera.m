@@ -54,13 +54,26 @@
 
 -(void)initGL2 {
     
-    self.fovVertRadians = DEGREES_TO_RADIANS(60.0f);
-    
     self.aspect = self.scene.size.width / self.scene.size.height; // Use screen bounds as default
+    //self.fovVertRadians = DEGREES_TO_RADIANS(82.0f * self.aspect);
+    //self.fovVertRadians = DEGREES_TO_RADIANS(30 / self.aspect);
+    
+#if TARGET_OS_IPHONE
+    if (self.scene.size.height == 1136) {
+        self.fovVertRadians = DEGREES_TO_RADIANS(54);
+    }
+    else {
+        self.fovVertRadians = DEGREES_TO_RADIANS(54);
+    }
+    self.position3d = V3Make(0,0, 1000);
+#else
+    self.fovVertRadians = DEGREES_TO_RADIANS(54);
+#endif
+    
     self.nearZ = 10.f;
     self.farZ = 10000.0f;
     self.target = V3Make(0, 0, 0);
-    self.position3d = V3Make(0,0, 1000);
+    self.position3d = V3Make(0,0, self.scene.size.height);
     self.up = V3Make(0, 1, 0);
     
     _normalMatrix = M9IdentityMake();

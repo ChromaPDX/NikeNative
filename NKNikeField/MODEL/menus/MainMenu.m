@@ -9,7 +9,7 @@
 #import "Menus.h"
 #import "NodeKitten.h"
 #import "GameScene.h"
-#import "NikeViewController.h"
+//#import "NikeViewController.h"
 #import "Game.h"
 
 @implementation MainMenu
@@ -19,21 +19,25 @@
     self = [super initWithSize:size];
     
     if (self) {
-        NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size];
-        [self addChild:table];
-        [table setPadding:P2Make(0,0)];
-        // table.scrollingEnabled = true;
-        table.scale = 1.02;  // to correct for image...this needs to be fixed
-        table.name = @"table";
-        table.delegate = self;
-        //V3t rot =
-        //table.node->setOrientation
         
-        NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_Menu.png"]];
-        UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-        [table setTexture:image];
-        [table setHighlightColor:highlightColor];
-        table.color = NKWHITE;
+        NKSpriteNode *bg = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_Menu.png"] ] color:nil size:self.size];
+        
+        [self addChild:bg];
+        
+//        NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size];
+//        [self addChild:table];
+//        [table setPadding:P2Make(0,0)];
+//        // table.scrollingEnabled = true;
+//        table.scale = 1.02;  // to correct for image...this needs to be fixed
+//        table.name = @"table";
+//        table.delegate = self;
+//        //V3t rot =
+//        //table.node->setOrientation
+//        
+//        NKTexture *image = ];
+//        [table setTexture:image];
+//        [table setHighlightColor:NKBLACK];
+//        table.color = NKWHITE;
         
 //       [table repeatAction:[NKAction rotateYByAngle:90 duration:2.]];
 //        [table repeatAction:[NKAction sequence:@[[NKAction move3dBy:V3Make(0, .1, 1.) duration:.25],
@@ -65,10 +69,10 @@
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
-    R4t syncButtonRect = R4Make(101*2, 500, 120*2, 100);
-    R4t startButtonRect = R4Make(101*2, 300, 120*2, 100);
+    R4t syncButtonRect = R4Make(200, 500, 400, 200);
+    R4t startButtonRect = R4Make(200, 200, 400, 200);
     
-    R4t HiddenAIButtonRect = R4Make(116*2, 700, 50*2, 200);
+    R4t HiddenAIButtonRect = R4Make(200, 700, 400, 200);
     
     if(R4ContainsPoint(syncButtonRect, location)){
         NSLog(@"*NSYNC!");

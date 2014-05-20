@@ -8,11 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import <Parse/Parse.h>
-#import <MobileCoreServices/UTCoreTypes.h>
 #import "ModelHeaders.h"
 #import "PAPConstants.h"
 #import "PAPCache.h"
 #import "PAPUtility.h"
+
+#if TARGET_OS_IPHONE
+#import <MobileCoreServices/UTCoreTypes.h>
+#endif
 
 #define FUEL_DATA_KEY @"fuelData"
 
@@ -33,7 +36,7 @@
 
 
 {
-    UIViewController <ParseControllerDelegate> *delegate;
+    id <ParseControllerDelegate> delegate;
     BOOL firstLaunch;
     
     dispatch_queue_t saveThread;
@@ -45,7 +48,7 @@
 + (void) save;
 
 +(void)refreshCurrentUserCallbackWithResult:(PFObject *)refreshedObject error:(NSError *)error;
-+(BOOL)loadParseWithViewController:(UIViewController*)controller;
++(BOOL)loadParseWithViewController:(id <ParseControllerDelegate>)controller;
 +(void)cacheToUserDefaults;
 
 +(UIImage*)imageForPlayer:(NSString *)username withListener:(NSObject<ParseControllerImageListener>*)listener;
@@ -66,12 +69,13 @@
 @property (nonatomic, strong) NSMutableDictionary *playerCache;
 @property (nonatomic, strong) NSMutableDictionary *imageCache;
 
-@property (nonatomic, weak) UIViewController *delegate;
+@property (nonatomic, weak) id <ParseControllerDelegate> delegate;
 @property (nonatomic) int networkStatus;
 
+#if TARGET_OS_IPHONE
 @property (nonatomic, assign) UIBackgroundTaskIdentifier fileUploadBackgroundTaskId;
 @property (nonatomic, assign) UIBackgroundTaskIdentifier photoPostBackgroundTaskId;
-
+#endif
 
 //@property (nonatomic, strong) NSMutableDictionary *textures;
 

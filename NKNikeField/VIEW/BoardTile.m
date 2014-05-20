@@ -13,17 +13,20 @@
 
 -(instancetype)initWithTexture:(NKTexture*)texture color:(NKByteColor *)color size:(S2t)size {
     self = [super initWithTexture:texture color:color size:size];
-    _borderSprite = [[NKSpriteNode alloc] initWithTexture:texture color:V2ORANGE size:size];
-    _borderSprite.hidden = true;
-    _isDottedBorder = false;
+
     if (self){
+        
+//        _borderSprite = [[NKSpriteNode alloc] initWithTexture:texture color:NKWHITE size:size];
+//        [_borderSprite setZPosition:2];
+//        _isDottedBorder = false;
+        
       // box = (ofPlanePrimitive*)new ofBoxPrimitive(size.width, size.height, 4);
     }
     return self;
 }
 
 -(NSString*)name{
-    return [NSString stringWithFormat:@"TILE: %d %d",_location.x,_location.y ];
+    return [NSString stringWithFormat:@"TILE: %ld %ld",(long)_location.x,(long)_location.y ];
 }
 
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
@@ -103,16 +106,12 @@
 }
 
 -(void)setTextureForBorder:(BorderMask)border {
-    self.texture = [NKTexture textureWithImageNamed:[self stringForBorderTex:border]];
-    
+
     if(self.isDottedBorder){
-        self.borderSprite.texture =[NKTexture textureWithImageNamed:[self stringForDottedBorderTex:border]];
-        self.borderSprite.hidden = FALSE;
-        self.borderSprite.alpha = 1;
-        self.borderSprite.color = V2ORANGE;
+        self.texture = [NKTexture textureWithImageNamed:[self stringForDottedBorderTex:border]];
     }
-    else{
-        self.borderSprite.hidden = TRUE;
+    else {
+        self.texture = [NKTexture textureWithImageNamed:[self stringForBorderTex:border]];
     }
     
 }

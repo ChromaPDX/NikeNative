@@ -396,7 +396,7 @@ static ParseController *sharedObject = nil;
 
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
     
-    [delegate dismissViewControllerAnimated:YES completion:^{
+    [(UIViewController*)delegate dismissViewControllerAnimated:YES completion:^{
         
         // user has logged in - we need to fetch all of their Facebook data before we let them in
         if (![self shouldProceedToMainInterface:user]) {

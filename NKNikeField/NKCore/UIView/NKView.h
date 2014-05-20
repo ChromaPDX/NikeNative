@@ -16,6 +16,9 @@
 
 // Attribute index.
 
+static dispatch_queue_t displayThread;
+
+#define USE_CV_DISPLAY_LINK 0
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 #if TARGET_OS_IPHONE
@@ -28,14 +31,16 @@
     
 #if TARGET_OS_IPHONE
     NKContext *context;
-#else
-    NSThread	*runningThread;
-#endif
-    
-    NKDisplayLink displayLink;
-
+    CADisplayLink *displayLink;
     NKFrameBuffer *frameBuffer;
-    
+#else
+#if USE_CV_DISPLAY_LINK
+    CVDisplayLinkRef displayLink;
+#else
+    NSTimer *displayTimer;
+#endif
+#endif
+   
     NSTimeInterval lastTime;
     
     int drawHitEveryXFrames;
@@ -63,6 +68,8 @@
 
 @property (nonatomic, weak) NKViewController *controller;
 @property (nonatomic, strong) NKSceneNode *scene;
+
+@property (nonatomic, strong) NKSceneNode *nextScene;
 
 -(void)startAnimation;
 -(void)stopAnimation;

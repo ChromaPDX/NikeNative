@@ -37,6 +37,16 @@
 @class NKAlertSprite;
 @class NKFrameBuffer;
 
+typedef void (^CallBack)();
+
+typedef NS_ENUM(U1t, NKEventType) {
+    NKEventTypeNone,
+    NKEventTypeBegin,
+    NKEventTypeMove,
+    NKEventTypeEnd,
+    NKEventTypeDrag
+} NS_ENUM_AVAILABLE(10_9, 7_0);
+
 @interface NKSceneNode : NKNode <NKAlertSpriteDelegate>
 
 {
@@ -50,8 +60,10 @@
     NKVertexBuffer *axes;
     NKVertexBuffer *sphere;
     
-    
 }
+
+
+@property (nonatomic, strong) NSMutableArray *hitQueue;
 
 @property (nonatomic, strong) NSMutableDictionary* hitColorMap;
 @property (nonatomic) void *view;
@@ -67,6 +79,8 @@
 
 @property (nonatomic, strong) NKShaderProgram *hitDetectShader;
 @property (nonatomic, strong) NKFrameBuffer *hitDetectBuffer;
+
+
 
 -(instancetype) initWithSize:(S2t)size;
 
@@ -88,6 +102,8 @@
 -(void)drawAxes;
 
 -(void)getUidColorForNode:(NKNode*)node;
+
+-(void)dispatchTouchRequestForLocation:(P2t)location type:(NKEventType)eventType;
 
 // DRAW STATE SHADOWING
 @property (nonatomic) NKBlendMode blendModeState;

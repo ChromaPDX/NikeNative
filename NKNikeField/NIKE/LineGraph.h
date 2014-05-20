@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 robbykraft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 
 @interface LineGraph : UIView
 @property (nonatomic, strong) NSArray *values;

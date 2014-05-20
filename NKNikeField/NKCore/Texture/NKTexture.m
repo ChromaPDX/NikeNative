@@ -11,7 +11,7 @@
 
 #import <CoreText/CoreText.h>
 #import "NKFont+CoreText.h"
-#import "NKImage+GLBuffer.h"
+#import "NKImage+Utils.h"
 
 @implementation NKTexture
 
@@ -78,13 +78,16 @@
     
     [texture setGlTexLocation:[NKTextureManager defaultTextureLocation]];
     
+#if TARGET_OS_IPHONE
     dispatch_async([NKTextureManager textureThread], ^{
-        
-        CGContextRef ctx = [NKTexture newRGBAContext:size];
+#endif
+        CGContextRef ctx = [NKImage newRGBAContext:size];
         
         //Prepare our view for drawing
         
         CGContextSetTextMatrix(ctx, CGAffineTransformIdentity);
+        
+        CGContextClearRect(ctx, CGRectMake(0, 0, size.width, size.height));
         
         CGContextTranslateCTM(ctx, 0, size.height );
         CGContextScaleCTM(ctx, 1.0, -1.0);
@@ -133,19 +136,27 @@
         //    CGContextFillRect(ctx, CGRectMake(0, 0, size.width, size.height));
         
         CTFrameDraw(frame, ctx);
-        
+#if TARGET_OS_IPHONE
         dispatch_async(dispatch_get_main_queue(), ^{
+#endif
             [texture loadTexFromCGContext:ctx size:size];
             if (block) {
                 block();
             }
+#if TARGET_OS_IPHONE
         });
+#endif
+        
         //NKTexture *texture = [[NKTexture alloc] initWithTexture:[NKTexture texFromImage:UIGraphicsGetImageFromCurrentImageContext()]];
         
         NSLog(@"Creating texture with font %@, font named %@", font, name);
         
         
+        
+        
+#if TARGET_OS_IPHONE
     });
+#endif
     
     return texture;
     
@@ -348,7 +359,7 @@
     
     CGSize size = CGSizeMake(image.size.width, image.size.height);
     
-    CGContextRef ctx = [NKTexture newBitmapRGBA8ContextFromImage:image];
+    CGContextRef ctx = [NKImage newBitmapRGBA8ContextFromImage:image];
     
     CGContextTranslateCTM(ctx, 0, size.height );
     CGContextScaleCTM(ctx, 1.0, -1.0);
@@ -407,7 +418,7 @@
         // Create mipmaps for this texture for better image quality
         glGenerateMipmap(GL_TEXTURE_2D);
         
-        NSLog(@"GL init tex: %d,%d, loc %d", w,h,texture[0]);
+        //NSLog(@"GL init tex: %d,%d, loc %d", w,h,texture[0]);
         
 #endif
     }
@@ -532,317 +543,6 @@
 
     glDeleteTextures(1, &texture[0]);
     
-}
-
-#pragma mark - CGContext Utilities
-
-// THE FOLLOWING FUNCTIONS BELONG TO THE FOLLOWING LICENSE
-
-/*
- * The MIT License
- *
- * Copyright (c) 2011 Paul Solt, PaulSolt@gmail.com
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- */
-
-+(CGContextRef)newRGBAContext:(S2t)size {
-    
-    CGContextRef context = NULL;
-	CGColorSpaceRef colorSpace;
-	uint32_t *bitmapData;
-    
-	size_t bitsPerPixel = 32;
-	size_t bitsPerComponent = 8;
-	size_t bytesPerPixel = bitsPerPixel / bitsPerComponent;
-    
-	size_t width = size.width;
-	size_t height = size.height;
-    
-	size_t bytesPerRow = width * bytesPerPixel;
-	size_t bufferLength = bytesPerRow * height;
-    
-	colorSpace = CGColorSpaceCreateDeviceRGB();
-    
-	if(!colorSpace) {
-		NSLog(@"Error allocating color space RGB\n");
-		return NULL;
-	}
-    
-	// Allocate memory for image data
-	bitmapData = (uint32_t *)malloc(bufferLength);
-    
-	if(!bitmapData) {
-		NSLog(@"Error allocating memory for bitmap\n");
-		CGColorSpaceRelease(colorSpace);
-		return NULL;
-	}
-    
-	//Create bitmap context
-
-    context = CGBitmapContextCreate(bitmapData, width, height, 8, 4 * width, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big );
-
-	if(!context) {
-		free(bitmapData);
-		NSLog(@"Bitmap context not created");
-	}
-    
-	CGColorSpaceRelease(colorSpace);
-    
-	return context;
-    
-}
-
-+ (CGContextRef) newBitmapRGBA8ContextFromImage:(NKImage*) image {
-	CGContextRef context = NULL;
-	CGColorSpaceRef colorSpace;
-	uint32_t *bitmapData;
-    
-	size_t bitsPerPixel = 32;
-	size_t bitsPerComponent = 8;
-	size_t bytesPerPixel = bitsPerPixel / bitsPerComponent;
-    
-	size_t width = image.size.width;
-	size_t height = image.size.height;
-    
-	size_t bytesPerRow = width * bytesPerPixel;
-	size_t bufferLength = bytesPerRow * height;
-    
-	colorSpace = CGColorSpaceCreateDeviceRGB();
-    
-	if(!colorSpace) {
-		NSLog(@"Error allocating color space RGB\n");
-		return NULL;
-	}
-    
-	// Allocate memory for image data
-	bitmapData = (uint32_t *)malloc(bufferLength);
-    
-	if(!bitmapData) {
-		NSLog(@"Error allocating memory for bitmap\n");
-		CGColorSpaceRelease(colorSpace);
-		return NULL;
-	}
-    
-	//Create bitmap context
-	context = CGBitmapContextCreate(bitmapData,
-									width,
-									height,
-									bitsPerComponent,
-									bytesPerRow,
-									colorSpace,
-                                    kCGImageAlphaPremultipliedLast);	// RGBA
-    
-	if(!context) {
-		free(bitmapData);
-		NSLog(@"Bitmap context not created");
-	}
-    
-	CGColorSpaceRelease(colorSpace);
-    
-	return context;
-}
-
-+ (unsigned char *) convertNKImageToBitmapRGBA8:(NKImage *) image {
-    
-	CGImageRef imageRef = image.getCGImage;
-    
-	// Create a bitmap context to draw the uiimage into
-	CGContextRef context = [self newBitmapRGBA8ContextFromImage:image];
-    
-	if(!context) {
-		return NULL;
-	}
-    
-	size_t width = image.size.width;
-	size_t height = image.size.height;
-    
-	CGRect rect = CGRectMake(0, 0, width, height);
-    
-	// Draw image into the context to get the raw image data
-	CGContextDrawImage(context, rect, imageRef);
-    //[image drawInRect:rect];
-    
-	// Get a pointer to the data
-	unsigned char *bitmapData = (unsigned char *)CGBitmapContextGetData(context);
-    
-	// Copy the data and release the memory (return memory allocated with new)
-	size_t bytesPerRow = CGBitmapContextGetBytesPerRow(context);
-	size_t bufferLength = bytesPerRow * height;
-    
-	unsigned char *newBitmap = NULL;
-    
-	if(bitmapData) {
-		newBitmap = (unsigned char *)malloc(sizeof(unsigned char) * bytesPerRow * height);
-        
-		if(newBitmap) {	// Copy the data
-			for(int i = 0; i < bufferLength; ++i) {
-				newBitmap[i] = bitmapData[i];
-			}
-		}
-        
-		free(bitmapData);
-        
-	} else {
-		NSLog(@"Error getting bitmap pixel data\n");
-	}
-    
-	CGContextRelease(context);
-    
-	return newBitmap;
-}
-
-
-+ (NKImage *) convertBitmapRGBA8ToNKImage:(unsigned char *) buffer
-								withWidth:(int) width
-							   withHeight:(int) height {
-    
-    
-	size_t bufferLength = width * height * 4;
-	CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer, bufferLength, NULL);
-	size_t bitsPerComponent = 8;
-	size_t bitsPerPixel = 32;
-	size_t bytesPerRow = 4 * width;
-    
-	CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-	if(colorSpaceRef == NULL) {
-		NSLog(@"Error allocating color space");
-		CGDataProviderRelease(provider);
-		return nil;
-	}
-	CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedLast;
-	CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
-    
-	CGImageRef iref = CGImageCreate(width,
-									height,
-									bitsPerComponent,
-									bitsPerPixel,
-									bytesPerRow,
-									colorSpaceRef,
-									bitmapInfo,
-									provider,	// data provider
-									NULL,		// decode
-									YES,			// should interpolate
-									renderingIntent);
-    
-	uint32_t* pixels = (uint32_t*)malloc(bufferLength);
-    
-	if(pixels == NULL) {
-		NSLog(@"Error: Memory not allocated for bitmap");
-		CGDataProviderRelease(provider);
-		CGColorSpaceRelease(colorSpaceRef);
-		CGImageRelease(iref);
-		return nil;
-	}
-    
-	CGContextRef context = CGBitmapContextCreate(pixels,
-												 width,
-												 height,
-												 bitsPerComponent,
-												 bytesPerRow,
-												 colorSpaceRef,
-                                                 bitmapInfo);
-    
-	if(context == NULL) {
-		NSLog(@"Error context not created");
-		free(pixels);
-	}
-    
-	NKImage *image = nil;
-	if(context) {
-        
-		CGContextDrawImage(context, CGRectMake(0.0f, 0.0f, width, height), iref);
-        
-		CGImageRef imageRef = CGBitmapContextCreateImage(context);
-        
-		// Support both iPad 3.2 and iPhone 4 Retina displays with the correct scale
-#if TARGET_OS_IPHONE
-		if([NKImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)]) {
-			float scale = [[UIScreen mainScreen] scale];
-			image = [NKImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
-		} else {
-			image = [NKImage imageWithCGImage:imageRef];
-		}
-#else
-        image = [[NKImage alloc]initWithCGImage:imageRef size:CGSizeMake(width, height)];
-#endif
-        
-		CGImageRelease(imageRef);
-		CGContextRelease(context);
-	}
-    
-	CGColorSpaceRelease(colorSpaceRef);
-	CGImageRelease(iref);
-	CGDataProviderRelease(provider);
-    
-	if(pixels) {
-		free(pixels);
-	}
-	return image;
-}
-
-static CGRect clipRectToPath(CGRect rect, CGPathRef path)
-{
-    size_t width                = floorf(rect.size.width);
-    size_t height               = floorf(rect.size.height);
-    uint8_t *points             = (unsigned char*)calloc(width * height, sizeof(*points));
-    CGContextRef bitmapContext  = CGBitmapContextCreate(points, width, height, sizeof(*points) * 8, width, NULL, kCGImageAlphaOnly);
-    BOOL atStart                = NO;
-    NSRange range               = NSMakeRange(0, 0);
-    NSUInteger x                = 0;
-    
-    CGContextSetShouldAntialias(bitmapContext, NO);
-    CGContextTranslateCTM(bitmapContext, -rect.origin.x, -rect.origin.y);
-    CGContextAddPath(bitmapContext, path);
-    CGContextFillPath(bitmapContext);
-    
-    for (; x < width; ++x)
-    {
-        BOOL isCol = YES;
-        for (int i = 0; i < height; ++i)
-        {
-            if (points[(i * width + x)] < 128)
-            {
-                isCol = NO;
-                break;
-            }
-        }
-        
-        if (isCol && !atStart)
-        {
-            atStart = YES;
-            range.location = x;
-        }
-        else if (!isCol && atStart)
-        {
-            break;
-        }
-    }
-    
-    if (atStart)
-        range.length = x - range.location - 1;
-    
-    CGContextRelease(bitmapContext);
-    free(points);
-    
-    return CGRectMake(rect.origin.x + range.location, rect.origin.y, range.length, rect.size.height);
 }
 
 @end
