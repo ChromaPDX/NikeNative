@@ -32,7 +32,7 @@
         UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
         [table setHighlightColor:highlightColor];
-        table.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
+        table.color = NKWHITE;
         
         NSArray *listOfNames = [FakeFriends getNamesForText:3];
         NKLabelNode *bigText = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
@@ -75,7 +75,7 @@
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"RecapMenu touchUP location = %f,%f", location.x, location.y);
-    CGRect startButtonRect = CGRectMake(201, 150, 220, 200);
+    CGRect startButtonRect = CGRectMake(201, 100, 220, 300);
     if(CGRectContainsPoint(startButtonRect, location)){
         NKSceneNode* newScene = [[MainMenu alloc]initWithSize:self.size];
         self.nkView.scene = newScene;

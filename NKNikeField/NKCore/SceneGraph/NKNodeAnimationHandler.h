@@ -41,10 +41,6 @@ typedef NS_ENUM(NSInteger, NKActionTimingMode) {
     NKActionTimingEaseInEaseOut
 } NS_ENUM_AVAILABLE(10_9, 7_0);
 
-static inline F1t weightedAverage (F1t src, F1t dst, F1t d);
-static inline F1t logAverage (F1t src, F1t dst, F1t d);
-static inline V3t getTweenPoint(V3t src, V3t dst, F1t d);
-
 @interface NKAction : NSObject
 
 //@property (nonatomic,weak) NKNode *node;
@@ -147,7 +143,7 @@ static inline V3t getTweenPoint(V3t src, V3t dst, F1t d);
 ///* name must be the name or path of a file of a platform supported audio file format. Use a LinearPCM format audio file with 8 or 16 bits per channel for best performance */
 //+ (NKAction *)playSoundFileNamed:(NSString*)soundFile waitForCompletion:(BOOL)wait;
 //
-//+ (NKAction *)colorizeWithColor:(UIColor *)color colorBlendFactor:(CGFloat)colorBlendFactor duration:(F1t)sec;
+//+ (NKAction *)colorizeWithColor:(NKColor *)color colorBlendFactor:(CGFloat)colorBlendFactor duration:(F1t)sec;
 //+ (NKAction *)colorizeWithColorBlendFactor:(CGFloat)colorBlendFactor duration:(F1t)sec;
 //
 //+ (NKAction *)followPath:(CGPathRef)path duration:(F1t)sec;
@@ -179,6 +175,8 @@ static inline V3t getTweenPoint(V3t src, V3t dst, F1t d);
 
 + (NKAction*)panTolookAtNode:(NKNode*)target duration:(F1t)sec;
 + (NKAction*)snapLookToNode:(NKNode*)target forDuration:(F1t)sec;
++ (NKAction*)enterOrbitForNode:(NKNode*)target longitude:(float)longitude latitude:(float)latitude radius:(float)radius duration:(F1t)sec;
++ (NKAction*)maintainOrbitForNode:(NKNode*)target longitude:(float)longitude latitude:(float)latitude radius:(float)radius duration:(F1t)sec;
 
 @end
 

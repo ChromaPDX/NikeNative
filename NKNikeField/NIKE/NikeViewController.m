@@ -11,7 +11,7 @@
 #import "GraphScreens.h"
 #import "Nike.h"
 #import "ParseController.h"
-
+#import "NodeKitten.h"
 
 @interface NikeViewController (){
     NikeConnect *nikeConnect;
@@ -52,7 +52,7 @@
     
 
     
-    [_loginButton setBackgroundColor:V2GREEN];
+    [_loginButton setBackgroundColor:[V2GREEN NKColor]];
     
     [_loginButton.titleLabel setFont:[UIFont fontWithName:@"Arial Black.ttf" size:20]];
     [_loginButton.titleLabel setTextColor:[UIColor blackColor]];

@@ -102,8 +102,8 @@ typedef enum TransitionStyle {
 @property   (nonatomic) P2t             autoSizePct;
 @property   (nonatomic) P2t             padding;
 
-@property (nonatomic, strong) UIColor *normalColor;
-@property (nonatomic, strong) UIColor *highlightColor;
+@property (nonatomic, strong) NKByteColor *normalColor;
+@property (nonatomic, strong) NKByteColor *highlightColor;
 @property (nonatomic, weak) NKNode *selectedChild;
 @property (nonatomic, weak) id <NKTableCellDelegate> delegate;
 

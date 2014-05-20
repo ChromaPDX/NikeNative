@@ -33,6 +33,7 @@
 @class NKDrawDepthShader;
 @class NKFbo;
 @class NKShaderProgram;
+@class NKByteColor;
 
 typedef NS_ENUM(U1t, NKTouchState) {
     NKTouchNone,
@@ -101,7 +102,7 @@ typedef void (^CompletionBlock)(void);
 @property (nonatomic, weak) NKNode *parent;
 @property (nonatomic, strong) NSArray *children;
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic,strong) NKColor *uidColor;
+@property (nonatomic) NKByteColor *uidColor;
 
 #pragma mark - POSITION PROPERTIES
 
@@ -237,6 +238,14 @@ typedef void (^CompletionBlock)(void);
 -(V3t) getOrientationEuler;
 
 // look etc.
+
+#pragma mark - GEODATA
+
+@property (nonatomic) F1t latitude;
+@property (nonatomic) F1t longitude;
+@property (nonatomic) F1t radius;
+
+-(V3t)orbitForLongitude:(float)longitude latitude:(float)latitude radius:(float)radius;
 -(V3t) upVector;
 -(void)lookAtNode:(NKNode*)node;
 -(M16t)getLookMatrix:(V3t)lookAtPosition;

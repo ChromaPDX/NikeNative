@@ -8,7 +8,7 @@ typedef struct NKVertexArray{
     V3t vertex;
     V3t normal;
     V2t texCoord;
-  //  C4t color;
+    C4t color;
 } NKVertexArray;
 
 @interface NKVertexBuffer : NSObject
@@ -19,6 +19,7 @@ typedef struct NKVertexArray{
 
 -(instancetype)initWithVertexData:(const GLvoid *)data ofSize:(GLsizeiptr)size;
 
++(instancetype)pointSprite;
 +(instancetype)defaultCube;
 +(instancetype)defaultRect;
 +(instancetype)sphereWithStacks:(GLint)stacks slices:(GLint)slices squash:(GLfloat)squash;

@@ -126,7 +126,7 @@ float PARTICLE_SCALE;
         //
         //        NSLog(@"fuelBarSize: %f %f", size.height*.05625,size.height*.5);
         
-        [self setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:1.] ];
+        [self setBackgroundColor:NKBLACK];
         
         _game = [[Game alloc] init];
         _game.gameScene = self;
@@ -159,13 +159,13 @@ float PARTICLE_SCALE;
     [_pivot setPosition3d:(V3Make(0,-h*.5,0))];
     
     
-    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:[NKColor colorWithRed:0. green:0. blue:0. alpha:.8] size:S2Make(w, h*.15)];
+    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:[NKByteColor colorWithRed:0. green:0. blue:0. alpha:200] size:S2Make(w, h*.15)];
     [_uxWindow setPosition3d:V3Make(0,-h*.42,30)];
     _uxWindow.delegate = self;
     [self addChild:_uxWindow];
     [_uxWindow setAlpha:0];
     
-    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:[NKColor colorWithRed:0. green:0. blue:0. alpha:0]  size:S2Make(w, h*.08)];
+    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:NKCLEAR  size:S2Make(w, h*.08)];
     [_uxTopBar setPosition3d:V3Make(0,h*.45,30)];
     _uxTopBar.delegate = self;
     [self addChild:_uxTopBar];
@@ -388,13 +388,29 @@ float PARTICLE_SCALE;
             [tile runAction:[NKAction fadeAlphaTo:.5 duration:FAST_ANIM_DUR]];
         }
         
-        p  = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:path]];
-        [_gameBoardNode removeAllActions];
-        [_gameBoardNode runAction:[NKAction moveTo:P2Make(0, -p.y + h/3.) duration:1.]];
+        [self moveCameraToBoundingBox:path];
     }
     
     [self revealBlocksForManager:player.manager];
     
+}
+
+-(P2t) boardScrollPointForPoint:(P2t)p{
+    return P2Make(0, -p.y + h/4.);
+}
+
+-(void)moveCameraToBoundingBox:(NSArray*)locationSet {
+    
+    P2t p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:locationSet]];
+    
+    if (_gameBoardNode.position.y > [self boardScrollPointForPoint:p].y  + 50 || _gameBoardNode.position.y < [self boardScrollPointForPoint:p].y - 50) {
+        
+    [_gameBoardNode removeAllActions];
+
+    [_gameBoardNode runAction:[NKAction moveTo:[self boardScrollPointForPoint:p] duration:.5]];
+
+    }
+   
 }
 
 -(void)playerSpriteDidSelectPlayer:(Player*)player {
@@ -426,12 +442,12 @@ float PARTICLE_SCALE;
             
             _selectedPlayer = selectedPlayer;
             
+            if (!_game.selectedManager.isAI) {
+                [self moveCameraToBoundingBox:@[_selectedPlayer.location]];
+            }
+            
             [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{
-                
-//                Card *kickCard = [self.game.ball.enchantee.manager cardInHandOfCategory:CardCategoryKick];
-//                if(kickCard){
-//                    [self showCardPath:[kickCard validatedSelectionSetForPlayer:self.game.ball.enchantee] forPlayer:self.game.ball.enchantee];
-//                }
+
                 if (_selectedCard) {
                     [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
                 }
@@ -959,7 +975,7 @@ float PARTICLE_SCALE;
                 
                 PlayerSprite *p = [playerSprites objectForKey:c.enchantee];
                 
-                NKEmitterNode *glow = [self ballGlowWithColor:[NKColor colorWithRed:.6 green:1. blue:.6 alpha:.5]];
+                NKEmitterNode *glow = [self ballGlowWithColor:NKWHITE];
                 
                 [p addChild:glow];
                 
@@ -1001,7 +1017,7 @@ float PARTICLE_SCALE;
     
 }
 
--(NKEmitterNode*)ballGlowWithColor:(NKColor*)color {
+-(NKEmitterNode*)ballGlowWithColor:(NKByteColor*)color {
     
     NKEmitterNode *enchant = [[NKEmitterNode alloc] init];
     

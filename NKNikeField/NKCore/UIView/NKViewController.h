@@ -2,8 +2,12 @@
 //*  NODE KITTEN
 //*
 
-#import <UIKit/UIKit.h>
+#import "NKpch.h"
 
+#if TARGET_OS_IPHONE
 @interface NKViewController : UIViewController
+#else
+@interface NKViewController : NSViewController
+#endif
 
 @end

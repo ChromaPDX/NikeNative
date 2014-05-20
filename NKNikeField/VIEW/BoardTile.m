@@ -11,7 +11,7 @@
 
 @implementation BoardTile
 
--(instancetype)initWithTexture:(NKTexture*)texture color:(UIColor *)color size:(S2t)size {
+-(instancetype)initWithTexture:(NKTexture*)texture color:(NKByteColor *)color size:(S2t)size {
     self = [super initWithTexture:texture color:color size:size];
     _borderSprite = [[NKSpriteNode alloc] initWithTexture:texture color:V2ORANGE size:size];
     _borderSprite.hidden = true;

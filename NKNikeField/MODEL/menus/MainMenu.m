@@ -33,7 +33,7 @@
         UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
         [table setHighlightColor:highlightColor];
-        table.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
+        table.color = NKWHITE;
         
 //       [table repeatAction:[NKAction rotateYByAngle:90 duration:2.]];
 //        [table repeatAction:[NKAction sequence:@[[NKAction move3dBy:V3Make(0, .1, 1.) duration:.25],

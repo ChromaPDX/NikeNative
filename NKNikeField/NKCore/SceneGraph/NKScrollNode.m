@@ -10,7 +10,7 @@
 
 @implementation NKScrollNode
 
--(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(S2t)size {
+-(instancetype) initWithTexture:(NKTexture *)texture color:(NKByteColor *)color size:(S2t)size {
     
     self = [super initWithTexture:texture color:color size:size];
     
@@ -25,7 +25,7 @@
     
 }
 
--(instancetype) initWithColor:(UIColor *)color size:(S2t)size {
+-(instancetype) initWithColor:(NKByteColor *)color size:(S2t)size {
     
     self = [super initWithColor:color size:size];
     
@@ -130,7 +130,7 @@
 
 #pragma mark - Scroll
 
--(void)setNormalColor:(UIColor *)normalColor {
+-(void)setNormalColor:(NKByteColor *)normalColor {
     if (!_highlighted) {
         [self setColor:normalColor];
     }

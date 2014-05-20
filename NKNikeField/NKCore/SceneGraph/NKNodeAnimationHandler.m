@@ -292,7 +292,6 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     
 }
 
-
 #pragma mark - ROTATE
 
 +(NKAction *)rotate3dByAngle:(V3t)angles duration:(F1t)sec {
@@ -409,6 +408,49 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 }
 
 #pragma mark - GL LOOK AT
+
++ (NKAction *)enterOrbitForNode:(NKNode*)target longitude:(float)longitude latitude:(float)latitude radius:(float)radius duration:(F1t)sec {
+    
+    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    
+    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+        
+        if (action.reset) {
+            action.reset = false;
+            action.startPos = [node position3d];
+            action.endPos = V3Make(longitude,latitude,radius);
+        }
+        
+        [node setPosition3d:getTweenPoint(action.startPos, [node orbitForLongitude:action.endPos.x latitude:action.endPos.y radius:action.endPos.z], completion)];
+        
+    };
+    
+    return action;
+}
+
++ (NKAction *)maintainOrbitForNode:(NKNode*)target longitude:(float)deltaLongitude latitude:(float)deltaLatitude radius:(float)deltaRadius duration:(F1t)sec {
+    
+    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    
+    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+        
+        if (action.reset) {
+            action.reset = false;
+            action.startPos = V3Make(node.longitude, node.latitude, node.radius);
+            V3t delta = V3Make(deltaLongitude, deltaLatitude, deltaRadius);
+            action.endPos = V3Add(action.startPos, delta);
+        }
+        
+        V3t orbit = getTweenPoint(action.startPos, action.endPos, completion);
+        
+        [node setPosition3d:[node orbitForLongitude:orbit.x latitude:orbit.y radius:orbit.z]];
+        
+        NSLog(@"orbiting, %f, %f, %f", node.latitude, node.longitude, node.radius);
+        
+    };
+    
+    return action;
+}
 
 + (NKAction*)panTolookAtNode:(NKNode*)target duration:(F1t)sec {
     

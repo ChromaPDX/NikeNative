@@ -6,7 +6,7 @@
 //
 //
 
-#import <Foundation/Foundation.h>
+#import "NKPch.h"
 
 @class NKTexture;
 

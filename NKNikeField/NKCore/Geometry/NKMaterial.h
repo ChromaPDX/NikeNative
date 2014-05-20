@@ -2,10 +2,7 @@
 //*  NODE KITTEN
 //*
 
-#import <Foundation/Foundation.h>
-#import <OpenGLES/EAGL.h>
-#import <OpenGLES/ES1/gl.h>
-#import <OpenGLES/ES1/glext.h>
+#import "NKpch.h"
 
 @class NKTexture;
 
@@ -43,7 +40,7 @@
 
 @property (nonatomic, strong) NSString *name;
 @property GLuint numberOfFaces;
-@property I3t *faces;
+@property UB3t *faces;
 
 @property (nonatomic, retain) NKMaterial *material;
 

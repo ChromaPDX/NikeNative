@@ -27,7 +27,7 @@
         UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
         [table setHighlightColor:highlightColor];
-        table.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
+        table.color = NKWHITE;
         
         fuelBar = [[FuelBar alloc] init];
         [fuelBar setPosition:P2Make(-64, 516)];
@@ -42,7 +42,7 @@
         NKLabelNode *text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
         
         text.fontSize = 30;
-        text.fontColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
+        text.fontColor = NKWHITE;
         [text setSize:S2Make(500,100)];
         [text setZPosition:1];
         // [text setText:[listOfNames objectAtIndex:0]];
@@ -102,7 +102,7 @@
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
-    CGRect startButtonRect = CGRectMake(201, 150, 220, 200);
+    CGRect startButtonRect = CGRectMake(201, 100, 220, 300);
     CGPoint point = CGPointMake(location.x, location.y);
     if(CGRectContainsPoint(startButtonRect, point)){
         NSLog(@"start button pressed, starting game...");

@@ -7,15 +7,16 @@
 //
 
 
-#import "UIImage+GLBuffer.h"
+#import "NKImage+GLBuffer.h"
+#import "NKMath.h"
 
 static void ReleaseDataBuffer( void *p , const void *cp , size_t l ) {
     free((void *)cp);
 }
 
-@implementation UIImage (GLBuffer)
+@implementation NKImage (GLBuffer)
 
-+ (UIImage *)perlinMapOfSize:(CGSize)imgSize
++ (NKImage *)perlinMapOfSize:(CGSize)imgSize
                        alpha:(double)a
                         beta:(double)b
                      octaves:(int)octs
@@ -55,7 +56,11 @@ static void ReleaseDataBuffer( void *p , const void *cp , size_t l ) {
     
     CGImageRef imageRef = CGBitmapContextCreateImage (context);
     
-    UIImage* perlinImage = [UIImage imageWithCGImage:imageRef];
+#if TARGET_OS_IPHONE
+    NKImage *perlinImage = [NKImage imageWithCGImage:imageRef];
+#else
+    NKImage* perlinImage = [[NKImage alloc]initWithCGImage:imageRef size:imgSize];
+#endif
     
     CGImageRelease(imageRef);
     CGContextRelease(context);
@@ -66,7 +71,7 @@ static void ReleaseDataBuffer( void *p , const void *cp , size_t l ) {
 }
 
 
-+ (UIImage *)imageWithBuffer:(GLubyte *)buffer ofSize:(CGSize)size
++ (NKImage *)imageWithBuffer:(GLubyte *)buffer ofSize:(CGSize)size
 {
     GLint width = size.width;
     GLint height = size.height;
@@ -86,15 +91,26 @@ static void ReleaseDataBuffer( void *p , const void *cp , size_t l ) {
     // make the cgimage
     CGImageRef imageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
     
-    UIImage *myImage = [[UIImage alloc] initWithCGImage:imageRef
-                                                  scale:1
-                                            orientation:UIImageOrientationUp];
+#if TARGET_OS_IPHONE
+    NKImage *myImage = [NKImage imageWithCGImage:imageRef];
+#else
+    NKImage *myImage = [[NKImage alloc] initWithCGImage:imageRef size:size];
+#endif
     
     CGImageRelease(imageRef);
     CGDataProviderRelease(provider);
     CGColorSpaceRelease(colorSpaceRef);
     
     return myImage;
+}
+
+-(CGImageRef)getCGImage {
+#if TARGET_OS_IPHONE
+    return self.CGImage;
+#else
+	NSBitmapImageRep *imageClass = [[NSBitmapImageRep alloc] initWithData:[self TIFFRepresentation]];
+    return imageClass.CGImage;
+#endif
 }
 
 @end

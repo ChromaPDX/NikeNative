@@ -27,28 +27,32 @@
 
 #import "NKMeshNode.h"
 
-static inline float cblend(float col, float bl){
+static inline float cblend(F1t col, F1t bl){
     return ((col * bl) + (1. - bl));
 }
 
 @class NKTexture;
+@class NKVertexBuffer;
 
-@interface NKSpriteNode : NKMeshNode
+@interface NKSpriteNode : NKNode
 
 // INIT
 
 + (instancetype)spriteNodeWithTexture:(NKTexture*)texture size:(S2t)size;
 + (instancetype)spriteNodeWithTexture:(NKTexture*)texture;
 + (instancetype)spriteNodeWithImageNamed:(NSString *)name;
-+ (instancetype)spriteNodeWithColor:(UIColor *)color size:(S2t)size;
++ (instancetype)spriteNodeWithColor:(NKByteColor *)color size:(S2t)size;
 
-- (instancetype)initWithTexture:(NKTexture*)texture color:(UIColor *)color size:(S2t)size;
+- (instancetype)initWithTexture:(NKTexture*)texture color:(NKByteColor *)color size:(S2t)size;
 - (instancetype)initWithTexture:(NKTexture*)texture;
 - (instancetype)initWithImageNamed:(NSString *)name;
-- (instancetype)initWithColor:(UIColor *)color size:(S2t)size;
+- (instancetype)initWithColor:(NKByteColor *)color size:(S2t)size;
 
 @property (nonatomic) R4t centerRect;
 
-
+@property (nonatomic) float colorBlendFactor;
+@property (nonatomic, strong) NKByteColor* color;
+@property (nonatomic, strong) NKTexture *texture;
+@property (nonatomic, strong) NKVertexBuffer *vert;
 
 @end

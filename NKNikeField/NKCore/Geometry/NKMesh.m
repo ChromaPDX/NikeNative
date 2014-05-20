@@ -239,15 +239,15 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
 				if (rootNode == NULL)
 					rootNode =  VertexTextureIndexMake(vertex1Index, vertex1TextureIndex, UINT_MAX);
 				
-				processOneVertex(rootNode, vertex1Index, vertex1TextureIndex, &vertexCount, vertices, allTextureCoords, textureCoords, valuesPerCoord, &(currentGroup.faces[groupFaceCount].i1));
+				processOneVertex(rootNode, vertex1Index, vertex1TextureIndex, &vertexCount, vertices, allTextureCoords, textureCoords, valuesPerCoord, &(currentGroup.faces[groupFaceCount].x));
                 
 				NSArray *vertex2Parts = [[faceIndexGroups objectAtIndex:1] componentsSeparatedByString:@"/"];
                 
-				processOneVertex(rootNode, [[vertex2Parts objectAtIndex:kGroupIndexVertex] intValue]-1, [vertex2Parts count] > 1 ? [[vertex2Parts objectAtIndex:kGroupIndexTextureCoordIndex] intValue]-1 : 0, &vertexCount, vertices, allTextureCoords, textureCoords, valuesPerCoord, &currentGroup.faces[groupFaceCount].i2);
+				processOneVertex(rootNode, [[vertex2Parts objectAtIndex:kGroupIndexVertex] intValue]-1, [vertex2Parts count] > 1 ? [[vertex2Parts objectAtIndex:kGroupIndexTextureCoordIndex] intValue]-1 : 0, &vertexCount, vertices, allTextureCoords, textureCoords, valuesPerCoord, &currentGroup.faces[groupFaceCount].y);
                 
 				NSArray *vertex3Parts = [[faceIndexGroups objectAtIndex:2] componentsSeparatedByString:@"/"];
                 
-				processOneVertex(rootNode, [[vertex3Parts objectAtIndex:kGroupIndexVertex] intValue]-1, [vertex3Parts count] > 1 ? [[vertex3Parts objectAtIndex:kGroupIndexTextureCoordIndex] intValue]-1 : 0, &vertexCount, vertices, allTextureCoords, textureCoords, valuesPerCoord, &currentGroup.faces[groupFaceCount].i3);
+				processOneVertex(rootNode, [[vertex3Parts objectAtIndex:kGroupIndexVertex] intValue]-1, [vertex3Parts count] > 1 ? [[vertex3Parts objectAtIndex:kGroupIndexTextureCoordIndex] intValue]-1 : 0, &vertexCount, vertices, allTextureCoords, textureCoords, valuesPerCoord, &currentGroup.faces[groupFaceCount].z);
 				
 				faceCount++;
 				groupFaceCount++;
@@ -287,7 +287,7 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
         
 		for (int j = 0; j < oneGroup.numberOfFaces; j++)
 		{
-			T3t triangle = T3Make(vertices[oneGroup.faces[j].i1], vertices[oneGroup.faces[j].i2], vertices[oneGroup.faces[j].i3]);
+			T3t triangle = T3Make(vertices[oneGroup.faces[j].x], vertices[oneGroup.faces[j].y], vertices[oneGroup.faces[j].z]);
 			
 			surfaceNormals[index] = V3GetTriangleSurfaceNormal(triangle);
 #ifdef USE_FAST_NORMALIZE
@@ -295,13 +295,13 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
 #else
 			surfaceNormals[index] = V3Normalize(surfaceNormals[index]);
 #endif
-			vertexNormals[oneGroup.faces[j].i1] = V3Add(surfaceNormals[index], vertexNormals[oneGroup.faces[j].i1]);
-			vertexNormals[oneGroup.faces[j].i2] = V3Add(surfaceNormals[index], vertexNormals[oneGroup.faces[j].i2]);
-			vertexNormals[oneGroup.faces[j].i3] = V3Add(surfaceNormals[index], vertexNormals[oneGroup.faces[j].i3]);
+			vertexNormals[oneGroup.faces[j].x] = V3Add(surfaceNormals[index], vertexNormals[oneGroup.faces[j].x]);
+			vertexNormals[oneGroup.faces[j].y] = V3Add(surfaceNormals[index], vertexNormals[oneGroup.faces[j].y]);
+			vertexNormals[oneGroup.faces[j].z] = V3Add(surfaceNormals[index], vertexNormals[oneGroup.faces[j].z]);
 			
-			facesUsedIn[oneGroup.faces[j].i1]++;
-			facesUsedIn[oneGroup.faces[j].i2]++;
-			facesUsedIn[oneGroup.faces[j].i3]++;
+			facesUsedIn[oneGroup.faces[j].x]++;
+			facesUsedIn[oneGroup.faces[j].y]++;
+			facesUsedIn[oneGroup.faces[j].z]++;
 			
 			
 			index++;
@@ -564,13 +564,21 @@ static inline void	processOneVertex(VertexTextureIndex *rootNode, GLuint vertexI
         case NKPrimitiveRect:
             if (NK_GL_VERSION == 2) {
                 vertexBuffer = [NKVertexBuffer defaultRect];
-                numberOfVertices = 6;
+                numberOfVertices = vertexBuffer.numberOfElements;
             }
             else {
                 [self defaultRect];
             }
             //  [self sphereWithStacks:16 slices:16 squash:1.];
             break;
+        
+        case NKPrimitiveAxes:
+            if (NK_GL_VERSION == 2) {
+                vertexBuffer = [NKVertexBuffer axes];
+                numberOfVertices = vertexBuffer.numberOfElements;
+            }
+            break;
+            
         default:
             break;
     }

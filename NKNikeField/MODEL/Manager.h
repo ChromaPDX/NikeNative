@@ -13,6 +13,7 @@
 @class BoardLocation;
 @class Card;
 @class Player;
+@class NKByteColor;
 
 @interface Manager : NSObject <NSCoding, NSCopying>
 
@@ -42,7 +43,7 @@
 // Meta Data
 
 //@property (nonatomic) NSMutableArray *cardsInGame;
-@property (nonatomic, strong) NKColor *color;
+@property (nonatomic, strong) NKByteColor *color;
 
 @property (nonatomic) int energyEarned;
 @property (nonatomic) int energySpent;
@@ -69,12 +70,13 @@
 
 -(Card*)cardInHandOfCategory:(int) category;
 -(NSArray*)cardsInHandOfCategory:(int) thisCategory;
+-(NSArray*)cardsInHandOfCategory:(int)thisCategory usableByPlayer:(Player*)p;
 -(NSArray*)allCardsInHand;
 -(NSArray*)allCardsInDeck;
 -(Card*)drawCard; // TO:DO probability based on Faction
 
 #pragma mark - FIELD
-
+-(NSArray*)activePlayers;
 -(NSArray*)playersClosestToBall;
 -(NSArray*)playersClosestToGoal;
 -(NSArray*)playersInShootingRange;

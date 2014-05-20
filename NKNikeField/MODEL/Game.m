@@ -1394,7 +1394,7 @@
     }
     
 }
-#pragma mark - AI DECISION TREE
+#pragma mark - AI PRIMARY DECISION TREE
 
 -(void)AIChoosePlayerForManager:(Manager*)m { // called from end sequence, if we have unused player
     NSLog(@"AI: %@ : is choosing a player", m.name);
@@ -1496,180 +1496,6 @@
     
 }
 
--(bool)AIChooseOffenseCardForPlayer:(Player*) p{
-    
-    Card* moveCard = [self AICheckCategoryForUsable:CardCategoryMove forPlayer:p];
-    
-    NSLog(@"AI is choosing card for Player: %@ location = %@ ballLocaiton = %@", p.name, p.location, p.manager.game.ball.location);
-    
-    // OFFENSE
-    if (p.ball) {
-        
-        Card* kickCard = [self AICheckCategoryForUsable:CardCategoryKick forPlayer:p];
-        
-        if (kickCard) {
-            
-            if ([p isInShootingRangeWithKickCard:kickCard]){
-                // CAN SHOOT ON GOAL
-                kickCard.aiActionType = SHOOT_ON_GOAL;
-                //[_gameScene AISelectedLocation:kickCard.playerPerforming.manager.goal];
-                [_gameScene AISelectedCard:kickCard];
-                return 1;
-                
-            }
-            else{
-                //CAN NOT SHOOT ON GOAL
-                Player *passToPlayer = [p passToAvailablePlayerInShootingRange];
-                if(passToPlayer){
-                    // CAN PASS TO PLAYER IN SHOOTING RANGE
-                    kickCard.aiActionType = PASS_TO_PLAYER_IN_SHOOTING_RANGE;
-                    [_gameScene AISelectedCard:kickCard];
-                    return 1;
-                }
-                else{
-                    // CAN NOT PASS TO PLAYER IN SHOOTING RANGE
-                    NSArray *pathToGoal = [moveCard validatedPath:[p pathToGoal]];
-                    
-                    if(pathToGoal && [self AICanUseCard:moveCard]){
-                        // CAN MOVE IN SHOOTING RANGE
-                        moveCard.aiActionType = MOVE_TO_GOAL;
-                        [_gameScene AISelectedCard:moveCard];
-                        return 1;
-                    }
-                    else{
-                        //CAN NOT MOVE IN SHOOTING RANGE
-                        NSArray *playersCloserToGoal = [p playersAvailableInKickRangeCloserToGoal];
-                        
-                        if(playersCloserToGoal){
-                            // CAN PASS TO AVAILABLE PLAYER CLOSER TO GOAL
-                            kickCard.aiActionType = PASS_TO_GOAL;
-                            [_gameScene AISelectedCard:kickCard];
-                            return 1;
-                        }
-                        
-                    }
-                }
-                
-            }
-        }
-        
-    }
-    
-    
-    Card* specialCard = [self AICheckCategoryForUsable:CardCategorySpecial forPlayer:p];
-    
-    if([self AICanUseCard:specialCard]){
-        specialCard.aiActionType = SPECIAL_CARD;
-        [_gameScene AISelectedCard:specialCard];
-        return 1;
-    }
-    
-    if([self AICanUseCard:moveCard]){
-        moveCard.aiActionType = MOVE_TO_GOAL_IN_PASS_RANGE;
-        [_gameScene AISelectedCard:moveCard];
-        return 1;
-    }
-    
-    return 0;
-}
-
--(bool)AIChooseDefenseCardForPlayer:(Player*) p{
-    
-    Card* challengeCard = [self AICheckCategoryForUsable:CardCategoryChallenge forPlayer:p];
-    
-    if ([self AICanUseCard:challengeCard]) {
-        // CAN CHALLENGE
-        challengeCard.aiActionType = CHALLENGE;
-        [_gameScene AISelectedCard:challengeCard];
-        return 1;
-    }
-    
-    Card* moveCard = [self AICheckCategoryForUsable:CardCategoryMove forPlayer:p];
-    
-    if ([self AICanUseCard:moveCard]) {  // validate move card
-        
-        if([p canMoveToChallenge]){
-            // CAN MOVE TO CHALLENGE
-            moveCard.aiActionType = MOVE_TO_CHALLENGE;
-            [_gameScene AISelectedCard:moveCard];
-            return 1;
-        }
-    }
-    
-    Card* specialCard = [self AICheckCategoryForUsable:CardCategorySpecial forPlayer:p];
-    
-    if([self AICanUseCard:specialCard]){
-        specialCard.aiActionType = SPECIAL_CARD;
-        [_gameScene AISelectedCard:specialCard];
-        return 1;
-    }
-    
-    if ([self AICanUseCard:moveCard]) {  // validate move card
-        
-        // CAN NOT MOVE TO CHALLENGE
-        NSArray *pathToGoal = [p pathToGoal];
-        NSArray *pathToBall = [p pathToBall];
-        if([pathToGoal count] > [pathToBall count]){
-            // IS CLOSER TO BALL THAN GOAL
-            moveCard.aiActionType = MOVE_TO_BALL;
-            [_gameScene AISelectedCard:moveCard];
-            return 1;
-        }
-        else{
-            // IS CLOSER TO GOAL THAN BALL
-            moveCard.aiActionType = MOVE_TO_DEFENDGOAL;
-            [_gameScene AISelectedCard:moveCard];
-            return 1;
-        }
-        
-    }
-    
-    return 0;
-}
-
-
--(Card*)AICheckCategoryForUsable:(CardCategory)category forPlayer:(Player*)p{
-    
-    NSArray *cards= [p.manager cardsInHandOfCategory:category];
-    
-    // FOR KICK LOOKS FOR POSSIBLE GOALS FIRST
-    
-    if (CardCategoryKick == category) {
-        for (Card *c in cards) {
-            if ([p isInShootingRangeWithKickCard:c]) {
-                return c;
-            }
-        }
-    }
-    
-    // SCAN ALL FOR USEABLE
-    
-    for (Card *c in cards) {
-        if ([self AICanUseCard:c]) {
-            return c;
-        }
-    }
-    
-    return nil;
-}
-
--(bool)AICanUseCard:(Card*)card{
-    
-    if (card && card.AIShouldUse) {
-        if ([card validatedSelectionSetForPlayer:_selectedPlayer]) {
-            
-            // AT some point here should exist if it's a good idea or not
-            // [AIEvaluateLocations for card
-            // yada yada
-            
-            return true;
-        }
-        else {
-            card.AIShouldUse = false;
-        }
-    }
-    return false;
-}
 
 -(void)AIChooseLocationForCard:(Card*) c { // called from UI after card has been selected
     
@@ -1828,6 +1654,164 @@
     
 }
 
+#pragma mark - AI - SECONDARY TREES
+
+-(bool)AIChooseOffenseCardForPlayer:(Player*) p{
+    
+    //Card* moveCard = [self AICheckCategoryForUsable:CardCategoryMove forPlayer:p];
+    
+    NSLog(@"AI is choosing card for Player: %@ location = %@ ballLocaiton = %@", p.name, p.location, p.manager.game.ball.location);
+    
+    // BALL CARRIER
+    if (p.ball) {
+        
+        Card* kickCard = [self AIPrioritizeCategoryForUsable:CardCategoryKick forPlayer:p];
+        
+        if (kickCard) {
+            
+            if ([p isInShootingRangeWithKickCard:kickCard]){
+                // CAN SHOOT ON GOAL
+                kickCard.aiActionType = SHOOT_ON_GOAL;
+                //[_gameScene AISelectedLocation:kickCard.playerPerforming.manager.goal];
+                [_gameScene AISelectedCard:kickCard];
+                return 1;
+                
+            }
+            else{
+                // Can't shoot looks at 2ndary options
+                
+                Player *passToPlayer = [p passToAvailablePlayerInShootingRange];
+                if(passToPlayer){
+                    // CAN PASS TO PLAYER IN SHOOTING RANGE
+                    kickCard.aiActionType = PASS_TO_PLAYER_IN_SHOOTING_RANGE;
+                    [_gameScene AISelectedCard:kickCard];
+                    return 1;
+                }
+
+                    for (Card *moveCard in [p.manager cardsInHandOfCategory:CardCategoryMove usableByPlayer:p]) {
+                        
+                        NSArray *pathToGoal = [moveCard validatedPath:[p pathToGoal]];
+                        
+                        if(pathToGoal && [self AICanUseCard:moveCard]){
+                            // CAN MOVE IN SHOOTING RANGE
+                            moveCard.aiActionType = MOVE_TO_GOAL;
+                            [_gameScene AISelectedCard:moveCard];
+                            return 1;
+                        }
+                        
+                    }
+                
+                //CAN NOT MOVE IN SHOOTING RANGE
+                NSArray *playersCloserToGoal = [p playersAvailableInKickRangeCloserToGoal];
+                
+                if(playersCloserToGoal){
+                    // CAN PASS TO AVAILABLE PLAYER CLOSER TO GOAL
+                    kickCard.aiActionType = PASS_TO_GOAL;
+                    [_gameScene AISelectedCard:kickCard];
+                    return 1;
+                }
+                
+            }
+        }
+        
+        if (p.isThreatened) {
+            for (Card *moveCard in [p.manager cardsInHandOfCategory:CardCategoryMove usableByPlayer:p]) {
+                if([self AICanUseCard:moveCard]){
+                    moveCard.aiActionType = MOVE_TO_GOAL_IN_PASS_RANGE;
+                    [_gameScene AISelectedCard:moveCard];
+                    return 1;
+                }
+            }
+        }
+        
+    }
+    
+    for (Card *specialCard in [p.manager cardsInHandOfCategory:CardCategorySpecial usableByPlayer:p]) {
+        if([self AICanUseCard:specialCard]){
+            specialCard.aiActionType = SPECIAL_CARD;
+            [_gameScene AISelectedCard:specialCard];
+            return 1;
+        }
+    }
+    
+    for (Card *moveCard in [p.manager cardsInHandOfCategory:CardCategoryMove usableByPlayer:p]) {
+        if([self AICanUseCard:moveCard]){
+            moveCard.aiActionType = MOVE_TO_GOAL_IN_PASS_RANGE;
+            [_gameScene AISelectedCard:moveCard];
+            return 1;
+        }
+    }
+    
+    return 0;
+}
+
+-(void)lockSpecialsForManger:(Manager*)m {
+    for (Card*c in m.specialDeck.inHand) {
+        c.locked = true;
+        [[_gameScene.uxWindow spriteForCard:c] showLocked];
+    }
+}
+
+-(bool)AIChooseDefenseCardForPlayer:(Player*) p{
+    
+    for (Card *challengeCard in [p.manager cardsInHandOfCategory:CardCategoryChallenge usableByPlayer:p]) {
+        if ([self AICanUseCard:challengeCard]) {
+            challengeCard.aiActionType = CHALLENGE;
+            [_gameScene AISelectedCard:challengeCard];
+            
+            [self lockSpecialsForManger:p.manager]; // BECAUSE WE'RE PREEMPTING THEM
+            
+            return 1;
+        }
+    }
+
+    for (Card *moveCard in [p.manager cardsInHandOfCategory:CardCategoryMove usableByPlayer:p]) {
+        if ([self AICanUseCard:moveCard]) {  // validate move card
+            if([p canMoveToChallenge]){
+                // CAN MOVE TO CHALLENGE
+                moveCard.aiActionType = MOVE_TO_CHALLENGE;
+                [_gameScene AISelectedCard:moveCard];
+                return 1;
+            }
+        }
+    }
+
+    for (Card *specialCard in [p.manager cardsInHandOfCategory:CardCategorySpecial usableByPlayer:p]) {
+        
+        if([self AICanUseCard:specialCard]){
+            specialCard.aiActionType = SPECIAL_CARD;
+            [_gameScene AISelectedCard:specialCard];
+            return 1;
+        }
+        
+    }
+    
+    
+    for (Card *moveCard in [p.manager cardsInHandOfCategory:CardCategoryMove usableByPlayer:p]) {
+        if ([self AICanUseCard:moveCard]) {  // validate move card
+            
+            // CAN NOT MOVE TO CHALLENGE
+            NSArray *pathToGoal = [p pathToGoal];
+            NSArray *pathToBall = [p pathToBall];
+            if([pathToGoal count] > [pathToBall count]){
+                // IS CLOSER TO BALL THAN GOAL
+                moveCard.aiActionType = MOVE_TO_BALL;
+                [_gameScene AISelectedCard:moveCard];
+                return 1;
+            }
+            else{
+                // IS CLOSER TO GOAL THAN BALL
+                moveCard.aiActionType = MOVE_TO_DEFENDGOAL;
+                [_gameScene AISelectedCard:moveCard];
+                return 1;
+            }
+            
+        }
+    }
+    
+    return 0;
+}
+
 -(bool)AIChooseLocationForSpecialCard:(Card*)c{
     
     BoardLocation *loc;
@@ -1837,8 +1821,12 @@
     switch (c.specialTypeCategory) {
             
         case CardSpecialCategoryDeRez: case CardSpecialCategorySuccubus:
+            if (c.deck.manager.opponent.hasPossesion) {
             [_gameScene AISelectedLocation:[c.deck.manager.opponent.bestChoiceForDisable location]];
             return 1;
+            }
+            break;
+            
             
         case CardSpecialCategoryFreeze:
             if (c.deck.manager.opponent.hasPossesion) { // DEFENSE
@@ -1876,9 +1864,32 @@
             break;
             
         case CardSpecialCategoryNewDeal:
-            // only use this if we don't want to play anything else
+            
+            // on defense, use if we can't challenge
+            
+            
+            if (c.deck.manager.opponent.hasPossesion) {
+                
+                for (Player *p in c.deck.manager.activePlayers) {
+                    if ([c.deck.manager cardsInHandOfCategory:CardCategoryChallenge usableByPlayer:p]) {
+                        c.AIShouldUse = false;
+                        c.locked = true; // SAVE IT
+                        [[_gameScene.uxWindow spriteForCard:c] showLocked];
+                        [self AIChooseCardForPlayer:_selectedPlayer];
+                        return 1;
+                    }
+                }
+                
+                [_gameScene AISelectedLocation:[c.deck.manager.bestChoiceForDisable location]];
+                return 1;
+                
+            }
+        
+            
+            // else use only use this if we don't want to play anything else
+            
             for (Card*card in c.deck.manager.allCardsInHand) {
-                if (c != card && card.AIShouldUse) {
+                if (c != card && [self AICanUseCard:card]) {
                     c.AIShouldUse = false;
                     c.locked = true; // SAVE IT
                     [[_gameScene.uxWindow spriteForCard:c] showLocked];
@@ -1886,14 +1897,21 @@
                     return 1;
                 }
             }
+
             [_gameScene AISelectedLocation:[c.deck.manager.bestChoiceForDisable location]];
             return 1;
+            
+            break;
             
         case CardSpecialCategoryBlock:
             if (c.deck.manager.opponent.hasPossesion) {
                 loc = [[_ball.enchantee quickestRouteToGoal] lastObject];
-                [_gameScene AISelectedLocation:loc];
-                return 1;
+                
+                if (![c.deck.manager.opponent.effects[Card_Block] containsObject:loc]){
+                    [_gameScene AISelectedLocation:loc];
+                    return 1;
+                }
+                
             }
             else {
                 c.locked = true; // SAVE IT
@@ -1909,13 +1927,57 @@
             break;
             
             
-            
-            
         default:
             break;
     }
     
     return 0;
+}
+
+#pragma mark - AI INTERROGATION METHODS
+
+
+-(Card*)AIPrioritizeCategoryForUsable:(CardCategory)category forPlayer:(Player*)p{
+    
+    NSArray *cards= [p.manager cardsInHandOfCategory:category];
+    
+    // FOR KICK LOOKS FOR POSSIBLE GOALS FIRST
+    
+    if (CardCategoryKick == category) {
+        for (Card *c in cards) {
+            if ([p isInShootingRangeWithKickCard:c]) {
+                return c;
+            }
+        }
+    }
+    
+    // SCAN ALL FOR USEABLE
+    
+    for (Card *c in cards) {
+        if ([self AICanUseCard:c]) {
+            return c;
+        }
+    }
+    
+    return nil;
+}
+
+-(bool)AICanUseCard:(Card*)card{
+    
+    if (card && !card.locked && card.AIShouldUse) {
+        if ([card validatedSelectionSetForPlayer:_selectedPlayer]) {
+            
+            // AT some point here should exist if it's a good idea or not
+            // [AIEvaluateLocations for card
+            // yada yada
+            
+            return true;
+        }
+        else {
+            card.AIShouldUse = false;
+        }
+    }
+    return false;
 }
 
 #pragma mark - REPLAY / TURN

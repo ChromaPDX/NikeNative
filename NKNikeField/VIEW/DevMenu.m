@@ -27,7 +27,7 @@
     
     NKScrollNode *leif = [[NKScrollNode alloc] initWithParent:table autoSizePct:.33];
     [table addChild:leif];
-    leif.normalColor = [UIColor colorWithRed:1. green:.5 blue:.5 alpha:1.0];
+    leif.normalColor = [NKByteColor colorWithRed:255 green:128 blue:128 alpha:255];
     leif.name = @"LEIF";
 
         
@@ -38,7 +38,7 @@
         
     NKScrollNode *robby = [[NKScrollNode alloc] initWithParent:table autoSizePct:.33];
     [table addChild:robby];
-    robby.normalColor = [UIColor colorWithRed:.5 green:1. blue:.5 alpha:1.0];
+    robby.normalColor = [NKByteColor colorWithRed:128 green:255 blue:128 alpha:255];
     robby.name = @"ROBBY";
     
         
@@ -49,7 +49,7 @@
         
     NKScrollNode *eric = [[NKScrollNode alloc] initWithParent:table autoSizePct:.33];
     [table addChild:eric];
-    eric.normalColor = [UIColor colorWithRed:.5 green:.5 blue:1. alpha:1.0];
+    eric.normalColor = [NKByteColor colorWithRed:128 green:128 blue:255 alpha:255];
     eric.name = @"ERIC";
 
         

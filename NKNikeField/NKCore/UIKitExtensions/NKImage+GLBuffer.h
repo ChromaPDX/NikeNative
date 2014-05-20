@@ -6,18 +6,20 @@
 //  Copyright (c) 2014 Chroma Developer. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NKpch.h"
 
-@interface UIImage (GLBuffer)
+@interface NKImage (GLBuffer)
 
-+ (UIImage *)perlinMapOfSize:(CGSize)imgSize
++ (NKImage *)perlinMapOfSize:(CGSize)imgSize
                        alpha:(double)a
                         beta:(double)b
                      octaves:(int)octs
                       minVal:(int)minBrightness
                       maxVal:(int)maxBrightness;
 
-+ (UIImage *)imageWithBuffer:(GLubyte *)buffer
++ (NKImage *)imageWithBuffer:(GLubyte *)buffer
                       ofSize:(CGSize)size;
+
+-(CGImageRef)getCGImage;
 
 @end

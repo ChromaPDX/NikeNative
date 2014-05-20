@@ -8,8 +8,10 @@
 
 #import "NodeKitten.h"
 #import "NKTextureManager.h"
+
 #import <CoreText/CoreText.h>
-#import "UIFont+CoreText.h"
+#import "NKFont+CoreText.h"
+#import "NKImage+GLBuffer.h"
 
 @implementation NKTexture
 
@@ -66,7 +68,7 @@
     return [[NKTextureManager labelCache] objectForKey:string];
 }
 
-+(instancetype) textureWithString:(NSString *)text fontNamed:(NSString*)name color:(NKColor*)textColor Size:(S2t)size fontSize:(CGFloat)fontSize completion:(void (^)())block{
++(instancetype) textureWithString:(NSString *)text fontNamed:(NSString*)name color:(NKByteColor*)textColor Size:(S2t)size fontSize:(CGFloat)fontSize completion:(void (^)())block{
     
     if (!textColor) {
         textColor = NKWHITE;
@@ -87,9 +89,9 @@
         CGContextTranslateCTM(ctx, 0, size.height );
         CGContextScaleCTM(ctx, 1.0, -1.0);
         
-        CGColorRef color = textColor.CGColor;
+        CGColorRef color = textColor.NKColor.CGColor;
         
-        CTFontRef font = [UIFont bundledFontNamed:name size:fontSize];
+        CTFontRef font = [NKFont bundledFontNamed:name size:fontSize];
         //CTFontRef font = CTFontCreateWithName((CFStringRef) name, fontSize, NULL);
         
         CTTextAlignment theAlignment = kCTCenterTextAlignment;
@@ -158,6 +160,7 @@
         int w = size.width;
         int h = size.height;
         
+#if TARGET_OS_IPHONE
         glActiveTexture(GL_TEXTURE0);
         glGenTextures(1, (GLuint *)&texture[0]);
         glBindTexture(GL_TEXTURE_2D, texture[0]);
@@ -168,23 +171,23 @@
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glBindTexture(GL_TEXTURE_2D, 0);
         
-        // glActiveTexture(GL_TEXTURE1);
-        // glGenFramebuffers(1, &defaultFramebuffer);
-        // glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
-        
         glBindTexture(GL_TEXTURE_2D, texture[0]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-        //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[0], 0);
-        
-        //        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-        //
-        //        NSAssert(status == GL_FRAMEBUFFER_COMPLETE, @"Incomplete filter FBO: %d", status);
         glBindTexture(GL_TEXTURE_2D, 0);
+#else
+        glGenTextures(1, (GLuint *)&texture[0]);
+        glBindTexture(GL_TEXTURE_2D, texture[0]);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+#endif
     }
     
     return self;
     
 }
+
 
 -(instancetype) initWithImageNamed:(NSString*)name {
     self = [super init];
@@ -199,6 +202,8 @@
             request = [NKImage imageNamed:@"chromeKittenSmall.png"];
         }
         
+        NSAssert(request != nil, @"MISSING DEFAULT TEX IMAGE OR SOMETHING ELSE BROKE !!");
+        
         [self loadTexFromCGContext:[NKTexture contextFromImage:request] size:S2MakeCG(request.size)];
         
         self.size = S2MakeCG(request.size);
@@ -210,6 +215,10 @@
     return self;
 }
 
+#if GL_EXT_texture_compression_s3tc
+#define GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG GL_COMPRESSED_RGB_S3TC_DXT1_EXT
+#define GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG GL_COMPRESSED_RGB_S3TC_DXT1_EXT
+#endif
 
 - (id)initWithPVRFile:(NSString *)inFilename width:(GLuint)inWidth height:(GLuint)inHeight;
 {
@@ -238,19 +247,23 @@
             glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG, inWidth, inHeight, 0, (inWidth * inHeight) / 2, [texData bytes]);
         else
         {
-            UIImage *image = [[UIImage alloc] initWithData:texData];
+            NKImage *image = [[NKImage alloc] initWithData:texData];
             if (image == nil)
                 return nil;
             
-            GLuint width = CGImageGetWidth(image.CGImage);
-            GLuint height = CGImageGetHeight(image.CGImage);
+            GLuint width =  image.size.width;
+            GLuint height = image.size.height;
+
             CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
             void *imageData = malloc( height * width * 4 );
             CGContextRef context = CGBitmapContextCreate( imageData, width, height, 8, 4 * width, colorSpace, kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big );
             CGColorSpaceRelease( colorSpace );
             CGContextClearRect( context, CGRectMake( 0, 0, width, height ) );
             CGContextTranslateCTM( context, 0, height - height );
-            CGContextDrawImage( context, CGRectMake( 0, 0, width, height ), image.CGImage );
+            
+           // [image drawInRect:CGRectMake( 0, 0, width, height )];
+            
+            CGContextDrawImage( context, CGRectMake( 0, 0, width, height ), image.getCGImage);
             
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
             GLuint errorcode = glGetError();
@@ -331,20 +344,17 @@
 }
 #pragma mark - PROPS
 
-
-
 +(CGContextRef) contextFromImage:(NKImage*)image {
-    CGImageRef imageRef = image.CGImage;
     
-    CGSize size = CGSizeMake(CGImageGetWidth(imageRef), CGImageGetHeight(imageRef));
+    CGSize size = CGSizeMake(image.size.width, image.size.height);
     
-    CGContextRef ctx = [NKTexture newBitmapRGBA8ContextFromImage:imageRef];
+    CGContextRef ctx = [NKTexture newBitmapRGBA8ContextFromImage:image];
     
     CGContextTranslateCTM(ctx, 0, size.height );
     CGContextScaleCTM(ctx, 1.0, -1.0);
     
     CGContextClearRect(ctx, CGRectMake(0, 0, size.width, size.height));
-    CGContextDrawImage(ctx, CGRectMake(0, 0, size.width, size.height), imageRef);
+    CGContextDrawImage(ctx, CGRectMake(0, 0, size.width, size.height), image.getCGImage);
     
     return ctx;
     
@@ -358,6 +368,8 @@
     int glType = GL_UNSIGNED_BYTE;
 
     if (NK_GL_VERSION == 2) {
+        
+#if TARGET_OS_IPHONE
         glActiveTexture(GL_TEXTURE0);
         glGenTextures(1, (GLuint *)&texture[0]);
         glBindTexture(GL_TEXTURE_2D, texture[0]);
@@ -368,18 +380,36 @@
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glBindTexture(GL_TEXTURE_2D, 0);
         
-       // glActiveTexture(GL_TEXTURE1);
-       // glGenFramebuffers(1, &defaultFramebuffer);
-       // glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
-        
         glBindTexture(GL_TEXTURE_2D, texture[0]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char *)CGBitmapContextGetData(context));
-        //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture[0], 0);
-        
-        //        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-        //
-        //        NSAssert(status == GL_FRAMEBUFFER_COMPLETE, @"Incomplete filter FBO: %d", status);
         glBindTexture(GL_TEXTURE_2D, 0);
+#else
+        
+        // Create a texture object to apply to model
+        glGenTextures(1, &texture[0]);
+        glBindTexture(GL_TEXTURE_2D, texture[0]);
+        
+        // Set up filter and wrap modes for this texture object
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        
+        // Indicate that pixel rows are tightly packed
+        //  (defaults to stride of 4 which is kind of only good for
+        //  RGBA or FLOAT data types)
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        
+        // Allocate and load image data into texture
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0,
+                     GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char *)CGBitmapContextGetData(context));
+        
+        // Create mipmaps for this texture for better image quality
+        glGenerateMipmap(GL_TEXTURE_2D);
+        
+        NSLog(@"GL init tex: %d,%d, loc %d", w,h,texture[0]);
+        
+#endif
     }
     
     else {
@@ -580,7 +610,7 @@
     
 }
 
-+ (CGContextRef) newBitmapRGBA8ContextFromImage:(CGImageRef) image {
++ (CGContextRef) newBitmapRGBA8ContextFromImage:(NKImage*) image {
 	CGContextRef context = NULL;
 	CGColorSpaceRef colorSpace;
 	uint32_t *bitmapData;
@@ -589,8 +619,8 @@
 	size_t bitsPerComponent = 8;
 	size_t bytesPerPixel = bitsPerPixel / bitsPerComponent;
     
-	size_t width = CGImageGetWidth(image);
-	size_t height = CGImageGetHeight(image);
+	size_t width = image.size.width;
+	size_t height = image.size.height;
     
 	size_t bytesPerRow = width * bytesPerPixel;
 	size_t bufferLength = bytesPerRow * height;
@@ -632,22 +662,23 @@
 
 + (unsigned char *) convertNKImageToBitmapRGBA8:(NKImage *) image {
     
-	CGImageRef imageRef = image.CGImage;
+	CGImageRef imageRef = image.getCGImage;
     
 	// Create a bitmap context to draw the uiimage into
-	CGContextRef context = [self newBitmapRGBA8ContextFromImage:imageRef];
+	CGContextRef context = [self newBitmapRGBA8ContextFromImage:image];
     
 	if(!context) {
 		return NULL;
 	}
     
-	size_t width = CGImageGetWidth(imageRef);
-	size_t height = CGImageGetHeight(imageRef);
+	size_t width = image.size.width;
+	size_t height = image.size.height;
     
 	CGRect rect = CGRectMake(0, 0, width, height);
     
 	// Draw image into the context to get the raw image data
 	CGContextDrawImage(context, rect, imageRef);
+    //[image drawInRect:rect];
     
 	// Get a pointer to the data
 	unsigned char *bitmapData = (unsigned char *)CGBitmapContextGetData(context);
@@ -742,12 +773,16 @@
 		CGImageRef imageRef = CGBitmapContextCreateImage(context);
         
 		// Support both iPad 3.2 and iPhone 4 Retina displays with the correct scale
+#if TARGET_OS_IPHONE
 		if([NKImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)]) {
 			float scale = [[UIScreen mainScreen] scale];
 			image = [NKImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
 		} else {
 			image = [NKImage imageWithCGImage:imageRef];
 		}
+#else
+        image = [[NKImage alloc]initWithCGImage:imageRef size:CGSizeMake(width, height)];
+#endif
         
 		CGImageRelease(imageRef);
 		CGContextRelease(context);

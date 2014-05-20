@@ -25,14 +25,13 @@
  OF THE POSSIBILITY OF SUCH DAMAGE. *
  ***********************************************************************/
 
-//#define OF_BACKED
+#import "NKpch.h"
 
 // NODE
 #import "NKNode.h"
 
 // NODE SUBS
 #import "NKSceneNode.h"
-#import "NKPrimitiveNode.h"
 #import "NKSpriteNode.h"
 #import "NKEmitterNode.h"
 #import "NKMeshNode.h"
@@ -57,6 +56,7 @@
 #import "NKTextureManager.h"
 #import "NKTexture.h"
 #import "NKMaterial.h"
+#import "NKColor.h"
 
 // SHADERS
 
@@ -75,5 +75,8 @@
 #import "NKViewController.h"
 #import "NKView.h"
 #import "NKFrameBuffer.h"
+
+#import "NKImage+GLBuffer.h"
+#import "NKFont+CoreText.h"
 
 

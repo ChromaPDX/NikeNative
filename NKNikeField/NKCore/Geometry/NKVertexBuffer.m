@@ -8,6 +8,8 @@
 
 #import "NodeKitten.h"
 
+
+
 @implementation NKVertexBuffer
 
 {
@@ -26,9 +28,13 @@
         NSLog(@"init vertex buffer with size: %ld", size);
         
         //glEnable(GL_DEPTH_TEST);
-        
+#if TARGET_OS_IPHONE
         glGenVertexArraysOES(1, &_vertexArray);
         glBindVertexArrayOES(_vertexArray);
+#else
+        glGenVertexArraysAPPLE(1, &_vertexArray);
+        glBindVertexArrayAPPLE(_vertexArray);
+#endif
         
         glGenBuffers(1, &_vertexBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
@@ -41,7 +47,12 @@
         geometrySetupBlock();
         
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+        
+        #if TARGET_OS_IPHONE
         glBindVertexArrayOES(0);
+        #else
+        glBindVertexArrayAPPLE(0);
+        #endif
     }
     return self;
 }
@@ -61,21 +72,22 @@
     NKVertexBuffer *buf = [[NKVertexBuffer alloc] initWithSize:sizeof(gCubeVertexData) data:gCubeVertexData setup:^{
         glEnableVertexAttribArray(NKVertexAttribPosition);
         glVertexAttribPointer(NKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
-                              28, BUFFER_OFFSET(0));
+                              sizeof(F1t)*7, BUFFER_OFFSET(0));
         
         glEnableVertexAttribArray(NKVertexAttribColor);
         glVertexAttribPointer(NKVertexAttribColor, 3, GL_FLOAT, GL_FALSE,
-                              28, BUFFER_OFFSET(12));
+                              sizeof(F1t)*7, BUFFER_OFFSET(12));
         
     }];
     
     buf.numberOfElements = sizeof(gCubeVertexData) / (sizeof(F1t)*7.);
+    buf.drawMode = GL_LINES;
     return buf;
 }
 
 +(instancetype)defaultRect {
 
-    GLfloat gCubeVertexData[48] =
+    GLfloat gCubeVertexData[8*6] =
     {
         0.5f, 0.5f, 0.0f,          1.0f, 0.0f, 0.0f,        1.0f, 1.0f,
         -0.5f, 0.5f, 0.0f,         1.0f, 0.0f, 0.0f,        0.0f, 1.0f,
@@ -88,15 +100,15 @@
     NKVertexBuffer *buf = [[NKVertexBuffer alloc] initWithSize:sizeof(gCubeVertexData) data:gCubeVertexData setup:^{
         glEnableVertexAttribArray(NKVertexAttribPosition);
         glVertexAttribPointer(NKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
-                              32, BUFFER_OFFSET(0));
+                              sizeof(F1t)*8, BUFFER_OFFSET(0));
         
         glEnableVertexAttribArray(NKVertexAttribNormal);
         glVertexAttribPointer(NKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE,
-                              32, BUFFER_OFFSET(12));
+                              sizeof(F1t)*8, BUFFER_OFFSET(sizeof(F1t)*3));
         
         glEnableVertexAttribArray(NKVertexAttribTexCoord0);
         glVertexAttribPointer(NKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE,
-                              32, BUFFER_OFFSET(24));
+                              sizeof(F1t)*8, BUFFER_OFFSET(sizeof(F1t)*6));
         
     }];
     
@@ -225,7 +237,7 @@
         memcpy(&elements[i].vertex, &vertices[i], sizeof(V3t));
         memcpy(&elements[i].normal, &vertexNormals[i], sizeof(V3t));
         memcpy(&elements[i].texCoord, &textureCoords[i], sizeof(V2t));
-    //    memcpy(&elements[i].color, &vertexColors[i], sizeof(C4t));
+        memcpy(&elements[i].color, &vertexColors[i], sizeof(C4t));
     }
     
     free(vertices);
@@ -249,18 +261,35 @@
         glVertexAttribPointer(NKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE,
                               sizeof(NKVertexArray), BUFFER_OFFSET(sizeof(V3t)*2));
 
-//        glEnableVertexAttribArray(NKVertexAttribColor);
-//        glVertexAttribPointer(NKVertexAttribColor, 4, GL_FLOAT, GL_FALSE,
-//                              sizeof(NKVertexArray), BUFFER_OFFSET(sizeof(V3t)*2+sizeof(V2t)));
+        glEnableVertexAttribArray(NKVertexAttribColor);
+        glVertexAttribPointer(NKVertexAttribColor, 4, GL_FLOAT, GL_FALSE,
+                              sizeof(NKVertexArray), BUFFER_OFFSET(sizeof(V3t)*2+sizeof(V2t)));
     }];
     
     buf.numberOfElements = numElements;
+    
     buf.drawMode = GL_TRIANGLE_STRIP;
+    
+    //buf.drawMode = GL_LINES;
     
     free(elements);
     
     return buf;
     
+}
+
++(instancetype)pointSprite {
+    GLfloat point[3] = {0,0,0};
+    NKVertexBuffer *buf = [[NKVertexBuffer alloc] initWithSize:sizeof(point) data:point setup:^{
+        glEnableVertexAttribArray(NKVertexAttribPosition);
+        glVertexAttribPointer(NKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
+                              24, BUFFER_OFFSET(0));
+    }];
+    
+    buf.numberOfElements = 1;
+    buf.drawMode = GL_POINTS;
+    
+    return buf;
 }
 
 +(instancetype)defaultCube {
@@ -340,12 +369,22 @@
 - (void)dealloc
 {
     glDeleteBuffers(1, &_vertexBuffer);
+    #if TARGET_OS_IPHONE
     glDeleteVertexArraysOES(1, &_vertexArray);
+    #else
+    glDeleteVertexArraysAPPLE(1, &_vertexArray);
+    #endif
+    
 }
 
 - (void)bind
 {
+    #if TARGET_OS_IPHONE
     glBindVertexArrayOES(_vertexArray);
+    #else
+    glBindVertexArrayAPPLE(_vertexArray);
+    #endif
+    
 }
 
 - (void)bind:(void(^)())drawingBlock
@@ -357,7 +396,11 @@
 
 - (void)unbind
 {
+    #if TARGET_OS_IPHONE
     glBindVertexArrayOES(0);
+     #else
+    glBindVertexArrayAPPLE(0);
+    #endif
 }
 
 @end

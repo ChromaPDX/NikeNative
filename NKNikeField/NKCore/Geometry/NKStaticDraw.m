@@ -74,7 +74,7 @@ static NKStaticDraw *sharedObject = nil;
 
 @end
 
-@implementation UIColor(OpenGL)
+@implementation NKColor(OpenGL)
 - (void)setOpenGLColor
 {
 	int numComponents = CGColorGetNumberOfComponents(self.CGColor);
@@ -96,7 +96,7 @@ static NKStaticDraw *sharedObject = nil;
 	}
     
 }
-- (void)setColorArrayToColor:(UIColor *)toColor
+- (void)setColorArrayToColor:(NKColor *)toColor
 {
 	GLfloat *colorArray = malloc(sizeof(GLfloat) * 8);
     
@@ -175,7 +175,7 @@ void GLDrawEllipticalSpokes(int spokeCount, CGFloat width, CGFloat height, P2t c
 		glDrawArrays (GL_LINES, 0, 2);
 	}
 }
-void GLDrawEllipticalSpokesWithGradient(int spokeCount, CGFloat width, CGFloat height, P2t center, UIColor *innerColor, UIColor *outerColor)
+void GLDrawEllipticalSpokesWithGradient(int spokeCount, CGFloat width, CGFloat height, P2t center, NKColor *innerColor, NKColor *outerColor)
 {
 	glTranslatef(center.x, center.y, 0.0);
 	for (GLfloat i = 0; i < 360.0f; i+=(360.0f/spokeCount))

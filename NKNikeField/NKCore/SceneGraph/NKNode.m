@@ -25,7 +25,6 @@
         [self setPosition3d:V3Make(0, 0, 0)];
         
         _upVector = V3Make(0, 1, 0);
-        _uidColor = [NKColor colorWithRed:0 green:0 blue:0 alpha:1.];
         
         _anchorPoint3d = V3Make(.5, .5, .5);
         _hidden = false;
@@ -39,6 +38,7 @@
         
         _userInteractionEnabled = false;
         _useShaderOnSelfOnly = false;
+
     }
     
     return self;
@@ -376,7 +376,7 @@
 }
 
 -(void)pushStyle{
-    
+    //return;
     // CULL
     
     if (_cullFace != self.scene.cullFace) {
@@ -489,7 +489,7 @@
             self.scene.activeShader = _shader;
             [_shader use];
         }
-        
+
         [self.scene pushMultiplyMatrix:localTransformMatrix];
     }
     else {
@@ -506,9 +506,11 @@
     [self customDraw];
 
     for (NKNode *child in intChildren) {
-        if (!child.isHidden) {
+        //if (!child.isHidden) {
             [child draw];
-        }
+
+          //  NSLog(@"draw scene child");
+        //}
     }
     
     [self end];
@@ -856,38 +858,26 @@
     
 }
 
-/*
-//----------------------------------------
-void ofNode::orbit(float longitude, float latitude, float radius, const ofVec3f& centerPoint) {
-	M16t m;
-    
+-(V3t)orbitForLongitude:(float)longitude latitude:(float)latitude radius:(float)radius { //centerPoint:(V3t)centerPoint {
 	// find position
-	V3t p(0, 0, radius);
-	p.rotate(ofClamp(latitude, -89, 89), V3Make(1, 0, 0));
-	p.rotate(longitude, V3Make(0, 1, 0));
-	p += centerPoint;
-	setPosition(p);
-	
-	lookAt(centerPoint);//, v - centerPoint);
-}
 
-//----------------------------------------
-void ofNode::orbit(float longitude, float latitude, float radius, ofNode& centerNode) {
-	orbit(longitude, latitude, radius, centerNode.getGlobalPosition());
+    _latitude = latitude;
+    _longitude = longitude;
+    _radius = radius;
+    
+    if (_latitude > 360) _latitude-=360.;
+    if (_latitude < -360) _latitude+=360.;
+    if (_longitude > 360) _longitude-=360.;
+    if (_longitude < -360) _longitude+=360.;
+    
+	V3t p = V3Make(0, 0, radius);
+    
+    p = V3RotatePoint(p, latitude, V3Make(1, 0, 0));
+    p = V3RotatePoint(p, longitude, V3Make(0, 1, 0));
+    
+    return p;
+    
 }
-
-//----------------------------------------
-void ofNode::resetTransform() {
-	setPosition(V3Make());
-	setOrientation(V3Make());
-}
- 
-
- void ofNode::lookAt(const ofNode& lookAtNode, const ofVec3f& upVector) {
- lookAt(lookAtNode.getGlobalPosition(), upVector);
- }
- 
-*/
 
 -(void)rotateMatrix:(M16t)M16 {
     M16t m = M16MakeScale(scale);
@@ -905,17 +895,21 @@ void ofNode::resetTransform() {
 }
 
 -(void)lookAtNode:(NKNode*)node {
-    V3t them = [node getGlobalPosition];
-    
-    NSLog(@"look at: %f %f %f,", them.x,them.y,them.z);
-    //Q4t newRotation = Q4FromMatrix([self getLookMatrix:[node getGlobalPosition]]);
-    
-    //NSLog(@"look at: %f %f %f, %f", newRotation.x, newRotation.y,newRotation.z,newRotation.w);
-    M16t new = [self getLookMatrix:[node getGlobalPosition]];
-    
-    //            [self logMatrix:new];
-    [self rotateMatrix:new];
+    [self lookAtPoint:[node getGlobalPosition]];
 }
+     
+     -(void)lookAtPoint:(V3t)point {
+         
+         
+        // NSLog(@"look at: %f %f %f,", point.x,point.y,point.z);
+         //Q4t newRotation = Q4FromMatrix([self getLookMatrix:[node getGlobalPosition]]);
+         
+         //NSLog(@"look at: %f %f %f, %f", newRotation.x, newRotation.y,newRotation.z,newRotation.w);
+         M16t new = [self getLookMatrix:point];
+         
+         //            [self logMatrix:new];
+         [self rotateMatrix:new];
+     }
 
 -(M16t)getLookMatrix:(V3t)lookAtPosition {
     V3t forward = V3Normalize(V3Subtract(lookAtPosition,[self getGlobalPosition]));
@@ -953,17 +947,17 @@ void ofNode::resetTransform() {
 #pragma mark - SCALE
 
 
--(void)setScale:(CGFloat)s {
+-(void)setScale:(F1t)s {
     [self setScale3d:V3Make(s,s,s)];
 }
 
-- (void)setXScale:(CGFloat)s {
+- (void)setXScale:(F1t)s {
     V3t nScale = scale;
     nScale.x = s;
     [self setScale3d:nScale];
 }
 
-- (void)setYScale:(CGFloat)s {
+- (void)setYScale:(F1t)s {
     V3t nScale = scale;
     nScale.y = s;
  [self setScale3d:nScale];
@@ -997,7 +991,7 @@ void ofNode::resetTransform() {
 -(void)recursiveAlpha:(F1t)alpha{
     _alpha = intAlpha * alpha;
     
-    if (!_alpha) {
+    if (_alpha < .01) {
         [self setHidden:true];
     }
     else {
@@ -1098,6 +1092,10 @@ void ofNode::resetTransform() {
 #pragma mark - DEALLOC C++ Objectes
 
 -(void)dealloc {
+    if (_scene) {
+        [_scene.hitColorMap removeObjectForKey:self.uidColor];
+    }
+    
     [animationHandler removeAllActions];
     animationHandler = NULL;
 }

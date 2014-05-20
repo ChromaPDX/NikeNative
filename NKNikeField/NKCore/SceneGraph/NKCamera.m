@@ -6,10 +6,6 @@
 //
 //
 
-#import <OpenGLES/EAGL.h>
-#import <OpenGLES/ES1/gl.h>
-#import <OpenGLES/ES1/glext.h>
-
 #import "NodeKitten.h"
 
 @implementation NKCamera
@@ -72,6 +68,8 @@
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     
+    glLineWidth(1.0f);
+    
     glGetError(); // Clear error codes
     
 }
@@ -89,8 +87,14 @@
     
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    GLfloat frustum = _nearZ * tanf(_fovVertRadians / 2.0);
+    F1t frustum = _nearZ * tanf(_fovVertRadians / 2.0);
+    
+#if TARGET_OS_IPHONE
     glFrustumf(-frustum, frustum, -frustum/_aspect, frustum/_aspect, _nearZ, _farZ);
+#else
+    glFrustum(-frustum, frustum, -frustum/_aspect, frustum/_aspect, _nearZ, _farZ);
+#endif
+    
     //glTranslatef(0, 0, -1000);
     //glMultMatrixf([self projectionMatrix].m);
     
