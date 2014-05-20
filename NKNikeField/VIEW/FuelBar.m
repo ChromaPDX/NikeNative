@@ -38,6 +38,7 @@
 - (void)setFill:(float)fill animated:(bool)animated {
     
     
+    if(fill > 1.0)fill = 1.0;
     
     S2t size = fuelContainer.size;
     

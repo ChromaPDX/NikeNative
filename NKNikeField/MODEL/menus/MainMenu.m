@@ -72,10 +72,10 @@
     
     if(R4ContainsPoint(syncButtonRect, location)){
         NSLog(@"*NSYNC!");
-        NikeViewController* sync = [[NikeViewController alloc]init];
-        [self.nkView.controller presentViewController:sync animated:YES completion:^{
-            
-        }];
+        //NikeViewController* sync = [[NikeViewController alloc]init];
+        //[self.nkView.controller presentViewController:sync animated:YES completion:^{
+        //
+        //}];
     }
     else if(R4ContainsPoint(startButtonRect, location)){
         NSLog(@"start button pressed, starting game...");

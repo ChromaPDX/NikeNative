@@ -1215,7 +1215,7 @@
             else{
                 event.manager.opponent.energy -= SUCCUBUS_OPPONENT_ENERGY;
             }
-            event.manager.energy += (SUCCUBUS_SELF_ENERGY + event.card.energyCost);
+            event.manager.energy += (SUCCUBUS_SELF_ENERGY);
             
         }
         else if (event.type == kEventBlock){  //  BLOCK

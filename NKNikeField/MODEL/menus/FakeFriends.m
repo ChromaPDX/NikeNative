@@ -5,12 +5,20 @@
 +(NSArray*)getNamesForText:(int)numNames{
     NSMutableArray *retArray = [[NSMutableArray alloc] init];
     
+   // NSMutableArray *listOfNames = [[NSArray arrayWithObjects:
+   //                                 @"ERIC",
+   //                                 @"MARCUS",
+   //                                 @"MIKE",
+   //                                 @"VV",
+   //                                 @"LEIF",
+   //                                 NULL] mutableCopy];
+    
     NSMutableArray *listOfNames = [[NSArray arrayWithObjects:
-                                    @"ERIC",
-                                    @"MARCUS",
-                                    @"MIKE",
-                                    @"VV",
-                                    @"LEIF",
+                                    @"Martina Z",
+                                    @"Ricky E",
+                                    @"Jesse S",
+                                    @"Hayden W",
+                                    @"Drew F",
                                     NULL] mutableCopy];
     
     for(int i = 0; i < numNames; i++){

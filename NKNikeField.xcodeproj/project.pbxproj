@@ -153,7 +153,20 @@
 		3B247D951922A26000A6EFDB /* ScreenSync_01A.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7F1922A26000A6EFDB /* ScreenSync_01A.png */; };
 		3B247D961922A26000A6EFDB /* ScreenSync_02A.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D801922A26000A6EFDB /* ScreenSync_02A.png */; };
 		3B247D971922A26000A6EFDB /* ScreenSync_03A.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D811922A26000A6EFDB /* ScreenSync_03A.png */; };
-		3B27D39D1925756C00782A12 /* tile_all_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D39C1925756C00782A12 /* tile_all_dotted.png */; };
+		3B27D3AD1925BDEF00782A12 /* tile_topright_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D39E1925BDEF00782A12 /* tile_topright_dotted.png */; };
+		3B27D3AF1925BDEF00782A12 /* tile_topleft_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3A01925BDEF00782A12 /* tile_topleft_dotted.png */; };
+		3B27D3B01925BDEF00782A12 /* tile_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3A11925BDEF00782A12 /* tile_top.png */; };
+		3B27D3B11925BDEF00782A12 /* tile_right_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3A21925BDEF00782A12 /* tile_right_dotted.png */; };
+		3B27D3B21925BDEF00782A12 /* tile_horizontal_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3A31925BDEF00782A12 /* tile_horizontal_dotted.png */; };
+		3B27D3B31925BDEF00782A12 /* tile_vertical_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3A41925BDEF00782A12 /* tile_vertical_dotted.png */; };
+		3B27D3B41925BDEF00782A12 /* tile_left_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3A51925BDEF00782A12 /* tile_left_dotted.png */; };
+		3B27D3B71925BDEF00782A12 /* tile_bottom_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3A81925BDEF00782A12 /* tile_bottom_dotted.png */; };
+		3B27D3B81925BDEF00782A12 /* tile_3right_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3A91925BDEF00782A12 /* tile_3right_dotted.png */; };
+		3B27D3B91925BDEF00782A12 /* tile_3left_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3AA1925BDEF00782A12 /* tile_3left_dotted.png */; };
+		3B27D3BA1925BDEF00782A12 /* tile_3bottom_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3AB1925BDEF00782A12 /* tile_3bottom_dotted.png */; };
+		3B27D3BB1925BDEF00782A12 /* tile_all_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3AC1925BDEF00782A12 /* tile_all_dotted.png */; };
+		3B27D3BD1926726000782A12 /* tile_3top_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3BC1926726000782A12 /* tile_3top_dotted.png */; };
+		3B27D3BF1926736C00782A12 /* tile_bottomright_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B27D3BE1926736C00782A12 /* tile_bottomright_dotted.png */; };
 		3B34229819242048000AAC68 /* ButtonEndTurn.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B34228E19242048000AAC68 /* ButtonEndTurn.png */; };
 		3B34229919242048000AAC68 /* InGameBackdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B34228F19242048000AAC68 /* InGameBackdrop.png */; };
 		3B34229A19242048000AAC68 /* Notification_MoreE.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B34229019242048000AAC68 /* Notification_MoreE.png */; };
@@ -220,7 +233,7 @@
 		61D6E80118FDB5B70017A389 /* tile_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E6F318FDB5B70017A389 /* tile_left.png */; };
 		61D6E80218FDB5B70017A389 /* tile_none.png in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E6F418FDB5B70017A389 /* tile_none.png */; };
 		61D6E80318FDB5B70017A389 /* tile_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E6F518FDB5B70017A389 /* tile_right.png */; };
-		61D6E80418FDB5B70017A389 /* tile_top.png in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E6F618FDB5B70017A389 /* tile_top.png */; };
+		61D6E80418FDB5B70017A389 /* tile_top_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E6F618FDB5B70017A389 /* tile_top_dotted.png */; };
 		61D6E80518FDB5B70017A389 /* tile_topleft.png in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E6F718FDB5B70017A389 /* tile_topleft.png */; };
 		61D6E80618FDB5B70017A389 /* tile_topright.png in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E6F818FDB5B70017A389 /* tile_topright.png */; };
 		61D6E80718FDB5B70017A389 /* tile_vertical.png in Resources */ = {isa = PBXBuildFile; fileRef = 61D6E6F918FDB5B70017A389 /* tile_vertical.png */; };
@@ -466,7 +479,20 @@
 		3B247D7F1922A26000A6EFDB /* ScreenSync_01A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ScreenSync_01A.png; sourceTree = "<group>"; };
 		3B247D801922A26000A6EFDB /* ScreenSync_02A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ScreenSync_02A.png; sourceTree = "<group>"; };
 		3B247D811922A26000A6EFDB /* ScreenSync_03A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ScreenSync_03A.png; sourceTree = "<group>"; };
-		3B27D39C1925756C00782A12 /* tile_all_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_all_dotted.png; sourceTree = "<group>"; };
+		3B27D39E1925BDEF00782A12 /* tile_topright_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_topright_dotted.png; sourceTree = "<group>"; };
+		3B27D3A01925BDEF00782A12 /* tile_topleft_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_topleft_dotted.png; sourceTree = "<group>"; };
+		3B27D3A11925BDEF00782A12 /* tile_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_top.png; sourceTree = "<group>"; };
+		3B27D3A21925BDEF00782A12 /* tile_right_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_right_dotted.png; sourceTree = "<group>"; };
+		3B27D3A31925BDEF00782A12 /* tile_horizontal_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_horizontal_dotted.png; sourceTree = "<group>"; };
+		3B27D3A41925BDEF00782A12 /* tile_vertical_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_vertical_dotted.png; sourceTree = "<group>"; };
+		3B27D3A51925BDEF00782A12 /* tile_left_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_left_dotted.png; sourceTree = "<group>"; };
+		3B27D3A81925BDEF00782A12 /* tile_bottom_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_bottom_dotted.png; sourceTree = "<group>"; };
+		3B27D3A91925BDEF00782A12 /* tile_3right_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_3right_dotted.png; sourceTree = "<group>"; };
+		3B27D3AA1925BDEF00782A12 /* tile_3left_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_3left_dotted.png; sourceTree = "<group>"; };
+		3B27D3AB1925BDEF00782A12 /* tile_3bottom_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_3bottom_dotted.png; sourceTree = "<group>"; };
+		3B27D3AC1925BDEF00782A12 /* tile_all_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_all_dotted.png; sourceTree = "<group>"; };
+		3B27D3BC1926726000782A12 /* tile_3top_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_3top_dotted.png; sourceTree = "<group>"; };
+		3B27D3BE1926736C00782A12 /* tile_bottomright_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_bottomright_dotted.png; sourceTree = "<group>"; };
 		3B34228E19242048000AAC68 /* ButtonEndTurn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonEndTurn.png; sourceTree = "<group>"; };
 		3B34228F19242048000AAC68 /* InGameBackdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InGameBackdrop.png; sourceTree = "<group>"; };
 		3B34229019242048000AAC68 /* Notification_MoreE.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Notification_MoreE.png; sourceTree = "<group>"; };
@@ -529,7 +555,7 @@
 		61A257BB18FDE998001B7F67 /* NKTextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKTextureManager.h; sourceTree = "<group>"; };
 		61A257BC18FDE998001B7F67 /* NKTextureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKTextureManager.m; sourceTree = "<group>"; };
 		61A257BD18FDE998001B7F67 /* skysphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skysphere.png; sourceTree = "<group>"; };
-		61D6E44B18FDAE110017A389 /* NKNikeField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NKNikeField.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		61D6E44B18FDAE110017A389 /* nikecup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nikecup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61D6E44E18FDAE110017A389 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		61D6E45018FDAE110017A389 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		61D6E45218FDAE110017A389 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -542,7 +568,7 @@
 		61D6E46118FDAE110017A389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		61D6E46418FDAE110017A389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		61D6E46918FDAE120017A389 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		61D6E46F18FDAE120017A389 /* NKNikeFieldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NKNikeFieldTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		61D6E46F18FDAE120017A389 /* nikecup.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nikecup.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		61D6E47018FDAE120017A389 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		61D6E47818FDAE120017A389 /* NKNikeFieldTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NKNikeFieldTests-Info.plist"; sourceTree = "<group>"; };
 		61D6E47A18FDAE120017A389 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -561,7 +587,7 @@
 		61D6E6F318FDB5B70017A389 /* tile_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_left.png; sourceTree = "<group>"; };
 		61D6E6F418FDB5B70017A389 /* tile_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_none.png; sourceTree = "<group>"; };
 		61D6E6F518FDB5B70017A389 /* tile_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_right.png; sourceTree = "<group>"; };
-		61D6E6F618FDB5B70017A389 /* tile_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_top.png; sourceTree = "<group>"; };
+		61D6E6F618FDB5B70017A389 /* tile_top_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_top_dotted.png; sourceTree = "<group>"; };
 		61D6E6F718FDB5B70017A389 /* tile_topleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_topleft.png; sourceTree = "<group>"; };
 		61D6E6F818FDB5B70017A389 /* tile_topright.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_topright.png; sourceTree = "<group>"; };
 		61D6E6F918FDB5B70017A389 /* tile_vertical.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_vertical.png; sourceTree = "<group>"; };
@@ -1165,8 +1191,8 @@
 		61D6E44C18FDAE110017A389 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				61D6E44B18FDAE110017A389 /* NKNikeField.app */,
-				61D6E46F18FDAE120017A389 /* NKNikeFieldTests.xctest */,
+				61D6E44B18FDAE110017A389 /* nikecup.app */,
+				61D6E46F18FDAE120017A389 /* nikecup.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1280,23 +1306,36 @@
 		61D6E6E918FDB5B70017A389 /* TILE_HIGHLIGHT */ = {
 			isa = PBXGroup;
 			children = (
-				3B27D39C1925756C00782A12 /* tile_all_dotted.png */,
 				61D6E6EA18FDB5B70017A389 /* tile_3bottom.png */,
+				3B27D3AB1925BDEF00782A12 /* tile_3bottom_dotted.png */,
 				61D6E6EB18FDB5B70017A389 /* tile_3left.png */,
+				3B27D3AA1925BDEF00782A12 /* tile_3left_dotted.png */,
 				61D6E6EC18FDB5B70017A389 /* tile_3right.png */,
+				3B27D3A91925BDEF00782A12 /* tile_3right_dotted.png */,
 				61D6E6ED18FDB5B70017A389 /* tile_3top.png */,
+				3B27D3BC1926726000782A12 /* tile_3top_dotted.png */,
 				61D6E6EE18FDB5B70017A389 /* tile_all.png */,
+				3B27D3AC1925BDEF00782A12 /* tile_all_dotted.png */,
 				61D6E6EF18FDB5B70017A389 /* tile_bottom.png */,
+				3B27D3A81925BDEF00782A12 /* tile_bottom_dotted.png */,
 				61D6E6F018FDB5B70017A389 /* tile_bottomleft.png */,
 				61D6E6F118FDB5B70017A389 /* tile_bottomright.png */,
+				3B27D3BE1926736C00782A12 /* tile_bottomright_dotted.png */,
 				61D6E6F218FDB5B70017A389 /* tile_horizontal.png */,
+				3B27D3A31925BDEF00782A12 /* tile_horizontal_dotted.png */,
 				61D6E6F318FDB5B70017A389 /* tile_left.png */,
+				3B27D3A51925BDEF00782A12 /* tile_left_dotted.png */,
 				61D6E6F418FDB5B70017A389 /* tile_none.png */,
 				61D6E6F518FDB5B70017A389 /* tile_right.png */,
-				61D6E6F618FDB5B70017A389 /* tile_top.png */,
+				3B27D3A21925BDEF00782A12 /* tile_right_dotted.png */,
 				61D6E6F718FDB5B70017A389 /* tile_topleft.png */,
+				3B27D3A01925BDEF00782A12 /* tile_topleft_dotted.png */,
 				61D6E6F818FDB5B70017A389 /* tile_topright.png */,
+				3B27D39E1925BDEF00782A12 /* tile_topright_dotted.png */,
 				61D6E6F918FDB5B70017A389 /* tile_vertical.png */,
+				3B27D3A41925BDEF00782A12 /* tile_vertical_dotted.png */,
+				3B27D3A11925BDEF00782A12 /* tile_top.png */,
+				61D6E6F618FDB5B70017A389 /* tile_top_dotted.png */,
 			);
 			path = TILE_HIGHLIGHT;
 			sourceTree = "<group>";
@@ -1456,7 +1495,7 @@
 			);
 			name = NKNikeField;
 			productName = NKNikeField;
-			productReference = 61D6E44B18FDAE110017A389 /* NKNikeField.app */;
+			productReference = 61D6E44B18FDAE110017A389 /* nikecup.app */;
 			productType = "com.apple.product-type.application";
 		};
 		61D6E46E18FDAE120017A389 /* NKNikeFieldTests */ = {
@@ -1474,7 +1513,7 @@
 			);
 			name = NKNikeFieldTests;
 			productName = NKNikeFieldTests;
-			productReference = 61D6E46F18FDAE120017A389 /* NKNikeFieldTests.xctest */;
+			productReference = 61D6E46F18FDAE120017A389 /* nikecup.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -1519,12 +1558,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B27D3B41925BDEF00782A12 /* tile_left_dotted.png in Resources */,
 				297CEA171924BDAF0043542D /* SpecialCards_Move.png in Resources */,
 				29C42BF119105C0600441639 /* anomaly_7.wav in Resources */,
 				29C42BE519105C0600441639 /* 178993__glitchedtones__glitchedtones-rise.wav in Resources */,
 				2902A073190C7BAE008D0092 /* Faction_Sention_ON.png in Resources */,
 				61D6E87A18FDB5B70017A389 /* Field_Layer03.png in Resources */,
 				3BC5A7CF19193E9600414544 /* FuelBar_Container.png in Resources */,
+				3B27D3B11925BDEF00782A12 /* tile_right_dotted.png in Resources */,
 				61D6E7FF18FDB5B70017A389 /* tile_bottomright.png in Resources */,
 				29C42BE619105C0600441639 /* expand.aiff in Resources */,
 				3B34229D19242048000AAC68 /* Screen_UXReview_05_14.png in Resources */,
@@ -1533,13 +1574,16 @@
 				3B247D8E1922A26000A6EFDB /* LevelBarFull.png in Resources */,
 				29D89291190AC3B0008FBD5F /* diagonals.png in Resources */,
 				61D6E88018FDB5B70017A389 /* PlayerIndicator_PlayerSHADOW.png in Resources */,
+				3B27D3B31925BDEF00782A12 /* tile_vertical_dotted.png in Resources */,
 				61D6E80318FDB5B70017A389 /* tile_right.png in Resources */,
 				297CEA021924BDAF0043542D /* Card_Icon_SpecKick.png in Resources */,
+				3B27D3AD1925BDEF00782A12 /* tile_topright_dotted.png in Resources */,
 				3B6BF2441911416C0082628E /* LOGO_Icon_Bola.png in Resources */,
 				297CEA0A1924BDAF0043542D /* Kick_L1a.png in Resources */,
 				3B247D831922A26000A6EFDB /* ButtonNikeConnect.png in Resources */,
 				3B6BF23D191016200082628E /* fuelbar_fuel.png in Resources */,
 				61D6E87C18FDB5B70017A389 /* PlayerIndicator_HUD.png in Resources */,
+				3B27D3BB1925BDEF00782A12 /* tile_all_dotted.png in Resources */,
 				29C42BE719105C0600441639 /* FattNedA4.wav in Resources */,
 				29C42BF619105C0600441639 /* DotMatrix-Pang-84.wav in Resources */,
 				3B247D961922A26000A6EFDB /* ScreenSync_02A.png in Resources */,
@@ -1557,6 +1601,7 @@
 				3B247D971922A26000A6EFDB /* ScreenSync_03A.png in Resources */,
 				3B6BF246191144280082628E /* LOGO_Icon_Bola_small.png in Resources */,
 				61A257DC18FDE998001B7F67 /* skysphere.png in Resources */,
+				3B27D3B01925BDEF00782A12 /* tile_top.png in Resources */,
 				29C42BEA19105C0600441639 /* PlucknWiggleA#3.wav in Resources */,
 				3B3422A019242048000AAC68 /* UXSample_PopupOffGame.png in Resources */,
 				61D6E87818FDB5B70017A389 /* Field_Layer01.png in Resources */,
@@ -1581,19 +1626,23 @@
 				29C42BE019105C0600441639 /* goal_easter_egg.mp3 in Resources */,
 				29C42BE919105C0600441639 /* PlucknWiggleA#2.wav in Resources */,
 				29090EE8190ED80C00BE6B92 /* bottom_bar.png in Resources */,
+				3B27D3BA1925BDEF00782A12 /* tile_3bottom_dotted.png in Resources */,
 				29090EEC190ED98B00BE6B92 /* Halo_Marks_glow.png in Resources */,
 				61D6E7F918FDB5B70017A389 /* tile_3left.png in Resources */,
+				3B27D3B81925BDEF00782A12 /* tile_3right_dotted.png in Resources */,
 				29090EEE190ED98B00BE6B92 /* Halo.png in Resources */,
 				297CE9F81924BDAF0043542D /* Card_Icon_RegKick.png in Resources */,
 				297CE9FE1924BDAF0043542D /* Card_Icon_SpecGeneral.png in Resources */,
-				61D6E80418FDB5B70017A389 /* tile_top.png in Resources */,
+				61D6E80418FDB5B70017A389 /* tile_top_dotted.png in Resources */,
 				29C42BF019105C0600441639 /* contract.aiff in Resources */,
 				2902A072190C7BAE008D0092 /* Faction_Psyke_ON.png in Resources */,
 				61D6E7FA18FDB5B70017A389 /* tile_3right.png in Resources */,
+				3B27D3B91925BDEF00782A12 /* tile_3left_dotted.png in Resources */,
 				29C42BEC19105C0600441639 /* Mercurian-BrainWasher-42.wav in Resources */,
 				29C42BDF19105C0600441639 /* goal.aiff in Resources */,
 				61D6E80718FDB5B70017A389 /* tile_vertical.png in Resources */,
 				61D6E87718FDB5B70017A389 /* Field_Goal.png in Resources */,
+				3B27D3BD1926726000782A12 /* tile_3top_dotted.png in Resources */,
 				3B34229A19242048000AAC68 /* Notification_MoreE.png in Resources */,
 				3B34229F19242048000AAC68 /* UXSample_PopupInGame.png in Resources */,
 				61D6E46518FDAE110017A389 /* Main_iPad.storyboard in Resources */,
@@ -1609,6 +1658,7 @@
 				2902A06C190C7BAE008D0092 /* Faction_Genmod_OFF.png in Resources */,
 				297CEA071924BDAF0043542D /* Challenge_L1a.png in Resources */,
 				29D89297190AC3B0008FBD5F /* nike.sqlite in Resources */,
+				3B27D3BF1926736C00782A12 /* tile_bottomright_dotted.png in Resources */,
 				3B247D921922A26000A6EFDB /* Screen_RecapLostNoText.png in Resources */,
 				3B34229819242048000AAC68 /* ButtonEndTurn.png in Resources */,
 				61D6E80218FDB5B70017A389 /* tile_none.png in Resources */,
@@ -1627,10 +1677,12 @@
 				3B247D901922A26000A6EFDB /* Screen_MenuEnergy.png in Resources */,
 				61A257D818FDE998001B7F67 /* moon.png in Resources */,
 				297CEA101924BDAF0043542D /* Special_L1a.png in Resources */,
+				3B27D3AF1925BDEF00782A12 /* tile_topleft_dotted.png in Resources */,
 				297CEA091924BDAF0043542D /* Challenge_L3a.png in Resources */,
 				3B3422A119242048000AAC68 /* Screen_Menu.png in Resources */,
 				29C42BEF19105C0600441639 /* high6-b.wav in Resources */,
 				2902A071190C7BAE008D0092 /* Faction_Psyke_OFF.png in Resources */,
+				3B27D3B21925BDEF00782A12 /* tile_horizontal_dotted.png in Resources */,
 				297CEA111924BDAF0043542D /* Special_L2a.png in Resources */,
 				297CEA061924BDAF0043542D /* Card_Icon_SpecMove.png in Resources */,
 				61A257D618FDE998001B7F67 /* chromeKitten.png in Resources */,
@@ -1648,7 +1700,6 @@
 				297CEA081924BDAF0043542D /* Challenge_L2a.png in Resources */,
 				297CE9F91924BDAF0043542D /* Card_Icon_RegMove.png in Resources */,
 				29C42BE119105C0600441639 /* raw-original.wav in Resources */,
-				3B27D39D1925756C00782A12 /* tile_all_dotted.png in Resources */,
 				29090EF1190EEC4200BE6B92 /* Arial Black.ttf in Resources */,
 				61D6E80618FDB5B70017A389 /* tile_topright.png in Resources */,
 				61D6E46218FDAE110017A389 /* Main_iPhone.storyboard in Resources */,
@@ -1657,6 +1708,7 @@
 				61D6E87418FDB5B70017A389 /* Background_Field.png in Resources */,
 				3B34229919242048000AAC68 /* InGameBackdrop.png in Resources */,
 				29C42BF419105C0600441639 /* lock.aiff in Resources */,
+				3B27D3B71925BDEF00782A12 /* tile_bottom_dotted.png in Resources */,
 				61D6E45918FDAE110017A389 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1972,7 +2024,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "NKNikeFieldTests/NKNikeFieldTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = nikecup;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1990,7 +2042,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
 				INFOPLIST_FILE = "NKNikeFieldTests/NKNikeFieldTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = nikecup;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
