@@ -14,11 +14,16 @@
    //                                 NULL] mutableCopy];
     
     NSMutableArray *listOfNames = [[NSArray arrayWithObjects:
-                                    @"Martina Z",
-                                    @"Ricky E",
-                                    @"Jesse S",
-                                    @"Hayden W",
-                                    @"Drew F",
+                                    @"MARTINA Z",
+                                    @"RICKY E",
+                                    @"JESSE S",
+                                    @"HAYDEN W",
+                                    @"DREW F",
+                                    @"ERIC K",
+                                    @"MARCUS E",
+                                    @"MIKE M",
+                                    @"VERONICA V",
+                                    @"LEIF S",
                                     NULL] mutableCopy];
     
     for(int i = 0; i < numNames; i++){

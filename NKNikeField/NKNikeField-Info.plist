@@ -36,19 +36,19 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>2.0</string>
 	<key>FacebookAppID</key>
 	<string>274442572706946</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>Nike</key>
 	<dict>
-		<key>logicSuccess</key>
-		<string> nikecup://fuel/success</string>
 		<key>appId</key>
 		<string>com.chroma.jumpbots</string>
 		<key>clientId</key>
 		<string>32ae5928881388e72a37bbe06d3c3fc8</string>
+		<key>logicSuccess</key>
+		<string> nikecup://fuel/success</string>
 		<key>loginUrlScheme</key>
 		<string>nsfw</string>
 		<key>servicesUrl</key>
