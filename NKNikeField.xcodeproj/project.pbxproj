@@ -555,7 +555,7 @@
 		61A257BB18FDE998001B7F67 /* NKTextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKTextureManager.h; sourceTree = "<group>"; };
 		61A257BC18FDE998001B7F67 /* NKTextureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKTextureManager.m; sourceTree = "<group>"; };
 		61A257BD18FDE998001B7F67 /* skysphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skysphere.png; sourceTree = "<group>"; };
-		61D6E44B18FDAE110017A389 /* nikecup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nikecup.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		61D6E44B18FDAE110017A389 /* NKNikeField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NKNikeField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61D6E44E18FDAE110017A389 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		61D6E45018FDAE110017A389 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		61D6E45218FDAE110017A389 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -1191,7 +1191,7 @@
 		61D6E44C18FDAE110017A389 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				61D6E44B18FDAE110017A389 /* nikecup.app */,
+				61D6E44B18FDAE110017A389 /* NKNikeField.app */,
 				61D6E46F18FDAE120017A389 /* nikecup.xctest */,
 			);
 			name = Products;
@@ -1495,7 +1495,7 @@
 			);
 			name = NKNikeField;
 			productName = NKNikeField;
-			productReference = 61D6E44B18FDAE110017A389 /* nikecup.app */;
+			productReference = 61D6E44B18FDAE110017A389 /* NKNikeField.app */;
 			productType = "com.apple.product-type.application";
 		};
 		61D6E46E18FDAE120017A389 /* NKNikeFieldTests */ = {
@@ -1527,7 +1527,7 @@
 				ORGANIZATIONNAME = "Chroma Developer";
 				TargetAttributes = {
 					61D6E44A18FDAE110017A389 = {
-						DevelopmentTeam = 9G677D3XX8;
+						DevelopmentTeam = ZJLX8USTRZ;
 					};
 					61D6E46E18FDAE120017A389 = {
 						TestTargetID = 61D6E44A18FDAE110017A389;
@@ -1961,7 +1961,7 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Leif Shackelford (7N65JCCXC2)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: CHROMA GAMES, INC. (ZJLX8USTRZ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NKNikeField/PARSE+FB",
@@ -1975,7 +1975,7 @@
 					"$(PROJECT_DIR)/NKNikeField/NIKE",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "FADEBCF4-9991-443D-94B9-BF90EF1C5A43";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1989,7 +1989,7 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Leif Shackelford (7N65JCCXC2)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: CHROMA GAMES, INC. (ZJLX8USTRZ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NKNikeField/PARSE+FB",
@@ -2003,7 +2003,7 @@
 					"$(PROJECT_DIR)/NKNikeField/NIKE",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "FADEBCF4-9991-443D-94B9-BF90EF1C5A43";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
