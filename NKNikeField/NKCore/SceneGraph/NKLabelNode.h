@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, NKLabelHorizontalAlignmentMode) {
 @property (NK_NONATOMIC_IOSONLY, copy) NSString *fontName;
 @property (NK_NONATOMIC_IOSONLY, copy) NSString *text;
 @property (NK_NONATOMIC_IOSONLY) CGFloat fontSize;
-@property (NK_NONATOMIC_IOSONLY, strong) NKColor *fontColor;
+@property (NK_NONATOMIC_IOSONLY, strong) NKByteColor *fontColor;
 
 @end
 

@@ -8,10 +8,6 @@
 
 #import "NKpch.h"
 
-#import <OpenGLES/EAGL.h>
-#import <OpenGLES/ES1/gl.h>
-#import <OpenGLES/ES1/glext.h>
-
 @class NKLabelNode;
 
 typedef NS_OPTIONS(UInt8, NKTextureMapStyle) {

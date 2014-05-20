@@ -27,13 +27,14 @@
 
 #import "NKShaderProgram.h"
 @class NKNode;
+@class NKByteColor;
 
 @interface NKDrawDepthShader : NKShaderProgram
 
-- (instancetype)initWithNode:(NKNode *)node useColor:(UIColor*)nilForDefaultAttrib;
+- (instancetype)initWithNode:(NKNode *)node useColor:(NKByteColor*)nilForDefaultAttrib;
 
 @property (nonatomic) bool useColor;
-@property (nonatomic, strong) UIColor* forceColor;
+@property (nonatomic, strong) NKByteColor* forceColor;
 @property (nonatomic) bool shouldInvert;
 
 @end

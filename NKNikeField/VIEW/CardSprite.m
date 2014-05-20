@@ -11,7 +11,7 @@
 
 @implementation CardSprite
 
--(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(S2t)size {
+-(instancetype) initWithTexture:(NKTexture *)texture color:(NKByteColor *)color size:(S2t)size {
     
     self = [super initWithTexture:texture color:color size:size];
     
@@ -48,7 +48,7 @@
     if (showShadow) {
         
         if (!_shadow) {
-            _shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Ipad_shadow"] color:[NKColor blackColor]  size:self.size];
+            _shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Ipad_shadow"] color:NKBLACK size:self.size];
             [_shadow setZPosition:-1];
             [_shadow setPosition:P2Make(-w*.075, h*.075)];
             [self addChild:_shadow];
@@ -97,7 +97,7 @@
 }
 
 
--(NKColor*)colorForCategory {
+-(NKByteColor*)colorForCategory {
 
 //    switch (_model.category) {
 //        case CardCategoryKick: return V2PURPLE;

@@ -25,6 +25,8 @@
  OF THE POSSIBILITY OF SUCH DAMAGE. *
  ***********************************************************************/
 
+//#define SHOW_HIT_DETECTION
+
 #import "NKNode.h"
 #import "NKAlertSprite.h"
 
@@ -46,18 +48,17 @@
     M16t modelMatrix;
     
     NKVertexBuffer *axes;
+    NKVertexBuffer *sphere;
     
-    NSMutableDictionary* hitColorMap;
-    float uidR;
-    float uidG;
-    float uidB;
+    
 }
 
+@property (nonatomic, strong) NSMutableDictionary* hitColorMap;
 @property (nonatomic) void *view;
 
 @property (nonatomic) BOOL shouldRasterize;
-@property (nonatomic) UIColor *backgroundColor;
-@property (nonatomic) UIColor *borderColor;
+@property (nonatomic) NKByteColor *backgroundColor;
+@property (nonatomic) NKByteColor *borderColor;
 
 @property (nonatomic, strong) NKCamera *camera;
 @property (nonatomic, weak) NKAlertSprite *alertSprite;
@@ -82,6 +83,9 @@
 -(void)pushMultiplyMatrix:(M16t)matrix;
 -(void)pushScale:(V3t)scale;
 -(void)popMatrix;
+
+-(void)setUniformIdentity;
+-(void)drawAxes;
 
 -(void)getUidColorForNode:(NKNode*)node;
 

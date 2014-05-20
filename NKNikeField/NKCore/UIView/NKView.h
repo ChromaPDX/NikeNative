@@ -2,13 +2,10 @@
 //*  NODE KITTEN
 //*
 
-#import <UIKit/UIKit.h>
-#import <OpenGLES/EAGL.h>
-#import <OpenGLES/ES1/gl.h>
-#import <OpenGLES/ES1/glext.h>
 
-//#define SHOW_HIT_DETECTION
-#define NK_GL_VERSION 2
+
+#import "NKpch.h"
+#import "NKFrameBuffer.h"
 
 @class NKViewController;
 @class NKSceneNode;
@@ -21,31 +18,38 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
+#if TARGET_OS_IPHONE
 @interface NKView : UIView
+#else
+@interface NKView : NSOpenGLView
+#endif
+
 {
-	EAGLContext *context;
     
+#if TARGET_OS_IPHONE
+    NKContext *context;
+#else
+    NSThread	*runningThread;
+#endif
+    
+    NKDisplayLink displayLink;
+
     NKFrameBuffer *frameBuffer;
     
-	//GLuint frameBuffer, colorRenderbuffer,depthRenderbuffer;
-    //GLint bufferWidth, bufferHeight;
-
-
-    
-	NSTimer *animationTimer;
     NSTimeInterval lastTime;
     
     int drawHitEveryXFrames;
     int framesSinceLastHit;
-
+    int rotate;
+    
 	BOOL controllerSetup;
     bool animating;
     
     // 2.0 stuff
     GLuint _program;
     
-    M16t _modelViewProjectionMatrix;
-    M9t _normalMatrix;
+//    M16t _modelViewProjectionMatrix;
+//    M9t _normalMatrix;
     float _rotation;
     
     
@@ -53,20 +57,39 @@
     NKShaderProgram *defaultShader;
     NKVertexBuffer *vertexBuffer;
     NKTexture * texture;
+    
+    
 }
 
 @property (nonatomic, weak) NKViewController *controller;
 @property (nonatomic, strong) NKSceneNode *scene;
 
-@property (nonatomic, strong) CADisplayLink* displayLink;
-
-//@property (nonatomic) NSTimeInterval animationInterval;
-
 -(void)startAnimation;
 -(void)stopAnimation;
 -(void)drawView;
 
+#if TARGET_OS_IPHONE
 - (id)initGLES;
+#else
+
+/** initializes the CCGLView with a frame rect and an OpenGL context */
+- (id) initWithFrame:(NSRect)frameRect shareContext:(NSOpenGLContext*)context;
+
+/** uses and locks the OpenGL context */
+-(void) lockOpenGLContext;
+
+/** unlocks the openGL context */
+-(void) unlockOpenGLContext;
+
+/** returns the depth format of the view in BPP */
+- (NSUInteger) depthFormat;
+
+- (CVReturn) getFrameForTime:(const CVTimeStamp*)outputTime;
+
+// private
++(void) load_;
+#endif
+
 - (BOOL)createFramebuffer;
 - (void)destroyFramebuffer;
 

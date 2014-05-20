@@ -6,9 +6,22 @@
 //  Copyright (c) 2014 Chroma Developer. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "NKpch.h"
+
+#if TARGET_OS_IPHONE
+
+#define NKContext EAGLContext
+#define NKDisplayLink CADisplayLink *
+
+#else
+
+#define NKContext NSOpenGLContext
+#define NKDisplayLink CVDisplayLinkRef
+
+#endif
 
 @class NKTexture;
+@class NKByteColor;
 
 @interface NKFrameBuffer : NSObject
 
@@ -22,7 +35,11 @@
 
 @property (nonatomic,strong) NKTexture *renderTexture;
 
-- (id)initWithContext:(EAGLContext *)context layer:(id<EAGLDrawable>)layer;
+#if TARGET_OS_IPHONE
+- (id)initWithContext:(NKContext *)context layer:(id <EAGLDrawable>)layer;
+#else
+#endif
+
 -(instancetype)initWithWidth:(GLuint)width height:(GLuint)height;
 
 - (void)bind;
@@ -30,10 +47,10 @@
 
 - (void)unbind;
 - (GLuint)bindTexture:(int)texLoc;
-- (UIImage *)imageAtRect:(CGRect)cropRect;
+- (NKImage *)imageAtRect:(CGRect)cropRect;
 
 
-- (NKColor*)colorAtPoint:(P2t)point;
+- (NKByteColor*)colorAtPoint:(P2t)point;
 - (void)pixelValuesInRect:(CGRect)cropRect buffer:(GLubyte *)pixelBuffer;
 
 @end

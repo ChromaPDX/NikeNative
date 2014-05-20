@@ -14,10 +14,10 @@
     M16t cachedMatrix;
 }
 
-@property float fovVertRadians;
-@property float aspect;
-@property float nearZ;
-@property float farZ;
+@property F1t fovVertRadians;
+@property F1t aspect;
+@property F1t nearZ;
+@property F1t farZ;
 
 @property (nonatomic, assign) V3t target;
 @property (nonatomic, assign) V3t up;

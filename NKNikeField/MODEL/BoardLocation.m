@@ -145,35 +145,35 @@
     int newX = 0;
     int newY = 0;
     switch (direction) {
-        case N:
+        case NORTH:
             newX = self.x;
             newY = self.y+1;
             break;
-        case NE:
+        case NORTHEAST:
             newX = self.x+1;
             newY = self.y+1;
             break;
-        case E:
+        case EAST:
             newX = self.x+1;
             newY = self.y;
             break;
-        case SE:
+        case SOUTHEAST:
             newX = self.x+1;
             newY = self.y-1;
             break;
-        case S:
+        case SOUTH:
             newX = self.x;
             newY = self.y-1;
             break;
-        case SW:
+        case SOUTHWEST:
             newX = self.x-1;
             newY = self.y-1;
             break;
-        case W:
+        case WEST:
             newX = self.x-1;
             newY = self.y;
             break;
-        case NW:
+        case NORTHWEST:
             newX = self.x-1;
             newY = self.y+1;
             break;

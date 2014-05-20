@@ -32,7 +32,7 @@
         UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
         [table setHighlightColor:highlightColor];
-        table.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
+        table.color = NKWHITE;
         
         NSArray *listOfNames = [FakeFriends getNamesForText:3];
         NKLabelNode *bigText = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];

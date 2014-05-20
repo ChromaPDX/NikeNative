@@ -2,10 +2,39 @@
 //*  NODE KITTEN
 //*
 
+#import <Foundation/Foundation.h>
+
+#if TARGET_OS_IPHONE
+
+#import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
-#import <CoreGraphics/CoreGraphics.h>
+
+#define NKColor UIColor
+#define NKImage UIImage
+#define NKFont  UIFont
+
+#define NK_NONATOMIC_IOSONLY nonatomic
+
+#else // TARGET DESKTOP
+
+#if TARGET_OS_MAC
+
+#import <AppKit/AppKit.h>
+#import <OpenGL/OpenGL.h>
+#import <OpenGl/gl.h>
+#import <OpenGl/glext.h>
+
+#define NKColor NSColor
+#define NKImage NSImage
+#define NKFont  NSFont
+
+#define NK_NONATOMIC_IOSONLY atomic
+
+#endif
+#endif
+
 
 #if defined(__ARM_NEON__)
 #import <arm_neon.h>
@@ -49,7 +78,7 @@ union _V4t
     struct { P2t origin; S2t size;};
     struct { F1t r, g, b, a; };
     struct { F1t s, t, p, q; };
-    float v[4];
+   F1t v[4];
 } __attribute__((aligned(16)));
 
 typedef union _V4t V4t;
@@ -58,19 +87,23 @@ typedef V4t Q4t;
 typedef V4t C4t;
 typedef V4t R4t;
 
-typedef struct {
-	GLushort	i1;
-	GLushort	i2;
-	GLushort	i3;
-} I3t; // INDEX 3
-
-union _uB4t
+union _UB3t
 {
-    struct {GLubyte r,g,b,a;};
+    struct {GLubyte r,g,b;};
+    struct {GLubyte x,y,z;};
     GLubyte u[4];
 };
 
-typedef union _uB4t uB4t;
+typedef union _UB3t UB3t;
+
+union _UB4t
+{
+    struct {GLubyte r,g,b,a;};
+    struct {GLubyte x,y,z,w;};
+    GLubyte u[4];
+};
+
+typedef union _UB4t UB4t;
 
 typedef struct {
 	V3t	v1;
@@ -103,11 +136,11 @@ union _M9t
 {
     struct
     {
-        float m00, m01, m02;
-        float m10, m11, m12;
-        float m20, m21, m22;
+       F1t m00, m01, m02;
+       F1t m10, m11, m12;
+       F1t m20, m21, m22;
     };
-    float m[9];
+   F1t m[9];
 };
 typedef union _M9t M9t;
 
@@ -156,7 +189,7 @@ static inline T3t T3Make(V3t v1,V3t v2,V3t v3){
 
 
 
-static inline Q4t Q4Make(float x, float y, float z, float w)
+static inline Q4t Q4Make(F1t x,F1t y,F1t z,F1t w)
 {
     Q4t q = { x, y, z, w };
     return q;
@@ -166,19 +199,19 @@ static inline Q4t Q4MakeIdentity(){
     return Q4Make(0,0,0,1.);
 }
 
-static inline C4t C4Make(float r, float g, float b, float a)
+static inline C4t C4Make(F1t r,F1t g,F1t b,F1t a)
 {
     C4t c = { r, g, b, a };
     return c;
 }
 
-static inline R4t R4Make(float x, float y, float w, float h)
+static inline R4t R4Make(F1t x,F1t y,F1t w,F1t h)
 {
     R4t r = { x, y, w, h };
     return r;
 }
 
-static inline A4t A4Make(float angle, float x, float y, float z){
+static inline A4t A4Make(F1t angle,F1t x,F1t y,F1t z){
     A4t A4;
     
     A4.a = angle;
@@ -278,41 +311,6 @@ static inline bool P2GreaterFloat(P2t a, F1t b){
     return false;
 }
 
-static inline F1t weightedAverage (F1t src, F1t dst, F1t d){
-    
-    return src == dst ? src : ((src * (1.-d) + dst * d));
-    
-}
-
-static inline V3t getTweenPoint(V3t src, V3t dst, F1t d){
-    return V3Make(weightedAverage(src.x, dst.x, d),
-                  weightedAverage(src.y, dst.y, d),
-                  weightedAverage(src.z, dst.z, d));
-}
-
-
-static inline P2t polToCar(P2t pol) {
-    
-    P2t car;
-    
-    car.x = pol.x*cosf(pol.y);
-    car.y = pol.x*sin(pol.y);
-    
-    return car;
-    
-}
-
-static inline P2t carToPol(P2t car){
-    
-    P2t pol;
-    
-    pol.x = sqrt(car.x*car.x + car.y*car.y);
-    pol.y = atan2( car.y, car.x );
-    
-    return pol;
-    
-}
-
 #pragma mark - Vector 3 Type
 
 static inline V3t V3FromQ4(Q4t q1) {
@@ -392,7 +390,7 @@ static inline V3t V3Negate(V3t vector)
     return v;
 }
 
-static inline V3t V3AddScalar(V3t vector, float value)
+static inline V3t V3AddScalar(V3t vector,F1t value)
 {
     V3t v = { vector.x + value,
         vector.y + value,
@@ -400,7 +398,7 @@ static inline V3t V3AddScalar(V3t vector, float value)
     return v;
 }
 
-static inline V3t V3SubtractScalar(V3t vector, float value)
+static inline V3t V3SubtractScalar(V3t vector,F1t value)
 {
     V3t v = { vector.x - value,
         vector.y - value,
@@ -408,7 +406,7 @@ static inline V3t V3SubtractScalar(V3t vector, float value)
     return v;
 }
 
-static inline V3t V3MultiplyScalar(V3t vector, float value)
+static inline V3t V3MultiplyScalar(V3t vector,F1t value)
 {
     V3t v = { vector.x * value,
         vector.y * value,
@@ -416,7 +414,7 @@ static inline V3t V3MultiplyScalar(V3t vector, float value)
     return v;
 }
 
-static inline V3t V3DivideScalar(V3t vector, float value)
+static inline V3t V3DivideScalar(V3t vector,F1t value)
 {
     V3t v = { vector.x / value,
         vector.y / value,
@@ -437,18 +435,18 @@ static inline V3t V3Normalize(V3t vector)
     return v;
 }
 
-static inline float V3DotProduct(V3t vectorLeft, V3t vectorRight)
+static inline F1t V3DotProduct(V3t vectorLeft, V3t vectorRight)
 {
     return vectorLeft.x * vectorRight.x + vectorLeft.y * vectorRight.y + vectorLeft.z * vectorRight.z;
 }
 
 
-static inline float V3Distance(V3t vectorStart, V3t vectorEnd)
+static inline F1t V3Distance(V3t vectorStart, V3t vectorEnd)
 {
     return V3Length(V3Subtract(vectorEnd, vectorStart));
 }
 
-static inline V3t V3Lerp(V3t vectorStart, V3t vectorEnd, float t)
+static inline V3t V3Lerp(V3t vectorStart, V3t vectorEnd,F1t t)
 {
     V3t v = { vectorStart.x + ((vectorEnd.x - vectorStart.x) * t),
         vectorStart.y + ((vectorEnd.y - vectorStart.y) * t),
@@ -466,7 +464,7 @@ static inline V3t V3CrossProduct(V3t vectorLeft, V3t vectorRight)
 
 static inline V3t V3Project(V3t vectorToProject, V3t projectionVector)
 {
-    float scale = V3DotProduct(projectionVector, vectorToProject) / V3DotProduct(projectionVector, projectionVector);
+   F1t scale = V3DotProduct(projectionVector, vectorToProject) / V3DotProduct(projectionVector, projectionVector);
     V3t v = V3MultiplyScalar(projectionVector, scale);
     return v;
 }
@@ -497,10 +495,10 @@ static inline V3t V3GetM16Scale(M16t M16) {
 // --------------------------------------------------------------------------------------------
 static inline F1t InvSqrt(F1t x)
 {
-	GLfloat xhalf = 0.5f * x;
+	F1t xhalf = 0.5f * x;
 	NSInteger i = *(NSInteger*)&x;	// store floating-point bits in integer
 	i = 0x5f3759d5 - (i >> 1);		// initial guess for Newton's method
-	x = *(GLfloat*)&i;				// convert new bits into float
+	x = *(F1t*)&i;				// convert new bits into float
 	x = x*(1.5f - xhalf*x*x);		// One round of Newton's method
 	return x;
 }
@@ -521,6 +519,35 @@ static inline void V3FastNormalize(V3t *vector)
 	vector->x *= vecInverseMag;
 	vector->y *= vecInverseMag;
 	vector->z *= vecInverseMag;
+}
+
+static inline V3t V3RotatePoint(V3t p, float angle, V3t axis){
+        V3t ax = V3Normalize(axis);
+    
+        float a = DEGREES_TO_RADIANS(angle);
+        float sina = sin( a );
+        float cosa = cos( a );
+        float cosb = 1.0f - cosa;
+        
+        float nx = p.x*(ax.x*ax.x*cosb + cosa)
+        + p.y*(ax.x*ax.y*cosb - ax.z*sina)
+        + p.z*(ax.x*ax.z*cosb + ax.y*sina);
+        float ny = p.x*(ax.y*ax.x*cosb + ax.z*sina)
+        + p.y*(ax.y*ax.y*cosb + cosa)
+        + p.z*(ax.y*ax.z*cosb - ax.x*sina);
+        float nz = p.x*(ax.z*ax.x*cosb - ax.y*sina)
+        + p.y*(ax.z*ax.y*cosb + ax.x*sina)
+        + p.z*(ax.z*ax.z*cosb + cosa);
+        p.x = nx; p.y = ny; p.z = nz;
+    
+        return p;
+}
+
+static inline bool V3Equal(V3t l, V3t r){
+    if (l.x != r.x) return false;
+    if (l.y != r.y) return false;
+    if (l.z != r.z) return false;
+    return true;
 }
 
 #pragma mark - Triangle 3 Type
@@ -569,7 +596,7 @@ static inline HSVcolor HSVfromRGB(RGBcolor rgb)
     return hsv;
 }
 
-static inline void NOCColorComponentsForColor(GLfloat *components, UIColor *color)
+static inline void NOCColorComponentsForColor(F1t *components, NKColor *color)
 {
     const CGFloat *myColor = CGColorGetComponents(color.CGColor);
     int numColorComponents = CGColorGetNumberOfComponents(color.CGColor);
@@ -594,7 +621,27 @@ static inline void NOCColorComponentsForColor(GLfloat *components, UIColor *colo
     }
 }
 
-#pragma mark - Rect 4 Type
+#pragma mark - unsigned byte 4 type
+
+static inline bool UB4Equal(UB4t l, UB4t r){
+    if (l.x != r.x) return false;
+    if (l.y != r.y) return false;
+    if (l.z != r.z) return false;
+    if (l.w != r.w) return false;
+    return true;
+}
+
+#pragma mark - Vector 4 type
+
+static inline bool V4Equal(V4t l, V4t r){
+    if (l.x != r.x) return false;
+    if (l.y != r.y) return false;
+    if (l.z != r.z) return false;
+    if (l.w != r.w) return false;
+    return true;
+}
+
+#define C4Equal V4Equal
 
 
 //
@@ -608,7 +655,7 @@ static inline void NOCColorComponentsForColor(GLfloat *components, UIColor *colo
 //
 //    V3t  w = transformByMatrix(normal, &OrthoX);
 //
-//    float dot = normal.dot(w);
+//   F1t dot = normal.dot(w);
 //
 //    if (fabsf(dot) > 0.6)
 //    {
@@ -623,7 +670,7 @@ static inline void NOCColorComponentsForColor(GLfloat *components, UIColor *colo
 //    orthonormal2->normalize();
 //}
 
-//float getQuaternionTwist(Q4t q, V3t  axis)
+//F1t getQuaternionTwist(Q4t q, V3t  axis)
 //{
 //    axis.normalize();
 //
@@ -640,7 +687,7 @@ static inline void NOCColorComponentsForColor(GLfloat *components, UIColor *colo
 //
 //
 //    //get angle between original vector and projected transform to get angle around normal
-//    float a = (float)acosf(orthonormal1.dot(flattened));
+//   F1t a = (float)acosf(orthonormal1.dot(flattened));
 //
 //    return a;
 //
@@ -678,7 +725,7 @@ static inline void NOCColorComponentsForColor(GLfloat *components, UIColor *colo
 
 
 
-//static inline Q4t Q4FromV3(V3t  vector, float scalar)
+//static inline Q4t Q4FromV3(V3t  vector,F1t scalar)
 //{
 //    Q4t q = { vector.x, vector.y, vector.z, scalar };
 //    return q;
@@ -689,7 +736,7 @@ static inline Q4t Q4FromV3(V3t euldeg)
     Q4t quat;
     V3t eul = V3Make(DEGREES_TO_RADIANS(euldeg.z),DEGREES_TO_RADIANS(euldeg.y),DEGREES_TO_RADIANS(euldeg.x));
     
-    float cr, cp, cy, sr, sp, sy, cpcy, spsy;
+   F1t cr, cp, cy, sr, sp, sy, cpcy, spsy;
     // calculate trig identities
     cr = cos(eul.z/2.);
     cp = cos(eul.y/2.);
@@ -707,7 +754,7 @@ static inline Q4t Q4FromV3(V3t euldeg)
     return quat;
 }
 
-static inline Q4t Q4FromArray(float values[4])
+static inline Q4t Q4FromArray(F1t values[4])
 {
 #if defined(GLK_SSE3_INTRINSICS)
     __m128 v = _mm_load_ps(values);
@@ -720,18 +767,18 @@ static inline Q4t Q4FromArray(float values[4])
 
 static inline Q4t Q4FromA4(A4t A4)
 {
-    float halfAngle = A4.a * 0.5f;
-    float scale = sinf(halfAngle);
+   F1t halfAngle = A4.a * 0.5f;
+   F1t scale = sinf(halfAngle);
     Q4t q = { scale * A4.x, scale * A4.y, scale * A4.z, cosf(halfAngle) };
     return q;
 }
 
-static inline Q4t Q4FromAngleAndV3(float degrees, V3t  axisVector)
+static inline Q4t Q4FromAngleAndV3(F1t degrees, V3t  axisVector)
 {
     return Q4FromA4(A4Make(DEGREES_TO_RADIANS(degrees), axisVector.x, axisVector.y, axisVector.z));
 }
 
-static inline Q4t Q4FromAngleAndAxes(float degrees, float x, float y, float z)
+static inline Q4t Q4FromAngleAndAxes(F1t degrees,F1t x,F1t y,F1t z)
 {
     return Q4FromA4(A4Make(DEGREES_TO_RADIANS(degrees), x, y, z));
 }
@@ -769,8 +816,8 @@ static inline Q4t Q4Scale(Q4t q, double w)
 
 // THIS IS AN ALTERNATE Q4 GETTER THAN OF VERSION
 
-static inline float SIGN(float x) {return (x >= 0.0f) ? +1.0f : -1.0f;}
-static inline float NORM(float a, float b, float c, float d) {return sqrt(a * a + b * b + c * c + d * d);}
+static inline F1t SIGN(F1t x) {return (x >= 0.0f) ? +1.0f : -1.0f;}
+static inline F1t NORM(F1t a,F1t b,F1t c,F1t d) {return sqrt(a * a + b * b + c * c + d * d);}
 
 static inline Q4t Q4GetM16Rotate(M16t M16){
     
@@ -813,7 +860,7 @@ static inline Q4t Q4GetM16Rotate(M16t M16){
         NSLog(@"Q4 from Matrix: coding error\n");
     }
     
-    float r = NORM(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+   F1t r = NORM(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
     quaternion.x /= r;
     quaternion.y /= r;
     quaternion.z /= r;
@@ -949,8 +996,8 @@ static inline Q4t Q4Multiply(Q4t quaternionLeft, Q4t quaternionRight)
     uint32_t zeroBit = 0x0;
     uint32_t __attribute__((aligned(16))) mask0001[4] = {zeroBit, zeroBit, zeroBit, signBit};
     uint32_t __attribute__((aligned(16))) mask0111[4] = {zeroBit, signBit, signBit, signBit};
-    const __m128 m0001 = _mm_load_ps((float *)mask0001);
-    const __m128 m0111 = _mm_load_ps((float *)mask0111);
+    const __m128 m0001 = _mm_load_ps((F1t *)mask0001);
+    const __m128 m0111 = _mm_load_ps((F1t *)mask0111);
     
 	const __m128 aline = ql3012 * _mm_xor_ps(qr0321, m0001);
 	const __m128 bline = ql3120 * _mm_xor_ps(qr1302, m0001);
@@ -984,7 +1031,7 @@ static inline Q4t Q4Multiply(Q4t quaternionLeft, Q4t quaternionRight)
 #endif
 }
 
-static inline float Q4Length(Q4t quaternion)
+static inline F1t Q4Length(Q4t quaternion)
 {
 #if defined(__ARM_NEON__)
     float32x4_t v = vmulq_f32(*(float32x4_t *)&quaternion,
@@ -1007,7 +1054,7 @@ static inline float Q4Length(Q4t quaternion)
 
 static inline Q4t Q4Normalize(Q4t quaternion)
 {
-    float scale = 1.0f / Q4Length(quaternion);
+   F1t scale = 1.0f / Q4Length(quaternion);
 #if defined(__ARM_NEON__)
     float32x4_t v = vmulq_f32(*(float32x4_t *)&quaternion,
                               vdupq_n_f32((float32_t)scale));
@@ -1039,7 +1086,7 @@ static inline Q4t Q4Conjugate(Q4t quaternion)
     const uint32_t signBit = 0x80000000;
     const uint32_t zeroBit = 0x0;
     const uint32_t __attribute__((aligned(16))) mask[4] = {signBit, signBit, signBit, zeroBit};
-    __m128 v_mask = _mm_load_ps((float *)mask);
+    __m128 v_mask = _mm_load_ps((F1t *)mask);
 	const __m128 q = _mm_load_ps(&quaternion.x);
     __m128 v = _mm_xor_ps(q, v_mask);
     
@@ -1072,13 +1119,13 @@ static inline Q4t Q4Invert(Q4t quaternion)
     const uint32_t signBit = 0x80000000;
     const uint32_t zeroBit = 0x0;
     const uint32_t __attribute__((aligned(16))) mask[4] = {signBit, signBit, signBit, zeroBit};
-    const __m128 v_mask = _mm_load_ps((float *)mask);
+    const __m128 v_mask = _mm_load_ps((F1t *)mask);
 	const __m128 product = q * q;
 	const __m128 halfsum = _mm_hadd_ps(product, product);
 	const __m128 v = _mm_xor_ps(q, v_mask) / _mm_hadd_ps(halfsum, halfsum);
     return *(Q4t *)&v;
 #else
-    float scale = 1.0f / (quaternion.x * quaternion.x +
+   F1t scale = 1.0f / (quaternion.x * quaternion.x +
                           quaternion.y * quaternion.y +
                           quaternion.z * quaternion.z +
                           quaternion.w * quaternion.w);
@@ -1086,8 +1133,6 @@ static inline Q4t Q4Invert(Q4t quaternion)
     return q;
 #endif
 }
-
-
 
 static inline V3t  Q4RotateVector3(Q4t quaternion, V3t  vector)
 {
@@ -1105,12 +1150,12 @@ static inline Q4t Q4RotateQ4(Q4t quaternion, Q4t vector)
     return Q4Make(rotatedQuaternion.x, rotatedQuaternion.y, rotatedQuaternion.z, vector.w);
 }
 
-static inline Q4t QuatSlerp(Q4t from, Q4t to, float t)
+static inline Q4t QuatSlerp(Q4t from, Q4t to,F1t t)
 {
     Q4t res;
-    float DELTA = .01; // THRESHOLD FOR LINEAR INTERP
+   F1t DELTA = .01; // THRESHOLD FOR LINEAR INTERP
     
-    float           to1[4];
+   F1t           to1[4];
     double        omega, cosom, sinom, scale0, scale1;
     // calc cosine
     cosom = from.x * to.x + from.y * to.y + from.z * to.z
@@ -1152,7 +1197,7 @@ static inline Q4t QuatMul(Q4t q1, Q4t q2){
     
     Q4t res;
     
-    float A, B, C, D, E, F, G, H;
+   F1t A, B, C, D, E, F, G, H;
     A = (q1.w + q1.x)*(q2.w + q2.x);
     B = (q1.z - q1.y)*(q2.y - q2.z);
     C = (q1.w - q1.x)*(q2.y + q2.z);
@@ -1198,7 +1243,107 @@ static inline A4t A4FromQuat(Q4t q1) {
 
 #pragma mark - M16 - MATRIX 4x4 TYPE
 
-static inline M16t M16MakeTranslate(float x, float y, float z)
+static inline M16t M16Multiply(M16t matrixLeft, M16t matrixRight)
+{
+    
+    // [ 0 4  8 12 ]   [ 0 4  8 12 ]
+	// [ 1 5  9 13 ] x [ 1 5  9 13 ]
+	// [ 2 6 10 14 ]   [ 2 6 10 14 ]
+	// [ 3 7 11 15 ]   [ 3 7 11 15 ]
+    
+#if defined(__ARM_NEON__)
+    float32x4x4_t iMatrixLeft = *(float32x4x4_t *)&matrixLeft;
+    float32x4x4_t iMatrixRight = *(float32x4x4_t *)&matrixRight;
+    float32x4x4_t m;
+    
+    m.val[0] = vmulq_n_f32(iMatrixLeft.val[0], vgetq_lane_f32(iMatrixRight.val[0], 0));
+    m.val[1] = vmulq_n_f32(iMatrixLeft.val[0], vgetq_lane_f32(iMatrixRight.val[1], 0));
+    m.val[2] = vmulq_n_f32(iMatrixLeft.val[0], vgetq_lane_f32(iMatrixRight.val[2], 0));
+    m.val[3] = vmulq_n_f32(iMatrixLeft.val[0], vgetq_lane_f32(iMatrixRight.val[3], 0));
+    
+    m.val[0] = vmlaq_n_f32(m.val[0], iMatrixLeft.val[1], vgetq_lane_f32(iMatrixRight.val[0], 1));
+    m.val[1] = vmlaq_n_f32(m.val[1], iMatrixLeft.val[1], vgetq_lane_f32(iMatrixRight.val[1], 1));
+    m.val[2] = vmlaq_n_f32(m.val[2], iMatrixLeft.val[1], vgetq_lane_f32(iMatrixRight.val[2], 1));
+    m.val[3] = vmlaq_n_f32(m.val[3], iMatrixLeft.val[1], vgetq_lane_f32(iMatrixRight.val[3], 1));
+    
+    m.val[0] = vmlaq_n_f32(m.val[0], iMatrixLeft.val[2], vgetq_lane_f32(iMatrixRight.val[0], 2));
+    m.val[1] = vmlaq_n_f32(m.val[1], iMatrixLeft.val[2], vgetq_lane_f32(iMatrixRight.val[1], 2));
+    m.val[2] = vmlaq_n_f32(m.val[2], iMatrixLeft.val[2], vgetq_lane_f32(iMatrixRight.val[2], 2));
+    m.val[3] = vmlaq_n_f32(m.val[3], iMatrixLeft.val[2], vgetq_lane_f32(iMatrixRight.val[3], 2));
+    
+    m.val[0] = vmlaq_n_f32(m.val[0], iMatrixLeft.val[3], vgetq_lane_f32(iMatrixRight.val[0], 3));
+    m.val[1] = vmlaq_n_f32(m.val[1], iMatrixLeft.val[3], vgetq_lane_f32(iMatrixRight.val[1], 3));
+    m.val[2] = vmlaq_n_f32(m.val[2], iMatrixLeft.val[3], vgetq_lane_f32(iMatrixRight.val[2], 3));
+    m.val[3] = vmlaq_n_f32(m.val[3], iMatrixLeft.val[3], vgetq_lane_f32(iMatrixRight.val[3], 3));
+    
+    return *(M16t *)&m;
+#elif defined(GLK_SSE3_INTRINSICS)
+    
+	const __m128 l0 = _mm_load_ps(&matrixLeft.m[0]);
+	const __m128 l1 = _mm_load_ps(&matrixLeft.m[4]);
+	const __m128 l2 = _mm_load_ps(&matrixLeft.m[8]);
+	const __m128 l3 = _mm_load_ps(&matrixLeft.m[12]);
+    
+	const __m128 r0 = _mm_load_ps(&matrixRight.m[0]);
+	const __m128 r1 = _mm_load_ps(&matrixRight.m[4]);
+	const __m128 r2 = _mm_load_ps(&matrixRight.m[8]);
+	const __m128 r3 = _mm_load_ps(&matrixRight.m[12]);
+	
+	const __m128 m0 = l0 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(0, 0, 0, 0))
+    + l1 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(1, 1, 1, 1))
+    + l2 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(2, 2, 2, 2))
+    + l3 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(3, 3, 3, 3));
+    
+	const __m128 m1 = l0 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(0, 0, 0, 0))
+    + l1 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(1, 1, 1, 1))
+    + l2 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(2, 2, 2, 2))
+    + l3 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(3, 3, 3, 3));
+    
+	const __m128 m2 = l0 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(0, 0, 0, 0))
+    + l1 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(1, 1, 1, 1))
+    + l2 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(2, 2, 2, 2))
+    + l3 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(3, 3, 3, 3));
+    
+	const __m128 m3 = l0 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(0, 0, 0, 0))
+    + l1 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(1, 1, 1, 1))
+    + l2 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(2, 2, 2, 2))
+    + l3 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(3, 3, 3, 3));
+    
+	M16t m;
+	_mm_store_ps(&m.m[0], m0);
+	_mm_store_ps(&m.m[4], m1);
+	_mm_store_ps(&m.m[8], m2);
+	_mm_store_ps(&m.m[12], m3);
+    return m;
+    
+#else
+    M16t m;
+    
+    m.m[0]  = matrixLeft.m[0] * matrixRight.m[0]  + matrixLeft.m[4] * matrixRight.m[1]  + matrixLeft.m[8] * matrixRight.m[2]   + matrixLeft.m[12] * matrixRight.m[3];
+	m.m[4]  = matrixLeft.m[0] * matrixRight.m[4]  + matrixLeft.m[4] * matrixRight.m[5]  + matrixLeft.m[8] * matrixRight.m[6]   + matrixLeft.m[12] * matrixRight.m[7];
+	m.m[8]  = matrixLeft.m[0] * matrixRight.m[8]  + matrixLeft.m[4] * matrixRight.m[9]  + matrixLeft.m[8] * matrixRight.m[10]  + matrixLeft.m[12] * matrixRight.m[11];
+	m.m[12] = matrixLeft.m[0] * matrixRight.m[12] + matrixLeft.m[4] * matrixRight.m[13] + matrixLeft.m[8] * matrixRight.m[14]  + matrixLeft.m[12] * matrixRight.m[15];
+    
+	m.m[1]  = matrixLeft.m[1] * matrixRight.m[0]  + matrixLeft.m[5] * matrixRight.m[1]  + matrixLeft.m[9] * matrixRight.m[2]   + matrixLeft.m[13] * matrixRight.m[3];
+	m.m[5]  = matrixLeft.m[1] * matrixRight.m[4]  + matrixLeft.m[5] * matrixRight.m[5]  + matrixLeft.m[9] * matrixRight.m[6]   + matrixLeft.m[13] * matrixRight.m[7];
+	m.m[9]  = matrixLeft.m[1] * matrixRight.m[8]  + matrixLeft.m[5] * matrixRight.m[9]  + matrixLeft.m[9] * matrixRight.m[10]  + matrixLeft.m[13] * matrixRight.m[11];
+	m.m[13] = matrixLeft.m[1] * matrixRight.m[12] + matrixLeft.m[5] * matrixRight.m[13] + matrixLeft.m[9] * matrixRight.m[14]  + matrixLeft.m[13] * matrixRight.m[15];
+    
+	m.m[2]  = matrixLeft.m[2] * matrixRight.m[0]  + matrixLeft.m[6] * matrixRight.m[1]  + matrixLeft.m[10] * matrixRight.m[2]  + matrixLeft.m[14] * matrixRight.m[3];
+	m.m[6]  = matrixLeft.m[2] * matrixRight.m[4]  + matrixLeft.m[6] * matrixRight.m[5]  + matrixLeft.m[10] * matrixRight.m[6]  + matrixLeft.m[14] * matrixRight.m[7];
+	m.m[10] = matrixLeft.m[2] * matrixRight.m[8]  + matrixLeft.m[6] * matrixRight.m[9]  + matrixLeft.m[10] * matrixRight.m[10] + matrixLeft.m[14] * matrixRight.m[11];
+	m.m[14] = matrixLeft.m[2] * matrixRight.m[12] + matrixLeft.m[6] * matrixRight.m[13] + matrixLeft.m[10] * matrixRight.m[14] + matrixLeft.m[14] * matrixRight.m[15];
+    
+	m.m[3]  = matrixLeft.m[3] * matrixRight.m[0]  + matrixLeft.m[7] * matrixRight.m[1]  + matrixLeft.m[11] * matrixRight.m[2]  + matrixLeft.m[15] * matrixRight.m[3];
+	m.m[7]  = matrixLeft.m[3] * matrixRight.m[4]  + matrixLeft.m[7] * matrixRight.m[5]  + matrixLeft.m[11] * matrixRight.m[6]  + matrixLeft.m[15] * matrixRight.m[7];
+	m.m[11] = matrixLeft.m[3] * matrixRight.m[8]  + matrixLeft.m[7] * matrixRight.m[9]  + matrixLeft.m[11] * matrixRight.m[10] + matrixLeft.m[15] * matrixRight.m[11];
+	m.m[15] = matrixLeft.m[3] * matrixRight.m[12] + matrixLeft.m[7] * matrixRight.m[13] + matrixLeft.m[11] * matrixRight.m[14] + matrixLeft.m[15] * matrixRight.m[15];
+    
+    return m;
+#endif
+}
+
+static inline M16t M16MakeTranslate(F1t x,F1t y,F1t z)
 {
     M16t M16 = M16IdentityMake();
     // Translate slots.
@@ -1216,7 +1361,7 @@ static inline void M16SetV3Translation(M16t *M16, V3t V3)
     M16->m32 = V3.z;
 }
 
-static inline M16t M16Translate(M16t matrix, float tx, float ty, float tz)
+static inline M16t M16Translate(M16t matrix,F1t tx,F1t ty,F1t tz)
 {
     M16t m = { matrix.m[0], matrix.m[1], matrix.m[2], matrix.m[3],
         matrix.m[4], matrix.m[5], matrix.m[6], matrix.m[7],
@@ -1339,7 +1484,7 @@ static inline M16t M16MakeScale(V3t scale)
     return M16;
 }
 
-static inline M16t M164Scale(M16t matrix, float sx, float sy, float sz)
+static inline M16t M164Scale(M16t matrix,F1t sx,F1t sy,F1t sz)
 {
 #if defined(__ARM_NEON__)
     float32x4x4_t iMatrix = *(float32x4x4_t *)&matrix;
@@ -1399,9 +1544,9 @@ static inline M16t M16ScaleWithV3(M16t matrix, V3t scaleVector)
 #endif
 }
 
-static inline M16t M16MakeRotateX(float degrees)
+static inline M16t M16MakeRotateX(F1t degrees)
 {
-    float radians = DEGREES_TO_RADIANS(degrees);
+   F1t radians = DEGREES_TO_RADIANS(degrees);
     
     M16t M16 = M16IdentityMake();
     
@@ -1414,9 +1559,9 @@ static inline M16t M16MakeRotateX(float degrees)
     return M16;
 }
 
-static inline M16t M16MakeRotateY(float degrees)
+static inline M16t M16MakeRotateY(F1t degrees)
 {
-    float radians = DEGREES_TO_RADIANS(degrees);
+   F1t radians = DEGREES_TO_RADIANS(degrees);
     
     M16t M16 = M16IdentityMake();
     
@@ -1429,9 +1574,9 @@ static inline M16t M16MakeRotateY(float degrees)
     return M16;
 }
 
-static inline M16t M16MakeRotateZ(float degrees)
+static inline M16t M16MakeRotateZ(F1t degrees)
 {
-    float radians = DEGREES_TO_RADIANS(degrees);
+   F1t radians = DEGREES_TO_RADIANS(degrees);
     
     M16t M16 = M16IdentityMake();
     
@@ -1442,100 +1587,6 @@ static inline M16t M16MakeRotateZ(float degrees)
     M16.m[5] = M16.m[0];
     
     return M16;
-}
-
-static inline M16t M16Multiply(M16t matrixLeft, M16t matrixRight)
-{
-#if defined(__ARM_NEON__)
-    float32x4x4_t iMatrixLeft = *(float32x4x4_t *)&matrixLeft;
-    float32x4x4_t iMatrixRight = *(float32x4x4_t *)&matrixRight;
-    float32x4x4_t m;
-    
-    m.val[0] = vmulq_n_f32(iMatrixLeft.val[0], vgetq_lane_f32(iMatrixRight.val[0], 0));
-    m.val[1] = vmulq_n_f32(iMatrixLeft.val[0], vgetq_lane_f32(iMatrixRight.val[1], 0));
-    m.val[2] = vmulq_n_f32(iMatrixLeft.val[0], vgetq_lane_f32(iMatrixRight.val[2], 0));
-    m.val[3] = vmulq_n_f32(iMatrixLeft.val[0], vgetq_lane_f32(iMatrixRight.val[3], 0));
-    
-    m.val[0] = vmlaq_n_f32(m.val[0], iMatrixLeft.val[1], vgetq_lane_f32(iMatrixRight.val[0], 1));
-    m.val[1] = vmlaq_n_f32(m.val[1], iMatrixLeft.val[1], vgetq_lane_f32(iMatrixRight.val[1], 1));
-    m.val[2] = vmlaq_n_f32(m.val[2], iMatrixLeft.val[1], vgetq_lane_f32(iMatrixRight.val[2], 1));
-    m.val[3] = vmlaq_n_f32(m.val[3], iMatrixLeft.val[1], vgetq_lane_f32(iMatrixRight.val[3], 1));
-    
-    m.val[0] = vmlaq_n_f32(m.val[0], iMatrixLeft.val[2], vgetq_lane_f32(iMatrixRight.val[0], 2));
-    m.val[1] = vmlaq_n_f32(m.val[1], iMatrixLeft.val[2], vgetq_lane_f32(iMatrixRight.val[1], 2));
-    m.val[2] = vmlaq_n_f32(m.val[2], iMatrixLeft.val[2], vgetq_lane_f32(iMatrixRight.val[2], 2));
-    m.val[3] = vmlaq_n_f32(m.val[3], iMatrixLeft.val[2], vgetq_lane_f32(iMatrixRight.val[3], 2));
-    
-    m.val[0] = vmlaq_n_f32(m.val[0], iMatrixLeft.val[3], vgetq_lane_f32(iMatrixRight.val[0], 3));
-    m.val[1] = vmlaq_n_f32(m.val[1], iMatrixLeft.val[3], vgetq_lane_f32(iMatrixRight.val[1], 3));
-    m.val[2] = vmlaq_n_f32(m.val[2], iMatrixLeft.val[3], vgetq_lane_f32(iMatrixRight.val[2], 3));
-    m.val[3] = vmlaq_n_f32(m.val[3], iMatrixLeft.val[3], vgetq_lane_f32(iMatrixRight.val[3], 3));
-    
-    return *(M16t *)&m;
-#elif defined(GLK_SSE3_INTRINSICS)
-    
-	const __m128 l0 = _mm_load_ps(&matrixLeft.m[0]);
-	const __m128 l1 = _mm_load_ps(&matrixLeft.m[4]);
-	const __m128 l2 = _mm_load_ps(&matrixLeft.m[8]);
-	const __m128 l3 = _mm_load_ps(&matrixLeft.m[12]);
-    
-	const __m128 r0 = _mm_load_ps(&matrixRight.m[0]);
-	const __m128 r1 = _mm_load_ps(&matrixRight.m[4]);
-	const __m128 r2 = _mm_load_ps(&matrixRight.m[8]);
-	const __m128 r3 = _mm_load_ps(&matrixRight.m[12]);
-	
-	const __m128 m0 = l0 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(0, 0, 0, 0))
-    + l1 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(1, 1, 1, 1))
-    + l2 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(2, 2, 2, 2))
-    + l3 * _mm_shuffle_ps(r0, r0, _MM_SHUFFLE(3, 3, 3, 3));
-    
-	const __m128 m1 = l0 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(0, 0, 0, 0))
-    + l1 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(1, 1, 1, 1))
-    + l2 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(2, 2, 2, 2))
-    + l3 * _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(3, 3, 3, 3));
-    
-	const __m128 m2 = l0 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(0, 0, 0, 0))
-    + l1 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(1, 1, 1, 1))
-    + l2 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(2, 2, 2, 2))
-    + l3 * _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(3, 3, 3, 3));
-    
-	const __m128 m3 = l0 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(0, 0, 0, 0))
-    + l1 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(1, 1, 1, 1))
-    + l2 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(2, 2, 2, 2))
-    + l3 * _mm_shuffle_ps(r3, r3, _MM_SHUFFLE(3, 3, 3, 3));
-    
-	M16t m;
-	_mm_store_ps(&m.m[0], m0);
-	_mm_store_ps(&m.m[4], m1);
-	_mm_store_ps(&m.m[8], m2);
-	_mm_store_ps(&m.m[12], m3);
-    return m;
-    
-#else
-    M16t m;
-    
-    m.m[0]  = matrixLeft.m[0] * matrixRight.m[0]  + matrixLeft.m[4] * matrixRight.m[1]  + matrixLeft.m[8] * matrixRight.m[2]   + matrixLeft.m[12] * matrixRight.m[3];
-	m.m[4]  = matrixLeft.m[0] * matrixRight.m[4]  + matrixLeft.m[4] * matrixRight.m[5]  + matrixLeft.m[8] * matrixRight.m[6]   + matrixLeft.m[12] * matrixRight.m[7];
-	m.m[8]  = matrixLeft.m[0] * matrixRight.m[8]  + matrixLeft.m[4] * matrixRight.m[9]  + matrixLeft.m[8] * matrixRight.m[10]  + matrixLeft.m[12] * matrixRight.m[11];
-	m.m[12] = matrixLeft.m[0] * matrixRight.m[12] + matrixLeft.m[4] * matrixRight.m[13] + matrixLeft.m[8] * matrixRight.m[14]  + matrixLeft.m[12] * matrixRight.m[15];
-    
-	m.m[1]  = matrixLeft.m[1] * matrixRight.m[0]  + matrixLeft.m[5] * matrixRight.m[1]  + matrixLeft.m[9] * matrixRight.m[2]   + matrixLeft.m[13] * matrixRight.m[3];
-	m.m[5]  = matrixLeft.m[1] * matrixRight.m[4]  + matrixLeft.m[5] * matrixRight.m[5]  + matrixLeft.m[9] * matrixRight.m[6]   + matrixLeft.m[13] * matrixRight.m[7];
-	m.m[9]  = matrixLeft.m[1] * matrixRight.m[8]  + matrixLeft.m[5] * matrixRight.m[9]  + matrixLeft.m[9] * matrixRight.m[10]  + matrixLeft.m[13] * matrixRight.m[11];
-	m.m[13] = matrixLeft.m[1] * matrixRight.m[12] + matrixLeft.m[5] * matrixRight.m[13] + matrixLeft.m[9] * matrixRight.m[14]  + matrixLeft.m[13] * matrixRight.m[15];
-    
-	m.m[2]  = matrixLeft.m[2] * matrixRight.m[0]  + matrixLeft.m[6] * matrixRight.m[1]  + matrixLeft.m[10] * matrixRight.m[2]  + matrixLeft.m[14] * matrixRight.m[3];
-	m.m[6]  = matrixLeft.m[2] * matrixRight.m[4]  + matrixLeft.m[6] * matrixRight.m[5]  + matrixLeft.m[10] * matrixRight.m[6]  + matrixLeft.m[14] * matrixRight.m[7];
-	m.m[10] = matrixLeft.m[2] * matrixRight.m[8]  + matrixLeft.m[6] * matrixRight.m[9]  + matrixLeft.m[10] * matrixRight.m[10] + matrixLeft.m[14] * matrixRight.m[11];
-	m.m[14] = matrixLeft.m[2] * matrixRight.m[12] + matrixLeft.m[6] * matrixRight.m[13] + matrixLeft.m[10] * matrixRight.m[14] + matrixLeft.m[14] * matrixRight.m[15];
-    
-	m.m[3]  = matrixLeft.m[3] * matrixRight.m[0]  + matrixLeft.m[7] * matrixRight.m[1]  + matrixLeft.m[11] * matrixRight.m[2]  + matrixLeft.m[15] * matrixRight.m[3];
-	m.m[7]  = matrixLeft.m[3] * matrixRight.m[4]  + matrixLeft.m[7] * matrixRight.m[5]  + matrixLeft.m[11] * matrixRight.m[6]  + matrixLeft.m[15] * matrixRight.m[7];
-	m.m[11] = matrixLeft.m[3] * matrixRight.m[8]  + matrixLeft.m[7] * matrixRight.m[9]  + matrixLeft.m[11] * matrixRight.m[10] + matrixLeft.m[15] * matrixRight.m[11];
-	m.m[15] = matrixLeft.m[3] * matrixRight.m[12] + matrixLeft.m[7] * matrixRight.m[13] + matrixLeft.m[11] * matrixRight.m[14] + matrixLeft.m[15] * matrixRight.m[15];
-    
-    return m;
-#endif
 }
 
 
@@ -1591,9 +1642,9 @@ static inline M16t M16MakeAngleAxis(F1t radians, V3t  V3){
     
     M16t M16;
     
-    float ax = V3.x * radians;
-    float ay = V3.y * radians;
-    float az = V3.z * radians;
+   F1t ax = V3.x * radians;
+   F1t ay = V3.y * radians;
+   F1t az = V3.z * radians;
     
     // First Column
     M16.m[0] = cosf(ay) * cosf(az);
@@ -1624,9 +1675,9 @@ static inline M16t M16MakeEuler(V3t euler) {
     return M16MakeAngleAxis(1., rad);
 }
 
-static inline M16t M16MakePerspective(float fovyRadians, float aspect, float nearZ, float farZ)
+static inline M16t M16MakePerspective(F1t fovyRadians,F1t aspect,F1t nearZ,F1t farZ)
 {
-    float cotan = 1.0f / tanf(fovyRadians / 2.0f);
+   F1t cotan = 1.0f / tanf(fovyRadians / 2.0f);
     
     M16t m = { cotan / aspect, 0.0f, 0.0f, 0.0f,
         0.0f, cotan, 0.0f, 0.0f,
@@ -1636,16 +1687,43 @@ static inline M16t M16MakePerspective(float fovyRadians, float aspect, float nea
     return m;
 }
 
-static inline M16t M16MakeFrustum(float left, float right,
-                           float bottom, float top,
-                           float nearZ, float farZ)
+static inline void M16LoadPerspective(M16t* M16, F1t fovDegrees, F1t aspect, F1t nearZ, F1t farZ)
 {
-    float ral = right + left;
-    float rsl = right - left;
-    float tsb = top - bottom;
-    float tab = top + bottom;
-    float fan = farZ + nearZ;
-    float fsn = farZ - nearZ;
+	float f = 1.0f / tanf( (fovDegrees * (M_PI/180)) / 2.0f);
+	
+    float* mtx = M16->m;
+    
+	mtx[0] = f / aspect;
+	mtx[1] = 0.0f;
+	mtx[2] = 0.0f;
+	mtx[3] = 0.0f;
+	
+	mtx[4] = 0.0f;
+	mtx[5] = f;
+	mtx[6] = 0.0f;
+	mtx[7] = 0.0f;
+	
+	mtx[8] = 0.0f;
+	mtx[9] = 0.0f;
+	mtx[10] = (farZ+nearZ) / (nearZ-farZ);
+	mtx[11] = -1.0f;
+	
+	mtx[12] = 0.0f;
+	mtx[13] = 0.0f;
+	mtx[14] = 2 * farZ * nearZ /  (nearZ-farZ);
+	mtx[15] = 0.0f;
+}
+
+static inline M16t M16MakeFrustum(F1t left,F1t right,
+                          F1t bottom,F1t top,
+                          F1t nearZ,F1t farZ)
+{
+   F1t ral = right + left;
+   F1t rsl = right - left;
+   F1t tsb = top - bottom;
+   F1t tab = top + bottom;
+   F1t fan = farZ + nearZ;
+   F1t fsn = farZ - nearZ;
     
     M16t m = { 2.0f * nearZ / rsl, 0.0f, 0.0f, 0.0f,
         0.0f, 2.0f * nearZ / tsb, 0.0f, 0.0f,
@@ -1655,16 +1733,16 @@ static inline M16t M16MakeFrustum(float left, float right,
     return m;
 }
 
-static inline M16t M16MakeOrtho(float left, float right,
-                         float bottom, float top,
-                         float nearZ, float farZ)
+static inline M16t M16MakeOrtho(F1t left,F1t right,
+                        F1t bottom,F1t top,
+                        F1t nearZ,F1t farZ)
 {
-    float ral = right + left;
-    float rsl = right - left;
-    float tab = top + bottom;
-    float tsb = top - bottom;
-    float fan = farZ + nearZ;
-    float fsn = farZ - nearZ;
+   F1t ral = right + left;
+   F1t rsl = right - left;
+   F1t tab = top + bottom;
+   F1t tsb = top - bottom;
+   F1t fan = farZ + nearZ;
+   F1t fsn = farZ - nearZ;
     
     M16t m = { 2.0f / rsl, 0.0f, 0.0f, 0.0f,
         0.0f, 2.0f / tsb, 0.0f, 0.0f,
@@ -1674,9 +1752,9 @@ static inline M16t M16MakeOrtho(float left, float right,
     return m;
 }
 
-static inline M16t M16MakeLookAt(float eyeX, float eyeY, float eyeZ,
-                          float centerX, float centerY, float centerZ,
-                          float upX, float upY, float upZ)
+static inline M16t M16MakeLookAt(F1t eyeX,F1t eyeY,F1t eyeZ,
+                         F1t centerX,F1t centerY,F1t centerZ,
+                         F1t upX,F1t upY,F1t upZ)
 {
     V3t ev = { eyeX, eyeY, eyeZ };
     V3t cv = { centerX, centerY, centerZ };
@@ -1744,7 +1822,7 @@ static inline M16t M16SetRow(M16t matrix, int row, V4t vector)
 static inline M16t M16SetColumn(M16t matrix, int column, V4t vector)
 {
 #if defined(__ARM_NEON__)
-    float *dst = &(matrix.m[column * 4]);
+   F1t *dst = &(matrix.m[column * 4]);
     vst1q_f32(dst, vld1q_f32(vector.v));
     return matrix;
 #elif defined(GLK_SSE3_INTRINSICS)
@@ -1763,7 +1841,7 @@ static inline M16t M16SetColumn(M16t matrix, int column, V4t vector)
 static inline M16t M16InvertColumnMajor(M16t M16, bool *isInvertible)
 {
     M16t invOut;
-    float det;
+   F1t det;
     int i;
     
     invOut.m[ 0] =  M16.m[5] * M16.m[10] * M16.m[15] - M16.m[5] * M16.m[11] * M16.m[14] - M16.m[9] * M16.m[6] * M16.m[15] + M16.m[9] * M16.m[7] * M16.m[14] + M16.m[13] * M16.m[6] * M16.m[11] - M16.m[13] * M16.m[7] * M16.m[10];

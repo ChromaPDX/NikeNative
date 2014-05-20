@@ -52,6 +52,6 @@
 -(void)showLocked;
 
 -(NSString*)fileNameForBigCard;
--(NKColor*)colorForCategory;
+-(NKByteColor*)colorForCategory;
 
 @end

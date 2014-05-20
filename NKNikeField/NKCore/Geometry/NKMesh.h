@@ -7,6 +7,7 @@
 
 typedef NS_ENUM(NSInteger, NKPrimitive) {
     NKPrimitiveNone,
+    NKPrimitiveAxes,
     NKPrimitiveRect,
     NKPrimitiveCube,
     NKPrimitiveSphere

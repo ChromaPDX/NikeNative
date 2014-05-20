@@ -6,16 +6,6 @@
 //  Copyright (c) 2014 Chroma. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-#ifdef TARGET_OS_IPHONE
-#import <UIKit/UIKit.h>
-#else
-#ifdef TARGET_OS_MAC
-#import <AppKit/AppKit.h>
-#endif
-#endif
-
 #ifdef __cplusplus
 #define NK_EXPORT extern "C" __attribute__((visibility ("default")))
 #else
@@ -23,27 +13,16 @@
 #endif
 #define NK_AVAILABLE __OSX_AVAILABLE_STARTING
 
-#if TARGET_OS_IPHONE
-#define NK_NONATOMIC_IOSONLY nonatomic
-#else
-#define NK_NONATOMIC_IOSONLY atomic
-#endif
-
-#if TARGET_OS_IPHONE
-#define NKColor UIColor
-#define NKImage UIImage
-#else
-#define NKColor NSColor
-#define NKImage NSImage
-#endif
-
-#define NKCLEAR [NKColor colorWithRed:0. green:0. blue:0. alpha:0.]
-#define NKWHITE [NKColor colorWithRed:1. green:1. blue:1. alpha:1.]
-#define NKBLACK [NKColor colorWithRed:0. green:0. blue:0. alpha:1.]
-
-#define debugUI 0
-
 #import "NKVectorTypes.h"
 #import "NKMath.h"
 #import "NKMeshTypes.h"
 
+#define NKWHITE [NKByteColor colorWithRed:255 green:255 blue:255 alpha:255]
+#define NKRED [NKByteColor colorWithRed:255 green:0 blue:0. alpha:255]
+#define NKGREEN [NKByteColor colorWithRed:0 green:255 blue:0 alpha:255]
+#define NKBLUE [NKByteColor colorWithRed:0 green:0. blue:255 alpha:255]
+#define NKBLACK [NKByteColor colorWithRed:0 green:0 blue:0 alpha:255]
+#define NKCLEAR [NKByteColor colorWithRed:0 green:0 blue:0 alpha:0]
+
+#define debugUI 0
+#define NK_GL_VERSION 2

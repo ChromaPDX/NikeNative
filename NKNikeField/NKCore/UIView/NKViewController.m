@@ -7,11 +7,7 @@
 //
 
 #import "NKViewController.h"
-#import "NKView.h"
-
-@interface NKViewController ()
-
-@end
+#import "NodeKitten.h"
 
 @implementation NKViewController
 
@@ -23,6 +19,9 @@
     }
     return self;
 }
+
+
+#if TARGET_OS_IPHONE
 
 - (void)viewDidLoad
 {
@@ -46,6 +45,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#endif
+
 
 /*
 #pragma mark - Navigation

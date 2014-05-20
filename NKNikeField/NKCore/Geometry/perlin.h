@@ -1,3 +1,4 @@
+
 #define B 0x100
 #define BM 0xff
 #define N 0x1000

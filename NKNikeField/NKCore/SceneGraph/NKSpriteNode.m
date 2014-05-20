@@ -11,8 +11,29 @@
 
 @implementation NKSpriteNode
 
+- (instancetype)initWithTexture:(NKTexture*)texture color:(NKByteColor*)color size:(S2t)size {
+    
+    self = [super init];
+    
+    if (self) {
+        
+        _colorBlendFactor = 1.;
+        
+        self.size3d = V3Make(size.x, size.y, 1);
+        self.color = color;
+        _texture = texture;
+        _vert = [NKVertexBuffer defaultRect];
+        if (texture && !color) {
+            _color = NKWHITE;
+        }
+    }
+    
+    return self;
+}
+
+
 + (instancetype)spriteNodeWithTexture:(NKTexture*)texture size:(S2t)size {
-    NKSpriteNode *node = [[NKSpriteNode alloc] initWithTexture:texture color:[UIColor colorWithWhite:1. alpha:1.] size:size];
+    NKSpriteNode *node = [[NKSpriteNode alloc] initWithTexture:texture color:NKWHITE size:size];
     return node;
 }
 
@@ -26,20 +47,11 @@
     return node;
 }
 
-+ (instancetype)spriteNodeWithColor:(UIColor*)color size:(S2t)size {
++ (instancetype)spriteNodeWithColor:(NKByteColor*)color size:(S2t)size {
     NKSpriteNode *node = [[NKSpriteNode alloc] initWithColor:color size:size];
     return node;
 }
 
-- (instancetype)initWithTexture:(NKTexture*)texture color:(UIColor*)color size:(S2t)size {
-    
-    self = [super initWithPrimitive:NKPrimitiveRect texture:texture color:color size:V3Make(size.width, size.height, 1)];
-    
-    if (self) {
-    }
-    
-    return self;
-}
 
 - (instancetype)initWithTexture:(NKTexture*)texture {
     return [self initWithTexture:texture color:NKWHITE size:texture.size];
@@ -50,8 +62,8 @@
     return [self initWithTexture:newTex color:NKWHITE size:self.texture.size];
 }
 
-- (instancetype)initWithColor:(UIColor*)color size:(S2t)size {
-    self = [super initWithPrimitive:NKPrimitiveRect texture:nil color:color size:V3Make(size.width, size.height, 1)];
+- (instancetype)initWithColor:(NKByteColor*)color size:(S2t)size {
+    self = [self initWithTexture:nil color:color size:S2Make(size.width, size.height)];
     
     if (self) {
     }
@@ -64,6 +76,56 @@
 
 // DRAW
 
+-(void)customDraw {
+    if (_color || _texture) {
+        
+        [self.scene pushScale:self.size3d];
+        
+        C4t col;
+        
+        if (_color.alpha) {
+            col = [_color colorWithBlendFactor:_colorBlendFactor alpha:self.alpha];
+            [self.scene.activeShader setVec4:col forUniform:UNIFORM_COLOR];
+            [self.scene.activeShader setInt:1 forUniform:USE_UNIFORM_COLOR];
+        }
+        else {
+            [self.scene.activeShader setInt:0 forUniform:USE_UNIFORM_COLOR];
+        }
+        
+        if (_texture) {
+            [self.scene.activeShader setInt:1 forUniform:UNIFORM_NUM_TEXTURES];
+            [_texture bind];
+            [_vert bind:^{
+                  glDrawArrays(_vert.drawMode, 0, _vert.numberOfElements);
+            }];
+        }
+        
+        else {
+            [self.scene.activeShader setInt:0 forUniform:UNIFORM_NUM_TEXTURES];
+            [_vert bind:^{
+                glDrawArrays(_vert.drawMode, 0, _vert.numberOfElements);
+                
+            }];
+        }
+        
+        [self.scene popMatrix];
+        
+        //NSLog(@"draw mesh %f, %f, %f, %f", col.r, col.g, col.b, col.a);
+        
+    }
+}
+
+-(void)customDrawForHitDetection {
+    [self.scene pushScale:self.size3d];
+    
+    [self.scene.activeShader setVec4:self.uidColor.C4Color forUniform:UNIFORM_COLOR];
+    
+    [_vert bind:^{
+        glDrawArrays(_vert.drawMode, 0, _vert.numberOfElements);
+    }];
+    
+    [self.scene popMatrix];
+}
 
 - (void)updateWithTimeSinceLast:(F1t) dt {
     [super updateWithTimeSinceLast:dt];

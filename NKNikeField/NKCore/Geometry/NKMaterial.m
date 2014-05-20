@@ -188,7 +188,7 @@ material:(NKMaterial *)inMaterial;
 		_numberOfFaces = inNumFaces;
 		_material = inMaterial;
         
-		_faces = malloc(sizeof(I3t) * _numberOfFaces);
+		_faces = malloc(sizeof(UB3t) * _numberOfFaces);
 		
 	}
 	return self;

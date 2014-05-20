@@ -50,8 +50,8 @@
         
         _fontSize = size.width < size.height ? size.width/4. : size.height/4.;
         
-        self.color = [NKColor colorWithRed:1. green:1. blue:1. alpha:1.];
-        _fontColor = [NKColor colorWithRed:1. green:1. blue:1. alpha:1.];
+        self.color = NKWHITE;
+        _fontColor = NKWHITE;
         
     }
     

@@ -30,10 +30,9 @@
         //table.node->setOrientation
         
         NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"screens_01_vspagenew.png"]];
-        UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
-        [table setHighlightColor:highlightColor];
-        table.color = [UIColor colorWithRed:1 green:1 blue:1 alpha:1.0];
+        [table setHighlightColor:NKBLACK];
+        table.color = NKWHITE;
     }
     
     /*

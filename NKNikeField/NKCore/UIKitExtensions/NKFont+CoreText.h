@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Chroma Developer. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "NKpch.h"
 #import <CoreText/CoreText.h>
 
-@interface UIFont (CoreTextExtensions)
+@interface NKFont (CoreTextExtensions)
 
 - (CTFontRef)createCTFont;
 

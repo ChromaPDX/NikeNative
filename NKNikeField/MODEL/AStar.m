@@ -270,28 +270,28 @@
     int index;
     switch (NEIGHBORHOOD_TYPE){
         case NeighborhoodTypeRookStraight:
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:N walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:E walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:S walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:W walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NORTH walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:EAST walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SOUTH walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:WEST walkDistance:distance]];
             return retArray;
             break;
         case NeighborhoodTypeBishopStraight:
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NE walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SE walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SW walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NW walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NORTHEAST walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SOUTHEAST walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SOUTHWEST walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NORTHWEST walkDistance:distance]];
             return retArray;
             break;
         case NeighborhoodTypeQueenStraight:
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:N walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:E walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:S walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:W walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NE walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SE walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SW walkDistance:distance]];
-            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NW walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NORTH walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:EAST walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SOUTH walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:WEST walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NORTHEAST walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SOUTHEAST walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:SOUTHWEST walkDistance:distance]];
+            [retArray addObjectsFromArray:[self rayFromLocation:(BoardLocation*)location inDirection:NORTHWEST walkDistance:distance]];
             return retArray;
             break;
         case NeighborhoodTypeKnightStraight:

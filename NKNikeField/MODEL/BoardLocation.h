@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Robby Kraft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "NKPch.h"
 
 @class Manager;
 
@@ -37,14 +37,14 @@ typedef NS_OPTIONS(UInt16, BorderMask) {
 };
 
 typedef NS_ENUM(int32_t, Direction) {
-    N = 0,
-    NE = 1,
-    E = 2,
-    SE = 3,
-    S = 4,
-    SW = 5,
-    W = 6,
-    NW = 7
+    NORTH = 0,
+    NORTHEAST = 1,
+    EAST = 2,
+    SOUTHEAST = 3,
+    SOUTH = 4,
+    SOUTHWEST = 5,
+    WEST = 6,
+    NORTHWEST = 7
 };
 
 

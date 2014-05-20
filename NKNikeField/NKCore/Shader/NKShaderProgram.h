@@ -6,9 +6,21 @@
 //  Copyright (c) 2013 wdlindmeier. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "NKPch.h"
 
 // ATTRIBUTES
+
+#if TARGET_OS_IPHONE
+
+#else
+
+#define highp
+#define mediump
+#define lowp
+
+#endif
+
+@class NKByteColor;
 
 typedef NS_ENUM(GLint, NKVertexAttrib)
 {
@@ -66,7 +78,7 @@ static NSString *const UNIFORM_NUM_TEXTURES = @"u_numTextures";
 - (void)setVec3:(V3t)vec3 forUniform:(NSString *)uniformName;
 - (void)setVec2:(V2t)vec2 forUniform:(NSString *)uniformName;
 
-- (void)setColor:(UIColor *)color forUniform:(NSString *)uniformName;
+- (void)setColor:(NKByteColor *)color forUniform:(NSString *)uniformName;
 
 - (void)bindTexture:(NKTexture *)texture forUniform:(NSString *)uniformName;
 
@@ -130,6 +142,7 @@ static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
  attribute vec2 a_texCoord0;
  attribute vec2 a_texCoord1;
  
+
  uniform highp mat4 u_modelViewProjectionMatrix;
  uniform highp mat3 u_normalMatrix;
  uniform lowp int u_useUniformColor;

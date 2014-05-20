@@ -405,13 +405,12 @@
     glUniform2f([uniLoc intValue], vec2.x, vec2.y);
 }
 
-- (void)setColor:(UIColor *)color forUniform:(NSString *)uniformName
+- (void)setColor:(NKByteColor *)color forUniform:(NSString *)uniformName
 {
-    GLfloat components[4];
-    NOCColorComponentsForColor(components, color);
+    C4t components = color.C4Color;
     NSNumber *uniLoc = self.uniformLocations[uniformName];
     assert(uniLoc);
-    glUniform4f([uniLoc intValue], components[0], components[1], components[2], components[3]);
+    glUniform4f([uniLoc intValue], components.r, components.g, components.b, components.a);
 }
 
 - (void)bindTexture:(NKTexture *)texture forUniform:(NSString *)uniformName

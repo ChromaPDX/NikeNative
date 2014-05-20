@@ -22,16 +22,15 @@
         self.name = @"SCENE";
  //       [self logCoords];
         
-        self.backgroundColor = [UIColor colorWithRed:.25 green:.25 blue:.25 alpha:1.];
+        self.backgroundColor = [NKByteColor colorWithRed:50 green:50 blue:50 alpha:255];
         self.shouldRasterize = false;
         useShader = false;
         self.userInteractionEnabled = true;
         
         self.blendMode = -1;
         self.cullFace = -1;
-
-        _camera = [[NKCamera alloc]initWithScene:self];
         
+        _camera = [[NKCamera alloc]initWithScene:self];
         self.scene = self;
         
         if (NK_GL_VERSION == 2) {
@@ -44,7 +43,6 @@
             
             memcpy(matrixStack+matrixCount, modelMatrix.m, sizeof(M16t));
             
-            axes = [NKVertexBuffer axes];
             self.shader = [NKShaderProgram defaultShader];
             [self.shader load];
             
@@ -94,8 +92,8 @@
     
     //NSLog(@"push M %lu", matrixCount);
     
-    [_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
-    //[_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    //[_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    [_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
    
 }
 
@@ -109,6 +107,7 @@
     
     //NSLog(@"push M %lu", matrixCount);
     
+    //[_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
     [_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
     
 }
@@ -125,8 +124,8 @@
         NSLog(@"MATRIX STACK UNDERFLOW");
     }
     
-    //[_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
-    [_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    [_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    //[_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
 }
 
 -(void)drawForHitDetection {
@@ -152,27 +151,20 @@
 
 -(void)draw {
 
-
     if (NK_GL_VERSION == 2) {
-
+        
         [_activeShader use];
-        
-//        [_activeShader setMatrix4:M16IdentityMake() forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
-//        [_activeShader setMatrix3:M9IdentityMake() forUniform:UNIFORM_NORMAL_MATRIX];
-        
         // 1
-        glViewport(0, 0, self.size.width, self.size.height);
+//        glViewport(0, 0, self.size.width, self.size.height);
+//        glClearColor(0., 0., 0., 0.);
         
-        if (_backgroundColor) {
-            C4t c;
-            [_backgroundColor getRed:&c.r green:&c.g blue:&c.b alpha:&c.a];
-            glClearColor(c.r, c.g, c.b, c.a);
-        }
-        
-//        [_activeShader setInt:1 forUniform:USE_UNIFORM_COLOR];
-//        [_activeShader setVec4:C4Make(1., 1., 1., 1.) forUniform:UNIFORM_COLOR];
+//        if (_backgroundColor) {
+//            C4t c;
+//            [_backgroundColor getRed:&c.r green:&c.g blue:&c.b alpha:&c.a];
+//            glClearColor(c.r, c.g, c.b, c.a);
+//        }
 
-       // [self drawAxes];
+        //[self drawAxes];
         // 2
        
 #ifdef SHOW_HIT_DETECTION
@@ -192,8 +184,7 @@
     else {
         
         if (_backgroundColor) {
-            C4t c;
-            [_backgroundColor getRed:&c.r green:&c.g blue:&c.b alpha:&c.a];
+            C4t c = _backgroundColor.C4Color;
             glClearColor(c.r, c.g, c.b, c.a);
         }
         
@@ -224,16 +215,38 @@
 //    }
     
 }
-    
+
+-(void)setUniformIdentity {
+    [self.activeShader setInt:0 forUniform:UNIFORM_NUM_TEXTURES];
+    [self.activeShader setMatrix4:M16IdentityMake() forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    [self.activeShader setMatrix3:M9IdentityMake() forUniform:UNIFORM_NORMAL_MATRIX];
+}
+
 -(void)drawAxes {
     
     if (NK_GL_VERSION == 2) {
-        [self.activeShader setInt:0 forUniform:UNIFORM_NUM_TEXTURES];
+        if (!axes) {
+             axes = [NKVertexBuffer axes];
+        }
+        
+//        if (!sphere) {
+//            sphere = [NKVertexBuffer sphereWithStacks:20 slices:20 squash:2.];
+//        }
+        
         [axes bind:^{
-            glLineWidth(4.0);
+            [self pushScale:V3MakeF(_camera.position3d.z)];
+            glLineWidth(2.0);
             glDrawArrays(GL_LINES, 0, axes.numberOfElements);
+            [self popMatrix];
         }];
+        
+//        [sphere bind:^{
+//            //[self pushScale:V3MakeF(_camera.position3d.z*.025)];
+//            glDrawArrays(GL_TRIANGLE_STRIP, 0, sphere.numberOfElements);
+//            //[self popMatrix];
+//        }];
     }
+    
     else {
         static const GLfloat XAxis[] = {-1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f};
         static const GLfloat YAxis[] = {0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
@@ -354,47 +367,60 @@
 
 -(void)getUidColorForNode:(NKNode*)node {
     
-    float min = (10./255.);
-    float max = (254./255.);
+//    F1t min = (10./255.);
+//    F1t max = (254./255.);
+//    GLubyte min = 1;
+//    GLubyte max = 254;
     
-    if (!hitColorMap) {
-        hitColorMap = [[NSMutableDictionary alloc]init];
-        uidR = min;
-        uidG = min;
-        uidB = min;
+    if (!_hitColorMap) {
+        _hitColorMap = [[NSMutableDictionary alloc]init];
     }
     
-    node.uidColor = [NKColor colorWithRed:uidR green:uidG blue:uidB alpha:1.];
-    [hitColorMap setObject:node forKey:node.uidColor];
+    NKByteColor *color;
     
-    float inc = (1./255.);
-    
-    if (uidB < max) {
-        uidB+=inc;
-    }
-    else {
-        if (uidG < max) {
-            uidG+=inc;
-            uidB = min+inc;
-        }
-        else {
-            if (uidR < max) {
-                uidR += inc;
-                uidG = min+inc;;
-                uidB = min+inc;;
-            }
-            else {
-                NSLog(@"**ERROR** out of uid colors");
-            }
+    while (!color) {
+        NKByteColor *test = [NKByteColor colorWithRed:arc4random() % 255 green:arc4random() % 255 blue:arc4random() % 255 alpha:255];
+        
+        if (![_hitColorMap objectForKey:test]) {
+            color = test;
+            node.uidColor = test;
+            [_hitColorMap setObject:node forKey:node.uidColor];
+            [color log];
         }
     }
+    
+//    GLubyte inc = 1;
+//    
+//    if (uidB < max) {
+//        uidB+=inc;
+//    }
+//    else {
+//        if (uidG < max) {
+//            uidG+=inc;
+//            uidB = min+inc;
+//        }
+//        else {
+//            if (uidR < max) {
+//                uidR += inc;
+//                uidG = min+inc;;
+//                uidB = min+inc;;
+//            }
+//            else {
+//                NSLog(@"**ERROR** out of uid colors");
+//            }
+//        }
+//    }
     
 }
 
 -(NKNode*)hitNodeAtPoint:(P2t)location {
 
-    NKNode *hit = [hitColorMap objectForKey:[_hitDetectBuffer colorAtPoint:location]];
+    NKByteColor *hc = [_hitDetectBuffer colorAtPoint:location];
+    NKNode *hit = [_hitColorMap objectForKey:hc];
     
+    if (!hit) {
+        
+    }
     return hit;
 }
 

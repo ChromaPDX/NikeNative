@@ -529,8 +529,8 @@
         }
         else if (self.challengeCategory == CardChallengeCategoryHorizantal){
             accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
-            BoardLocation *WLoc = [self.location stepInDirection:W];
-            BoardLocation *ELoc = [self.location stepInDirection:E];
+            BoardLocation *WLoc = [self.location stepInDirection:WEST];
+            BoardLocation *ELoc = [self.location stepInDirection:EAST];
             if(WLoc){
                 [accessible removeObject:WLoc];
             }
@@ -541,8 +541,8 @@
         else if (self.challengeCategory == CardChallengeCategoryVertical){
             accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
             accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
-            BoardLocation *NLoc = [self.location stepInDirection:W];
-            BoardLocation *SLoc = [self.location stepInDirection:E];
+            BoardLocation *NLoc = [self.location stepInDirection:WEST];
+            BoardLocation *SLoc = [self.location stepInDirection:EAST];
             if(NLoc){
                 [accessible removeObject:NLoc];
             }

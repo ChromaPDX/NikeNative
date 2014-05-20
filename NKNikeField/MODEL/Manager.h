@@ -13,6 +13,7 @@
 @class BoardLocation;
 @class Card;
 @class Player;
+@class NKByteColor;
 
 @interface Manager : NSObject <NSCoding, NSCopying>
 
@@ -42,7 +43,7 @@
 // Meta Data
 
 //@property (nonatomic) NSMutableArray *cardsInGame;
-@property (nonatomic, strong) NKColor *color;
+@property (nonatomic, strong) NKByteColor *color;
 
 @property (nonatomic) int energyEarned;
 @property (nonatomic) int energySpent;

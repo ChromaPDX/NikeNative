@@ -1821,8 +1821,12 @@
     switch (c.specialTypeCategory) {
             
         case CardSpecialCategoryDeRez: case CardSpecialCategorySuccubus:
+            if (c.deck.manager.opponent.hasPossesion) {
             [_gameScene AISelectedLocation:[c.deck.manager.opponent.bestChoiceForDisable location]];
             return 1;
+            }
+            break;
+            
             
         case CardSpecialCategoryFreeze:
             if (c.deck.manager.opponent.hasPossesion) { // DEFENSE
@@ -1902,8 +1906,12 @@
         case CardSpecialCategoryBlock:
             if (c.deck.manager.opponent.hasPossesion) {
                 loc = [[_ball.enchantee quickestRouteToGoal] lastObject];
-                [_gameScene AISelectedLocation:loc];
-                return 1;
+                
+                if (![c.deck.manager.opponent.effects[Card_Block] containsObject:loc]){
+                    [_gameScene AISelectedLocation:loc];
+                    return 1;
+                }
+                
             }
             else {
                 c.locked = true; // SAVE IT
@@ -1917,8 +1925,6 @@
         case CardSpecialCategoryPredictiveAnalysis:
             // AI Doesn't need predictive analysis, until we get smarter
             break;
-            
-            
             
             
         default:

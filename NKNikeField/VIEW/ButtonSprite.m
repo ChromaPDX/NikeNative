@@ -18,7 +18,7 @@
     button.userInteractionEnabled = YES;
     button.onTexture = textureOn;
     button.offTexture = textureOff;
-    [button setColor:[UIColor clearColor]];
+    [button setColor:NKCLEAR];
     button.type = type;
     button.state = ButtonStateOff;
     return button;
@@ -33,7 +33,7 @@
     button.stateColors = colors;
     button.label = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
     button.label.fontSize = 16;
-    button.label.fontColor = [NKColor blackColor];
+    button.label.fontColor = NKBLACK;
     button.state = ButtonStateOff;
     button.label.text = button.stateLabels[button.state];
     button.label.verticalAlignmentMode = NKLabelVerticalAlignmentModeCenter;
@@ -161,7 +161,7 @@
 }
 
 
-- (UIImage*) drawGradient:(UIColor*)color{
+- (UIImage*) drawGradient:(NKByteColor*)color{
 
     
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(w, h), NO, 0);
@@ -179,15 +179,14 @@
     CGFloat components[8];
     CGFloat locations[3] = {0, 1};
     
-    CGFloat colors[4];
-    
-    [color getRed:&colors[0] green:&colors[1] blue:&colors[2] alpha:&colors[3]];
     
     CGPoint bottomPoint, topPoint;
     
+    C4t colors = color.C4Color;
+    
     for (int c = 0; c<4; c++){
-        components[c] = colors[c];
-        components[c + 4] = colors[c] + .15;
+        components[c] = colors.v[c];
+        components[c + 4] = colors.v[c] + .15;
     }
     
     CGGradientRef gradient = CGGradientCreateWithColorComponents(colorspace, components, locations, 2);

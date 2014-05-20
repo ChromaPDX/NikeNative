@@ -11,7 +11,7 @@
 
 @implementation NKDrawDepthShader;
 
-- (instancetype)initWithNode:(NKNode *)node useColor:(UIColor*)nilForDefaultAttrib {
+- (instancetype)initWithNode:(NKNode *)node useColor:(NKByteColor*)nilForDefaultAttrib {
     self = [self initWithNode:node];
     if (self) {
         if (nilForDefaultAttrib) {

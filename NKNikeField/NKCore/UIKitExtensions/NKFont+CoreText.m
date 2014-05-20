@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Chroma Developer. All rights reserved.
 //
 
-#import "UIFont+CoreText.h"
+#import "NKFont+CoreText.h"
 
-@implementation UIFont (CoreTextExtensions)
+@implementation NKFont (CoreTextExtensions)
 
 - (CTFontRef)createCTFont;
 {
