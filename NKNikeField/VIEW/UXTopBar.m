@@ -8,12 +8,11 @@
 
 #import "NikeNodeHeaders.h"
 #import "ModelHeaders.h"
-#import "GameStatsViewController.h"
 #import "FuelBar.h"
 
 @implementation UXTopBar
 
--(instancetype) initWithTexture:(NKTexture *)texture color:(UIColor *)color size:(S2t)size {
+-(instancetype) initWithTexture:(NKTexture *)texture color:(NKByteColor *)color size:(S2t)size {
     
     self = [super initWithTexture:texture color:color size:size];
     
@@ -178,12 +177,12 @@
 //    }
     
 
-    if ([fuelLabel containsPoint:location]) {
-        GameStatsViewController *stats = [[GameStatsViewController alloc]initWithGame:self.delegate.game style:UITableViewStyleGrouped];
-        [self.delegate.nkView.controller presentViewController:stats animated:YES completion:^{
-            
-        }];
-    }
+//    if ([fuelLabel containsPoint:location]) {
+//        GameStatsViewController *stats = [[GameStatsViewController alloc]initWithGame:self.delegate.game style:UITableViewStyleGrouped];
+//        [self.delegate.nkView.controller presentViewController:stats animated:YES completion:^{
+//            
+//        }];
+//    }
 
     R4t menuButton = R4Make(17, 1042, 70, 70);
     if(R4ContainsPoint(menuButton, location)){

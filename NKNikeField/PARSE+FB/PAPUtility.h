@@ -28,8 +28,9 @@
 
 + (void)drawSideDropShadowForRect:(CGRect)rect inContext:(CGContextRef)context;
 + (void)drawSideAndBottomDropShadowForRect:(CGRect)rect inContext:(CGContextRef)context;
-+ (void)drawSideAndTopDropShadowForRect:(CGRect)rect inContext:(CGContextRef)context;  
-+ (void)addBottomDropShadowToNavigationBarForNavigationController:(UINavigationController *)navigationController;
++ (void)drawSideAndTopDropShadowForRect:(CGRect)rect inContext:(CGContextRef)context;
+
+//+ (void)addBottomDropShadowToNavigationBarForNavigationController:(UINavigationController *)navigationController;
 
 + (PFQuery *)queryForActivitiesOnPhoto:(PFObject *)photo cachePolicy:(PFCachePolicy)cachePolicy;
 @end

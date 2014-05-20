@@ -47,10 +47,8 @@
     self.label.fontSize = fontSize;
 }
 
+-(NKTouchState)touchDown:(P2t)location id:(int)touchId {
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    
-    
     switch (self.type) {
             
         case ButtonTypeToggle:
@@ -86,9 +84,11 @@
             
     }
     
+    return false;
+    
 }
 
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     switch (self.type) {
         case ButtonTypePush:
             
@@ -101,7 +101,7 @@
             
     }
     
-    
+    return false;
     
 }
 
@@ -161,12 +161,9 @@
 }
 
 
-- (UIImage*) drawGradient:(NKByteColor*)color{
+- (NKImage*) drawGradient:(NKByteColor*)color{
 
-    
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(w, h), NO, 0);
-    
-    CGContextRef con = UIGraphicsGetCurrentContext();
+    CGContextRef con = [NKImage newRGBAContext:S2Make(w, h)];
     
     CGContextTranslateCTM(con, 0.0, h);
     
@@ -202,28 +199,30 @@
     
     // [border stroke];
     
-    UIImage* render =  UIGraphicsGetImageFromCurrentImageContext();
+    NKImage* render = [NKImage nkImageWithCGImage:CGBitmapContextCreateImage(con)];
     
-    UIGraphicsEndImageContext();
+    CGContextRelease(con);
     
     return render;
     
 }
 
-- (UIImage*) drawBorder:(UIColor*)color {
+- (NKImage*) drawBorder:(NKColor*)color {
     
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(w, h), NO, 0);
-    
-    CGContextRef con = UIGraphicsGetCurrentContext();
+    CGContextRef con = [NKImage newRGBAContext:S2Make(w, h)];
     
     CGContextClearRect(con, CGRectMake(0, 0, w, h));
     
+#if TARGET_OS_IPHONE
     UIBezierPath *border = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, w, h) byRoundingCorners:15 cornerRadii:CGSizeMake(0, 0)];;
+#else
+    NSBezierPath *border = [NSBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, w, h) xRadius:10 yRadius:10 ];
+#endif
     
     border.lineWidth = 2.;
     
     
-    [[UIColor whiteColor] setStroke];
+    [[NKColor whiteColor] setStroke];
     [color setFill];
     
     
@@ -231,9 +230,9 @@
     if(_border)
         [border stroke];
     
-    UIImage* render =  UIGraphicsGetImageFromCurrentImageContext();
+    NKImage* render = [NKImage nkImageWithCGImage:CGBitmapContextCreateImage(con)];
     
-    UIGraphicsEndImageContext();
+    CGContextRelease(con);
     
     return render;
     

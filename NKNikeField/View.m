@@ -18,20 +18,29 @@
     
     if ((self = [super initWithCoder:coder]))
     {
-        // Initialization code
-        float scale = [[UIScreen mainScreen] scale];
-        
-        self.scene = [[MainMenu alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
-        //self.scene = [[DevMenu alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
-        //self.scene = [[Pregame alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
 
-        //self.animationInterval = 1.0 / 60.;
         
-        [self startAnimation];
+  
         
     }
     return self;
 }
+
+-(void)layoutSubviews {
+    [super layoutSubviews];
+    
+    if (!self.scene) {
+        float scale = [[UIScreen mainScreen] scale];
+        
+        self.scene = [[MainMenu alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
+        
+        NSLog(@"VIEW HEIGHT, %f", self.frame.size.height);
+        
+        [self startAnimation];
+    }
+    
+}
+
 
 
 @end

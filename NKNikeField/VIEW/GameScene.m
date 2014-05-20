@@ -41,7 +41,11 @@ float PARTICLE_SCALE;
 -(instancetype)initWithSize:(S2t)size {
     self = [super initWithSize:size];
     
+
+
     if (self) {
+        
+#if TARGET_OS_IPHONE
         
         if ([[UIDevice currentDevice] userInterfaceIdiom ] == UIUserInterfaceIdiomPhone ) {
             THICK_LINE = 2;
@@ -67,6 +71,20 @@ float PARTICLE_SCALE;
             
         }
         
+#else
+        DRIBBLE_WIDTH = 6;
+        THICK_LINE = 3;
+        MED_LINE = 2;
+        THUMB_OFFSET = .05;
+        UI_MULT = 1.;
+        WINDOW_WIDTH = size.width*.275;
+        WINDOW_HEIGHT = size.height;
+        ANCHOR_WIDTH = size.width * .65;
+        PARTICLE_SCALE = 2.;
+#endif
+        
+        TILE_WIDTH = self.size.height / 12.;
+        TILE_HEIGHT = self.size.height / 10.;
 
         boardScale = 1.;
         
@@ -351,12 +369,16 @@ float PARTICLE_SCALE;
         NSArray *set = [kickCard validatedSelectionSetForPlayer:self.game.ball.enchantee];
         for (BoardLocation* loc in set) {
             BoardTile* tile = [_gameTiles objectForKey:loc];
-            tile.isDottedBorder = true;
-            //[tile.borderSprite setColor:V2YELLOW];
-            [tile.location setBorderShapeInContext:set];
-            [tile setTextureForBorder:tile.location.borderShape];
-            [tile removeAllActions];
-            [tile runAction:[NKAction fadeAlphaTo:1 duration:FAST_ANIM_DUR]];
+            
+            
+            [tile setColor:V2ORANGE];
+//            [tile.location setBorderShapeInContext:set];
+//            
+//            tile.isDottedBorder = true;
+//            [tile setTextureForBorder:tile.location.borderShape];
+//
+//            [tile removeAllActions];
+//            [tile runAction:[NKAction fadeAlphaTo:1 duration:FAST_ANIM_DUR]];
         }
     }
 }
@@ -373,15 +395,15 @@ float PARTICLE_SCALE;
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
     
-   // [self showPossibleKickForManager:player.manager];
 
-    P2t p;
+
+    //P2t p;
     
     if  (path.count){
         for (BoardLocation* loc in path) {
             BoardTile* tile = [_gameTiles objectForKey:loc];
             [tile removeAllActions];
-            if(!tile.isDottedBorder)[tile setColor:V2GREEN];
+            [tile setColor:V2GREEN];
             [tile.location setBorderShapeInContext:path];
             [tile setTextureForBorder:tile.location.borderShape];
             [tile setUserInteractionEnabled:true];
@@ -390,6 +412,8 @@ float PARTICLE_SCALE;
         
         [self moveCameraToBoundingBox:path];
     }
+    
+    [self showPossibleKickForManager:player.manager];
     
     [self revealBlocksForManager:player.manager];
     

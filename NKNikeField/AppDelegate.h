@@ -12,7 +12,6 @@
 @class PAPWelcomeViewController;
 @class MetaViewController;
 
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate, NSURLConnectionDataDelegate, PFLogInViewControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

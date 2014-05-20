@@ -12,38 +12,42 @@
 
 #pragma mark -
 #pragma mark - SHARED METHODS
-#pragma mark - 
+#pragma mark -
 
 -(void)setScene:(NKSceneNode *)scene {
+#if TARGET_OS_IPHONE
     _scene = scene;
     scene.nkView = self;
+#else
+    _nextScene = scene;
+    _nextScene.nkView = self;
+#endif
     lastTime = CFAbsoluteTimeGetCurrent();
 }
 
 -(void)drawScene {
     
-    if (_scene.userInteractionEnabled) {
-        
-        
-        framesSinceLastHit++;
-        if (framesSinceLastHit > drawHitEveryXFrames) {
-            if (_scene) {
-                [_scene drawForHitDetection];
-            }
-            framesSinceLastHit = 0;
-        }
-        
+    if (_nextScene) {
+        _scene = _nextScene;
+        _nextScene = nil;
+    }
+    
+    if (_scene.hitQueue.count) {
+        [_scene drawForHitDetection];
     }
     
 #if TARGET_OS_IPHONE
     [frameBuffer bind];
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glViewport(0, 0, _scene.size.width, _scene.size.height);
+#else
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glViewport(0, 0, self.visibleRect.size.width, self.visibleRect.size.height);
 #endif
     
     if (_scene) {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        
         
         //NSLog(@"draw scene");
         F1t dt = (CFAbsoluteTimeGetCurrent() - lastTime) * 1000.;
@@ -69,7 +73,7 @@
 
 #pragma mark -
 #pragma mark - IOS
-#pragma mark - 
+#pragma mark -
 
 #if TARGET_OS_IPHONE
 
@@ -101,11 +105,11 @@
         
         
         if (NK_GL_VERSION == 2){
-        context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-        [context setMultiThreaded:true];
+            context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+            [context setMultiThreaded:true];
         }
         else {
-           context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+            context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
         }
         
         if (!context || ![EAGLContext setCurrentContext:context])
@@ -115,17 +119,17 @@
         
         if(!context || ![self createFramebuffer]){
             NSLog(@"Frame Buffer Creation Failed !!");
-
+            
         }
         else {
             NSLog(@"GLES Context && Frame Buffer loaded!");
-          
+            
             
             if (NK_GL_VERSION == 2) {
                 defaultShader = [[NKShaderProgram alloc]initWithVertexSource:nkDefaultTextureVertexShader fragmentSource:nkDefaultTextureFragmentShader];
                 [defaultShader load];
             }
-
+            
         }
         
         [NKTextureManager sharedInstance];
@@ -145,10 +149,6 @@
                                                      name:UIApplicationDidEnterBackgroundNotification
                                                    object:nil];
         
-//        [[NSNotificationCenter defaultCenter] addObserver:self
-//                                                 selector:@selector(startAnimation)
-//                                                     name:UIApplicationWillEnterForegroundNotification
-//                                                   object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(startAnimation)
@@ -200,7 +200,7 @@
    	[EAGLContext setCurrentContext:context];
     
     [self drawScene];
-
+    
     glBindRenderbufferOES(GL_RENDERBUFFER, frameBuffer.frameBuffer);
 	[context presentRenderbuffer:GL_RENDERBUFFER];
     
@@ -251,7 +251,7 @@
     
 }
 
-#pragma mark - 
+#pragma mark -
 #pragma mark - OS X
 #pragma mark -
 
@@ -363,6 +363,9 @@
 	//  and build the necessary rendering objects
 	[self initGL];
 	
+    //displayThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+    
+#if USE_CV_DISPLAY_LINK
 	// Create a display link capable of being used with all active displays
 	CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
 	
@@ -372,11 +375,18 @@
 	// Set the display link for the current renderer
 	CGLContextObj cglContext = [[self openGLContext] CGLContextObj];
 	CGLPixelFormatObj cglPixelFormat = [[self pixelFormat] CGLPixelFormatObj];
+    
 	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext, cglPixelFormat);
 	
 	// Activate the display link
 	CVDisplayLinkStart(displayLink);
-	
+#else
+    
+    displayTimer = [NSTimer timerWithTimeInterval:.015 target:self selector:@selector(drawView) userInfo:nil repeats:YES];
+    
+    [[NSRunLoop mainRunLoop] addTimer:displayTimer forMode:NSDefaultRunLoopMode];
+#endif
+    
 	// Register to be notified when the window closes so we can stop the displaylink
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(windowWillClose:)
@@ -397,22 +407,19 @@
 	GLint swapInt = 1;
 	[[self openGLContext] setValues:&swapInt forParameter:NSOpenGLCPSwapInterval];
 	
-	// Init our renderer.  Use 0 for the defaultFBO which is appropriate for
-	// OSX (but not iOS since iOS apps must create their own FBO)
-	//m_renderer = [[OpenGLRenderer alloc] initWithDefaultFBO:0];
-    
-    frameBuffer = [[NKFrameBuffer alloc ]initWithWidth:self.frame.size.width height:self.frame.size.height];
 }
 
 - (void) reshape
 {
 	[super reshape];
 	
+#if USE_CV_DISPLAY_LINK
 	// We draw on a secondary thread through the display link. However, when
 	// resizing the view, -drawRect is called on the main thread.
 	// Add a mutex around to avoid the threads accessing the context
 	// simultaneously when resizing.
 	CGLLockContext([[self openGLContext] CGLContextObj]);
+#endif
     
 	// Get the view size in Points
 	NSRect viewRectPoints = [self bounds];
@@ -445,16 +452,22 @@
 #endif // !SUPPORT_RETINA_RESOLUTION
     
 	// Set the new dimensions in our renderer
-//	[m_renderer resizeWithWidth:viewRectPixels.size.width
-//                      AndHeight:viewRectPixels.size.height];
+    //	[m_renderer resizeWithWidth:viewRectPixels.size.width
+    //                      AndHeight:viewRectPixels.size.height];
 	
+    //[_scene setSize:S2Make(viewRectPixels.size.width*2., viewRectPixels.size.height*2.)];
+    
+#if USE_CV_DISPLAY_LINK
+    
 	CGLUnlockContext([[self openGLContext] CGLContextObj]);
+    
+#endif
+    
 }
 
 - (CVReturn) getFrameForTime:(const CVTimeStamp*)outputTime
 {
 	[self drawView];
-    
     return kCVReturnSuccess;
 }
 
@@ -475,31 +488,39 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 
 - (void) drawView
 {
-	[[self openGLContext] makeCurrentContext];
+    //dispatch_async(dispatch_get_main_queue(), ^{
+    [[self openGLContext] makeCurrentContext];
     
-	// We draw on a secondary thread through the display link
-	// When resizing the view, -reshape is called automatically on the main
-	// thread. Add a mutex around to avoid the threads accessing the context
-	// simultaneously when resizing
-	CGLLockContext([[self openGLContext] CGLContextObj]);
-    
-    glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
+    // We draw on a secondary thread through the display link
+    // When resizing the view, -reshape is called automatically on the main
+    // thread. Add a mutex around to avoid the threads accessing the context
+    // simultaneously when resizing
+#if USE_CV_DISPLAY_LINK
+    CGLLockContext([[self openGLContext] CGLContextObj]);
+#endif
     [self drawScene];
-	//[m_renderer render];
     
-	CGLFlushDrawable([[self openGLContext] CGLContextObj]);
-	CGLUnlockContext([[self openGLContext] CGLContextObj]);
+    CGLFlushDrawable([[self openGLContext] CGLContextObj]);
+    
+#if USE_CV_DISPLAY_LINK
+    CGLUnlockContext([[self openGLContext] CGLContextObj]);
+#endif
+    //});
 }
 
 
 -(void) dealloc
 {
+#if USE_CV_DISPLAY_LINK
 	if( displayLink ) {
 		CVDisplayLinkStop(displayLink);
 		CVDisplayLinkRelease(displayLink);
 	}
+#else
+    if (displayTimer){
+        [displayTimer invalidate];
+    }
+#endif
 }
 
 ////
@@ -511,9 +532,9 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 //		// There is no autorelease pool when this method is called because it will be called from a background thread
 //		// It's important to create one or you will leak objects
 //		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-//        
+//
 //		[[NSRunLoop currentRunLoop] run];
-//        
+//
 //		[pool release];
 //	}
 //}
@@ -524,14 +545,14 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 //-(void) setView:(NKView *)view
 //{
 //	[super setView:view];
-//    
+//
 //	// Enable Touches. Default no.
 //	// Only available on OS X 10.6+
 //#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_5
 //	[view setAcceptsTouchEvents:NO];
 //    //		[view setAcceptsTouchEvents:YES];
 //#endif
-//    
+//
 //	// Synchronize buffer swaps with vertical refresh rate
 //	[[view openGLContext] makeCurrentContext];
 //	GLint swapInt = 1;
@@ -542,22 +563,35 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-	[_scene touchDown:P2Make(theEvent.absoluteX, theEvent.absoluteY) id:0];
+    //    dispatch_async(dispatch_get_main_queue(), ^{
+    //        [_scene touchDown:P2Make(theEvent.absoluteX, theEvent.absoluteY) id:0];
+    //    });
+    [_scene dispatchTouchRequestForLocation:P2Make(theEvent.locationInWindow.x*2, theEvent.locationInWindow.y*2) type:NKEventTypeBegin];
 }
 
 - (void)mouseMoved:(NSEvent *)theEvent
 {
-	[_scene touchMoved:P2Make(theEvent.absoluteX, theEvent.absoluteY) id:0];
+    //    dispatch_async(dispatch_get_main_queue(), ^{
+    //	[_scene touchMoved:P2Make(theEvent.absoluteX, theEvent.absoluteY) id:0];
+    //    });
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-	[_scene touchMoved:P2Make(theEvent.absoluteX, theEvent.absoluteY) id:0];
+    [_scene dispatchTouchRequestForLocation:P2Make(theEvent.locationInWindow.x*2, theEvent.locationInWindow.y*2) type:NKEventTypeMove];
+    //    dispatch_async(dispatch_get_main_queue(), ^{
+    //	[_scene touchMoved:P2Make(theEvent.absoluteX, theEvent.absoluteY) id:0];
+    //    });
 }
 
 - (void)mouseUp:(NSEvent *)theEvent
 {
-	[_scene touchUp:P2Make(theEvent.absoluteX, theEvent.absoluteY) id:0];
+    
+    [_scene dispatchTouchRequestForLocation:P2Make(theEvent.locationInWindow.x*2, theEvent.locationInWindow.y*2) type:NKEventTypeEnd];
+    //
+    //        NSLog(@"mouse up : %f %f", theEvent.locationInWindow.x, theEvent.locationInWindow.y);
+    //        //
+    //    });
 }
 
 #endif

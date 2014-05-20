@@ -27,6 +27,8 @@
         useShader = false;
         self.userInteractionEnabled = true;
         
+        _hitQueue = [NSMutableArray array];
+        
         self.blendMode = -1;
         self.cullFace = -1;
         
@@ -53,6 +55,7 @@
         }
         
         
+        NSLog(@"init scene with size, %f %f", size.width, size.height);
         
     }
     
@@ -144,6 +147,14 @@
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
     [super drawForHitDetection];
+    
+    NSArray* queue = [_hitQueue copy];
+    
+    for (CallBack b in queue) {
+        b();
+    }
+    
+    [_hitQueue removeAllObjects];
     
     [_hitDetectBuffer unbind];
     
@@ -367,11 +378,6 @@
 
 -(void)getUidColorForNode:(NKNode*)node {
     
-//    F1t min = (10./255.);
-//    F1t max = (254./255.);
-//    GLubyte min = 1;
-//    GLubyte max = 254;
-    
     if (!_hitColorMap) {
         _hitColorMap = [[NSMutableDictionary alloc]init];
     }
@@ -389,39 +395,42 @@
         }
     }
     
-//    GLubyte inc = 1;
-//    
-//    if (uidB < max) {
-//        uidB+=inc;
-//    }
-//    else {
-//        if (uidG < max) {
-//            uidG+=inc;
-//            uidB = min+inc;
-//        }
-//        else {
-//            if (uidR < max) {
-//                uidR += inc;
-//                uidG = min+inc;;
-//                uidB = min+inc;;
-//            }
-//            else {
-//                NSLog(@"**ERROR** out of uid colors");
-//            }
-//        }
-//    }
-    
 }
 
--(NKNode*)hitNodeAtPoint:(P2t)location {
-
-    NKByteColor *hc = [_hitDetectBuffer colorAtPoint:location];
-    NKNode *hit = [_hitColorMap objectForKey:hc];
+-(void)dispatchTouchRequestForLocation:(P2t)location type:(NKEventType)eventType{
     
-    if (!hit) {
+    CallBack callBack = ^{
+        NKByteColor *hc = [[NKByteColor alloc]init];
+        glReadPixels(location.x, location.y,
+                     1, 1,
+                     GL_RGBA, GL_UNSIGNED_BYTE, hc.bytes);
+        NKNode *hit = [_hitColorMap objectForKey:hc];
         
-    }
-    return hit;
+        if (!hit){
+            hit = self;
+        }
+        
+        NSLog(@"hit node: %@", hit.name);
+        switch (eventType) {
+            case NKEventTypeBegin:
+                [hit touchDown:location id:0];
+                break;
+                
+            case NKEventTypeMove:
+                [hit touchMoved:location id:0];
+                break;
+                
+            case NKEventTypeEnd:
+                [hit touchUp:location id:0];
+                break;
+                
+            default:
+                break;
+        }
+    };
+    
+    [_hitQueue addObject:callBack];
+
 }
 
 -(NKTouchState)touchDown:(P2t)location id:(int)touchId {
@@ -431,12 +440,7 @@
     }
     else {
         
-        NKNode *hit = [self hitNodeAtPoint:location];
-        
-        if (hit) {
-            NSLog(@"touch down node: %@", hit);
-            [hit touchDown:location id:touchId];
-        }
+        //[self dispatchTouchRequestForLocation:location type:NKEventTypeBegin];
         
         return NKTouchIsFirstResponder;
     }
@@ -449,12 +453,8 @@
         return [_alertSprite touchMoved:location id:touchId];
     }
     else {
-        NKNode *hit = [self hitNodeAtPoint:location];
         
-        if (hit) {
-            NSLog(@"touch moved node: %@", hit);
-            [hit touchMoved:location id:touchId];
-        }
+        //[self dispatchTouchRequestForLocation:location type:NKEventTypeMove];
         
         return NKTouchIsFirstResponder;
         
@@ -467,12 +467,7 @@
         return [_alertSprite touchUp:location id:touchId];
     }
     
-   NKNode *hit = [self hitNodeAtPoint:location];
-    
-    if (hit) {
-        NSLog(@"touch up node: %@", hit);
-        [hit touchUp:location id:touchId];
-    }
+    [self dispatchTouchRequestForLocation:location type:NKEventTypeEnd];
     
     return false;
 }

@@ -76,7 +76,7 @@
 #import "NKView.h"
 #import "NKFrameBuffer.h"
 
-#import "NKImage+GLBuffer.h"
+#import "NKImage+Utils.h"
 #import "NKFont+CoreText.h"
 
 

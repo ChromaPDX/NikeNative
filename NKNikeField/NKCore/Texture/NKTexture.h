@@ -8,6 +8,7 @@
 
 #import "NKpch.h"
 
+
 @class NKLabelNode;
 
 typedef NS_OPTIONS(UInt8, NKTextureMapStyle) {
@@ -50,6 +51,7 @@ typedef NS_OPTIONS(UInt8, NKTextureMapStyle) {
 -(void)unbind;
 
 +(NKTexture*)blankTexture;
+
 
 -(GLuint)glTexLocation;
 -(void)setGlTexLocation:(GLuint)loc;
