@@ -185,6 +185,7 @@
 		3B6BF248191149A70082628E /* GOAL_text.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF247191149A70082628E /* GOAL_text.png */; };
 		3B9275DF191D12D400381A52 /* FakeFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B9275DE191D12D400381A52 /* FakeFriends.m */; };
 		3B9275E3191D16DB00381A52 /* RecapMenuLoss.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B9275E2191D16DB00381A52 /* RecapMenuLoss.m */; };
+		3BC4F1D7192BF42B00FC475D /* tile_bottomleft_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC4F1D6192BF42B00FC475D /* tile_bottomleft_dotted.png */; };
 		3BC5A7CF19193E9600414544 /* FuelBar_Container.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7CE19193E9600414544 /* FuelBar_Container.png */; };
 		3BC5A7D21919914800414544 /* FuelBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5A7D11919914800414544 /* FuelBar.m */; };
 		3BC5A7DB191ABEE200414544 /* RecapMenuWin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5A7DA191ABEE200414544 /* RecapMenuWin.m */; };
@@ -516,6 +517,7 @@
 		3B9275E0191D12EA00381A52 /* FakeFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeFriends.h; sourceTree = "<group>"; };
 		3B9275E1191D16D300381A52 /* RecapMenuLoss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecapMenuLoss.h; sourceTree = "<group>"; };
 		3B9275E2191D16DB00381A52 /* RecapMenuLoss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecapMenuLoss.m; sourceTree = "<group>"; };
+		3BC4F1D6192BF42B00FC475D /* tile_bottomleft_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_bottomleft_dotted.png; sourceTree = "<group>"; };
 		3BC5A7CE19193E9600414544 /* FuelBar_Container.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelBar_Container.png; sourceTree = "<group>"; };
 		3BC5A7D0191990EA00414544 /* FuelBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuelBar.h; sourceTree = "<group>"; };
 		3BC5A7D11919914800414544 /* FuelBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuelBar.m; sourceTree = "<group>"; };
@@ -1319,6 +1321,7 @@
 				61D6E6EF18FDB5B70017A389 /* tile_bottom.png */,
 				3B27D3A81925BDEF00782A12 /* tile_bottom_dotted.png */,
 				61D6E6F018FDB5B70017A389 /* tile_bottomleft.png */,
+				3BC4F1D6192BF42B00FC475D /* tile_bottomleft_dotted.png */,
 				61D6E6F118FDB5B70017A389 /* tile_bottomright.png */,
 				3B27D3BE1926736C00782A12 /* tile_bottomright_dotted.png */,
 				61D6E6F218FDB5B70017A389 /* tile_horizontal.png */,
@@ -1590,6 +1593,7 @@
 				297CEA0C1924BDAF0043542D /* Kick_L3a.png in Resources */,
 				61A257D718FDE998001B7F67 /* chromeKittenSmall.png in Resources */,
 				61D6E87518FDB5B70017A389 /* ball_Texture.png in Resources */,
+				3BC4F1D7192BF42B00FC475D /* tile_bottomleft_dotted.png in Resources */,
 				29C42BF819105C0600441639 /* Androyd-Bulbtone-41.wav in Resources */,
 				29C42BE819105C0600441639 /* PlucknWiggleA#1.wav in Resources */,
 				61D6E7F818FDB5B70017A389 /* tile_3bottom.png in Resources */,
