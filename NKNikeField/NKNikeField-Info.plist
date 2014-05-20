@@ -48,7 +48,7 @@
 		<key>clientId</key>
 		<string>32ae5928881388e72a37bbe06d3c3fc8</string>
 		<key>logicSuccess</key>
-		<string> nikecup://fuel/success</string>
+		<string> nsfw://fuel/success</string>
 		<key>loginUrlScheme</key>
 		<string>nsfw</string>
 		<key>servicesUrl</key>
