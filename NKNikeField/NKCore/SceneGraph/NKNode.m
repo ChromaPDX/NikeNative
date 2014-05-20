@@ -10,6 +10,7 @@
 
 @implementation NKNode
 
+#define TEST_IGNORE 1
 #pragma mark - init
 
 -(instancetype)init {
@@ -134,6 +135,7 @@
     }
     
 }
+
 
 -(void)setParent:(NKNode *)parent {
 
