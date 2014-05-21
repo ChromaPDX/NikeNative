@@ -540,7 +540,7 @@
 		61A257BB18FDE998001B7F67 /* NKTextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKTextureManager.h; sourceTree = "<group>"; };
 		61A257BC18FDE998001B7F67 /* NKTextureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKTextureManager.m; sourceTree = "<group>"; };
 		61A257BD18FDE998001B7F67 /* skysphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skysphere.png; sourceTree = "<group>"; };
-		61D6E44B18FDAE110017A389 /* NKNikeField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NKNikeField.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		61D6E44B18FDAE110017A389 /* nikecup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = nikecup.app; path = NKNikeField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61D6E44E18FDAE110017A389 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		61D6E45018FDAE110017A389 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		61D6E45218FDAE110017A389 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -1166,7 +1166,7 @@
 		61D6E44C18FDAE110017A389 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				61D6E44B18FDAE110017A389 /* NKNikeField.app */,
+				61D6E44B18FDAE110017A389 /* nikecup.app */,
 				61D6E46F18FDAE120017A389 /* nikecup.xctest */,
 			);
 			name = Products;
@@ -1470,7 +1470,7 @@
 			);
 			name = NKNikeField;
 			productName = NKNikeField;
-			productReference = 61D6E44B18FDAE110017A389 /* NKNikeField.app */;
+			productReference = 61D6E44B18FDAE110017A389 /* nikecup.app */;
 			productType = "com.apple.product-type.application";
 		};
 		61D6E46E18FDAE120017A389 /* NKNikeFieldTests */ = {
