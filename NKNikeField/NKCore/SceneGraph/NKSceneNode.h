@@ -30,7 +30,12 @@
 #import "NKNode.h"
 #import "NKAlertSprite.h"
 
+#if TARGET_OS_IPHONE
+@class NKUIView;
+#else
 @class NKView;
+#endif
+
 @class NKCamera;
 @class NKShaderProgram;
 @class NKVertexBuffer;
@@ -66,7 +71,12 @@ typedef void (^CallBack)();
 
 @property (nonatomic, strong) NKCamera *camera;
 @property (nonatomic, weak) NKAlertSprite *alertSprite;
+
+#if TARGET_OS_IPHONE
+@property (nonatomic, weak)   NKUIView *nkView;
+#else
 @property (nonatomic, weak)   NKView *nkView;
+#endif
 @property (nonatomic, strong) NKShaderProgram *activeShader;
 
 @property (nonatomic, strong) NKShaderProgram *hitDetectShader;

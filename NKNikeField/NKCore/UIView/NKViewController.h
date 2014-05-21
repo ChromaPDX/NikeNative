@@ -4,10 +4,17 @@
 
 #import "NKpch.h"
 
-#if NK_USE_GLES
+#if TARGET_OS_IPHONE
+#define GOTIT
 @interface NKViewController : UIViewController
-#else
+#endif
+
+#if TARGET_MAC_OS && !TARGET_MAC_IPHONE
 @interface NKViewController : NSViewController
+#else
+#ifndef GOTIT
+@interface NKViewController : UIViewController
+#endif
 #endif
 
 @end

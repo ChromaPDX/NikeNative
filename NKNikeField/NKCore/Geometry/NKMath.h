@@ -27,6 +27,8 @@
 #define NKCLEAR [NKByteColor colorWithRed:0 green:0 blue:0 alpha:0]
 #define NKCOLOR_RANDOM [NKByteColor colorWithRed:arc4random() % 255 green:arc4random() % 255 blue:arc4random() % 255 alpha:255]
 
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
 static const UB4t NKRainbow[] = {
     {255,0,0,255},
     {255,200,0,255},

@@ -2,11 +2,6 @@
 //*  NODE KITTEN
 //*
 
-
-
-#import "NKpch.h"
-#import "NKFrameBuffer.h"
-
 @class NKViewController;
 @class NKSceneNode;
 @class NKVertexBuffer;
@@ -16,27 +11,19 @@
 
 // Attribute index.
 
-#define USE_CV_DISPLAY_LINK 0
-#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+#if !TARGET_OS_IPHONE
 
-#if NK_USE_GLES
-@interface NKView : UIView
-#else
+#define USE_CV_DISPLAY_LINK 0
+
 @interface NKView : NSOpenGLView
-#endif
 
 {
-#if NK_USE_GLES
-    NKContext *context;
-    CADisplayLink *displayLink;
-    NKFrameBuffer *frameBuffer;
-#else
+
 #if USE_CV_DISPLAY_LINK
     static dispatch_queue_t displayThread;
     CVDisplayLinkRef displayLink;
 #else
     NSTimer *displayTimer;
-#endif
 #endif
    
     NSTimeInterval lastTime;
@@ -73,17 +60,6 @@
 @property (nonatomic, strong) NKSceneNode *scene;
 @property (nonatomic) float mscale;
 
-#if NK_USE_GLES
--(void)startAnimation;
--(void)stopAnimation;
--(void)drawView;
-- (id)initGLES;
-
-
-- (BOOL)createFramebuffer;
-- (void)destroyFramebuffer;
-
-#else
 
 /** initializes the CCGLView with a frame rect and an OpenGL context */
 - (id) initWithFrame:(NSRect)frameRect shareContext:(NSOpenGLContext*)context;
@@ -101,9 +77,10 @@
 
 // private
 +(void) load_;
-#endif
+
 
 
 @end
 
+#endif
 
