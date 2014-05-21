@@ -1205,7 +1205,7 @@
             event.playerReceiving.used = TRUE;
         }
         else if (event.type == kEventNoLegs){  //  NO LEGS
-            [event.playerReceiving.effects setObject:@2 forKey:Card_NoLegs];
+            [event.playerReceiving.effects setObject:@1 forKey:Card_NoLegs];
         }
         else if (event.type == kEventSuccubus){  //  SUCCUBUS
             
@@ -1352,30 +1352,31 @@
 #pragma mark - Event helper functions
 
 -(void)drawNewCardsForEvent:(GameEvent*)event {
-    if (event.manager.allCardsInHand.count < 5) {
-        [event.manager.moveDeck turnOverNextCardForEvent:event];
-    }
     
-    if (event.manager.allCardsInHand.count < 5) {
-        if (event.manager.hasPossesion) {
-            [event.manager.kickDeck turnOverNextCardForEvent:event];
-        }
-        else {
-            [event.manager.challengeDeck turnOverNextCardForEvent:event];
-        }
-    }
+//    if (event.manager.allCardsInHand.count < 5) {
+//        [event.manager.moveDeck turnOverNextCardForEvent:event];
+//    }
+//    
+//    if (event.manager.allCardsInHand.count < 5) {
+//        if (event.manager.hasPossesion) {
+//            [event.manager.kickDeck turnOverNextCardForEvent:event];
+//        }
+//        else {
+//            [event.manager.challengeDeck turnOverNextCardForEvent:event];
+//        }
+//    }
     
-    for (int i = 0; i < 3; i++){
+    for (int i = 0; i < 5; i++){
         
         if (event.manager.allCardsInHand.count < 5) {
             
             int randomDraw = [event.manager.moveDeck randomForIndex:(event.seed + i)];
             
-            if (randomDraw < 90) {
+            if (randomDraw < 85) {
                 [event.manager.moveDeck turnOverNextCardForEvent:event];
             }
             
-            else if (randomDraw < 180) {
+            else if (randomDraw < 170) {
                 
                 if (event.manager.hasPossesion) {
                     [event.manager.kickDeck turnOverNextCardForEvent:event];
