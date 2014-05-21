@@ -29,29 +29,35 @@
 
 -(NSString*)imageString {
     
-    NSString *base = @"Faction_";
+    NSString *base = @"Faction";
     switch (_model.faction) {
         case FactionKinforce:
-            base = [base stringByAppendingString:@"Kinforce_"];
+            base = [base stringByAppendingString:@"Kinforce"];
             break;
             
         case FactionGenmod:
-            base = [base stringByAppendingString:@"Genmod_"];
+            base = [base stringByAppendingString:@"Genmod"];
             break;
             
         case FactionPsyke:
-            base = [base stringByAppendingString:@"Psyke_"];
+            base = [base stringByAppendingString:@"Psyke"];
             break;
             
         case FactionSention:
-            base = [base stringByAppendingString:@"Sention_"];
+            base = [base stringByAppendingString:@"Sention"];
             break;
             
         default:
-            base = [base stringByAppendingString:@"Kinforce_"];
+            base = [base stringByAppendingString:@"Kinforce"];
             break;
     }
     
+    if(self.model.game.me == self.model.manager){
+        base = [base stringByAppendingString:@"Home_"];
+    }
+    else{
+        base = [base stringByAppendingString:@"Away_"];
+    }
     if (_model.used) {
         return [base stringByAppendingString:@"OFF"];
     }else{
@@ -65,21 +71,23 @@
         
         _model = model;
         
+        /*
         NKSpriteNode *shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerShadow] color:NKBLACK size:S2Make(w, h)];
         [shadow setAlpha:.2];
         shadow.name = @"shadow";
         
         [self addChild:shadow];
         [shadow setPosition3d:V3Make(-self.size.width * .03, self.size.width*.03, -1)];
+        */
         
         cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:S2Make(w, h)];
         
         [cardImg setOrientationEuler:V3Make(45,0,0)];
         float cardOffset = -20;
         float cardScale = .8;
-        [shadow setPosition3d:V3Make(0,cardOffset, 0)];
+        //[shadow setPosition3d:V3Make(0,cardOffset, 0)];
         [cardImg setPosition3d:V3Make(0,cardOffset, 0)];
-        [shadow setScale3d:V3Make(cardScale, cardScale, 1)];
+        //[shadow setScale3d:V3Make(cardScale, cardScale, 1)];
         [cardImg setScale3d:V3Make(cardScale, cardScale, 1)];
         [self addChild:cardImg];
         
