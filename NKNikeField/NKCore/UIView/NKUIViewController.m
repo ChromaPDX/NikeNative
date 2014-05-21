@@ -1,17 +1,17 @@
 //
-//  NKViewController.m
-//  NKNikeField
+//  NKUIViewController.m
+//  EMA Stage
 //
-//  Created by Leif Shackelford on 4/25/14.
-//  Copyright (c) 2014 Chroma Developer. All rights reserved.
+//  Created by Leif Shackelford on 5/21/14.
+//  Copyright (c) 2014 EMA. All rights reserved.
 //
 
-#if !TARGET_OS_IPHONE
+#if TARGET_OS_IPHONE
 
-#import "NKViewController.h"
-#import "NodeKitten.h"
+#import "NKUIViewController.h"
 
-@implementation NKViewController
+
+@implementation NKUIViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -22,27 +22,10 @@
     return self;
 }
 
-
-#if NK_USE_GLES
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    
-    if ([self.view isKindOfClass:[NKUIView class]]) {
-         [(NKUIView*)self.view setController:self];
-    }
     // Do any additional setup after loading the view.
-}
-
--(void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [(NKUIView*)self.view startAnimation];
-}
-- (void)viewWillDisappear:(BOOL)animated {
-    NSLog(@"view will dissappear");
-    [(NKUIView*)self.view stopAnimation];
-    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -50,8 +33,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-#endif
-
 
 /*
 #pragma mark - Navigation

@@ -13,13 +13,6 @@
 @implementation NKView
 
 #pragma mark -
-#pragma mark - SHARED METHODS
-#pragma mark -
-
-
-
-
-#pragma mark -
 #pragma mark - OS X
 #pragma mark -
 

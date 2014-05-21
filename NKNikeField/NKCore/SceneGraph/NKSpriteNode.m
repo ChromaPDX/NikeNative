@@ -88,6 +88,7 @@
 -(void)customDraw {
     if (_vert && (_color || _texture)) {
         
+        
         [self.scene pushScale:self.size3d];
         
         C4t col;

@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 EMA. All rights reserved.
 //
 
-#import "NodeKitten.h"
+#if TARGET_OS_IPHONE
 
-#if NK_USE_GLES
+#import "NodeKitten.h"
 
 @implementation NKUIView
 
@@ -230,21 +230,21 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     for (UITouch *t in touches) {
-        [_scene touchDown:[self uiPointToNodePoint:[t locationInView:self]] id:0];
+       [_scene dispatchTouchRequestForLocation:[self uiPointToNodePoint:[t locationInView:self]]  type:NKEventTypeBegin];
     }
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     
     for (UITouch *t in touches) {
-        [_scene touchMoved:[self uiPointToNodePoint:[t locationInView:self]] id:0];
+        [_scene dispatchTouchRequestForLocation:[self uiPointToNodePoint:[t locationInView:self]]  type:NKEventTypeMove];
     }
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     
     for (UITouch *t in touches) {
-        [_scene touchUp:[self uiPointToNodePoint:[t locationInView:self]] id:0];
+        [_scene dispatchTouchRequestForLocation:[self uiPointToNodePoint:[t locationInView:self]] type:NKEventTypeEnd];
     }
     
 }

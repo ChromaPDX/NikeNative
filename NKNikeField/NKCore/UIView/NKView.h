@@ -2,6 +2,8 @@
 //*  NODE KITTEN
 //*
 
+#if !TARGET_OS_IPHONE
+
 @class NKViewController;
 @class NKSceneNode;
 @class NKVertexBuffer;
@@ -11,7 +13,7 @@
 
 // Attribute index.
 
-#if !TARGET_OS_IPHONE
+
 
 #define USE_CV_DISPLAY_LINK 0
 

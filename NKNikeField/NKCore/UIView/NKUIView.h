@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 EMA. All rights reserved.
 //
 
+#if TARGET_OS_IPHONE
+
 #import "NKpch.h"
 
-@class NKViewController;
+@class NKUIViewController;
 @class NKSceneNode;
 @class NKVertexBuffer;
 @class NKShaderProgram;
@@ -49,7 +51,7 @@
     NKTexture * texture;
 }
 
-@property (nonatomic, weak) NKViewController *controller;
+@property (nonatomic, weak) NKUIViewController *controller;
 @property (nonatomic, strong) NKSceneNode *scene;
 @property (nonatomic) float mscale;
 
@@ -63,3 +65,5 @@
 - (void)destroyFramebuffer;
 
 @end
+
+#endif
