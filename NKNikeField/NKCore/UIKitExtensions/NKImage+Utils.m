@@ -100,7 +100,7 @@ static void ReleaseDataBuffer( void *p , const void *cp , size_t l ) {
 
 +(NKImage*)nkImageWithCGImage:(CGImageRef)imageRef {
     
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
     return [NKImage imageWithCGImage:imageRef];
 #else
     unsigned long width = CGImageGetWidth(imageRef);
@@ -111,7 +111,7 @@ static void ReleaseDataBuffer( void *p , const void *cp , size_t l ) {
 }
 
 -(CGImageRef)getCGImage {
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
     return self.CGImage;
 #else
 	NSBitmapImageRep *imageClass = [[NSBitmapImageRep alloc] initWithData:[self TIFFRepresentation]];
@@ -120,7 +120,7 @@ static void ReleaseDataBuffer( void *p , const void *cp , size_t l ) {
 }
 
 -(NKImageOrientation)nkImageOrientation {
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
     return self.imageOrientation;
 #else
     return NKImageOrientationUp;
@@ -435,7 +435,7 @@ static CGRect clipRectToPath(CGRect rect, CGPathRef path)
 		CGImageRef imageRef = CGBitmapContextCreateImage(context);
         
 		// Support both iPad 3.2 and iPhone 4 Retina displays with the correct scale
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
 		if([NKImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)]) {
 			float scale = [[UIScreen mainScreen] scale];
 			image = [NKImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];

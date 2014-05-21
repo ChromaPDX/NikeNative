@@ -28,7 +28,7 @@
         NSLog(@"init vertex buffer with size: %ld", size);
         
         //glEnable(GL_DEPTH_TEST);
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
         glGenVertexArraysOES(1, &_vertexArray);
         glBindVertexArrayOES(_vertexArray);
 #else
@@ -48,7 +48,7 @@
         
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         
-        #if TARGET_OS_IPHONE
+        #if NK_USE_GLES
         glBindVertexArrayOES(0);
         #else
         glBindVertexArrayAPPLE(0);
@@ -81,7 +81,7 @@
     }];
     
     buf.numberOfElements = sizeof(gCubeVertexData) / (sizeof(F1t)*7.);
-    buf.drawMode = GL_LINES;
+
     return buf;
 }
 
@@ -113,7 +113,6 @@
     }];
     
     buf.numberOfElements = sizeof(gCubeVertexData) / (sizeof(F1t)*8.);
-    buf.drawMode = GL_TRIANGLES;
     return buf;
 }
 
@@ -267,8 +266,7 @@
     }];
     
     buf.numberOfElements = numElements;
-    
-    buf.drawMode = GL_TRIANGLE_STRIP;
+
     
     //buf.drawMode = GL_LINES;
     
@@ -287,7 +285,6 @@
     }];
     
     buf.numberOfElements = 1;
-    buf.drawMode = GL_POINTS;
     
     return buf;
 }
@@ -351,7 +348,6 @@
     }];
 
     buf.numberOfElements = sizeof(gCubeVertexData) / 6;
-    buf.drawMode = GL_TRIANGLES;
     
     return buf;
 }
@@ -369,7 +365,7 @@
 - (void)dealloc
 {
     glDeleteBuffers(1, &_vertexBuffer);
-    #if TARGET_OS_IPHONE
+    #if NK_USE_GLES
     glDeleteVertexArraysOES(1, &_vertexArray);
     #else
     glDeleteVertexArraysAPPLE(1, &_vertexArray);
@@ -379,7 +375,7 @@
 
 - (void)bind
 {
-    #if TARGET_OS_IPHONE
+    #if NK_USE_GLES
     glBindVertexArrayOES(_vertexArray);
     #else
     glBindVertexArrayAPPLE(_vertexArray);
@@ -396,7 +392,7 @@
 
 - (void)unbind
 {
-    #if TARGET_OS_IPHONE
+    #if NK_USE_GLES
     glBindVertexArrayOES(0);
      #else
     glBindVertexArrayAPPLE(0);
@@ -437,12 +433,12 @@
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBuffer);
 }
 
-- (void)bind:(void(^)())drawingBlock
-{
-    [self bind];
-    drawingBlock();
-    [self unbind];
-}
+//- (void)bind:(void(^)())drawingBlock
+//{
+//    [self bind];
+//    drawingBlock();
+//    [self unbind];
+//}
 
 - (void)unbind
 {

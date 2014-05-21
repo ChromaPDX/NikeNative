@@ -9,7 +9,9 @@
 #import "Menus.h"
 #import "NodeKitten.h"
 #import "GameScene.h"
-//#import "NikeViewController.h"
+#if TARGET_OS_IPHONE
+#import "NikeViewController.h"
+#endif
 #import "Game.h"
 
 @implementation MainMenu
@@ -76,10 +78,12 @@
     
     if(R4ContainsPoint(syncButtonRect, location)){
         NSLog(@"*NSYNC!");
+#if TARGET_OS_IPHONE
         NikeViewController* sync = [[NikeViewController alloc]init];
         [self.nkView.controller presentViewController:sync animated:YES completion:^{
-        
+            
         }];
+#endif
     }
     else if(R4ContainsPoint(startButtonRect, location)){
         NSLog(@"start button pressed, starting game...");

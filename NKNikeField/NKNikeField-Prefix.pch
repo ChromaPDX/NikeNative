@@ -11,5 +11,6 @@
 #endif
 
 #ifdef __OBJC__
+    #define NK_USE_GLES 1
     #import "NKpch.h"
 #endif

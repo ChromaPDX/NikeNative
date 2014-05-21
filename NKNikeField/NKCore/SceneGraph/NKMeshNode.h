@@ -7,20 +7,21 @@
 //
 #import "NKPch.h"
 
-
 #import "NKNode.h"
 #import "NKTexture.h"
-#import "NKMesh.h"
+#import "NKVertexBuffer.h"
 
 @class NKMesh;
 @class NKByteColor;
 
+
 @interface NKMeshNode : NKNode
 
-@property (nonatomic, strong) NKMesh *mesh;
+@property (nonatomic, strong) NKVertexBuffer *vertexBuffer;
+@property (nonatomic) GLenum drawMode;
 @property (nonatomic, strong) NKTexture *texture;
 
--(instancetype)initWithObjFileNamed:(NSString*)name texture:(NKTexture*)texture size:(V3t)size;
+
 -(instancetype)initWithPrimitive:(NKPrimitive)primitive texture:(NKTexture*)texture color:(NKByteColor *)color size:(V3t)size;
 
 @property (nonatomic) float colorBlendFactor;

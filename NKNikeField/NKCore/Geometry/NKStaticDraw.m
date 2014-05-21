@@ -94,8 +94,8 @@ static NKStaticDraw *sharedObject = nil;
 		CGFloat alpha = components[3];
 		glColor4f(red,green, blue, alpha);
 	}
-    
 }
+
 - (void)setColorArrayToColor:(NKColor *)toColor
 {
 	GLfloat *colorArray = malloc(sizeof(GLfloat) * 8);

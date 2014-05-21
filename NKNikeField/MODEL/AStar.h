@@ -20,6 +20,7 @@ typedef NS_ENUM(int, NeighborhoodType){
 
 #import "BoardLocation.h"
 
+
 @interface AStar : NSObject
 
 -(id) initWithColumns:(int)columns Rows:(int)rows ObstaclesCells:(NSArray*)obstacleCells;

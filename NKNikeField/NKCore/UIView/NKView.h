@@ -16,25 +16,23 @@
 
 // Attribute index.
 
-static dispatch_queue_t displayThread;
-
 #define USE_CV_DISPLAY_LINK 0
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
 @interface NKView : UIView
 #else
 @interface NKView : NSOpenGLView
 #endif
 
 {
-    
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
     NKContext *context;
     CADisplayLink *displayLink;
     NKFrameBuffer *frameBuffer;
 #else
 #if USE_CV_DISPLAY_LINK
+    static dispatch_queue_t displayThread;
     CVDisplayLinkRef displayLink;
 #else
     NSTimer *displayTimer;
@@ -46,6 +44,11 @@ static dispatch_queue_t displayThread;
     int drawHitEveryXFrames;
     int framesSinceLastHit;
     int rotate;
+    
+    float w;
+    float h;
+    float wMult;
+    float hMult;
     
 	BOOL controllerSetup;
     bool animating;
@@ -68,15 +71,18 @@ static dispatch_queue_t displayThread;
 
 @property (nonatomic, weak) NKViewController *controller;
 @property (nonatomic, strong) NKSceneNode *scene;
+@property (nonatomic) float mscale;
 
-@property (nonatomic, strong) NKSceneNode *nextScene;
-
+#if NK_USE_GLES
 -(void)startAnimation;
 -(void)stopAnimation;
 -(void)drawView;
-
-#if TARGET_OS_IPHONE
 - (id)initGLES;
+
+
+- (BOOL)createFramebuffer;
+- (void)destroyFramebuffer;
+
 #else
 
 /** initializes the CCGLView with a frame rect and an OpenGL context */
@@ -97,8 +103,6 @@ static dispatch_queue_t displayThread;
 +(void) load_;
 #endif
 
-- (BOOL)createFramebuffer;
-- (void)destroyFramebuffer;
 
 @end
 

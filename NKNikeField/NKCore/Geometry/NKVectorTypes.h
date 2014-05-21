@@ -2,9 +2,7 @@
 //*  NODE KITTEN
 //*
 
-#import <Foundation/Foundation.h>
-
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
 
 #import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
@@ -14,7 +12,8 @@
 #define NKColor UIColor
 #define NKImage UIImage
 #define NKFont  UIFont
-
+#define NKContext EAGLContext
+#define NKDisplayLink CADisplayLink *
 #define NK_NONATOMIC_IOSONLY nonatomic
 
 #else // TARGET DESKTOP
@@ -29,10 +28,13 @@
 #define NKColor NSColor
 #define NKImage NSImage
 #define NKFont  NSFont
+#define NKContext NSOpenGLContext
+#define NKDisplayLink CVDisplayLinkRef
 
 #define NK_NONATOMIC_IOSONLY atomic
 
 #endif
+
 #endif
 
 

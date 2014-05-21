@@ -8,18 +8,6 @@
 
 #import "NKpch.h"
 
-#if TARGET_OS_IPHONE
-
-#define NKContext EAGLContext
-#define NKDisplayLink CADisplayLink *
-
-#else
-
-#define NKContext NSOpenGLContext
-#define NKDisplayLink CVDisplayLinkRef
-
-#endif
-
 @class NKTexture;
 @class NKByteColor;
 
@@ -35,7 +23,7 @@
 
 @property (nonatomic,strong) NKTexture *renderTexture;
 
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
 - (id)initWithContext:(NKContext *)context layer:(id <EAGLDrawable>)layer;
 #else
 #endif

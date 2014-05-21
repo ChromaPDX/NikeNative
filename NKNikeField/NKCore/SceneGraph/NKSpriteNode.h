@@ -50,9 +50,11 @@ static inline float cblend(F1t col, F1t bl){
 
 @property (nonatomic) R4t centerRect;
 
+
 @property (nonatomic) float colorBlendFactor;
 @property (nonatomic, strong) NKByteColor* color;
 @property (nonatomic, strong) NKTexture *texture;
 @property (nonatomic, strong) NKVertexBuffer *vert;
+@property (nonatomic) GLenum drawMode;
 
 @end

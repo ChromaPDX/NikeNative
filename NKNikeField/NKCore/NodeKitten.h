@@ -49,7 +49,6 @@
 // #import "NKVectorTypes.h" should be in the PCH
 #import "NKVertexBuffer.h"
 #import "NKStaticDraw.h"
-#import "NKMesh.h"
 
 // TEXTURE
 

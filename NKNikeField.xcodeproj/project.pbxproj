@@ -188,7 +188,6 @@
 		6198A359190068660083EA5D /* UXTopBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6198A358190068660083EA5D /* UXTopBar.m */; };
 		6198A35B1900727C0083EA5D /* lock-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 6198A35A1900727C0083EA5D /* lock-4.png */; };
 		61A257C118FDE998001B7F67 /* NKMaterial.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578418FDE998001B7F67 /* NKMaterial.m */; };
-		61A257C218FDE998001B7F67 /* NKMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578618FDE998001B7F67 /* NKMesh.m */; };
 		61A257C318FDE998001B7F67 /* NKStaticDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578918FDE998001B7F67 /* NKStaticDraw.m */; };
 		61A257C418FDE998001B7F67 /* NKVectorTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2578B18FDE998001B7F67 /* NKVectorTypes.m */; };
 		61A257D118FDE998001B7F67 /* NKBlendShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A257A918FDE998001B7F67 /* NKBlendShader.m */; };
@@ -516,8 +515,6 @@
 		6198A35A1900727C0083EA5D /* lock-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock-4.png"; sourceTree = "<group>"; };
 		61A2578318FDE998001B7F67 /* NKMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKMaterial.h; sourceTree = "<group>"; };
 		61A2578418FDE998001B7F67 /* NKMaterial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKMaterial.m; sourceTree = "<group>"; };
-		61A2578518FDE998001B7F67 /* NKMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKMesh.h; sourceTree = "<group>"; };
-		61A2578618FDE998001B7F67 /* NKMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKMesh.m; sourceTree = "<group>"; };
 		61A2578718FDE998001B7F67 /* NKMeshTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKMeshTypes.h; sourceTree = "<group>"; };
 		61A2578818FDE998001B7F67 /* NKStaticDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKStaticDraw.h; sourceTree = "<group>"; };
 		61A2578918FDE998001B7F67 /* NKStaticDraw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKStaticDraw.m; sourceTree = "<group>"; };
@@ -1110,8 +1107,6 @@
 				61A2578B18FDE998001B7F67 /* NKVectorTypes.m */,
 				61A2578318FDE998001B7F67 /* NKMaterial.h */,
 				61A2578418FDE998001B7F67 /* NKMaterial.m */,
-				61A2578518FDE998001B7F67 /* NKMesh.h */,
-				61A2578618FDE998001B7F67 /* NKMesh.m */,
 				2908D7FA1912BB1A001FC6B4 /* NKVertexBuffer.h */,
 				2908D7FB1912BB1A001FC6B4 /* NKVertexBuffer.m */,
 				61A2578718FDE998001B7F67 /* NKMeshTypes.h */,
@@ -1725,7 +1720,6 @@
 				29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */,
 				29D8926A190AA65E008FBD5F /* deflate.c in Sources */,
 				2934BDE8191B166300A33DBF /* perlin.c in Sources */,
-				61A257C218FDE998001B7F67 /* NKMesh.m in Sources */,
 				61D6E8A618FDB5B70017A389 /* ButtonSprite.m in Sources */,
 				29BF481E1911667900487EBD /* NKCoreTextNode.m in Sources */,
 				61D6E88E18FDB5B70017A389 /* MenuPlayerProfileScene.m in Sources */,

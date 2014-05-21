@@ -96,6 +96,7 @@
     //NSLog(@"push M %lu", matrixCount);
     
     //[_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    
     [_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
    
 }
@@ -127,13 +128,12 @@
         NSLog(@"MATRIX STACK UNDERFLOW");
     }
     
-    [_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    //[_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    
     //[_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
 }
 
--(void)drawForHitDetection {
-    
-    [_hitDetectBuffer bind];
+-(void)drawHitBuffer {
     
     self.blendMode = NKBlendModeNone;
     glDisable(GL_BLEND);
@@ -141,13 +141,22 @@
     _activeShader = _hitDetectShader;
     [_activeShader use];
     
+    [super drawForHitDetection];
+
+}
+
+-(void)drawToHitBuffer {
+    
+    [_hitDetectBuffer bind];
+    
     glViewport(0, 0, self.size.width, self.size.height);
     
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
-    [super drawForHitDetection];
-    
+    [self drawHitBuffer];
+
     NSArray* queue = [_hitQueue copy];
     
     for (CallBack b in queue) {
@@ -165,31 +174,18 @@
     if (NK_GL_VERSION == 2) {
         
         [_activeShader use];
-        // 1
-//        glViewport(0, 0, self.size.width, self.size.height);
-//        glClearColor(0., 0., 0., 0.);
-        
-//        if (_backgroundColor) {
-//            C4t c;
-//            [_backgroundColor getRed:&c.r green:&c.g blue:&c.b alpha:&c.a];
-//            glClearColor(c.r, c.g, c.b, c.a);
-//        }
 
-        //[self drawAxes];
-        // 2
-       
 #ifdef SHOW_HIT_DETECTION
-        self.blendMode = NKBlendModeNone;
-        glDisable(GL_BLEND);
-        
-        _activeShader = _hitDetectShader;
-        [_activeShader use];
-        
-         [super drawForHitDetection];
+        [self drawHitBuffer];
 #else
         [super draw];
 #endif
 
+        [_boundTexture unbind];
+        _boundTexture = nil;
+        [_boundVertexBuffer unbind];
+        _boundVertexBuffer = nil;
+        
     }
     
     else {
@@ -391,7 +387,7 @@
             color = test;
             node.uidColor = test;
             [_hitColorMap setObject:node forKey:node.uidColor];
-            [color log];
+            //[color log];
         }
     }
     
@@ -405,12 +401,14 @@
                      1, 1,
                      GL_RGBA, GL_UNSIGNED_BYTE, hc.bytes);
         NKNode *hit = [_hitColorMap objectForKey:hc];
-        
+        //[hc log];
         if (!hit){
             hit = self;
         }
         
-        NSLog(@"hit node: %@", hit.name);
+        [hit handleEventWithType:eventType forLocation:location];
+        
+        //NSLog(@"%f:%f hit node: %@", location.x, location.y, hit.name);
         switch (eventType) {
             case NKEventTypeBegin:
                 [hit touchDown:location id:0];

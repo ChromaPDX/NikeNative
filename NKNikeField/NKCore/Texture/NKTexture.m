@@ -78,7 +78,7 @@
     
     [texture setGlTexLocation:[NKTextureManager defaultTextureLocation]];
     
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
     dispatch_async([NKTextureManager textureThread], ^{
 #endif
         CGContextRef ctx = [NKImage newRGBAContext:size];
@@ -136,14 +136,14 @@
         //    CGContextFillRect(ctx, CGRectMake(0, 0, size.width, size.height));
         
         CTFrameDraw(frame, ctx);
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
         dispatch_async(dispatch_get_main_queue(), ^{
 #endif
             [texture loadTexFromCGContext:ctx size:size];
             if (block) {
                 block();
             }
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
         });
 #endif
         
@@ -154,7 +154,7 @@
         
         
         
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
     });
 #endif
     
@@ -171,7 +171,7 @@
         int w = size.width;
         int h = size.height;
         
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
         glActiveTexture(GL_TEXTURE0);
         glGenTextures(1, (GLuint *)&texture[0]);
         glBindTexture(GL_TEXTURE_2D, texture[0]);
@@ -380,7 +380,7 @@
 
     if (NK_GL_VERSION == 2) {
         
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
         glActiveTexture(GL_TEXTURE0);
         glGenTextures(1, (GLuint *)&texture[0]);
         glBindTexture(GL_TEXTURE_2D, texture[0]);

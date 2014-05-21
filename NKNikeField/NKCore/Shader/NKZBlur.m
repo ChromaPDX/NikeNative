@@ -143,7 +143,7 @@
 //    NSMutableString *shaderString = [[NSMutableString alloc] init];
 //    
 //    // Header
-//#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+//#if TARGET_IPHONE_SIMULATOR || NK_USE_GLES
 //    [shaderString appendFormat:@"\
 //     uniform sampler2D tex0;\n\
 //     uniform sampler2D depthTexture;\n\
@@ -316,7 +316,7 @@
     NSMutableString *shaderString = [[NSMutableString alloc] init];
     
     // Header
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_IPHONE_SIMULATOR || NK_USE_GLES
     [shaderString appendFormat:@"\
      uniform sampler2D tex0;\n\
      uniform sampler2D depthTexture;\n\
@@ -368,7 +368,7 @@
     
     if (trueNumberOfOptimizedOffsets > numberOfOptimizedOffsets)
     {
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_IPHONE_SIMULATOR || NK_USE_GLES
         
         [shaderString appendString:@"vec2 singleStepOffset = vec2(texelWidthOffset, texelHeightOffset));\n"];
 #else

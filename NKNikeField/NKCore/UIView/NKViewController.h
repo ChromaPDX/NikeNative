@@ -4,7 +4,7 @@
 
 #import "NKpch.h"
 
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
 @interface NKViewController : UIViewController
 #else
 @interface NKViewController : NSViewController

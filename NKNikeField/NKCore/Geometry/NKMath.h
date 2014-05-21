@@ -9,6 +9,33 @@
 #ifndef NKNikeField_NKMath_h
 #define NKNikeField_NKMath_h
 
+#import "NKVectorTypes.h"
+#import "perlin.h"
+
+#ifdef __cplusplus
+#define NK_EXPORT extern "C" __attribute__((visibility ("default")))
+#else
+#define NK_EXPORT extern __attribute__((visibility ("default")))
+#endif
+#define NK_AVAILABLE __OSX_AVAILABLE_STARTING
+
+#define NKWHITE [NKByteColor colorWithRed:255 green:255 blue:255 alpha:255]
+#define NKRED [NKByteColor colorWithRed:255 green:0 blue:0. alpha:255]
+#define NKGREEN [NKByteColor colorWithRed:0 green:255 blue:0 alpha:255]
+#define NKBLUE [NKByteColor colorWithRed:0 green:0. blue:255 alpha:255]
+#define NKBLACK [NKByteColor colorWithRed:0 green:0 blue:0 alpha:255]
+#define NKCLEAR [NKByteColor colorWithRed:0 green:0 blue:0 alpha:0]
+#define NKCOLOR_RANDOM [NKByteColor colorWithRed:arc4random() % 255 green:arc4random() % 255 blue:arc4random() % 255 alpha:255]
+
+static const UB4t NKRainbow[] = {
+    {255,0,0,255},
+    {255,200,0,255},
+    {255,255,0,255},
+    {0,255,0,255},
+    {0,0,255,255},
+    {255,0,255,255},
+};
+
 static inline F1t sgn(F1t val)
 {
 	return (val > 0.0f) ? 1.0f : ((val < 0.0f) ? -1.0f : 0.0f);

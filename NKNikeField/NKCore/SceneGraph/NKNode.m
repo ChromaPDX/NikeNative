@@ -489,7 +489,7 @@
             self.scene.activeShader = _shader;
             [_shader use];
         }
-
+        
         [self.scene pushMultiplyMatrix:localTransformMatrix];
     }
     else {
@@ -506,11 +506,7 @@
     [self customDraw];
 
     for (NKNode *child in intChildren) {
-        //if (!child.isHidden) {
             [child draw];
-
-          //  NSLog(@"draw scene child");
-        //}
     }
     
     [self end];
@@ -525,9 +521,7 @@
     }
 
     for (NKNode *child in intChildren) {
-        if (!child.isHidden) {
             [child drawForHitDetection];
-        }
     }
     
     [self.scene popMatrix];
@@ -1007,6 +1001,14 @@
 
 -(void)removeAllActions {
         [animationHandler removeAllActions];
+}
+
+#pragma mark - EVENT HANDLING
+
+-(void)handleEventWithType:(NKEventType)event forLocation:(P2t)location {
+    if (_eventBlock) {
+        _eventBlock(event, location);
+    }
 }
 
 #pragma mark - TOUCH

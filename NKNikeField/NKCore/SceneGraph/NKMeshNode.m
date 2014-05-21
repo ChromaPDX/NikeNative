@@ -12,29 +12,6 @@
 @implementation NKMeshNode
 
 
--(instancetype)initWithObjFileNamed:(NSString*)name texture:(NKTexture*)texture size:(V3t)size {
-    
-    self = [super init];
-    if (self) {
-        self.size3d = size;
-        self.texture = texture;
-        // ROBBY
-        
-        _colorBlendFactor = 1.;
-        
-        if (self.texture && !_color) {
-            self.color = NKWHITE;
-        }
-        
-        NSString *path = [[NSBundle mainBundle] pathForResource:name ofType:@"obj"];
-        _mesh = [[NKMesh alloc] initWithPath:path];
-        
-    }
-    
-    return self;
-    
-}
-
 -(instancetype)initWithPrimitive:(NKPrimitive)primitive texture:(NKTexture*)texture color:(NKByteColor *)color size:(V3t)size {
     
     self = [super init];
@@ -56,8 +33,48 @@
         if (self.texture && !_color) {
             self.color = NKWHITE;
         }
-
-        _mesh = [[NKMesh alloc]initWithPrimitive:primitive];
+        
+        
+        NSString *pstring = [NKStaticDraw stringForPrimitive:primitive];
+        
+        if ([[NKStaticDraw meshesCache]objectForKey:pstring]) {
+            _vertexBuffer = [[NKStaticDraw meshesCache]objectForKey:pstring];
+        }
+        
+        else {
+            switch (primitive) {
+                    
+                case NKPrimitiveSphere:
+                    _vertexBuffer = [NKVertexBuffer sphereWithStacks:8 slices:16 squash:1.];
+                    _drawMode = GL_TRIANGLE_STRIP;
+                    break;
+                    
+                case NKPrimitiveCube:
+                    _vertexBuffer = [NKVertexBuffer defaultCube];
+                    _drawMode = GL_TRIANGLES;
+                    break;
+                    
+                case NKPrimitiveRect:
+                    _vertexBuffer = [NKVertexBuffer defaultRect];
+                    _drawMode = GL_TRIANGLES;
+                    break;
+                    
+                case NKPrimitiveAxes:
+                    _vertexBuffer = [NKVertexBuffer axes];
+                    _drawMode = GL_LINES;
+                    break;
+                    
+                default:
+                    break;
+                    
+            }
+            
+            
+            [[NKStaticDraw meshesCache] setObject:_vertexBuffer forKey:pstring];
+            
+            NSLog(@"add primitive: %@ to mesh cache with %d vertices", pstring, _vertexBuffer.numberOfElements);
+            
+        }
         
         self.cullFace = NKCullFaceBack;
     }
@@ -119,7 +136,12 @@
     
     [self.scene.activeShader setVec4:self.uidColor.C4Color forUniform:UNIFORM_COLOR];
     
-    [_mesh draw];
+    if (self.scene.boundVertexBuffer != _vertexBuffer) {
+        [_vertexBuffer bind];
+        self.scene.boundVertexBuffer = _vertexBuffer;
+    }
+    
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, _vertexBuffer.numberOfElements);
     
     [self.scene popMatrix];
 }
@@ -149,14 +171,25 @@
             }
             
             if (_texture) {
+                
+                if (self.scene.boundTexture != _texture) {
+                    [_texture bind];
+                    self.scene.boundTexture = _texture;
+                }
+                
                 [self.scene.activeShader setInt:1 forUniform:UNIFORM_NUM_TEXTURES];
-                [_mesh drawWithTexture:_texture color:col];
             }
             
             else {
                 [self.scene.activeShader setInt:0 forUniform:UNIFORM_NUM_TEXTURES];
-                [_mesh drawWithColor:col];
             }
+            
+            if (self.scene.boundVertexBuffer != _vertexBuffer) {
+                [_vertexBuffer bind];
+                self.scene.boundVertexBuffer = _vertexBuffer;
+            }
+            
+            glDrawArrays(_drawMode, 0, _vertexBuffer.numberOfElements);
             
             [self.scene popMatrix];
             
@@ -168,12 +201,18 @@
             glPushMatrix();
             glScalef(w,h,d);
             
-            if (_texture) {
-                [_mesh drawWithTexture:_texture color:self.glColor];
+            if (self.scene.boundVertexBuffer != _vertexBuffer) {
+                [_vertexBuffer bind];
+                self.scene.boundVertexBuffer = _vertexBuffer;
             }
-            else {
-                [_mesh drawWithColor:self.glColor];
-            }
+            
+            glDrawArrays(_drawMode, 0, _vertexBuffer.numberOfElements);
+//            if (_texture) {
+//                [_vertexBuffer drawWithTexture:_texture color:self.glColor];
+//            }
+//            else {
+//                [_vertexBuffer drawWithColor:self.glColor];
+//            }
             
             glPopMatrix();
         }

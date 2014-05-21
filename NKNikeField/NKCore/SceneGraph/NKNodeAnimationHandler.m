@@ -445,7 +445,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         
         [node setPosition3d:[node orbitForLongitude:orbit.x latitude:orbit.y radius:orbit.z]];
         
-        NSLog(@"orbiting, %f, %f, %f", node.latitude, node.longitude, node.radius);
+        //NSLog(@"orbiting, %f, %f, %f", node.latitude, node.longitude, node.radius);
         
     };
     

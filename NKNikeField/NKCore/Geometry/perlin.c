@@ -6,13 +6,31 @@
 #include <math.h>
 #include "perlin.h"
 
+#define PERLIN_B 0x100
+#define PERLIN_BM 0xff
+#define PERLIN_N 0x1000
+#define PERLIN_NP 12   /* 2^N */
+#define PERLIN_NM 0xfff
+
+#define s_curve(t) ( t * t * (3. - 2. * t) )
+#define lerp(t, a, b) ( a + t * (b - a) )
+
+#define setup(i,b0,b1,r0,r1)\
+t = vec[i] + PERLIN_N;\
+b0 = ((int)t) & PERLIN_BM;\
+b1 = (b0+1) & PERLIN_BM;\
+r0 = t - (int)t;\
+r1 = r0 - 1.;
+#define at2(rx,ry) ( rx * q[0] + ry * q[1] )
+#define at3(rx,ry,rz) ( rx * q[0] + ry * q[1] + rz * q[2] )
+
 // Keep this private
 void init(void);
 
-static int p[B + B + 2];
-static double g3[B + B + 2][3];
-static double g2[B + B + 2][2];
-static double g1[B + B + 2];
+static int p[PERLIN_B + PERLIN_B + 2];
+static double g3[PERLIN_B + PERLIN_B + 2][3];
+static double g2[PERLIN_B + PERLIN_B + 2][2];
+static double g1[PERLIN_B + PERLIN_B + 2];
 static int start = 1;
 
 double noise1(double arg)
@@ -144,32 +162,32 @@ void init(void)
 {
    int i, j, k;
 
-   for (i = 0 ; i < B ; i++) {
+   for (i = 0 ; i < PERLIN_B ; i++) {
       p[i] = i;
-      g1[i] = (double)((random() % (B + B)) - B) / B;
+      g1[i] = (double)((random() % (PERLIN_B + PERLIN_B)) - PERLIN_B) / PERLIN_B;
 
       for (j = 0 ; j < 2 ; j++)
-         g2[i][j] = (double)((random() % (B + B)) - B) / B;
+         g2[i][j] = (double)((random() % (PERLIN_B + PERLIN_B)) - PERLIN_B) / PERLIN_B;
       normalize2(g2[i]);
 
       for (j = 0 ; j < 3 ; j++)
-         g3[i][j] = (double)((random() % (B + B)) - B) / B;
+         g3[i][j] = (double)((random() % (PERLIN_B + PERLIN_B)) - PERLIN_B) / PERLIN_B;
       normalize3(g3[i]);
    }
 
    while (--i) {
       k = p[i];
-      p[i] = p[j = random() % B];
+      p[i] = p[j = random() % PERLIN_B];
       p[j] = k;
    }
 
-   for (i = 0 ; i < B + 2 ; i++) {
-      p[B + i] = p[i];
-      g1[B + i] = g1[i];
+   for (i = 0 ; i < PERLIN_B + 2 ; i++) {
+      p[PERLIN_B + i] = p[i];
+      g1[PERLIN_B + i] = g1[i];
       for (j = 0 ; j < 2 ; j++)
-         g2[B + i][j] = g2[i][j];
+         g2[PERLIN_B + i][j] = g2[i][j];
       for (j = 0 ; j < 3 ; j++)
-         g3[B + i][j] = g3[i][j];
+         g3[PERLIN_B + i][j] = g3[i][j];
    }
 }
 

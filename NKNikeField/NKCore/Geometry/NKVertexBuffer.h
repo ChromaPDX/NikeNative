@@ -11,6 +11,14 @@ typedef struct NKVertexArray{
     C4t color;
 } NKVertexArray;
 
+typedef NS_ENUM(NSInteger, NKPrimitive) {
+    NKPrimitiveNone,
+    NKPrimitiveAxes,
+    NKPrimitiveRect,
+    NKPrimitiveCube,
+    NKPrimitiveSphere
+} NS_ENUM_AVAILABLE(10_9, 7_0);
+
 @interface NKVertexBuffer : NSObject
 
 - (id)initWithSize:(GLsizeiptr)size
@@ -30,8 +38,7 @@ typedef struct NKVertexArray{
 - (void)bind:(void(^)())drawingBlock;
 - (void)unbind;
 
-@property (nonatomic) GLenum drawMode;
-@property (nonatomic) int numberOfElements;
+@property (nonatomic) GLsizei numberOfElements;
 
 @end
 
@@ -40,7 +47,7 @@ typedef struct NKVertexArray{
 - (id)initWithSize:(GLsizeiptr)size
               data:(const GLvoid *)data;
 - (void)bind;
-- (void)bind:(void(^)())drawingBlock;
+//- (void)bind:(void(^)())drawingBlock;
 - (void)unbind;
 
 @property (nonatomic) int numberOfElements;

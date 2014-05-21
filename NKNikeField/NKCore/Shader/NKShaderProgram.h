@@ -10,7 +10,7 @@
 
 // ATTRIBUTES
 
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
 
 #else
 

@@ -39,14 +39,6 @@
 
 typedef void (^CallBack)();
 
-typedef NS_ENUM(U1t, NKEventType) {
-    NKEventTypeNone,
-    NKEventTypeBegin,
-    NKEventTypeMove,
-    NKEventTypeEnd,
-    NKEventTypeDrag
-} NS_ENUM_AVAILABLE(10_9, 7_0);
-
 @interface NKSceneNode : NKNode <NKAlertSpriteDelegate>
 
 {
@@ -85,7 +77,7 @@ typedef NS_ENUM(U1t, NKEventType) {
 -(instancetype) initWithSize:(S2t)size;
 
 
--(void)drawForHitDetection;
+
 
 - (void)draw;
 // encompasses 3 states
@@ -101,11 +93,18 @@ typedef NS_ENUM(U1t, NKEventType) {
 -(void)setUniformIdentity;
 -(void)drawAxes;
 
+// HIT BUFFER
+
 -(void)getUidColorForNode:(NKNode*)node;
+-(void)drawToHitBuffer;
+-(void)drawForHitDetection;
+-(void)drawHitBuffer;
 
 -(void)dispatchTouchRequestForLocation:(P2t)location type:(NKEventType)eventType;
 
 // DRAW STATE SHADOWING
+@property (nonatomic, weak) NKVertexBuffer *boundVertexBuffer;
+@property (nonatomic, weak) NKTexture *boundTexture;
 @property (nonatomic) NKBlendMode blendModeState;
 @property (nonatomic) bool fill;
 

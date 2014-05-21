@@ -18,7 +18,7 @@
         [self addChild:bg];
         
         fuelBar = [[FuelBar alloc] init];
-        [fuelBar setPosition:P2Make(-64, 516)];
+        [fuelBar setPosition:P2Make(-64, 505)];
         // @LEIF - not sure why the animation isn't working here?
         [self addChild:fuelBar];
         // @Eric - add as child before setFill, needs parent for animation otherwise doesn't get animation updates.

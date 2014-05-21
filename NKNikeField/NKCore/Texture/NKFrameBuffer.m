@@ -66,13 +66,15 @@ static inline const char * GetGLErrorString(GLenum error)
 
 #pragma mark - Init
 
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
 
 - (id)initWithContext:(NKContext *)context layer:(id <EAGLDrawable>)layer
 {
     self = [super init];
     
     if(self){
+        
+        //NSLog(@"GLES fb init with context %@", context);
         
         // 1 // Create the framebuffer and bind it.
         
@@ -84,7 +86,7 @@ static inline const char * GetGLErrorString(GLenum error)
         glGenRenderbuffers(1, &_renderBuffer);
         glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
         
-        [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:(id)layer];
+        [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:layer];
         
         glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &_width);
         glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &_height);
@@ -102,6 +104,7 @@ static inline const char * GetGLErrorString(GLenum error)
         
         GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER) ;
         if(status != GL_FRAMEBUFFER_COMPLETE) {
+           // NKCheckGLError(@"building frameBuffer");
             NSLog(@"failed to make complete framebuffer object %x", status);
             return nil;
         }
@@ -148,7 +151,7 @@ static inline const char * GetGLErrorString(GLenum error)
         _width = width;
         _height = height;
         
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
         
         // 1 // Create the framebuffer and bind it.
         
@@ -234,7 +237,7 @@ static inline const char * GetGLErrorString(GLenum error)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 #else
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -287,7 +290,7 @@ static inline const char * GetGLErrorString(GLenum error)
 	// OpenGL ES on iOS 4 has only 1 attachment.
 	// There are many possible attachments on OpenGL
 	// on MacOSX so we query how many below
-#if !TARGET_OS_IPHONE
+#if !NK_USE_GLES
 	glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxColorAttachments);
 #endif
 	
@@ -343,7 +346,7 @@ static inline const char * GetGLErrorString(GLenum error)
 
 - (void)bind
 {
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
 #else
     glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
@@ -360,18 +363,14 @@ static inline const char * GetGLErrorString(GLenum error)
 
 - (void)unbind
 {
-#if TARGET_OS_IPHONE
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-#else
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-#endif
 }
 
 -(void)dealloc {
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
         glDeleteFramebuffersOES(1, &_frameBuffer);
         glDeleteRenderbuffersOES(1, &_renderBuffer);
 #else
@@ -381,7 +380,7 @@ static inline const char * GetGLErrorString(GLenum error)
     
         if(_depthBuffer)
         {
-            #if TARGET_OS_IPHONE
+            #if NK_USE_GLES
             glDeleteRenderbuffersOES(1, &_depthBuffer);
             #else
             glDeleteRenderbuffersEXT(1, &_depthBuffer);

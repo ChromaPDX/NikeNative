@@ -21,12 +21,14 @@
 }
 
 
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [(NKView*)self.view setController:self];
+    if ([self.view isKindOfClass:[NKView class]]) {
+         [(NKView*)self.view setController:self];
+    }
     // Do any additional setup after loading the view.
 }
 

@@ -15,35 +15,35 @@
 #pragma mark -
 
 -(void)setScene:(NKSceneNode *)scene {
-#if TARGET_OS_IPHONE
     _scene = scene;
     scene.nkView = self;
-#else
-    _nextScene = scene;
-    _nextScene.nkView = self;
-#endif
+    
+    w = self.bounds.size.width;
+    h = self.bounds.size.height;
+    wMult = w / self.bounds.size.width;
+    hMult = h / self.bounds.size.height;
+    
     lastTime = CFAbsoluteTimeGetCurrent();
 }
 
 -(void)drawScene {
     
-    if (_nextScene) {
-        _scene = _nextScene;
-        _nextScene = nil;
-    }
-    
     if (_scene.hitQueue.count) {
-        [_scene drawForHitDetection];
+        [_scene drawToHitBuffer];
     }
     
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
+    
     [frameBuffer bind];
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glViewport(0, 0, _scene.size.width, _scene.size.height);
+    
 #else
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
     glViewport(0, 0, self.visibleRect.size.width, self.visibleRect.size.height);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    
 #endif
     
     if (_scene) {
@@ -54,8 +54,8 @@
         lastTime = CFAbsoluteTimeGetCurrent();
         
         [_scene updateWithTimeSinceLast:dt];
+        //[_scene drawHitBuffer];
         [_scene draw];
-        
     }
     else {
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
@@ -75,11 +75,21 @@
 #pragma mark - IOS
 #pragma mark -
 
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
 
 + (Class) layerClass
 {
 	return [CAEAGLLayer class];
+}
+
+-(instancetype)initWithFrame:(CGRect)frame {
+    
+    if ((self = [super initWithFrame:frame]))
+    {
+        [self sharedInit];
+    }
+    return self;
+
 }
 
 - (id) initWithCoder:(NSCoder*)coder
@@ -87,77 +97,77 @@
     
     if ((self = [super initWithCoder:coder]))
     {
-        // Get the layer
-        CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
-        
-        float contentScale = 1.0f;
-        drawHitEveryXFrames = 10;
-        
-        if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)]) {
-            contentScale = [[UIScreen mainScreen] scale];
-        }
-        
-        eaglLayer.contentsScale = contentScale;
-        
-        eaglLayer.opaque = TRUE;
-        eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        [NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
-        
-        
-        if (NK_GL_VERSION == 2){
-            context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-            [context setMultiThreaded:true];
-        }
-        else {
-            context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
-        }
-        
-        if (!context || ![EAGLContext setCurrentContext:context])
-        {
-            return nil;
-        }
-        
-        if(!context || ![self createFramebuffer]){
-            NSLog(@"Frame Buffer Creation Failed !!");
-            
-        }
-        else {
-            NSLog(@"GLES Context && Frame Buffer loaded!");
-            
-            
-            if (NK_GL_VERSION == 2) {
-                defaultShader = [[NKShaderProgram alloc]initWithVertexSource:nkDefaultTextureVertexShader fragmentSource:nkDefaultTextureFragmentShader];
-                [defaultShader load];
-            }
-            
-        }
-        
-        [NKTextureManager sharedInstance];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(stopAnimation)
-                                                     name:UIApplicationWillTerminateNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(stopAnimation)
-                                                     name:UIApplicationWillResignActiveNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(stopAnimation)
-                                                     name:UIApplicationDidEnterBackgroundNotification
-                                                   object:nil];
-        
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(startAnimation)
-                                                     name:UIApplicationDidBecomeActiveNotification
-                                                   object:nil];
-        
+        [self sharedInit];
     }
     
     return self;
+}
+
+-(void)sharedInit {
+    // Get the layer
+    CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
+    
+    _mscale = 1.;
+    float contentScale = 1.0f;
+    drawHitEveryXFrames = 10;
+    
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)]) {
+        contentScale = [[UIScreen mainScreen] scale];
+    }
+    
+    eaglLayer.contentsScale = contentScale;
+    
+    eaglLayer.opaque = TRUE;
+    eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
+    
+    
+    if (NK_GL_VERSION == 2){
+        context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+        //[context setMultiThreaded:true];
+    }
+    else {
+        context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+    }
+    
+    
+    if(!context || ![self createFramebuffer]){
+        NSLog(@"Frame Buffer Creation Failed !!");
+        
+    }
+    else {
+        NSLog(@"GLES Context && Frame Buffer loaded!");
+        
+        
+        if (NK_GL_VERSION == 2) {
+            defaultShader = [[NKShaderProgram alloc]initWithVertexSource:nkDefaultTextureVertexShader fragmentSource:nkDefaultTextureFragmentShader];
+            [defaultShader load];
+        }
+        
+    }
+    
+    [NKTextureManager sharedInstance];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(stopAnimation)
+                                                 name:UIApplicationWillTerminateNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(stopAnimation)
+                                                 name:UIApplicationWillResignActiveNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(stopAnimation)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(startAnimation)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 }
 
 -(void)layoutSubviews
@@ -216,6 +226,7 @@
     if (frameBuffer) {
         return true;
     }
+    NSLog(@"failed to create main ES framebuffer");
     return false;
 }
 
@@ -401,6 +412,8 @@
 	// makeCurrentContext to ensure that our OpenGL context current to this
 	// thread (i.e. makeCurrentContext directs all OpenGL calls on this thread
 	// to [self openGLContext])
+    
+
 	[[self openGLContext] makeCurrentContext];
 	
 	// Synchronize buffer swaps with vertical refresh rate
@@ -424,6 +437,8 @@
 	// Get the view size in Points
 	NSRect viewRectPoints = [self bounds];
     
+    wMult = w / self.bounds.size.width;
+    hMult = h / self.bounds.size.height;
 #if SUPPORT_RETINA_RESOLUTION
     
     // Rendering at retina resolutions will reduce aliasing, but at the potential
@@ -559,14 +574,18 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 //	[[view openGLContext] setValues:&swapInt forParameter:NSOpenGLCPSwapInterval];
 //}
 
-
+-(P2t)calibratedMousePoint:(NSPoint)mouseIn {
+ 
+    return P2Make(mouseIn.x * _mscale * wMult, mouseIn.y * _mscale * hMult);
+    
+}
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
     //    dispatch_async(dispatch_get_main_queue(), ^{
     //        [_scene touchDown:P2Make(theEvent.absoluteX, theEvent.absoluteY) id:0];
     //    });
-    [_scene dispatchTouchRequestForLocation:P2Make(theEvent.locationInWindow.x*2, theEvent.locationInWindow.y*2) type:NKEventTypeBegin];
+    [_scene dispatchTouchRequestForLocation:[self calibratedMousePoint:theEvent.locationInWindow] type:NKEventTypeBegin];
 }
 
 - (void)mouseMoved:(NSEvent *)theEvent
@@ -578,7 +597,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-    [_scene dispatchTouchRequestForLocation:P2Make(theEvent.locationInWindow.x*2, theEvent.locationInWindow.y*2) type:NKEventTypeMove];
+     [_scene dispatchTouchRequestForLocation:[self calibratedMousePoint:theEvent.locationInWindow]  type:NKEventTypeMove];
     //    dispatch_async(dispatch_get_main_queue(), ^{
     //	[_scene touchMoved:P2Make(theEvent.absoluteX, theEvent.absoluteY) id:0];
     //    });
@@ -587,7 +606,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 - (void)mouseUp:(NSEvent *)theEvent
 {
     
-    [_scene dispatchTouchRequestForLocation:P2Make(theEvent.locationInWindow.x*2, theEvent.locationInWindow.y*2) type:NKEventTypeEnd];
+     [_scene dispatchTouchRequestForLocation:[self calibratedMousePoint:theEvent.locationInWindow] type:NKEventTypeEnd];
     //
     //        NSLog(@"mouse up : %f %f", theEvent.locationInWindow.x, theEvent.locationInWindow.y);
     //        //

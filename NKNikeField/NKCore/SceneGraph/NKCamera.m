@@ -58,14 +58,13 @@
     //self.fovVertRadians = DEGREES_TO_RADIANS(82.0f * self.aspect);
     //self.fovVertRadians = DEGREES_TO_RADIANS(30 / self.aspect);
     
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
     if (self.scene.size.height == 1136) {
-        self.fovVertRadians = DEGREES_TO_RADIANS(54);
+        self.fovVertRadians = DEGREES_TO_RADIANS(53);
     }
     else {
         self.fovVertRadians = DEGREES_TO_RADIANS(54);
     }
-    self.position3d = V3Make(0,0, 1000);
 #else
     self.fovVertRadians = DEGREES_TO_RADIANS(54);
 #endif
@@ -102,7 +101,7 @@
     glLoadIdentity();
     F1t frustum = _nearZ * tanf(_fovVertRadians / 2.0);
     
-#if TARGET_OS_IPHONE
+#if NK_USE_GLES
     glFrustumf(-frustum, frustum, -frustum/_aspect, frustum/_aspect, _nearZ, _farZ);
 #else
     glFrustum(-frustum, frustum, -frustum/_aspect, frustum/_aspect, _nearZ, _farZ);

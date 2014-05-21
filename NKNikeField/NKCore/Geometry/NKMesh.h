@@ -5,13 +5,6 @@
 @class NKTexture;
 @class NKVertexBuffer;
 
-typedef NS_ENUM(NSInteger, NKPrimitive) {
-    NKPrimitiveNone,
-    NKPrimitiveAxes,
-    NKPrimitiveRect,
-    NKPrimitiveCube,
-    NKPrimitiveSphere
-} NS_ENUM_AVAILABLE(10_9, 7_0);
 
 // This line should be uncommented to use the famous Quake / invsqrt optimization
 // If this line is commented out, normalization will happen using standard sqrtf()
