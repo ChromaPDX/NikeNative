@@ -16,9 +16,11 @@
 
     if (self){
         
-//        _borderSprite = [[NKSpriteNode alloc] initWithTexture:texture color:NKWHITE size:size];
-//        [_borderSprite setZPosition:2];
-//        _isDottedBorder = false;
+        _borderSprite = [[NKSpriteNode alloc] initWithTexture:texture color:V2GREEN size:size];
+        //[_borderSprite setZPosition:2];
+        _borderSprite.hidden = TRUE;
+        _borderSprite.alpha = .5;
+        
         
       // box = (ofPlanePrimitive*)new ofBoxPrimitive(size.width, size.height, 4);
     }
@@ -106,12 +108,14 @@
 }
 
 -(void)setTextureForBorder:(BorderMask)border {
+    self.texture = [NKTexture textureWithImageNamed:[self stringForBorderTex:border]];
 
     if(self.isDottedBorder){
-        self.texture = [NKTexture textureWithImageNamed:[self stringForDottedBorderTex:border]];
+        self.borderSprite.texture = [NKTexture textureWithImageNamed:[self stringForDottedBorderTex:border]];
+        self.borderSprite.hidden = FALSE;
     }
-    else {
-        self.texture = [NKTexture textureWithImageNamed:[self stringForBorderTex:border]];
+    else{
+        self.borderSprite.hidden = TRUE;
     }
     
 }

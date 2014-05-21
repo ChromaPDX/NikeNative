@@ -92,7 +92,6 @@
         [self addChild:cardImg];
         
         [cardImg setZPosition:h*.34];
-        
         self.name = model.name;
         self.userInteractionEnabled = true;
         

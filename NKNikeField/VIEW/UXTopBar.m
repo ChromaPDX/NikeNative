@@ -13,10 +13,11 @@
 @implementation UXTopBar
 
 -(instancetype) initWithTexture:(NKTexture *)texture color:(NKByteColor *)color size:(S2t)size {
-    
+
     self = [super initWithTexture:texture color:color size:size];
     
     if (self) {
+        
         self.name = @"UX TOP BAR";
         
         _playerSprites = [NSMutableArray arrayWithCapacity:3];
@@ -46,16 +47,7 @@
         [self addChild:_fuelBar];
         [self addChild:fuelLabel];
         [self addChild:logo];
-
-        //        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
-//        fuelLabel.fontSize = 36;
-//        
-//        [self addChild:fuelLabel];
-//        
-//        [fuelLabel setText:@"FUEL"];
-//        [fuelLabel setPosition3d:V3Make(-w*.25, 0, 2)];
-//
-//        self.fuel = 1000;
+ 
     }
     
     return self;

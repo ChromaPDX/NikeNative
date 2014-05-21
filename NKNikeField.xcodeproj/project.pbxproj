@@ -472,7 +472,7 @@
 		29DC2089192A2DB400CFA405 /* NKColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NKColor.h; path = NKNikeField/NKCore/UIKitExtensions/NKColor.h; sourceTree = SOURCE_ROOT; };
 		3B21F881192D08E200401234 /* Card_Icon_ChalVert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_ChalVert.png; sourceTree = "<group>"; };
 		3B21F882192D08E200401234 /* Card_Icon_ChalHoriz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_ChalHoriz.png; sourceTree = "<group>"; };
-		3B21F885192D08F600401234 /* Background_InGame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background_InGame.png; sourceTree = "<group>"; };
+		3B21F885192D08F600401234 /* Background_InGame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background_InGame.png; path = ../Menus/Background_InGame.png; sourceTree = "<group>"; };
 		3B21F886192D08F600401234 /* TopCornerLockupEnergy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TopCornerLockupEnergy.png; sourceTree = "<group>"; };
 		3B21F887192D08F600401234 /* TopCornerLockupLevel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TopCornerLockupLevel.png; sourceTree = "<group>"; };
 		3B21F88B192D092300401234 /* FactionPsykeAway_OFF.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FactionPsykeAway_OFF.png; sourceTree = "<group>"; };
@@ -1293,7 +1293,6 @@
 		61D6E6C918FDB5B70017A389 /* Menus */ = {
 			isa = PBXGroup;
 			children = (
-				3B21F885192D08F600401234 /* Background_InGame.png */,
 				3B21F886192D08F600401234 /* TopCornerLockupEnergy.png */,
 				3B21F887192D08F600401234 /* TopCornerLockupLevel.png */,
 				3B247D6C1922A26000A6EFDB /* Background_05_13.png */,
@@ -1365,6 +1364,7 @@
 		61D6E76E18FDB5B70017A389 /* V2_FIELD */ = {
 			isa = PBXGroup;
 			children = (
+				3B21F885192D08F600401234 /* Background_InGame.png */,
 				29090EE7190ED80C00BE6B92 /* bottom_bar.png */,
 				29090EE5190ED77500BE6B92 /* top_bar.png */,
 				61D6E76F18FDB5B70017A389 /* Background_Field.png */,
