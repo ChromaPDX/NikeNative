@@ -31,7 +31,7 @@
 
 - (M16t)projectionMatrix
 {
-    if (dirty) {
+    if (self.dirty) {
         
         M16t projectionMat = M16MakePerspective(self.fovVertRadians,
                                                 self.aspect,
@@ -42,7 +42,7 @@
                                     _target.x, _target.y, _target.z,
                                     _up.x, _up.y, _up.z);
         
-        dirty = false;
+        self.dirty = false;
         
         return cachedMatrix = M16Multiply(projectionMat, camMat);
         

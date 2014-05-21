@@ -2,7 +2,15 @@
 //*  NODE KITTEN
 //*
 
-#if NK_USE_GLES
+
+#if defined(__ARM_NEON__)
+#import <arm_neon.h>
+#endif
+
+#if TARGET_OS_IPHONE
+
+#define NK_USE_GLES 1
+#define NK_GL_VERSION 2
 
 #import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
@@ -18,7 +26,7 @@
 
 #else // TARGET DESKTOP
 
-#if TARGET_OS_MAC
+#define NK_GL_VERSION 2
 
 #import <AppKit/AppKit.h>
 #import <OpenGL/OpenGL.h>
@@ -33,13 +41,6 @@
 
 #define NK_NONATOMIC_IOSONLY atomic
 
-#endif
-
-#endif
-
-
-#if defined(__ARM_NEON__)
-#import <arm_neon.h>
 #endif
 
 #pragma mark -

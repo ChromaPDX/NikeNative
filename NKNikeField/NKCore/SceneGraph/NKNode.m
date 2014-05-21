@@ -741,9 +741,20 @@
 -(void)setPosition3d:(V3t)position3d {
     position = position3d;
     M16SetV3Translation(&localTransformMatrix, position);
-    dirty = true;
+    if (!_dirty) {
+        [self setDirty:true];
+    }
 }
 
+-(void)setDirty:(bool)dirty {
+    _dirty = dirty;
+    
+    if (dirty) {
+        for (NKNode *n in intChildren) {
+            [n setDirty:dirty];
+        }
+    }
+}
 // convenience >>
 
 -(void)setZPosition:(int)zPosition {

@@ -8,11 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#if TARGET_OS_IPHONE
-    #define NK_USE_GLES 1
-    #define NK_GL_VERSION 2
-#endif
-
 #import "NKMath.h"
 
 #define debugUI 0

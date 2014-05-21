@@ -94,7 +94,7 @@ typedef void (^CompletionBlock)(void);
 
     NKFbo *fbo;
     
-    bool dirty;
+
     
     NodeAnimationHandler *animationHandler;
     bool useShader;
@@ -114,6 +114,7 @@ typedef void (^CompletionBlock)(void);
 @property (nonatomic, strong) NSArray *children;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic) NKByteColor *uidColor;
+@property (nonatomic) bool dirty;
 
 #pragma mark - POSITION PROPERTIES
 
