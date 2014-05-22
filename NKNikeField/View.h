@@ -8,9 +8,9 @@
 
 
 
-#import "NKView.h"
+#import "NKUIView.h"
 
-@interface View : NKView
+@interface View : NKUIView
 
 
 @end

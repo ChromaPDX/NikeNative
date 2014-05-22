@@ -27,6 +27,8 @@
 		2934BDE8191B166300A33DBF /* perlin.c in Sources */ = {isa = PBXBuildFile; fileRef = 2934BDE6191B166300A33DBF /* perlin.c */; };
 		2938BBEA192BCC4D005FD2E8 /* NKImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2938BBE9192BCC4D005FD2E8 /* NKImage+Utils.m */; };
 		294D0F0619234F1100324814 /* NKAlertSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D0F0519234F1100324814 /* NKAlertSprite.m */; };
+		295EE906192D1E5300D592B4 /* NKUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 295EE905192D1E5300D592B4 /* NKUIView.m */; };
+		295EE912192D23BD00D592B4 /* NKUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 295EE911192D23BD00D592B4 /* NKUIViewController.m */; };
 		297CE9F71924BDAF0043542D /* Card_Icon_RegChal.png in Resources */ = {isa = PBXBuildFile; fileRef = 297CE9CD1924BDAF0043542D /* Card_Icon_RegChal.png */; };
 		297CE9F81924BDAF0043542D /* Card_Icon_RegKick.png in Resources */ = {isa = PBXBuildFile; fileRef = 297CE9CE1924BDAF0043542D /* Card_Icon_RegKick.png */; };
 		297CE9F91924BDAF0043542D /* Card_Icon_RegMove.png in Resources */ = {isa = PBXBuildFile; fileRef = 297CE9CF1924BDAF0043542D /* Card_Icon_RegMove.png */; };
@@ -321,6 +323,10 @@
 		2938BBE9192BCC4D005FD2E8 /* NKImage+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NKImage+Utils.m"; path = "NKNikeField/NKCore/UIKitExtensions/NKImage+Utils.m"; sourceTree = SOURCE_ROOT; };
 		294D0F0419234F1100324814 /* NKAlertSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKAlertSprite.h; sourceTree = "<group>"; };
 		294D0F0519234F1100324814 /* NKAlertSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKAlertSprite.m; sourceTree = "<group>"; };
+		295EE904192D1E5300D592B4 /* NKUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKUIView.h; sourceTree = "<group>"; };
+		295EE905192D1E5300D592B4 /* NKUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKUIView.m; sourceTree = "<group>"; };
+		295EE910192D23BD00D592B4 /* NKUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKUIViewController.h; sourceTree = "<group>"; };
+		295EE911192D23BD00D592B4 /* NKUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKUIViewController.m; sourceTree = "<group>"; };
 		297CE9CD1924BDAF0043542D /* Card_Icon_RegChal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_RegChal.png; sourceTree = "<group>"; };
 		297CE9CE1924BDAF0043542D /* Card_Icon_RegKick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_RegKick.png; sourceTree = "<group>"; };
 		297CE9CF1924BDAF0043542D /* Card_Icon_RegMove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_RegMove.png; sourceTree = "<group>"; };
@@ -582,7 +588,7 @@
 		61A257BB18FDE998001B7F67 /* NKTextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKTextureManager.h; sourceTree = "<group>"; };
 		61A257BC18FDE998001B7F67 /* NKTextureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKTextureManager.m; sourceTree = "<group>"; };
 		61A257BD18FDE998001B7F67 /* skysphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skysphere.png; sourceTree = "<group>"; };
-		61D6E44B18FDAE110017A389 /* nikecup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = nikecup.app; path = NKNikeField.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		61D6E44B18FDAE110017A389 /* NKNikeField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NKNikeField.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61D6E44E18FDAE110017A389 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		61D6E45018FDAE110017A389 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		61D6E45218FDAE110017A389 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -760,6 +766,10 @@
 		29BF47F81911666500487EBD /* UIView */ = {
 			isa = PBXGroup;
 			children = (
+				295EE910192D23BD00D592B4 /* NKUIViewController.h */,
+				295EE911192D23BD00D592B4 /* NKUIViewController.m */,
+				295EE904192D1E5300D592B4 /* NKUIView.h */,
+				295EE905192D1E5300D592B4 /* NKUIView.m */,
 				2934BDE0191ADCE700A33DBF /* NKFrameBuffer.h */,
 				2934BDE1191ADCE700A33DBF /* NKFrameBuffer.m */,
 				29BF47F91911666500487EBD /* NKView.h */,
@@ -1210,7 +1220,7 @@
 		61D6E44C18FDAE110017A389 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				61D6E44B18FDAE110017A389 /* nikecup.app */,
+				61D6E44B18FDAE110017A389 /* NKNikeField.app */,
 				61D6E46F18FDAE120017A389 /* nikecup.xctest */,
 			);
 			name = Products;
@@ -1533,7 +1543,7 @@
 			);
 			name = NKNikeField;
 			productName = NKNikeField;
-			productReference = 61D6E44B18FDAE110017A389 /* nikecup.app */;
+			productReference = 61D6E44B18FDAE110017A389 /* NKNikeField.app */;
 			productType = "com.apple.product-type.application";
 		};
 		61D6E46E18FDAE120017A389 /* NKNikeFieldTests */ = {
@@ -1828,6 +1838,7 @@
 				29BF48221911667900487EBD /* NKNode.m in Sources */,
 				61A257C318FDE998001B7F67 /* NKStaticDraw.m in Sources */,
 				61D6E8AC18FDB5B70017A389 /* PlayerSprite.m in Sources */,
+				295EE906192D1E5300D592B4 /* NKUIView.m in Sources */,
 				3BC5A7DB191ABEE200414544 /* RecapMenuWin.m in Sources */,
 				61D6E8A918FDB5B70017A389 /* GameBoardNode.m in Sources */,
 				61D6E88418FDB5B70017A389 /* AStar.m in Sources */,
@@ -1851,6 +1862,7 @@
 				61A257DA18FDE998001B7F67 /* NKTexture.m in Sources */,
 				29D89266190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m in Sources */,
 				61D6E88718FDB5B70017A389 /* Deck.m in Sources */,
+				295EE912192D23BD00D592B4 /* NKUIViewController.m in Sources */,
 				61A257D518FDE998001B7F67 /* NKZBlur.m in Sources */,
 				61A257C118FDE998001B7F67 /* NKMaterial.m in Sources */,
 				61D6E8A418FDB5B70017A389 /* BallSprite.m in Sources */,

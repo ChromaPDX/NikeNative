@@ -71,8 +71,14 @@
 
 // UIKIT EXTENSIONS
 
+
+#if TARGET_OS_IPHONE
+#import "NKUIViewController.h"
+#import "NKUIView.h"
+#else
 #import "NKViewController.h"
 #import "NKView.h"
+#endif
 #import "NKFrameBuffer.h"
 
 #import "NKImage+Utils.h"
