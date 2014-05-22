@@ -28,9 +28,10 @@
         cardSize.height = 55; //(cardSize.width * (67. / 65.));
         
         _fuelBar = [[FuelBar alloc] init];
-        [_fuelBar setPosition:P2Make(-80, 10)];
+        [_fuelBar setPosition:P2Make(-82, -13.5)];
         [_fuelBar setFill:0 animated:false];
-        
+       
+        /*
         fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
         fuelLabel.fontSize = 18;
         [fuelLabel setColor:V2YELLOW];
@@ -43,10 +44,17 @@
         //[logo setScale:.33];
         [logo setPosition:P2Make(-270, -5)];
         [logo setZPosition:4];
+*/
+        
+        NKTexture *logoImage = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"TopCornerLockupEnergy"]];
+        logo = [[NKSpriteNode alloc] initWithTexture:logoImage];
+        [logo setPosition:P2Make(-118, 0)];
 
+        [self addChild: logo];
         [self addChild:_fuelBar];
-        [self addChild:fuelLabel];
-        [self addChild:logo];
+         
+   //     [self addChild:fuelLabel];
+    //    [self addChild:logo];
  
     }
     
@@ -147,7 +155,6 @@
     if (block) {
         block();
     }
-    
 }
 
 -(void)sortPlayers {
@@ -181,10 +188,10 @@
         // @eric uncomment to switch back
         [self.scene.nkView setScene:[[MainMenu alloc]initWithSize:self.scene.size]];
         
-        // recomment this
-        // pop-up example
+       // recomment this
+       // pop-up example
        // NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];
-       //  [self.scene presentAlert:test animated:true];
+       // [self.scene presentAlert:test animated:true];
     }
     return false;
 }

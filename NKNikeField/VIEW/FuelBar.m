@@ -18,6 +18,7 @@
    
     [fuel setZPosition:3];
     
+    
     NKTexture *imageContainer = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"FuelBar_Container.png"]];
     fuelContainer = [[NKSpriteNode alloc] initWithTexture:imageContainer];
     [fuelContainer setYScale:1.15];
@@ -25,11 +26,13 @@
     [fuelContainer setPosition:P2Make(0, .5)];
     [fuelContainer setZPosition:2];
     
+    
     S2t imageSize = [imageContainer size];
     
     self = [super initWithTexture:nil color:nil size:imageSize];
+    [self setScale3d:V3Make(.98, 1, 1)];
 
-    [self addChild:fuelContainer];
+   // [self addChild:fuelContainer];
     [self addChild:fuel];
     
     return self;

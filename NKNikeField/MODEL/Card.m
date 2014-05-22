@@ -343,12 +343,6 @@
 //    if(_cardCategory == kCardCategoryActionAutoPlayerTrackingSystem) return @"Auto Player  Tracking System";
 //
     if(self.category == CardCategorySpecial){
-        if(self.specialTypeCategory == CardSpecialCategoryNoLegs){
-           
-        }
-        if(self.specialTypeCategory == CardSpecialCategoryFreeze){
-            return @"FREEZE";
-        }
         switch (self.specialTypeCategory) {
             case CardSpecialCategoryNoLegs:
                 return @"NO LEGS";
@@ -375,8 +369,6 @@
         }
     }
     return @"##NONE##";
-    
-    
 }
 
 -(NSString*) pP:(float)p {

@@ -397,7 +397,7 @@ float PARTICLE_SCALE;
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
     
-    [self showPossibleKickForManager:player.manager];
+    //[self showPossibleKickForManager:player.manager];
 
     //P2t p;
     
