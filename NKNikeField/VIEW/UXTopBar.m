@@ -31,14 +31,15 @@
         [_fuelBar setPosition:P2Make(-82, -13.5)];
         [_fuelBar setFill:0 animated:false];
        
-        /*
-        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
-        fuelLabel.fontSize = 18;
-        [fuelLabel setColor:V2YELLOW];
-        [fuelLabel setText:[NSString stringWithFormat:@"ENERGY : %d",self.manager.game.me.energy]];  
-        [fuelLabel setPosition:P2Make(-250+fuelLabel.size.width/2, -50)];
-        [fuelLabel setZPosition:3];
         
+        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
+        fuelLabel.fontSize = 10;
+        [fuelLabel setColor:V2YELLOW];
+        [fuelLabel setText:[NSString stringWithFormat:@"%dE",self.manager.game.me.energy]];
+        [fuelLabel setPosition:P2Make(-60+fuelLabel.size.width/2, -51)];
+        [fuelLabel setZPosition:3];
+        [fuelLabel setScale3d:V3Make(.9, .6, 1)];
+       /*
         NKTexture *logoImage = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"LOGO_Icon_Bola_small.png"]];
         logo = [[NKSpriteNode alloc] initWithTexture:logoImage];
         //[logo setScale:.33];
@@ -53,7 +54,7 @@
         [self addChild: logo];
         [self addChild:_fuelBar];
          
-   //     [self addChild:fuelLabel];
+        [self addChild:fuelLabel];
     //    [self addChild:logo];
  
     }
@@ -113,7 +114,7 @@
         if (![p.manager isEqual:_manager]) {
             [self setManager:p.manager];
         }
-        [fuelLabel setText:[NSString stringWithFormat:@"ENERGY : %d",p.manager.energy]];
+        [fuelLabel setText:[NSString stringWithFormat:@"%dE",p.manager.energy]];
         [_fuelBar setFill:((float)p.manager.energy)/1000.00 animated:true];
         
         for (PlayerSprite* ps in _playerSprites) {
