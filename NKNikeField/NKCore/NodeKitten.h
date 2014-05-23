@@ -83,5 +83,6 @@
 
 #import "NKImage+Utils.h"
 #import "NKFont+CoreText.h"
+#import "NSString+ShaderTools.h"
 
 

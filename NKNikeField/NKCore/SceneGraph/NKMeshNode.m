@@ -143,7 +143,7 @@
 -(void)customdrawWithHitShader {
     [self.scene pushScale:self.size3d];
     
-    [self.scene.activeShader setVec4:self.uidColor.C4Color forUniform:UNIFORM_COLOR];
+    [self.scene.activeShader setVec4:self.uidColor.C4Color forUniform:NKS_UNIFORM_COLOR];
     
     if (self.scene.boundVertexBuffer != _vertexBuffer) {
         [_vertexBuffer bind];
@@ -193,11 +193,11 @@
         if (_color.alpha) {
             C4t col = [self glColor];
             //NSLog(@"draw mesh %f, %f, %f, %f", col.r, col.g, col.b, col.a);
-            [self.scene.activeShader setVec4:col forUniform:UNIFORM_COLOR];
-            [self.scene.activeShader setInt:1 forUniform:USE_UNIFORM_COLOR];
+            [self.scene.activeShader setVec4:col forUniform:NKS_UNIFORM_COLOR];
+            [self.scene.activeShader setInt:1 forUniform:NKS_USE_UNIFORM_COLOR];
         }
         else {
-            [self.scene.activeShader setInt:0 forUniform:USE_UNIFORM_COLOR];
+            [self.scene.activeShader setInt:0 forUniform:NKS_USE_UNIFORM_COLOR];
         }
         
         if (_texture) {
@@ -207,11 +207,11 @@
                 self.scene.boundTexture = _texture;
             }
             
-            [self.scene.activeShader setInt:1 forUniform:UNIFORM_NUM_TEXTURES];
+            [self.scene.activeShader setInt:1 forUniform:NKS_UNIFORM_NUM_TEXTURES];
         }
         
         else {
-            [self.scene.activeShader setInt:0 forUniform:UNIFORM_NUM_TEXTURES];
+            [self.scene.activeShader setInt:0 forUniform:NKS_UNIFORM_NUM_TEXTURES];
         }
         
         if (self.scene.boundVertexBuffer != _vertexBuffer) {

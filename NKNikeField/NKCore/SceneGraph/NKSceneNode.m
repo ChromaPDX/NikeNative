@@ -98,7 +98,7 @@
     
     //[_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
     
-    [_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    [_activeShader setMatrix4:modelMatrix forUniform:NKS_UNIFORM_MODELVIEWPROJECTION_MATRIX];
    
 }
 
@@ -113,7 +113,7 @@
     //NSLog(@"push M %lu", matrixCount);
     
     //[_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
-    [_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    [_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:NKS_UNIFORM_MODELVIEWPROJECTION_MATRIX];
     
 }
 
@@ -192,9 +192,9 @@
 }
 
 -(void)setUniformIdentity {
-    [self.activeShader setInt:0 forUniform:UNIFORM_NUM_TEXTURES];
-    [self.activeShader setMatrix4:M16IdentityMake() forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
-    [self.activeShader setMatrix3:M9IdentityMake() forUniform:UNIFORM_NORMAL_MATRIX];
+    [self.activeShader setInt:0 forUniform:NKS_UNIFORM_NUM_TEXTURES];
+    [self.activeShader setMatrix4:M16IdentityMake() forUniform:NKS_UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    [self.activeShader setMatrix3:M9IdentityMake() forUniform:NKS_UNIFORM_NORMAL_MATRIX];
 }
 
 -(void)drawAxes {
