@@ -20,7 +20,6 @@
         //[_overlay setZPosition:2];
         _overlay.hidden = TRUE;
         _overlay.alpha = 1;
-        [self addChild:_overlay];
         //[_overlay setZPosition:3];
         
       // box = (ofPlanePrimitive*)new ofBoxPrimitive(size.width, size.height, 4);
