@@ -158,7 +158,8 @@ float PARTICLE_SCALE;
 
 -(void)setupGameBoard {
     
-    NKSpriteNode* bg = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"Background_Field"] size:S2Make(w*2, h*2)];
+   // NKSpriteNode* bg = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"Background_Field"] size:S2Make(w*2, h*2)];
+    NKSpriteNode* bg = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"Background_InGame"] size:S2Make(w*2, h*2)];
     [self addChild:bg];
     [bg setZPosition:-1000];
     
@@ -188,7 +189,7 @@ float PARTICLE_SCALE;
     _uxTopBar.delegate = self;
     [self addChild:_uxTopBar];
     [_uxTopBar setAlpha:0];
-    
+     
     //    NKSpriteNode *logo = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"GAMELOGO.png"] color:nil size:S2Make(TILE_WIDTH*4, TILE_WIDTH*5.2)];
     //    [_pivot addChild:logo];
     //    [logo setZPosition:-3];
@@ -371,14 +372,14 @@ float PARTICLE_SCALE;
             BoardTile* tile = [_gameTiles objectForKey:loc];
             
             
-            [tile setColor:V2ORANGE];
-//            [tile.location setBorderShapeInContext:set];
-//            
-//            tile.isDottedBorder = true;
-//            [tile setTextureForBorder:tile.location.borderShape];
-//
-//            [tile removeAllActions];
-//            [tile runAction:[NKAction fadeAlphaTo:1 duration:FAST_ANIM_DUR]];
+            [tile setColor:V2GREEN];
+            tile.isDottedBorder = true;
+
+            [tile.location setBorderShapeInContext:set];
+            [tile setTextureForBorder:tile.location.borderShape];
+
+            [tile removeAllActions];
+            [tile runAction:[NKAction fadeAlphaTo:1 duration:FAST_ANIM_DUR]];
         }
     }
 }
@@ -395,7 +396,7 @@ float PARTICLE_SCALE;
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
     
-
+    //[self showPossibleKickForManager:player.manager];
 
     //P2t p;
     
@@ -413,10 +414,9 @@ float PARTICLE_SCALE;
         [self moveCameraToBoundingBox:path];
     }
     
-    [self showPossibleKickForManager:player.manager];
     
     [self revealBlocksForManager:player.manager];
-    
+
 }
 
 -(P2t) boardScrollPointForPoint:(P2t)p{

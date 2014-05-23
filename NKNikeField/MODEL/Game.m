@@ -346,7 +346,6 @@
                     playerEvent.type = kEventSuccubus;
                 }
             }
-            
             [self performSequence:_currentEventSequence record:YES animate:YES];
             
             //
@@ -1272,9 +1271,6 @@
             // event.playerPerforming.manager.opponent.preditiveAnalysis = TRUE;
             
             for(Player *p in event.playerPerforming.manager.opponent.players.allCards){
-                
-                
-                
                 //Card *challengeCard = p.challengeDeck.allCards[0];
                 //NSLog(@"Challenge Card %@ SelectionSet = %@", challengeCard, [challengeCard selectionSet]);
                 

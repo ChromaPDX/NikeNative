@@ -92,7 +92,6 @@
         [self addChild:cardImg];
         
         [cardImg setZPosition:h*.34];
-        
         self.name = model.name;
         self.userInteractionEnabled = true;
         
@@ -115,17 +114,16 @@
         if (![self childNodeWithName:@"ball"]) {
         BallSprite *ballSprite = [[BallSprite alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:nil size:V3Make(w*.25,w*.25,w*.25)];
         ballSprite.name = @"ball";
-        
         [self addChild:ballSprite];
         [ballSprite setPosition:P2Make(w*.25, h*-.25)];
         [ballSprite repeatAction:[NKAction rotateYByAngle:120 duration:1.]];
         }
         
     }
+    
     else {
         [self removeChildNamed:@"ball"];
     }
-    
     //self.userInteractionEnabled = false;
 }
 
