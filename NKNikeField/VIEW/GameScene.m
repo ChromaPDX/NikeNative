@@ -246,8 +246,8 @@ float PARTICLE_SCALE;
     [_gameBoardNode addChild:glow];
     [glow setPosition3d:V3Make(0,0,4)];
     
-    [_pivot runAction:[NKAction rotate3dToAngle:V3Make(-26, 0,0) duration:2.]];
-    [_pivot runAction:[NKAction move3dTo:V3Make(0,-h*.25,0) duration:2.]];
+    [_pivot runAction:[NKAction rotate3dToAngle:V3Make(-26, 0,0) duration:1.0]];
+    [_pivot runAction:[NKAction move3dTo:V3Make(0,-h*.25,0) duration:1.0]];
     
     [self playMusicWithKey:@"fieldSong"];
 }
@@ -1277,7 +1277,7 @@ float PARTICLE_SCALE;
         V3t target = tile.position3d;
         target.z += 2;
         
-        [person runAction:[NKAction move3dTo:target duration:.4] completion:^{
+        [person runAction:[NKAction move3dTo:target duration:.2] completion:^{
             
             NKEmitterNode *enchant = [[NKEmitterNode alloc]init];
             //            NKEmitterNode *enchant = [NNKeyedUnarchiver unarchiveObjectWithFile:[[NSBundle mainBundle] pathForResource:@"Enchant" ofType:@"sks"]];
