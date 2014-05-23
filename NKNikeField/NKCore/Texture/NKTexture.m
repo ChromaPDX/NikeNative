@@ -21,8 +21,13 @@
 +(instancetype) textureWithImageNamed:(NSString*)name {
     
     if (![[NKTextureManager imageCache] objectForKey:name]) {
+        
+        NSLog(@"adding tex to atlas named: %@", name);
+        
         [[NKTextureManager imageCache] setObject:[[NKTexture alloc] initWithImageNamed:name] forKey:name];
-        NSLog(@"add tex to atlas named: %@", name);
+        
+     
+        
     }
     
     return [[NKTextureManager imageCache] objectForKey:name];
@@ -185,6 +190,11 @@
         glBindTexture(GL_TEXTURE_2D, texture[0]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
+        
+        if (!texture[0]) {
+            NSLog(@"failed to allocate GLES texture ID");
+            return nil;
+        }
 #else
         glGenTextures(1, (GLuint *)&texture[0]);
         glBindTexture(GL_TEXTURE_2D, texture[0]);
@@ -237,7 +247,7 @@
     {
         glEnable(GL_TEXTURE_2D);
         
-        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+       // glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
         glGenTextures(1, &texture[0]);
         glBindTexture(GL_TEXTURE_2D, texture[0]);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -378,8 +388,7 @@
     int glFormat = GL_RGBA;
     int glType = GL_UNSIGNED_BYTE;
 
-    if (NK_GL_VERSION == 2) {
-        
+    
 #if NK_USE_GLES
         glActiveTexture(GL_TEXTURE0);
         glGenTextures(1, (GLuint *)&texture[0]);
@@ -394,6 +403,9 @@
         glBindTexture(GL_TEXTURE_2D, texture[0]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, (unsigned char *)CGBitmapContextGetData(context));
         glBindTexture(GL_TEXTURE_2D, 0);
+        if (!texture[0]) {
+            NSLog(@"failed to allocate GLES texture ID");
+        }
 #else
         
         // Create a texture object to apply to model
@@ -421,39 +433,6 @@
         //NSLog(@"GL init tex: %d,%d, loc %d", w,h,texture[0]);
         
 #endif
-    }
-    
-    else {
-    GLuint texTarget = GL_TEXTURE_2D;
-    
-    // GENERATE / BIND
-	glGenTextures(1, (GLuint *)&texture[0]);   // could be more then one, but for now, just one
-	glEnable(texTarget);
-	glBindTexture(texTarget, texture[0]);
- 
-    // TEXTURE MODE
-    glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
-	glTexParameterf(texTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(texTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(texTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameterf(texTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 2.0);
-
-    // DRAW TO TEXTURE
-    glTexImage2D(texTarget, 0, glFormat, w, h, 0, glFormat, glType, (unsigned char *)CGBitmapContextGetData(context));
-    //glTexSubImage2D(texTarget, 0, 0, 0, w, h, glFormat, glType, (unsigned char *)CGBitmapContextGetData(context));
-    
-    //CLEAN UP
- 	glDisable(texTarget);
-    GLuint errorcode = glGetError();
-    if (errorcode) {
-        NSLog(@"GL TEX LOAD ERROR : %d", errorcode);
-    }
-    else {
-        NSLog(@"loaded GL tex %d , %lu bytes size: %lu %lu", texture[0],h * CGBitmapContextGetBytesPerRow(context),CGBitmapContextGetWidth(context) ,CGBitmapContextGetHeight(context) );
-    }
-        
-    }
     
     CGContextRelease(context);
 }

@@ -31,12 +31,6 @@ typedef NS_ENUM(GLint, NKVertexAttrib)
     NKVertexAttribTexCoord1
 } NS_ENUM_AVAILABLE(10_8, 5_0);
 
-// UNIFORMS
-static NSString *const UNIFORM_MODELVIEWPROJECTION_MATRIX = @"u_modelViewProjectionMatrix";
-static NSString *const UNIFORM_NORMAL_MATRIX = @"u_normalMatrix";
-static NSString *const UNIFORM_COLOR = @"u_color";
-static NSString *const USE_UNIFORM_COLOR = @"u_useUniformColor";
-static NSString *const UNIFORM_NUM_TEXTURES = @"u_numTextures";
 
 //GLint uniforms[NUM_UNIFORMS];
 
@@ -46,7 +40,9 @@ static NSString *const UNIFORM_NUM_TEXTURES = @"u_numTextures";
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) GLuint glPointer;
+
 @property (nonatomic, strong) NSMutableDictionary *attributes;
+
 @property (nonatomic, strong) NSArray *uniformNames;
 @property (nonatomic, readonly) NSDictionary *uniformLocations;
 
@@ -86,6 +82,9 @@ static NSString *const UNIFORM_NUM_TEXTURES = @"u_numTextures";
 - (void)enableAttribute3D:(NSString *)attribName withArray:(const GLvoid*)arrayValues;
 - (void)disableAttributeArray:(NSString *)attribName;
 
+-(NSString*)vertexStringFromShaderDictionary:(NSDictionary*)dict;
+-(NSString*)fragmentStringFromShaderDictionary:(NSDictionary*)dict;
+
 @end
 
 #pragma mark - SHADER CONST
@@ -107,6 +106,8 @@ static NSString *const nkImageVertexShaderString = SHADER_STRING
      textureCoordinate = inputTextureCoordinate.xy;
  }
  );
+
+
 
 
 static NSString *const nkVertexHeader = SHADER_STRING

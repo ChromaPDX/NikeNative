@@ -82,25 +82,110 @@
     
     return newShader;
 }
+
                                 
-- (NSDictionary*) defaultAttributes {
-    return @{ @"a_position"   : @(NKVertexAttribPosition),
-              @"a_normal"     : @(NKVertexAttribNormal),
+- (NSDictionary*) defaultAttributeLocations {
+    
+    return @{ @"a_postion"   : @(NKVertexAttribPosition),
+             @"a_normal"    : @(NKVertexAttribNormal),
               @"a_color"      : @(NKVertexAttribColor),
               @"a_texCoord0"  : @(NKVertexAttribTexCoord0),
               @"a_texCoord1"  : @(NKVertexAttribTexCoord1),
               };
 }
 
+
+
+//static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
+//(
+// //precision highp float;
+// 
+// attribute vec4 a_position;
+// attribute vec3 a_normal;
+// attribute vec4 a_color;
+// attribute vec2 a_texCoord0;
+// attribute vec2 a_texCoord1;
+// 
+// 
+// uniform highp mat4 u_modelViewProjectionMatrix;
+// uniform highp mat3 u_normalMatrix;
+// uniform lowp int u_useUniformColor;
+// uniform lowp int u_numTextures;
+// uniform vec4 u_color;
+// 
+// uniform sampler2D tex0;
+// 
+// varying mediump vec2 v_texCoord0;
+// varying mediump vec2 v_texCoord1;
+// varying lowp vec4 v_color;
+// 
+// void main()
+//{
+//    vec3 eyeNormal = normalize(u_normalMatrix * a_normal);
+//    //    vec3 lightPosition = vec3(0.5, 1.5, -1.0);
+//    vec4 diffuseColor;
+//    //
+//    if (u_useUniformColor == 1){
+//        diffuseColor = u_color;
+//    }
+//    else {
+//        if (a_color.a > 0.){
+//            diffuseColor = a_color;
+//        }
+//        else {
+//            diffuseColor = vec4(1.,1.,1.,1.);
+//        }
+//    }
+//    
+//    //    float nDotVP = max(0.0, dot(eyeNormal, normalize(lightPosition)));
+//    //
+//    //    v_color = diffuseColor * nDotVP;
+//    
+//    v_color = diffuseColor;
+//    
+//    if (u_numTextures > 0){
+//        v_texCoord0 = a_texCoord0;
+//        if (u_numTextures > 1){
+//            v_texCoord1 = a_texCoord1;
+//        }
+//    }
+//    
+//    gl_Position = u_modelViewProjectionMatrix * a_position;
+//}
+// 
+// );
+
+
+//-(NSDictionary*)defaultShader {
+//
+//    return @{@"uniforms":  @[NSString nksVariable:<#(NKS_VARIABLE)#> precision:<#(NKS_PRECISION)#> type:<#(NKS_TYPE)#>
+//                                  
+//}
+
+-(NSString*)vertexStringFromShaderDictionary:(NSDictionary*)dict {
+    NSString *base = @"#version 430";
+    
+#if NK_USE_GLES
+    [base appendNewLine:@"precision highp float;"];
+#endif
+    if (dict[@"uniforms"]) {
+        for (NSDictionary* u in dict[@"uniforms"]) {
+            [base appendNewLine:[base shaderUniformString:u]];
+        }
+    }
+    
+    return base;
+}
+
 - (NSArray*)defaultUniformNames {
-    return @[UNIFORM_MODELVIEWPROJECTION_MATRIX, UNIFORM_NORMAL_MATRIX, USE_UNIFORM_COLOR, UNIFORM_COLOR, UNIFORM_NUM_TEXTURES];
+    return @[NKS_UNIFORM_MODELVIEWPROJECTION_MATRIX, NKS_UNIFORM_NORMAL_MATRIX, NKS_USE_UNIFORM_COLOR, NKS_UNIFORM_COLOR, NKS_UNIFORM_NUM_TEXTURES];
 }
 
 - (BOOL)load
 {
     
     if (!_attributes) {
-        _attributes = [[self defaultAttributes] mutableCopy];
+        _attributes = [[self defaultAttributeLocations] mutableCopy];
     }
     
     if (!_uniformNames) {

@@ -172,9 +172,9 @@
     [super end];
 }
 
--(void)drawForHitDetection {
+-(void)drawWithHitShader {
     glDisable(GL_DEPTH_TEST);
-    [super drawForHitDetection];
+    [super drawWithHitShader];
     glEnable(GL_DEPTH_TEST);
 }
 

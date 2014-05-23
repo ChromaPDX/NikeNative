@@ -35,6 +35,8 @@
         if (texture && !color) {
             _color = NKWHITE;
         }
+        
+        self.cullFace = NKCullFaceNone;
     }
     
     return self;
@@ -95,15 +97,15 @@
         
         if (_color.alpha) {
             col = [_color colorWithBlendFactor:_colorBlendFactor alpha:self.alpha];
-            [self.scene.activeShader setVec4:col forUniform:UNIFORM_COLOR];
-            [self.scene.activeShader setInt:1 forUniform:USE_UNIFORM_COLOR];
+            [self.scene.activeShader setVec4:col forUniform:NKS_UNIFORM_COLOR];
+            [self.scene.activeShader setInt:1 forUniform:NKS_USE_UNIFORM_COLOR];
         }
         else {
-            [self.scene.activeShader setInt:0 forUniform:USE_UNIFORM_COLOR];
+            [self.scene.activeShader setInt:0 forUniform:NKS_USE_UNIFORM_COLOR];
         }
         
         if (_texture) {
-            [self.scene.activeShader setInt:1 forUniform:UNIFORM_NUM_TEXTURES];
+            [self.scene.activeShader setInt:1 forUniform:NKS_UNIFORM_NUM_TEXTURES];
             
             if (self.scene.boundTexture != _texture) {
                 [_texture bind];
@@ -112,7 +114,7 @@
         }
         
         else {
-            [self.scene.activeShader setInt:0 forUniform:UNIFORM_NUM_TEXTURES];
+            [self.scene.activeShader setInt:0 forUniform:NKS_UNIFORM_NUM_TEXTURES];
         }
         
         if (self.scene.boundVertexBuffer != _vert) {
@@ -129,10 +131,10 @@
     }
 }
 
--(void)customDrawForHitDetection {
+-(void)customdrawWithHitShader {
     [self.scene pushScale:self.size3d];
     
-    [self.scene.activeShader setVec4:self.uidColor.C4Color forUniform:UNIFORM_COLOR];
+    [self.scene.activeShader setVec4:self.uidColor.C4Color forUniform:NKS_UNIFORM_COLOR];
     
     if (self.scene.boundVertexBuffer != _vert) {
         [_vert bind];

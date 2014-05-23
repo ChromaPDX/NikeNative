@@ -61,6 +61,7 @@
     [self.view addSubview:button];
     */
     
+    NSLog(@"initmainmenu");
     return self;
 }
 

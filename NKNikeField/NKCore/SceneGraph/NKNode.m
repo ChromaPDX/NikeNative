@@ -38,7 +38,7 @@
         
         _userInteractionEnabled = false;
         _useShaderOnSelfOnly = false;
-
+        
     }
     
     return self;
@@ -73,7 +73,7 @@
 }
 
 -(NKSceneNode*)scene {
-
+    
     if (!_scene) { // CACHE POINTER
         
         if ([self isKindOfClass:[NKSceneNode class]]) {
@@ -115,7 +115,7 @@
 - (void)fadeOutChild:(NKNode*)child duration:(NSTimeInterval)seconds withCompletion:(void (^)())block{
     
     [child runAction:[NKAction fadeAlphaTo:0. duration:seconds] completion:^{
-
+        
         if (block){
             block();
         }
@@ -138,7 +138,7 @@
 
 
 -(void)setParent:(NKNode *)parent {
-
+    
     _parent = parent;
     
     self.scene;
@@ -270,6 +270,23 @@
     return nil;
 }
 
+-(NKNode*)randomChild {
+    if (!intChildren.count) {
+        return self;
+    }
+    return intChildren[arc4random() % intChildren.count];
+}
+
+-(NKNode*)randomLeaf {
+    
+    if (intChildren.count) {
+        return [[self randomChild] randomLeaf];
+    }
+    
+    return self;
+    
+}
+
 - (void)removeFromParent{
     [_parent removeChildrenInArray:@[self]];
 }
@@ -289,7 +306,7 @@
 //    if (!_shader) {
 //        _shader = shader;
 //    }
-//    
+//
 //    useShader = true;
 //}
 
@@ -327,50 +344,50 @@
 
 -(void)drawToDepthBuffer {
     
-//    if (!_depthFbo){
-//        _depthFbo = [NKNode customFbo:self.size];
-//        
-//    }
-//    if (!depthShader){
-//        NSLog(@"init drawDepth shader");
-//        depthShader = [[NKDrawDepthShader alloc] initWithNode:self paramBlock:nil];
-//    }
-//    
-//     [_scene.camera end];
-//    
-// //   _depthFbo->begin();
-//    
-//    ofClear(0,0,0,255);
-//    glPushMatrix();
-//    ofTranslate(_depthFbo->getWidth()*.5, _depthFbo->getHeight()*.5);
-//    
-//    [_scene.camera begin];
-//    //_scene.camera.node->transformGL();
-//    
-//    [depthShader begin];
-//
-//    [self customDraw];
-//    
-//    for (NKNode *child in intChildren) {
-//        if (!child.isHidden) {
-//            [child draw];
-//        }
-//    }
-//    
-//    [depthShader end];
-//    
-//
-//    
-//   // _scene.camera.node->restoreTransformGL();
-//    
-//    
-//    [_scene.camera end];
-//    
-//    glPopMatrix();
-//    
-// //   _depthFbo->end();
-//    
-//    [_scene.camera begin];
+    //    if (!_depthFbo){
+    //        _depthFbo = [NKNode customFbo:self.size];
+    //
+    //    }
+    //    if (!depthShader){
+    //        NSLog(@"init drawDepth shader");
+    //        depthShader = [[NKDrawDepthShader alloc] initWithNode:self paramBlock:nil];
+    //    }
+    //
+    //     [_scene.camera end];
+    //
+    // //   _depthFbo->begin();
+    //
+    //    ofClear(0,0,0,255);
+    //    glPushMatrix();
+    //    ofTranslate(_depthFbo->getWidth()*.5, _depthFbo->getHeight()*.5);
+    //
+    //    [_scene.camera begin];
+    //    //_scene.camera.node->transformGL();
+    //
+    //    [depthShader begin];
+    //
+    //    [self customDraw];
+    //
+    //    for (NKNode *child in intChildren) {
+    //        if (!child.isHidden) {
+    //            [child draw];
+    //        }
+    //    }
+    //
+    //    [depthShader end];
+    //
+    //
+    //
+    //   // _scene.camera.node->restoreTransformGL();
+    //
+    //
+    //    [_scene.camera end];
+    //
+    //    glPopMatrix();
+    //
+    // //   _depthFbo->end();
+    //
+    //    [_scene.camera begin];
     
     
 }
@@ -379,7 +396,7 @@
     //return;
     // CULL
     
-    if (_cullFace != self.scene.cullFace) {
+    if (self.scene.cullFace != _cullFace) {
         
         switch (_cullFace) {
                 
@@ -412,8 +429,8 @@
                 break;
         }
         
-      
-        _scene.cullFace = _cullFace;
+        
+        self.scene.scene.cullFace = _cullFace;
         
     }
     
@@ -422,7 +439,7 @@
     // BLEND MODE
     
     if (_blendMode != self.scene.blendMode) {
-
+        
         switch (_blendMode){
             case NKBlendModeNone:
                 glDisable(GL_BLEND);
@@ -430,47 +447,47 @@
                 
             case NKBlendModeAlpha:{
                 glEnable(GL_BLEND);
-//#ifndef TARGET_OPENGLES
-//				glBlendEquation(GL_FUNC_ADD);
-//#endif
+                //#ifndef TARGET_OPENGLES
+                //				glBlendEquation(GL_FUNC_ADD);
+                //#endif
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                 break;
             }
                 
             case NKBlendModeAdd:{
                 glEnable(GL_BLEND);
-//#ifndef TARGET_OPENGLES
-//				glBlendEquation(GL_FUNC_ADD);
-//#endif
+                //#ifndef TARGET_OPENGLES
+                //				glBlendEquation(GL_FUNC_ADD);
+                //#endif
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE);
                 break;
             }
                 
             case NKBlendModeMultiply:{
                 glEnable(GL_BLEND);
-//#ifndef TARGET_OPENGLES
-//				glBlendEquation(GL_FUNC_ADD);
-//#endif
+                //#ifndef TARGET_OPENGLES
+                //				glBlendEquation(GL_FUNC_ADD);
+                //#endif
                 glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA /* GL_ZERO or GL_ONE_MINUS_SRC_ALPHA */);
                 break;
             }
                 
             case NKBlendModeScreen:{
                 glEnable(GL_BLEND);
-//#ifndef TARGET_OPENGLES
-//				glBlendEquation(GL_FUNC_ADD);
-//#endif
+                //#ifndef TARGET_OPENGLES
+                //				glBlendEquation(GL_FUNC_ADD);
+                //#endif
                 glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ONE);
                 break;
             }
                 
             case NKBlendModeSubtract:{
                 glEnable(GL_BLEND);
-//#ifndef TARGET_OPENGLES
-//                glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
-//#else
-//                NSLog(@"OF_BLENDMODE_SUBTRACT not currently supported on OpenGL ES");
-//#endif
+                //#ifndef TARGET_OPENGLES
+                //                glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+                //#else
+                //                NSLog(@"OF_BLENDMODE_SUBTRACT not currently supported on OpenGL ES");
+                //#endif
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE);
                 break;
             }
@@ -484,44 +501,39 @@
 }
 
 -(void)begin {
-    if (NK_GL_VERSION == 2) {
-        if (_shader){
-            self.scene.activeShader = _shader;
-            [_shader use];
-        }
-        
-        [self.scene pushMultiplyMatrix:localTransformMatrix];
+    if (_shader){
+        self.scene.activeShader = _shader;
+        [_shader use];
     }
-    else {
-        glPushMatrix();
-        nkMultMatrix(localTransformMatrix);
-    }
+    
+    [self.scene pushMultiplyMatrix:localTransformMatrix];
+    
 }
 
 -(void)draw {
     [self begin];
-
+    
     [self pushStyle];
     
     [self customDraw];
-
+    
     for (NKNode *child in intChildren) {
-            [child draw];
+        [child draw];
     }
     
     [self end];
 }
 
--(void)drawForHitDetection {
+-(void)drawWithHitShader {
     
     [self.scene pushMultiplyMatrix:localTransformMatrix];
     
     if (self.userInteractionEnabled) {
-        [self customDrawForHitDetection];
+        [self customdrawWithHitShader];
     }
-
+    
     for (NKNode *child in intChildren) {
-            [child drawForHitDetection];
+        [child drawWithHitShader];
     }
     
     [self.scene popMatrix];
@@ -531,55 +543,50 @@
     // OVERRIDE IN SUB CLASS
 }
 
--(void)customDrawForHitDetection {
+-(void)customdrawWithHitShader {
     // OVERRIDE IN SUB CLASS
 }
 
 -(void)end {
-    if (NK_GL_VERSION == 2) {
-        [self.scene popMatrix];
-    }
-    else {
-        glPopMatrix();
-    }
+    [self.scene popMatrix];
 }
 
 //+(void)drawRectangle:(S2t)size {
-//    
+//
 //    NKMeshNode *node = [[NKStaticDraw meshesCache]objectForKey:[NKStaticDraw stringForPrimitive:NKPrimitiveRect]];
-//    
+//
 //    if (!node) {
 //        node = [[NKMeshNode alloc] initWithPrimitive:NKPrimitiveRect texture:nil color:NKWHITE size:V3Make(size.width, size.height, 0)];
 //    }
-//    
+//
 //    if (NK_GL_VERSION == 2) {
 //        [node customDraw];
 //    }
 //    else {
-//        
+//
 //        glPushMatrix();
 //        glScalef(size.width, size.height, 0);
 //        [node customDraw];
 //        glPopMatrix();
-//        
+//
 //    }
-//    
+//
 //}
 
 #pragma mark - GEOMETRY
 
 // this sucks, needs work
 //-(P2t)transformedPoint:(P2t)location {
-//    
+//
 //    M16t inverse = M16InvertColumnMajor([self getGlobalTransformMatrix], NULL);
 //    //M16t inverse = [self getGlobalTransformMatrix];
-//    
+//
 //    V3t transformed = V3MultiplyM16(inverse, V3Make(location.x, location.y, V3GetM16Translation(inverse).z));
-//    
+//
 //    P2tp = P2Make(transformed.x / 100., transformed.y / 100.);
 //
 //    NSLog(@"%f %f node transformed %f, %f", location.x, location.y, p.x, p.y);
-//    
+//
 //    return p;
 //}
 
@@ -587,16 +594,16 @@
     
     M16t globalTransform = [self getGlobalTransformMatrix];
     
-//    bool isInvertible;
+    //    bool isInvertible;
     
     V3t transformed = V3MultiplyM16(globalTransform, V3Make(location.x, location.y, 0));
     
-//    if (!isInvertible) {
-//        NSLog(@"node inversion failed");
-//    }
+    //    if (!isInvertible) {
+    //        NSLog(@"node inversion failed");
+    //    }
     
     P2t p = P2Make(transformed.x, transformed.y);
-
+    
     return p;
     
 }
@@ -615,24 +622,24 @@
     //bool withinArea = false;
     if ( p.x > r.x && p.x < r.x + r.size.width && p.y > r.y && p.y < r.y + r.size.height)
     {
-       // [self logCoords];
+        // [self logCoords];
         return true;
     }
     return false;
     
-//    P2t p = [self inverseProjectedPoint:location];
-//    
-//    V3t globalPos = [self getGlobalPosition];
-//    
-//    R4t r = R4Make(globalPos.x - _size3d.x * _anchorPoint3d.x, globalPos.y - _size3d.y *_anchorPoint3d.y, _size3d.x, _size3d.y);
-//    
-//    //bool withinArea = false;
-//    if ( p.x > r.x && p.x < r.x + r.size.width && p.y > r.y && p.y < r.y + r.size.height)
-//    {
-//        // [self logCoords];
-//        return true;
-//    }
-//    return false;
+    //    P2t p = [self inverseProjectedPoint:location];
+    //
+    //    V3t globalPos = [self getGlobalPosition];
+    //
+    //    R4t r = R4Make(globalPos.x - _size3d.x * _anchorPoint3d.x, globalPos.y - _size3d.y *_anchorPoint3d.y, _size3d.x, _size3d.y);
+    //
+    //    //bool withinArea = false;
+    //    if ( p.x > r.x && p.x < r.x + r.size.width && p.y > r.y && p.y < r.y + r.size.height)
+    //    {
+    //        // [self logCoords];
+    //        return true;
+    //    }
+    //    return false;
     
 }
 
@@ -643,7 +650,7 @@
 -(R4t)getWorldFrame{
     V3t g = [self getGlobalPosition];
     return R4Make(g.x - _size3d.x * _anchorPoint3d.x, g.y - _size3d.y *_anchorPoint3d.y, _size3d.x, _size3d.y);
-
+    
 }
 
 
@@ -666,10 +673,10 @@
 
 -(void)logMatrix:(M16t)M16 {
     NSLog(@"MATRIX for %@ \n %f %f %f %f \n %f %f %f %f \n %f %f %f %f \n %f %f %f %f",self.name,
-            M16.m00, M16.m01, M16.m02, M16.m03,
-            M16.m10, M16.m11, M16.m12, M16.m13,
-            M16.m20, M16.m21, M16.m22, M16.m23,
-            M16.m30, M16.m31, M16.m32, M16.m33);
+          M16.m00, M16.m01, M16.m02, M16.m03,
+          M16.m10, M16.m11, M16.m12, M16.m13,
+          M16.m20, M16.m21, M16.m22, M16.m23,
+          M16.m30, M16.m31, M16.m32, M16.m33);
 }
 
 -(bool)shouldCull {
@@ -702,7 +709,7 @@
     scale = V3GetM16Scale(localTransformMatrix);
     
 	//Q4t so;
-   // M16Decompose(m44, position, orientation, scale, so);
+    // M16Decompose(m44, position, orientation, scale, so);
     
 }
 
@@ -779,8 +786,8 @@
 }
 
 -(P2t)positionInNode:(NKNode *)n {
-//    V3t p = self.node->getGlobalPosition() - n.node->getGlobalPosition();
-//
+    //    V3t p = self.node->getGlobalPosition() - n.node->getGlobalPosition();
+    //
     V3t p = [self convertPoint3d:V3Make(0,0,0) toNode:n];
     return P2Make(p.x, p.y);
 }
@@ -809,18 +816,18 @@
 -(void) createMatrix {
 	//if(isMatrixDirty) {
 	//	isMatrixDirty = false;
- 
+    
     // Make identity, scale it, rotate it
     localTransformMatrix = M16Multiply(M16MakeScale(scale), M16MakeRotate(orientation));
     // Set Translation
     //localTransformMatrix = M16TranslateWithV3(localTransformMatrix, position);
     M16SetV3Translation(&(localTransformMatrix), position);
     
-//	if(scale[0]>0) axis[0] = localTransformMatrix.getRowAsVec3f(0)/scale[0];
-//	if(scale[1]>0) axis[1] = localTransformMatrix.getRowAsVec3f(1)/scale[1];
-//	if(scale[2]>0) axis[2] = localTransformMatrix.getRowAsVec3f(2)/scale[2];
+    //	if(scale[0]>0) axis[0] = localTransformMatrix.getRowAsVec3f(0)/scale[0];
+    //	if(scale[1]>0) axis[1] = localTransformMatrix.getRowAsVec3f(1)/scale[1];
+    //	if(scale[2]>0) axis[2] = localTransformMatrix.getRowAsVec3f(2)/scale[2];
     
-   // [self logMatrix:localTransformMatrix];
+    // [self logMatrix:localTransformMatrix];
 }
 
 //----------------------------------------
@@ -840,7 +847,7 @@
 		[self setOrientation:q];
 	} else {
 		M16t invParent = M16InvertColumnMajor(([_parent getGlobalTransformMatrix]), 0);
-       [self setOrientation:Q4MultiplyM16(invParent,q)];
+        [self setOrientation:Q4MultiplyM16(invParent,q)];
 	}
 }
 
@@ -857,7 +864,7 @@
 }
 
 -(void)setZRotation:(F1t)rotation {
-
+    
     Q4t zRot = Q4FromAngleAndV3(rotation, V3Make(0,0,1));
     [self setOrientation:zRot];
     
@@ -865,7 +872,7 @@
 
 -(V3t)orbitForLongitude:(float)longitude latitude:(float)latitude radius:(float)radius { //centerPoint:(V3t)centerPoint {
 	// find position
-
+    
     _latitude = latitude;
     _longitude = longitude;
     _radius = radius;
@@ -902,44 +909,49 @@
 -(void)lookAtNode:(NKNode*)node {
     [self lookAtPoint:[node getGlobalPosition]];
 }
-     
-     -(void)lookAtPoint:(V3t)point {
-         
-         
-        // NSLog(@"look at: %f %f %f,", point.x,point.y,point.z);
-         //Q4t newRotation = Q4FromMatrix([self getLookMatrix:[node getGlobalPosition]]);
-         
-         //NSLog(@"look at: %f %f %f, %f", newRotation.x, newRotation.y,newRotation.z,newRotation.w);
-         M16t new = [self getLookMatrix:point];
-         
-         //            [self logMatrix:new];
-         [self rotateMatrix:new];
-     }
+
+-(void)lookAtPoint:(V3t)point {
+    
+    
+    // NSLog(@"look at: %f %f %f,", point.x,point.y,point.z);
+    //Q4t newRotation = Q4FromMatrix([self getLookMatrix:[node getGlobalPosition]]);
+    
+    //NSLog(@"look at: %f %f %f, %f", newRotation.x, newRotation.y,newRotation.z,newRotation.w);
+    M16t new = [self getLookMatrix:point];
+    
+    //            [self logMatrix:new];
+    [self rotateMatrix:new];
+}
 
 -(M16t)getLookMatrix:(V3t)lookAtPosition {
-    V3t forward = V3Normalize(V3Subtract(lookAtPosition,[self getGlobalPosition]));
-
-    if (V3Length(forward)> 0.) {
-        V3t side = V3Normalize(V3CrossProduct(forward,[self upVector]));
-        V3t up = V3CrossProduct(forward,side);
-        
-        M16t m = M16IdentityMake();
-        
-        m.m00 = side.x;
-        m.m01 = side.y;
-        m.m02 = side.z;
-        m.m10 = up.x;
-        m.m11 = up.y;
-        m.m12 = up.z;
-        m.m20 = -forward.x;
-        m.m21 = -forward.y;
-        m.m22 = -forward.z;
-
-        //[self logMatrix:m];
-        
-        return m;
-    }
-    return M16IdentityMake();
+    
+    V3t me = self.getGlobalPosition;
+    
+    return M16MakeLookAt(me.x, me.y, me.z, lookAtPosition.x, lookAtPosition.y, lookAtPosition.z, _upVector.x, _upVector.y, _upVector.z);
+    
+//    V3t forward = V3Normalize(V3Subtract(lookAtPosition, self.getGlobalPosition));
+//    
+//    if (V3Length(forward)> 0.) {
+//        V3t side = V3Normalize(V3CrossProduct([self upVector], forward));
+//        V3t up = V3CrossProduct(forward,side);
+//        
+//        M16t m = self.localTransformMatrix;
+//        
+//        m.m00 = side.x;
+//        m.m01 = side.y;
+//        m.m02 = side.z;
+//        m.m10 = up.x;
+//        m.m11 = up.y;
+//        m.m12 = up.z;
+//        m.m20 = forward.x;
+//        m.m21 = forward.y;
+//        m.m22 = forward.z;
+//        
+//        //[self logMatrix:m];
+//        
+//        return m;
+//    }
+//    return M16IdentityMake();
 }
 
 -(V3t)upVector {
@@ -965,7 +977,7 @@
 - (void)setYScale:(F1t)s {
     V3t nScale = scale;
     nScale.y = s;
- [self setScale3d:nScale];
+    [self setScale3d:nScale];
 }
 
 -(void)setScale3d:(V3t)s{
@@ -996,12 +1008,12 @@
 -(void)recursiveAlpha:(F1t)alpha{
     _alpha = intAlpha * alpha;
     
-    if (_alpha < .01) {
-        [self setHidden:true];
-    }
-    else {
-        [self setHidden:false];
-    }
+    //    if (_alpha < .01) {
+    //        [self setHidden:true];
+    //    }
+    //    else {
+    //        [self setHidden:false];
+    //    }
     
     for (NKNode* n in intChildren) {
         [n recursiveAlpha:(_alpha)];
@@ -1011,7 +1023,7 @@
 #pragma mark - ACTIONS
 
 -(void)removeAllActions {
-        [animationHandler removeAllActions];
+    [animationHandler removeAllActions];
 }
 
 #pragma mark - EVENT HANDLING
@@ -1026,77 +1038,77 @@
 -(NKTouchState)touchDown:(P2t)location id:(int)touchId {
     // OVERRIDE, CALL SUPER
     
-//    NKTouchState hit = NKTouchNone;
-//
-//    if (_userInteractionEnabled){
-//        
-//        if ([self containsPoint:location]) {
-//            hit = NKTouchIsFirstResponder;
-//        }
-//        
-//        for (int i = intChildren.count-1; i >= 0; i--){
-//            if ([intChildren[i] touchDown:location id:touchId] > 0) {
-//                return NKTouchContainsFirstResponder;
-//            }
-//        }
-//        
-//        if (hit == NKTouchIsFirstResponder){
-//               NSLog(@"touch down %@ %f, %f",self.name, location.x, location.y);
-//        }
-//    }
-//    
-//    return hit;
+    //    NKTouchState hit = NKTouchNone;
+    //
+    //    if (_userInteractionEnabled){
+    //
+    //        if ([self containsPoint:location]) {
+    //            hit = NKTouchIsFirstResponder;
+    //        }
+    //
+    //        for (int i = intChildren.count-1; i >= 0; i--){
+    //            if ([intChildren[i] touchDown:location id:touchId] > 0) {
+    //                return NKTouchContainsFirstResponder;
+    //            }
+    //        }
+    //
+    //        if (hit == NKTouchIsFirstResponder){
+    //               NSLog(@"touch down %@ %f, %f",self.name, location.x, location.y);
+    //        }
+    //    }
+    //
+    //    return hit;
     return false;
 }
 
 -(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
     // OVERRIDE, CALL SUPER
     
-//    NKTouchState hit = NKTouchNone;
-//    
-//    if (_userInteractionEnabled){
-//        
-//        if ([self containsPoint:location]) {
-//            hit = NKTouchIsFirstResponder;
-//        }
-//        
-//        for (int i = intChildren.count-1; i >= 0; i--){
-//            if ([intChildren[i] touchMoved:location id:touchId] > 0) {
-//                return NKTouchContainsFirstResponder;
-//            }
-//        }
-//        
-//    }
-//    
-//    return hit;
+    //    NKTouchState hit = NKTouchNone;
+    //
+    //    if (_userInteractionEnabled){
+    //
+    //        if ([self containsPoint:location]) {
+    //            hit = NKTouchIsFirstResponder;
+    //        }
+    //
+    //        for (int i = intChildren.count-1; i >= 0; i--){
+    //            if ([intChildren[i] touchMoved:location id:touchId] > 0) {
+    //                return NKTouchContainsFirstResponder;
+    //            }
+    //        }
+    //
+    //    }
+    //
+    //    return hit;
     return false;
 }
 
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     // OVERRIDE, CALL SUPER
     
-//    NKTouchState hit = NKTouchNone;
-//    
-//    if (_userInteractionEnabled){
-//        
-//        if ([self containsPoint:location]) {
-//            hit = NKTouchIsFirstResponder;
-//        }
-//        
-//        for (int i = intChildren.count-1; i >= 0; i--){
-//            if ([intChildren[i] touchUp:location id:touchId] > 0) {
-//                return NKTouchContainsFirstResponder;
-//            }
-//        }
-//        
-//    }
-//    
-//    if (hit >= NKTouchIsFirstResponder){
-//        V2t p2 = [self inverseProjectedPoint:location];
-//        NSLog(@"touch up %@ %f, %f", self.name, p2.x, p2.y);
-//    }
-//    
-//    return hit;
+    //    NKTouchState hit = NKTouchNone;
+    //
+    //    if (_userInteractionEnabled){
+    //
+    //        if ([self containsPoint:location]) {
+    //            hit = NKTouchIsFirstResponder;
+    //        }
+    //        
+    //        for (int i = intChildren.count-1; i >= 0; i--){
+    //            if ([intChildren[i] touchUp:location id:touchId] > 0) {
+    //                return NKTouchContainsFirstResponder;
+    //            }
+    //        }
+    //        
+    //    }
+    //    
+    //    if (hit >= NKTouchIsFirstResponder){
+    //        V2t p2 = [self inverseProjectedPoint:location];
+    //        NSLog(@"touch up %@ %f, %f", self.name, p2.x, p2.y);
+    //    }
+    //    
+    //    return hit;
     return false;
 }
 

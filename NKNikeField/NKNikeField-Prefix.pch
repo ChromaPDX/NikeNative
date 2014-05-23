@@ -10,7 +10,8 @@
 #warning "This project uses features only available in iOS SDK 5.0 and later."
 #endif
 
+#define NK_USE_GLES 1
+
 #ifdef __OBJC__
-    #define NK_USE_GLES 1
     #import "NKpch.h"
 #endif

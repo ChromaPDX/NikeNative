@@ -292,6 +292,44 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     
 }
 
++ (NKAction *)moveToFollowNode:(NKNode*)target duration:(F1t)sec {
+    
+    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    
+    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+        
+        if (action.reset) {
+            action.startPos = node.position3d;
+            //action.endPos = V3Make(location.x, location.y, location.z);
+            action.reset = false;
+        }
+        
+        [node setPosition3d:getTweenPoint(action.startPos, target.getGlobalPosition, completion )];
+        
+    };
+    
+    return action;
+    
+}
+
++ (NKAction *)followNode:(NKNode*)target duration:(F1t)sec {
+    
+    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    
+    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+        
+        if (action.reset) {
+            action.reset = false;
+        }
+        
+        [node setPosition3d:target.getGlobalPosition];
+        //[node setPosition3d:getTweenPoint(action.startPos, target.getGlobalPosition, completion )];
+    };
+    
+    return action;
+    
+}
+
 #pragma mark - ROTATE
 
 +(NKAction *)rotate3dByAngle:(V3t)angles duration:(F1t)sec {
@@ -462,6 +500,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         if (action.reset) {
             action.reset = false;
         }
+        
         action.startOrientation = Q4GetM16Rotate([node getGlobalTransformMatrix]);
         action.endOrientation = Q4GetM16Rotate([node getLookMatrix:[target getGlobalPosition]]);
         

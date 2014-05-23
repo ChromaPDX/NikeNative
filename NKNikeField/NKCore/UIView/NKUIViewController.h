@@ -8,8 +8,14 @@
 
 #if TARGET_OS_IPHONE
 
+@class NKUIView;
+
 @interface NKUIViewController : UIViewController
 
+-(NKUIView*)nkView;
+
 @end
+
+
 
 #endif
