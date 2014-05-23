@@ -7,40 +7,40 @@
 #import <arm_neon.h>
 #endif
 
+
 #if TARGET_OS_IPHONE
 
-#define NK_USE_GLES 1
-#define NK_GL_VERSION 2
-
 #import <UIKit/UIKit.h>
-#import <OpenGLES/EAGL.h>
-#import <OpenGLES/ES1/gl.h>
-#import <OpenGLES/ES1/glext.h>
+
 
 #define NKColor UIColor
 #define NKImage UIImage
 #define NKFont  UIFont
-#define NKContext EAGLContext
 #define NKDisplayLink CADisplayLink *
 #define NK_NONATOMIC_IOSONLY nonatomic
 
 #else // TARGET DESKTOP
 
-#define NK_GL_VERSION 2
-
 #import <AppKit/AppKit.h>
-#import <OpenGL/OpenGL.h>
-#import <OpenGl/gl.h>
-#import <OpenGl/glext.h>
 
 #define NKColor NSColor
 #define NKImage NSImage
 #define NKFont  NSFont
-#define NKContext NSOpenGLContext
 #define NKDisplayLink CVDisplayLinkRef
 
 #define NK_NONATOMIC_IOSONLY atomic
 
+#endif
+
+#if NK_USE_GLES
+
+#import <OpenGLES/EAGL.h>
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
+#else
+#import <OpenGL/OpenGL.h>
+#import <OpenGl/gl.h>
+#import <OpenGl/glext.h>
 #endif
 
 #pragma mark -
@@ -81,7 +81,7 @@ union _V4t
     struct { P2t origin; S2t size;};
     struct { F1t r, g, b, a; };
     struct { F1t s, t, p, q; };
-   F1t v[4];
+    F1t v[4];
 } __attribute__((aligned(16)));
 
 typedef union _V4t V4t;
@@ -139,11 +139,11 @@ union _M9t
 {
     struct
     {
-       F1t m00, m01, m02;
-       F1t m10, m11, m12;
-       F1t m20, m21, m22;
+        F1t m00, m01, m02;
+        F1t m10, m11, m12;
+        F1t m20, m21, m22;
     };
-   F1t m[9];
+    F1t m[9];
 };
 typedef union _M9t M9t;
 
@@ -366,8 +366,8 @@ static inline V3t V3Add(V3t vectorLeft, V3t vectorRight)
 static inline V3t V3Subtract(V3t vectorLeft, V3t vectorRight)
 {
     V3t v = { vectorLeft.x - vectorRight.x,
-            vectorLeft.y - vectorRight.y,
-            vectorLeft.z - vectorRight.z };
+        vectorLeft.y - vectorRight.y,
+        vectorLeft.z - vectorRight.z };
     return v;
 }
 
@@ -467,7 +467,7 @@ static inline V3t V3CrossProduct(V3t vectorLeft, V3t vectorRight)
 
 static inline V3t V3Project(V3t vectorToProject, V3t projectionVector)
 {
-   F1t scale = V3DotProduct(projectionVector, vectorToProject) / V3DotProduct(projectionVector, projectionVector);
+    F1t scale = V3DotProduct(projectionVector, vectorToProject) / V3DotProduct(projectionVector, projectionVector);
     V3t v = V3MultiplyScalar(projectionVector, scale);
     return v;
 }
@@ -525,25 +525,25 @@ static inline void V3FastNormalize(V3t *vector)
 }
 
 static inline V3t V3RotatePoint(V3t p, float angle, V3t axis){
-        V3t ax = V3Normalize(axis);
+    V3t ax = V3Normalize(axis);
     
-        float a = DEGREES_TO_RADIANS(angle);
-        float sina = sin( a );
-        float cosa = cos( a );
-        float cosb = 1.0f - cosa;
-        
-        float nx = p.x*(ax.x*ax.x*cosb + cosa)
-        + p.y*(ax.x*ax.y*cosb - ax.z*sina)
-        + p.z*(ax.x*ax.z*cosb + ax.y*sina);
-        float ny = p.x*(ax.y*ax.x*cosb + ax.z*sina)
-        + p.y*(ax.y*ax.y*cosb + cosa)
-        + p.z*(ax.y*ax.z*cosb - ax.x*sina);
-        float nz = p.x*(ax.z*ax.x*cosb - ax.y*sina)
-        + p.y*(ax.z*ax.y*cosb + ax.x*sina)
-        + p.z*(ax.z*ax.z*cosb + cosa);
-        p.x = nx; p.y = ny; p.z = nz;
+    float a = DEGREES_TO_RADIANS(angle);
+    float sina = sin( a );
+    float cosa = cos( a );
+    float cosb = 1.0f - cosa;
     
-        return p;
+    float nx = p.x*(ax.x*ax.x*cosb + cosa)
+    + p.y*(ax.x*ax.y*cosb - ax.z*sina)
+    + p.z*(ax.x*ax.z*cosb + ax.y*sina);
+    float ny = p.x*(ax.y*ax.x*cosb + ax.z*sina)
+    + p.y*(ax.y*ax.y*cosb + cosa)
+    + p.z*(ax.y*ax.z*cosb - ax.x*sina);
+    float nz = p.x*(ax.z*ax.x*cosb - ax.y*sina)
+    + p.y*(ax.z*ax.y*cosb + ax.x*sina)
+    + p.z*(ax.z*ax.z*cosb + cosa);
+    p.x = nx; p.y = ny; p.z = nz;
+    
+    return p;
 }
 
 static inline bool V3Equal(V3t l, V3t r){
@@ -739,7 +739,7 @@ static inline Q4t Q4FromV3(V3t euldeg)
     Q4t quat;
     V3t eul = V3Make(DEGREES_TO_RADIANS(euldeg.z),DEGREES_TO_RADIANS(euldeg.y),DEGREES_TO_RADIANS(euldeg.x));
     
-   F1t cr, cp, cy, sr, sp, sy, cpcy, spsy;
+    F1t cr, cp, cy, sr, sp, sy, cpcy, spsy;
     // calculate trig identities
     cr = cos(eul.z/2.);
     cp = cos(eul.y/2.);
@@ -770,8 +770,8 @@ static inline Q4t Q4FromArray(F1t values[4])
 
 static inline Q4t Q4FromA4(A4t A4)
 {
-   F1t halfAngle = A4.a * 0.5f;
-   F1t scale = sinf(halfAngle);
+    F1t halfAngle = A4.a * 0.5f;
+    F1t scale = sinf(halfAngle);
     Q4t q = { scale * A4.x, scale * A4.y, scale * A4.z, cosf(halfAngle) };
     return q;
 }
@@ -863,7 +863,7 @@ static inline Q4t Q4GetM16Rotate(M16t M16){
         NSLog(@"Q4 from Matrix: coding error\n");
     }
     
-   F1t r = NORM(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+    F1t r = NORM(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
     quaternion.x /= r;
     quaternion.y /= r;
     quaternion.z /= r;
@@ -1057,7 +1057,7 @@ static inline F1t Q4Length(Q4t quaternion)
 
 static inline Q4t Q4Normalize(Q4t quaternion)
 {
-   F1t scale = 1.0f / Q4Length(quaternion);
+    F1t scale = 1.0f / Q4Length(quaternion);
 #if defined(__ARM_NEON__)
     float32x4_t v = vmulq_f32(*(float32x4_t *)&quaternion,
                               vdupq_n_f32((float32_t)scale));
@@ -1128,10 +1128,10 @@ static inline Q4t Q4Invert(Q4t quaternion)
 	const __m128 v = _mm_xor_ps(q, v_mask) / _mm_hadd_ps(halfsum, halfsum);
     return *(Q4t *)&v;
 #else
-   F1t scale = 1.0f / (quaternion.x * quaternion.x +
-                          quaternion.y * quaternion.y +
-                          quaternion.z * quaternion.z +
-                          quaternion.w * quaternion.w);
+    F1t scale = 1.0f / (quaternion.x * quaternion.x +
+                        quaternion.y * quaternion.y +
+                        quaternion.z * quaternion.z +
+                        quaternion.w * quaternion.w);
     Q4t q = { -quaternion.x * scale, -quaternion.y * scale, -quaternion.z * scale, quaternion.w * scale };
     return q;
 #endif
@@ -1156,9 +1156,9 @@ static inline Q4t Q4RotateQ4(Q4t quaternion, Q4t vector)
 static inline Q4t QuatSlerp(Q4t from, Q4t to,F1t t)
 {
     Q4t res;
-   F1t DELTA = .01; // THRESHOLD FOR LINEAR INTERP
+    F1t DELTA = .01; // THRESHOLD FOR LINEAR INTERP
     
-   F1t           to1[4];
+    F1t           to1[4];
     double        omega, cosom, sinom, scale0, scale1;
     // calc cosine
     cosom = from.x * to.x + from.y * to.y + from.z * to.z
@@ -1200,7 +1200,7 @@ static inline Q4t QuatMul(Q4t q1, Q4t q2){
     
     Q4t res;
     
-   F1t A, B, C, D, E, F, G, H;
+    F1t A, B, C, D, E, F, G, H;
     A = (q1.w + q1.x)*(q2.w + q2.x);
     B = (q1.z - q1.y)*(q2.y - q2.z);
     C = (q1.w - q1.x)*(q2.y + q2.z);
@@ -1549,7 +1549,7 @@ static inline M16t M16ScaleWithV3(M16t matrix, V3t scaleVector)
 
 static inline M16t M16MakeRotateX(F1t degrees)
 {
-   F1t radians = DEGREES_TO_RADIANS(degrees);
+    F1t radians = DEGREES_TO_RADIANS(degrees);
     
     M16t M16 = M16IdentityMake();
     
@@ -1564,7 +1564,7 @@ static inline M16t M16MakeRotateX(F1t degrees)
 
 static inline M16t M16MakeRotateY(F1t degrees)
 {
-   F1t radians = DEGREES_TO_RADIANS(degrees);
+    F1t radians = DEGREES_TO_RADIANS(degrees);
     
     M16t M16 = M16IdentityMake();
     
@@ -1579,7 +1579,7 @@ static inline M16t M16MakeRotateY(F1t degrees)
 
 static inline M16t M16MakeRotateZ(F1t degrees)
 {
-   F1t radians = DEGREES_TO_RADIANS(degrees);
+    F1t radians = DEGREES_TO_RADIANS(degrees);
     
     M16t M16 = M16IdentityMake();
     
@@ -1601,26 +1601,26 @@ static inline M16t M16MakeRotateZ(F1t degrees)
 //    result.m[1] = m1.m[1]*m2.m[0] + m1.m[5]*m2.m[1] + m1.m[9]*m2.m[2] + m1.m[13]*m2.m[3];
 //    result.m[2] = m1.m[2]*m2.m[0] + m1.m[6]*m2.m[1] + m1.m[10]*m2.m[2] + m1.m[14]*m2.m[3];
 //    result.m[3] = m1.m[3]*m2.m[0] + m1.m[7]*m2.m[1] + m1.m[11]*m2.m[2] + m1.m[15]*m2.m[3];
-//    
+//
 //    // Second Column
 //    result.m[4] = m1.m[0]*m2.m[4] + m1.m[4]*m2.m[5] + m1.m[8]*m2.m[6] + m1.m[12]*m2.m[7];
 //    result.m[5] = m1.m[1]*m2.m[4] + m1.m[5]*m2.m[5] + m1.m[9]*m2.m[6] + m1.m[13]*m2.m[7];
 //    result.m[6] = m1.m[2]*m2.m[4] + m1.m[6]*m2.m[5] + m1.m[10]*m2.m[6] + m1.m[14]*m2.m[7];
 //    result.m[7] = m1.m[3]*m2.m[4] + m1.m[7]*m2.m[5] + m1.m[11]*m2.m[6] + m1.m[15]*m2.m[7];
-//    
+//
 //    // Third Column
 //    result.m[8] = m1.m[0]*m2.m[8] + m1.m[4]*m2.m[9] + m1.m[8]*m2.m[10] + m1.m[12]*m2.m[11];
 //    result.m[9] = m1.m[1]*m2.m[8] + m1.m[5]*m2.m[9] + m1.m[9]*m2.m[10] + m1.m[13]*m2.m[11];
 //    result.m[10] = m1.m[2]*m2.m[8] + m1.m[6]*m2.m[9] + m1.m[10]*m2.m[10] + m1.m[14]*m2.m[11];
 //    result.m[11] = m1.m[3]*m2.m[8] + m1.m[7]*m2.m[9] + m1.m[11]*m2.m[10] + m1.m[15]*m2.m[11];
-//    
+//
 //    // Fourth Column
 //    result.m[12] = m1.m[0]*m2.m[12] + m1.m[4]*m2.m[13] + m1.m[8]*m2.m[14] + m1.m[12]*m2.m[15];
 //    result.m[13] = m1.m[1]*m2.m[12] + m1.m[5]*m2.m[13] + m1.m[9]*m2.m[14] + m1.m[13]*m2.m[15];
 //    result.m[14] = m1.m[2]*m2.m[12] + m1.m[6]*m2.m[13] + m1.m[10]*m2.m[14] + m1.m[14]*m2.m[15];
 //    result.m[15] = m1.m[3]*m2.m[12] + m1.m[7]*m2.m[13] + m1.m[11]*m2.m[14] + m1.m[15]*m2.m[15];
 //    return result;
-//    
+//
 //}
 
 static inline V3t V3MultiplyM16(M16t matrixLeft, V3t vectorRight)
@@ -1645,9 +1645,9 @@ static inline M16t M16MakeAngleAxis(F1t radians, V3t  V3){
     
     M16t M16;
     
-   F1t ax = V3.x * radians;
-   F1t ay = V3.y * radians;
-   F1t az = V3.z * radians;
+    F1t ax = V3.x * radians;
+    F1t ay = V3.y * radians;
+    F1t az = V3.z * radians;
     
     // First Column
     M16.m[0] = cosf(ay) * cosf(az);
@@ -1680,7 +1680,7 @@ static inline M16t M16MakeEuler(V3t euler) {
 
 static inline M16t M16MakePerspective(F1t fovyRadians,F1t aspect,F1t nearZ,F1t farZ)
 {
-   F1t cotan = 1.0f / tanf(fovyRadians / 2.0f);
+    F1t cotan = 1.0f / tanf(fovyRadians / 2.0f);
     
     M16t m = { cotan / aspect, 0.0f, 0.0f, 0.0f,
         0.0f, cotan, 0.0f, 0.0f,
@@ -1718,15 +1718,15 @@ static inline void M16LoadPerspective(M16t* M16, F1t fovDegrees, F1t aspect, F1t
 }
 
 static inline M16t M16MakeFrustum(F1t left,F1t right,
-                          F1t bottom,F1t top,
-                          F1t nearZ,F1t farZ)
+                                  F1t bottom,F1t top,
+                                  F1t nearZ,F1t farZ)
 {
-   F1t ral = right + left;
-   F1t rsl = right - left;
-   F1t tsb = top - bottom;
-   F1t tab = top + bottom;
-   F1t fan = farZ + nearZ;
-   F1t fsn = farZ - nearZ;
+    F1t ral = right + left;
+    F1t rsl = right - left;
+    F1t tsb = top - bottom;
+    F1t tab = top + bottom;
+    F1t fan = farZ + nearZ;
+    F1t fsn = farZ - nearZ;
     
     M16t m = { 2.0f * nearZ / rsl, 0.0f, 0.0f, 0.0f,
         0.0f, 2.0f * nearZ / tsb, 0.0f, 0.0f,
@@ -1737,15 +1737,15 @@ static inline M16t M16MakeFrustum(F1t left,F1t right,
 }
 
 static inline M16t M16MakeOrtho(F1t left,F1t right,
-                        F1t bottom,F1t top,
-                        F1t nearZ,F1t farZ)
+                                F1t bottom,F1t top,
+                                F1t nearZ,F1t farZ)
 {
-   F1t ral = right + left;
-   F1t rsl = right - left;
-   F1t tab = top + bottom;
-   F1t tsb = top - bottom;
-   F1t fan = farZ + nearZ;
-   F1t fsn = farZ - nearZ;
+    F1t ral = right + left;
+    F1t rsl = right - left;
+    F1t tab = top + bottom;
+    F1t tsb = top - bottom;
+    F1t fan = farZ + nearZ;
+    F1t fsn = farZ - nearZ;
     
     M16t m = { 2.0f / rsl, 0.0f, 0.0f, 0.0f,
         0.0f, 2.0f / tsb, 0.0f, 0.0f,
@@ -1756,12 +1756,13 @@ static inline M16t M16MakeOrtho(F1t left,F1t right,
 }
 
 static inline M16t M16MakeLookAt(F1t eyeX,F1t eyeY,F1t eyeZ,
-                         F1t centerX,F1t centerY,F1t centerZ,
-                         F1t upX,F1t upY,F1t upZ)
+                                 F1t centerX,F1t centerY,F1t centerZ,
+                                 F1t upX,F1t upY,F1t upZ)
 {
     V3t ev = { eyeX, eyeY, eyeZ };
     V3t cv = { centerX, centerY, centerZ };
     V3t uv = { upX, upY, upZ };
+    
     V3t n = V3Normalize(V3Add(ev, V3Negate(cv)));
     V3t u = V3Normalize(V3CrossProduct(uv, n));
     V3t v = V3CrossProduct(n, u);
@@ -1825,7 +1826,7 @@ static inline M16t M16SetRow(M16t matrix, int row, V4t vector)
 static inline M16t M16SetColumn(M16t matrix, int column, V4t vector)
 {
 #if defined(__ARM_NEON__)
-   F1t *dst = &(matrix.m[column * 4]);
+    F1t *dst = &(matrix.m[column * 4]);
     vst1q_f32(dst, vld1q_f32(vector.v));
     return matrix;
 #elif defined(GLK_SSE3_INTRINSICS)
@@ -1844,7 +1845,7 @@ static inline M16t M16SetColumn(M16t matrix, int column, V4t vector)
 static inline M16t M16InvertColumnMajor(M16t M16, bool *isInvertible)
 {
     M16t invOut;
-   F1t det;
+    F1t det;
     int i;
     
     invOut.m[ 0] =  M16.m[5] * M16.m[10] * M16.m[15] - M16.m[5] * M16.m[11] * M16.m[14] - M16.m[9] * M16.m[6] * M16.m[15] + M16.m[9] * M16.m[7] * M16.m[14] + M16.m[13] * M16.m[6] * M16.m[11] - M16.m[13] * M16.m[7] * M16.m[10];
@@ -1880,11 +1881,6 @@ static inline M16t M16InvertColumnMajor(M16t M16, bool *isInvertible)
     return invOut;
 }
 
-#pragma mark - GL Utility Functions
-
-static inline void nkMultMatrix(M16t matrix){
-    glMultMatrixf(matrix.m);
-}
 
 #pragma mark MATRIX - DECOMPOSITION - ported FROM OpenFrameworks, untested
 
@@ -2082,15 +2078,15 @@ static inline void nkMultMatrix(M16t matrix){
 //
 //static inline double polarDecomp( _HMatrix M, _HMatrix Q, _HMatrix S)
 //{
-//    
+//
 //#define TOL 1.0e-6
 //	_HMatrix Mk, MadjTk, Ek;
 //	double det, M_one, M_inf, MadjT_one, MadjT_inf, E_one, gamma, g1, g2;
 //	int i, j;
-//    
+//
 //	mat_tpose(Mk,=,M,3);
 //	M_one = norm_one(Mk);  M_inf = norm_inf(Mk);
-//    
+//
 //	do
 //	{
 //		adjoint_transpose(Mk, MadjTk);
@@ -2100,10 +2096,10 @@ static inline void nkMultMatrix(M16t matrix){
 //			do_rank2(Mk, MadjTk, Mk);
 //			break;
 //		}
-//        
+//
 //		MadjT_one = norm_one(MadjTk);
 //		MadjT_inf = norm_inf(MadjTk);
-//        
+//
 //		gamma = sqrt(sqrt((MadjT_one*MadjT_inf)/(M_one*M_inf))/fabs(det));
 //		g1 = gamma*0.5;
 //		g2 = 0.5/(gamma*det);
@@ -2113,12 +2109,12 @@ static inline void nkMultMatrix(M16t matrix){
 //		E_one = norm_one(Ek);
 //		M_one = norm_one(Mk);
 //		M_inf = norm_inf(Mk);
-//        
+//
 //	} while(E_one>(M_one*TOL));
-//    
+//
 //	mat_tpose(Q,=,Mk,3); mat_pad(Q);
 //	mat_mult(Mk, M, S);  mat_pad(S);
-//    
+//
 //	for (i=0; i<3; i++)
 //		for (j=i; j<3; j++)
 //			S[i][j] = S[j][i] = 0.5*(S[i][j]+S[j][i]);
@@ -2193,12 +2189,12 @@ static inline void nkMultMatrix(M16t matrix){
 //#define swap(a,i,j) {a[3]=a[i]; a[i]=a[j]; a[j]=a[3];}
 //#define cycle(a,p)  if (p) {a[3]=a[0]; a[0]=a[1]; a[1]=a[2]; a[2]=a[3];}\
 //else   {a[3]=a[2]; a[2]=a[1]; a[1]=a[0]; a[0]=a[3];}
-//    
+//
 //	Q4t p = Q4Make(0,0,0,1);
 //	double ka[4];
 //	int i, turn = -1;
 //	ka[X] = k->x; ka[Y] = k->y; ka[Z] = k->z;
-//    
+//
 //	if (ka[X]==ka[Y]) {
 //		if (ka[X]==ka[Z])
 //			turn = W;
@@ -2224,14 +2220,14 @@ static inline void nkMultMatrix(M16t matrix){
 //		mag[0] = (double)q.z*q.z+(double)q.w*q.w-0.5;
 //		mag[1] = (double)q.x*q.z-(double)q.y*q.w;
 //		mag[2] = (double)q.y*q.z+(double)q.x*q.w;
-//        
+//
 //		bool neg[3];
 //		for (i=0; i<3; i++)
 //		{
 //			neg[i] = (mag[i]<0.0);
 //			if (neg[i]) mag[i] = -mag[i];
 //		}
-//        
+//
 //		if (mag[0]>mag[1]) {
 //			if (mag[0]>mag[2])
 //				win = 0;
@@ -2241,19 +2237,19 @@ static inline void nkMultMatrix(M16t matrix){
 //			if (mag[1]>mag[2]) win = 1;
 //			else win = 2;
 //		}
-//        
+//
 //		switch (win) {
 //			case 0: if (neg[0]) p = q1000; else p = q0001; break;
 //			case 1: if (neg[1]) p = qppmm; else p = qpppp; cycle(ka,0) break;
 //			case 2: if (neg[2]) p = qmpmm; else p = qpppm; cycle(ka,1) break;
 //		}
-//        
+//
 //		qp = Q4Multiply(q, p);
 //		t = sqrt(mag[win]+0.5);
 //		p = Q4Multiply(p, Q4Make(0.0,0.0,-qp.z/t,qp.w/t));
 //		p = Q4Multiply(qtoz, Q4Conjugate(p));
 //	}
-//    
+//
 //	else {
 //		double qa[4], pa[4];
 //		unsigned int lo, hi;
@@ -2267,14 +2263,14 @@ static inline void nkMultMatrix(M16t matrix){
 //			if (neg[i]) qa[i] = -qa[i];
 //			par ^= neg[i];
 //		}
-//        
+//
 //		/* Find two largest components, indices in hi and lo */
 //		if (qa[0]>qa[1]) lo = 0;
 //		else lo = 1;
-//        
+//
 //		if (qa[2]>qa[3]) hi = 2;
 //		else hi = 3;
-//        
+//
 //		if (qa[lo]>qa[hi]) {
 //			if (qa[lo^1]>qa[hi]) {
 //				hi = lo; lo ^= 1;
@@ -2286,7 +2282,7 @@ static inline void nkMultMatrix(M16t matrix){
 //		else {
 //			if (qa[hi^1]>qa[lo]) lo = hi^1;
 //		}
-//        
+//
 //		all = (qa[0]+qa[1]+qa[2]+qa[3])*0.5;
 //		two = (qa[hi]+qa[lo])*SQRTHALF;
 //		big = qa[hi];
@@ -2333,7 +2329,7 @@ static inline void nkMultMatrix(M16t matrix){
 //{
 //	_HMatrix Q, S, U;
 //	Q4t p;
-//    
+//
 //	//Translation component.
 //	parts->t = Q4Make(A[X][W], A[Y][W], A[Z][W], 0);
 //	double det = polarDecomp(A, Q, S);
@@ -2344,7 +2340,7 @@ static inline void nkMultMatrix(M16t matrix){
 //	}
 //	else
 //		parts->f = 1;
-//    
+//
 //	parts->q = Q4FromMatrix(Q);
 //	parts->k = spectDecomp(S, U);
 //	parts->u = Q4FromMatrix(U);
@@ -2353,10 +2349,10 @@ static inline void nkMultMatrix(M16t matrix){
 //}
 //
 //static inline void M16Decompose(M16t M16,V3t t,Q4t r,V3t s,Q4t so ){
-//    
+//
 //	_affineParts parts;
 //    _HMatrix hmatrix;
-//    
+//
 //    // Transpose copy of LTW
 //    for ( int i =0; i<4; i++)
 //    {
@@ -2365,29 +2361,29 @@ static inline void nkMultMatrix(M16t matrix){
 //            hmatrix[i][j] = M16.m[j*4+i];
 //        }
 //    }
-//    
+//
 //    decompAffine(hmatrix, &parts);
-//    
+//
 //    double mul = 1.0;
 //    if (parts.t.w != 0.0)
 //        mul = 1.0 / parts.t.w;
-//    
+//
 //    t.x = parts.t.x * mul;
 //    t.y = parts.t.y * mul;
 //    t.z = parts.t.z * mul;
-//    
+//
 //    r = Q4Make(parts.q.x, parts.q.y, parts.q.z, parts.q.w);
-//    
+//
 //    mul = 1.0;
 //    if (parts.k.w != 0.0)
 //        mul = 1.0 / parts.k.w;
-//    
+//
 //    // mul be sign of determinant to support negative scales.
 //    mul *= parts.f;
 //    s.x= parts.k.x * mul;
 //    s.y = parts.k.y * mul;
 //    s.z = parts.k.z * mul;
-//    
+//
 //    so = Q4Make(parts.u.x, parts.u.y, parts.u.z, parts.u.w);
 //}
 

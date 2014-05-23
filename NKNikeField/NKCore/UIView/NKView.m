@@ -22,8 +22,11 @@
     
     w = self.bounds.size.width;
     h = self.bounds.size.height;
+    
     wMult = w / self.bounds.size.width;
     hMult = h / self.bounds.size.height;
+    
+    _mscale = 1.;
     
     lastTime = CFAbsoluteTimeGetCurrent();
 }
@@ -31,7 +34,7 @@
 -(void)drawScene {
     
     if (_scene.hitQueue.count) {
-        [_scene drawToHitBuffer];
+        [_scene processHitBuffer];
     }
     
     glViewport(0, 0, self.visibleRect.size.width, self.visibleRect.size.height);
@@ -230,6 +233,7 @@
     
     wMult = w / self.bounds.size.width;
     hMult = h / self.bounds.size.height;
+    
 #if SUPPORT_RETINA_RESOLUTION
     
     // Rendering at retina resolutions will reduce aliasing, but at the potential
@@ -399,7 +403,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
     
      [_scene dispatchTouchRequestForLocation:[self calibratedMousePoint:theEvent.locationInWindow] type:NKEventTypeEnd];
     //
-    //        NSLog(@"mouse up : %f %f", theEvent.locationInWindow.x, theEvent.locationInWindow.y);
+     NSLog(@"mouse up : %f %f", [self calibratedMousePoint:theEvent.locationInWindow].x, [self calibratedMousePoint:theEvent.locationInWindow].y);
     //        //
     //    });
 }

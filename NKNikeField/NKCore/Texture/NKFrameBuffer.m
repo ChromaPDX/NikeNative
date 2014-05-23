@@ -68,7 +68,7 @@ static inline const char * GetGLErrorString(GLenum error)
 
 #if NK_USE_GLES
 
-- (id)initWithContext:(NKContext *)context layer:(id <EAGLDrawable>)layer
+- (id)initWithContext:(EAGLContext *)context layer:(id <EAGLDrawable>)layer
 {
     self = [super init];
     
@@ -81,10 +81,13 @@ static inline const char * GetGLErrorString(GLenum error)
         glGenFramebuffers(1, &_frameBuffer);
         glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
         
+        NSLog(@"allocate gl buffer, %d", _frameBuffer);
         // 2 // Create a color renderbuffer, allocate storage for it, and attach it to the framebuffer’s color attachment point.
         
         glGenRenderbuffers(1, &_renderBuffer);
         glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
+        
+        NSLog(@"allocate gl buffer, %d", _renderBuffer);
         
         [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:layer];
         
@@ -97,6 +100,9 @@ static inline const char * GetGLErrorString(GLenum error)
         
         glGenRenderbuffers(1, &_depthBuffer);
         glBindRenderbuffer(GL_RENDERBUFFER, _depthBuffer);
+        
+        NSLog(@"allocate gl depth buffer, %d", _depthBuffer);
+        
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, _width, _height);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthBuffer);
         
@@ -179,24 +185,14 @@ static inline const char * GetGLErrorString(GLenum error)
         
         // 4 // Test the framebuffer for completeness. This test only needs to be performed when the framebuffer’s configuration changes.
         
-        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER) ;
-        if(status != GL_FRAMEBUFFER_COMPLETE) {
-            NSLog(@"failed to make complete framebuffer object %x", status);
-            return false;
-        }
+//        GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER) ;
+//        if(status != GL_FRAMEBUFFER_COMPLETE) {
+//            NSLog(@"failed to make complete framebuffer object %x", status);
+//            return false;
+//        }
         
         _renderTexture = [[NKTexture alloc]initWithSize:S2Make(_width, _height)];
-
-//        // Offscreen position framebuffer texture target
-//        glGenTextures(1, &_locRenderTexture);
-//        glBindTexture(GL_TEXTURE_2D, _locRenderTexture);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-//        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _size.width, _size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-//        glBindTexture(GL_TEXTURE_2D, 0);
-//        
+   
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _renderTexture.glTexLocation, 0);
         
         // Always check that our framebuffer is ok
@@ -371,8 +367,8 @@ static inline const char * GetGLErrorString(GLenum error)
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
 #if NK_USE_GLES
-        glDeleteFramebuffersOES(1, &_frameBuffer);
-        glDeleteRenderbuffersOES(1, &_renderBuffer);
+        glDeleteFramebuffers(1, &_frameBuffer);
+        glDeleteRenderbuffers(1, &_renderBuffer);
 #else
     glDeleteFramebuffersEXT(1, &_frameBuffer);
     glDeleteRenderbuffersEXT(1, &_renderBuffer);
@@ -381,7 +377,7 @@ static inline const char * GetGLErrorString(GLenum error)
         if(_depthBuffer)
         {
             #if NK_USE_GLES
-            glDeleteRenderbuffersOES(1, &_depthBuffer);
+            glDeleteRenderbuffers(1, &_depthBuffer);
             #else
             glDeleteRenderbuffersEXT(1, &_depthBuffer);
             #endif

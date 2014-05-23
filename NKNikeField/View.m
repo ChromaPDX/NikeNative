@@ -26,15 +26,19 @@
     return self;
 }
 
--(void)layoutSubviews {
-    [super layoutSubviews];
+-(void)loadScene {
+
+    NSLog(@"load scene");
     
     if (!self.scene) {
+        
+        NSLog(@"VIEW HEIGHT, %f", self.frame.size.height);
+        
         float scale = [[UIScreen mainScreen] scale];
         
         self.scene = [[MainMenu alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
         
-        NSLog(@"VIEW HEIGHT, %f", self.frame.size.height);
+        NSLog(@"init first scene");
         
         [self startAnimation];
     }

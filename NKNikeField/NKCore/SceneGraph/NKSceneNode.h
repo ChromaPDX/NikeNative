@@ -30,6 +30,8 @@
 #import "NKNode.h"
 #import "NKAlertSprite.h"
 
+//#define DRAW_HIT_BUFFER
+
 #if TARGET_OS_IPHONE
 @class NKUIView;
 #else
@@ -106,8 +108,8 @@ typedef void (^CallBack)();
 // HIT BUFFER
 
 -(void)getUidColorForNode:(NKNode*)node;
--(void)drawToHitBuffer;
--(void)drawForHitDetection;
+
+-(void)processHitBuffer;
 -(void)drawHitBuffer;
 
 -(void)dispatchTouchRequestForLocation:(P2t)location type:(NKEventType)eventType;

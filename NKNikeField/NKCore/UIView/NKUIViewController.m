@@ -9,6 +9,7 @@
 #if TARGET_OS_IPHONE
 
 #import "NKUIViewController.h"
+#import "NKUIView.h"
 
 
 @implementation NKUIViewController
@@ -25,7 +26,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"nkView load scene");
+    [self.nkView loadScene];
     // Do any additional setup after loading the view.
+}
+
+-(NKUIView*)nkView {
+    return (NKUIView*)self.view;
 }
 
 - (void)didReceiveMemoryWarning

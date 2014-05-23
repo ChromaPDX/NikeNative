@@ -19,8 +19,8 @@
 @property F1t nearZ;
 @property F1t farZ;
 
-@property (nonatomic, assign) V3t target;
-@property (nonatomic, assign) V3t up;
+//@property (nonatomic, assign) V3t target;
+@property (nonatomic, strong) NKNode *target;
 
 - (M16t)projectionMatrix;
 

@@ -105,7 +105,12 @@ typedef NS_ENUM(NSInteger, NKActionTimingMode) {
 + (NKAction *)moveTo:(P2t)location duration:(F1t)sec;
 + (NKAction *)moveToX:(CGFloat)x duration:(F1t)sec;
 + (NKAction *)moveToY:(CGFloat)y duration:(F1t)sec;
+
++ (NKAction *)moveToFollowNode:(NKNode*)target duration:(F1t)sec;
++ (NKAction *)followNode:(NKNode*)target duration:(F1t)sec;
+
 //
+
 + (NKAction *)rotate3dToAngle:(V3t)angles duration:(F1t)sec;
 + (NKAction *)rotateByAngle:(CGFloat)radians duration:(F1t)sec;
 + (NKAction *)rotateToAngle:(CGFloat)radians duration:(F1t)sec;

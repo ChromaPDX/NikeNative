@@ -158,6 +158,8 @@ typedef void (^CompletionBlock)(void);
 - (void)removeAllChildren;
 - (void)removeFromParent;
 - (NKNode *)childNodeWithName:(NSString *)name;
+- (NKNode *)randomChild;
+-(NKNode*)randomLeaf;
 - (void)enumerateChildNodesWithName:(NSString *)name usingBlock:(void (^)(NKNode *node, BOOL *stop))block;
 - (BOOL)inParentHierarchy:(NKNode *)parent;
 
@@ -187,7 +189,7 @@ typedef void (^CompletionBlock)(void);
 -(void)customDraw;
 -(void)end;
 
--(void)drawForHitDetection;
+-(void)drawWithHitShader;
 
 -(bool)shouldCull;
 

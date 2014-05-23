@@ -20,6 +20,7 @@ static NKTextureManager *sharedObject = nil;
         labelCache = [NSMutableDictionary dictionary];
         _textureThread = dispatch_queue_create("TEX_BG_THREAD", DISPATCH_QUEUE_SERIAL);
         _defaultTexture = -1;
+        
         NSLog(@"texture manager loaded");
     }
     

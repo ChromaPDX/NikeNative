@@ -35,6 +35,8 @@
         if (texture && !color) {
             _color = NKWHITE;
         }
+        
+        self.cullFace = NKCullFaceNone;
     }
     
     return self;
@@ -129,7 +131,7 @@
     }
 }
 
--(void)customDrawForHitDetection {
+-(void)customdrawWithHitShader {
     [self.scene pushScale:self.size3d];
     
     [self.scene.activeShader setVec4:self.uidColor.C4Color forUniform:UNIFORM_COLOR];

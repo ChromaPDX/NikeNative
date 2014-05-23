@@ -26,5 +26,5 @@
 
 @property (nonatomic) float colorBlendFactor;
 @property (nonatomic, strong) NKByteColor* color;
-
+@property (nonatomic) NKPrimitive primitiveType;
 @end

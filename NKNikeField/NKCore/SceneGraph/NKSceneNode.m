@@ -29,13 +29,13 @@
         
         _hitQueue = [NSMutableArray array];
         
-        self.blendMode = -1;
-        self.cullFace = -1;
+        self.blendMode = 0;
+        self.cullFace = 0;
         
         _camera = [[NKCamera alloc]initWithScene:self];
         self.scene = self;
         
-        if (NK_GL_VERSION == 2) {
+      
             
             matrixStack = malloc(sizeof(M16t)*32);
             matrixBlockSize = 32;
@@ -52,7 +52,7 @@
             
             _hitDetectShader = [[NKShaderProgram alloc]initWithVertexSource:nkHitDetectVertexShader fragmentSource:nkHitDetectFragmentShader];
             [_hitDetectShader load];
-        }
+    
         
         
         NSLog(@"init scene with size, %f %f", size.width, size.height);
@@ -81,6 +81,7 @@
         memcpy(copyBlock, matrixStack, sizeof(M16t) * (matrixCount));
         free(matrixStack);
         matrixStack = copyBlock;
+        matrixBlockSize = matrixCount * 2;
     }
 
     
@@ -141,11 +142,11 @@
     _activeShader = _hitDetectShader;
     [_activeShader use];
     
-    [super drawForHitDetection];
+    [super drawWithHitShader];
 
 }
 
--(void)drawToHitBuffer {
+-(void)processHitBuffer {
     
     [_hitDetectBuffer bind];
     
@@ -161,6 +162,7 @@
     
     for (CallBack b in queue) {
         b();
+        //NSLog(@"process hit block");
     }
     
     [_hitQueue removeAllObjects];
@@ -170,57 +172,23 @@
 }
 
 -(void)draw {
-
-    if (NK_GL_VERSION == 2) {
         
         [_activeShader use];
 
-#ifdef SHOW_HIT_DETECTION
+        _camera.dirty = true;
+        //[_camera begin];
+#ifdef DRAW_HIT_BUFFER
         [self drawHitBuffer];
 #else
         [super draw];
 #endif
-
+        //[_camera end];
+    
         [_boundTexture unbind];
         _boundTexture = nil;
         [_boundVertexBuffer unbind];
         _boundVertexBuffer = nil;
-        
-    }
-    
-    else {
-        
-        if (_backgroundColor) {
-            C4t c = _backgroundColor.C4Color;
-            glClearColor(c.r, c.g, c.b, c.a);
-        }
-        
-        if (!self.parent) {
-            [_camera begin];
-        }
-        
-        //[self drawAxes];
-        
-        [super draw];
-        
-        if (!self.parent) {
-            [_camera end];
-        }
-        
-    }
-    // UNCOMMENT TO DEBUG / DRAW DEPTH BUFFER
-//    if (self.depthFbo){
-//        // NSLog(@"draw depth fbo");
-//        ofClear(0, 0, 0, 255);
-//        glPushMatrix();
-//        ofSetColor(255);
-//        //ofTranslate(self.size.width*.5, self.size.height*.5);
-//        //ofMultMatrix(self.node->getGlobalTransformMatrix().getInverse());
-//        self.depthFbo->draw(0,0);
-//        glPopMatrix();
-//        
-//    }
-    
+
 }
 
 -(void)setUniformIdentity {
@@ -231,7 +199,6 @@
 
 -(void)drawAxes {
     
-    if (NK_GL_VERSION == 2) {
         if (!axes) {
              axes = [NKVertexBuffer axes];
         }
@@ -247,40 +214,7 @@
             [self popMatrix];
         }];
         
-//        [sphere bind:^{
-//            //[self pushScale:V3MakeF(_camera.position3d.z*.025)];
-//            glDrawArrays(GL_TRIANGLE_STRIP, 0, sphere.numberOfElements);
-//            //[self popMatrix];
-//        }];
-    }
-    
-    else {
-        static const GLfloat XAxis[] = {-1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f};
-        static const GLfloat YAxis[] = {0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
-        static const GLfloat ZAxis[] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f};
-        
-        glPushMatrix();
-        
-        glColor4f(1.0, 1.0, 1.0, 1.0);
-        
-        glEnableClientState(GL_VERTEX_ARRAY);
-        
-        glScalef(self.scene.size.width, self.scene.size.height, 1000.);
-        glLineWidth(2.0);
-        glColor4f(1.0, 0., 0., 1.0);
-        glVertexPointer(3, GL_FLOAT, 0, XAxis);
-        glDrawArrays(GL_LINE_LOOP, 0, 2);
-        glColor4f(0, 1., 0., 1.0);
-        glVertexPointer(3, GL_FLOAT, 0, YAxis);
-        glDrawArrays(GL_LINE_LOOP, 0, 2);
-        glColor4f(0., 0., 1.0, 1.0);
-        glVertexPointer(3, GL_FLOAT, 0, ZAxis);
-        glDrawArrays(GL_LINE_LOOP, 0, 2);
-        
-        glDisableClientState(GL_VERTEX_ARRAY);
-        
-        glPopMatrix();
-    }
+
 }
 
 //-(void)end {
@@ -396,6 +330,7 @@
 -(void)dispatchTouchRequestForLocation:(P2t)location type:(NKEventType)eventType{
     
     CallBack callBack = ^{
+        
         NKByteColor *hc = [[NKByteColor alloc]init];
         glReadPixels(location.x, location.y,
                      1, 1,

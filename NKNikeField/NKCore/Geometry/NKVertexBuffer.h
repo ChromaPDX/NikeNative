@@ -8,7 +8,7 @@ typedef struct NKVertexArray{
     V3t vertex;
     V3t normal;
     V2t texCoord;
-    C4t color;
+    //C4t color;
 } NKVertexArray;
 
 typedef NS_ENUM(NSInteger, NKPrimitive) {
@@ -16,7 +16,8 @@ typedef NS_ENUM(NSInteger, NKPrimitive) {
     NKPrimitiveAxes,
     NKPrimitiveRect,
     NKPrimitiveCube,
-    NKPrimitiveSphere
+    NKPrimitiveSphere,
+    NKPrimitiveLODSphere
 } NS_ENUM_AVAILABLE(10_9, 7_0);
 
 @interface NKVertexBuffer : NSObject
@@ -31,6 +32,7 @@ typedef NS_ENUM(NSInteger, NKPrimitive) {
 +(instancetype)defaultCube;
 +(instancetype)defaultRect;
 +(instancetype)sphereWithStacks:(GLint)stacks slices:(GLint)slices squash:(GLfloat)squash;
++(instancetype)lodSphere:(int)levels;
 
 +(instancetype)axes;
 
@@ -39,6 +41,8 @@ typedef NS_ENUM(NSInteger, NKPrimitive) {
 - (void)unbind;
 
 @property (nonatomic) GLsizei numberOfElements;
+@property (nonatomic) int* elementOffset;
+@property (nonatomic) int* elementSize;
 
 @end
 
@@ -50,6 +54,5 @@ typedef NS_ENUM(NSInteger, NKPrimitive) {
 //- (void)bind:(void(^)())drawingBlock;
 - (void)unbind;
 
-@property (nonatomic) int numberOfElements;
 
 @end

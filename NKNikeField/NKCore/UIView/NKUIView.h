@@ -19,7 +19,7 @@
 
 @interface NKUIView : UIView
 {
-    NKContext *context;
+    EAGLContext *context;
     CADisplayLink *displayLink;
     NKFrameBuffer *frameBuffer;
     
@@ -51,15 +51,15 @@
     NKTexture * texture;
 }
 
-@property (nonatomic, weak) NKUIViewController *controller;
 @property (nonatomic, strong) NKSceneNode *scene;
+@property (nonatomic, weak) NKUIViewController *controller;
 @property (nonatomic) float mscale;
 
+-(void)loadScene;
 -(void)startAnimation;
 -(void)stopAnimation;
 -(void)drawView;
 -(id)initGLES;
-
 
 - (BOOL)createFramebuffer;
 - (void)destroyFramebuffer;

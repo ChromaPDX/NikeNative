@@ -17,53 +17,6 @@
 #pragma mark -
 
 
--(void)setScene:(NKSceneNode *)scene {
-    _scene = scene;
-    scene.nkView = self;
-    
-    w = self.bounds.size.width;
-    h = self.bounds.size.height;
-    wMult = w / self.bounds.size.width;
-    hMult = h / self.bounds.size.height;
-    
-    lastTime = CFAbsoluteTimeGetCurrent();
-}
-
--(void)drawScene {
-    
-    if (_scene.hitQueue.count) {
-        [_scene drawToHitBuffer];
-    }
-
-    [frameBuffer bind];
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glViewport(0, 0, _scene.size.width, _scene.size.height);
-
-    if (_scene) {
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        
-        //NSLog(@"draw scene");
-        F1t dt = (CFAbsoluteTimeGetCurrent() - lastTime) * 1000.;
-        lastTime = CFAbsoluteTimeGetCurrent();
-        
-        [_scene updateWithTimeSinceLast:dt];
-        //[_scene drawHitBuffer];
-        [_scene draw];
-    }
-    else {
-        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-    }
-    
-}
-
-// Stop animating and release resources when they are no longer needed.
-
-
--(P2t)uiPointToNodePoint:(CGPoint)p {
-    P2t size = self.scene.size;
-    return P2Make(p.x*2, size.height - (p.y*2));
-}
-
 + (Class) layerClass
 {
 	return [CAEAGLLayer class];
@@ -94,42 +47,40 @@
     // Get the layer
     CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
     
-    _mscale = 1.;
-    float contentScale = 1.0f;
+
+    _mscale = 1.0f;
+    
     drawHitEveryXFrames = 10;
     
     if ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)]) {
-        contentScale = [[UIScreen mainScreen] scale];
+        _mscale = [[UIScreen mainScreen] scale];
     }
     
-    eaglLayer.contentsScale = contentScale;
+    eaglLayer.contentsScale = _mscale ;
     
     eaglLayer.opaque = TRUE;
     eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
                                     [NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking, kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
     
+
+    context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+
     
-    if (NK_GL_VERSION == 2){
-        context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-        //[context setMultiThreaded:true];
+    
+    if(!context){
+        NSLog(@"failed to create EAGL context");
+        return;
     }
-    else {
-        context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
-    }
-    
-    
-    if(!context || ![self createFramebuffer]){
-        NSLog(@"Frame Buffer Creation Failed !!");
-        
+    if (![self createFramebuffer]) {
+        return;
     }
     else {
         NSLog(@"GLES Context && Frame Buffer loaded!");
         
-        
-        if (NK_GL_VERSION == 2) {
-            defaultShader = [[NKShaderProgram alloc]initWithVertexSource:nkDefaultTextureVertexShader fragmentSource:nkDefaultTextureFragmentShader];
-            [defaultShader load];
-        }
+//        if (NK_GL_VERSION == 2) {
+//            defaultShader = [[NKShaderProgram alloc]initWithVertexSource:nkDefaultTextureVertexShader fragmentSource:nkDefaultTextureFragmentShader];
+//            [defaultShader load];
+//        }
         
     }
     
@@ -159,12 +110,64 @@
 
 -(void)layoutSubviews
 {
+    [super layoutSubviews];
+    
 	[EAGLContext setCurrentContext:context];
 	[self destroyFramebuffer];
     NSLog(@"rebuilding framebuffer");
 	[self createFramebuffer];
+    
 	[self drawView];
 }
+
+
+-(void)setScene:(NKSceneNode *)scene {
+    _scene = scene;
+    scene.nkView = self;
+    
+    w = self.bounds.size.width;
+    h = self.bounds.size.height;
+    wMult = w / self.bounds.size.width;
+    hMult = h / self.bounds.size.height;
+    
+    lastTime = CFAbsoluteTimeGetCurrent();
+}
+
+-(void)drawScene {
+    
+    if (_scene.hitQueue.count) {
+        [_scene processHitBuffer];
+    }
+    
+    [frameBuffer bind];
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glViewport(0, 0, _scene.size.width, _scene.size.height);
+    
+    if (_scene) {
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        
+        //NSLog(@"draw scene");
+        F1t dt = (CFAbsoluteTimeGetCurrent() - lastTime) * 1000.;
+        lastTime = CFAbsoluteTimeGetCurrent();
+        
+        [_scene updateWithTimeSinceLast:dt];
+        //[_scene drawHitBuffer];
+        [_scene draw];
+    }
+    else {
+        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+    }
+    
+}
+
+// Stop animating and release resources when they are no longer needed.
+
+
+-(P2t)uiPointToNodePoint:(CGPoint)p {
+    P2t size = self.scene.size;
+    return P2Make(p.x*_mscale, size.height - (p.y*_mscale));
+}
+
 
 - (void)startAnimation
 
@@ -194,11 +197,12 @@
 
 - (void)drawView
 {
+    
    	[EAGLContext setCurrentContext:context];
     
     [self drawScene];
     
-    glBindRenderbufferOES(GL_RENDERBUFFER, frameBuffer.frameBuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, frameBuffer.frameBuffer);
 	[context presentRenderbuffer:GL_RENDERBUFFER];
     
     
@@ -209,10 +213,13 @@
 }
 
 -(BOOL) createFramebuffer {
+    [EAGLContext setCurrentContext:context];
     frameBuffer = [[NKFrameBuffer alloc ]initWithContext:context layer:(id<EAGLDrawable>)self.layer];
+    
     if (frameBuffer) {
         return true;
     }
+    
     NSLog(@"failed to create main ES framebuffer");
     return false;
 }
@@ -230,7 +237,7 @@
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     for (UITouch *t in touches) {
-       [_scene dispatchTouchRequestForLocation:[self uiPointToNodePoint:[t locationInView:self]]  type:NKEventTypeBegin];
+           [_scene dispatchTouchRequestForLocation:[self uiPointToNodePoint:[t locationInView:self]]  type:NKEventTypeBegin];
     }
 }
 
@@ -239,6 +246,7 @@
     for (UITouch *t in touches) {
         [_scene dispatchTouchRequestForLocation:[self uiPointToNodePoint:[t locationInView:self]]  type:NKEventTypeMove];
     }
+    
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -251,6 +259,8 @@
 
 
 
-#endif
 
 @end
+
+
+#endif
