@@ -567,7 +567,7 @@
         switch(self.specialTypeCategory){
                 
             // @Eric did Mike ask for these to be whole board selection, that doesn't make any sense to me?
-            // @Leif Yes he and Marcus both did.  It follows the pattern of other games, seems more intuitive to me since these cards don't act on a manager and not players.
+            // @Leif Yes he and Marcus both did.  It follows the pattern of other games, seems more intuitive to me since these cards act on the whole team and not individual players.
                 
             // CASES FOR MY WHOLE FIELD
             

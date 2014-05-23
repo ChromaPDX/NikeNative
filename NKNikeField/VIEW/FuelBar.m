@@ -14,8 +14,7 @@
     NSLog(@"init FuelBar");
     NKTexture *image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"fuelbar_fuel.png"]];
     fuel = [[NKSpriteNode alloc] initWithTexture:image];
-    
-   
+
     [fuel setZPosition:3];
     
     

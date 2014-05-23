@@ -372,11 +372,10 @@ float PARTICLE_SCALE;
             BoardTile* tile = [_gameTiles objectForKey:loc];
             
             
-            [tile setColor:V2GREEN];
-            tile.isDottedBorder = true;
-
+            //[tile setColor:V2GREEN];
             [tile.location setBorderShapeInContext:set];
-            [tile setTextureForBorder:tile.location.borderShape];
+            [tile setOverlayTextureForBorder:tile.location.borderShape];
+            [tile showOverlay];
 
             [tile removeAllActions];
             [tile runAction:[NKAction fadeAlphaTo:1 duration:FAST_ANIM_DUR]];
@@ -392,11 +391,10 @@ float PARTICLE_SCALE;
         [tile setColor:nil];
         [tile setTexture:nil];
         [tile setUserInteractionEnabled:false];
-        [tile setIsDottedBorder:false];
+        [tile hideOverlay];
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
     
-    //[self showPossibleKickForManager:player.manager];
 
     //P2t p;
     
@@ -416,6 +414,8 @@ float PARTICLE_SCALE;
     
     
     [self revealBlocksForManager:player.manager];
+    //[self showPossibleKickForManager:player.manager];
+
 
 }
 
@@ -455,10 +455,11 @@ float PARTICLE_SCALE;
     if (![selectedPlayer.manager isEqual:_game.me]) {
         [self playSoundWithKey:@"enemyTap"];
     }
-    
     else {
         
         if ([_game canUsePlayer:selectedPlayer]) {
+            
+            [_uxTopBar setPlayer:selectedPlayer WithCompletionBlock:^{}];
             
             [self playSoundWithKey:@"playerTap"];
             
@@ -926,6 +927,12 @@ float PARTICLE_SCALE;
                 block();
             }];
         }
+    }
+    else if(event.type == kEventFreeze){
+        //PlayerSprite *ps = [playerSprites objectForKey:event.playerReceiving];
+        //NKByteColor *color = V2BLUE;
+        //[ps setColor:color];
+        block();
     }
     else if (event.type == kEventBlock){
         block();

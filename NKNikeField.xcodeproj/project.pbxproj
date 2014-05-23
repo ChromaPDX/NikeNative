@@ -156,6 +156,9 @@
 		3B21F8A8192D092300401234 /* FactionKinforceHome_ON.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B21F898192D092300401234 /* FactionKinforceHome_ON.png */; };
 		3B21F8A9192D092300401234 /* FactionSentionHome_ON.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B21F899192D092300401234 /* FactionSentionHome_ON.png */; };
 		3B21F8AA192D092300401234 /* FactionGenmodHome_ON.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B21F89A192D092300401234 /* FactionGenmodHome_ON.png */; };
+		3B21F8AE192EA47900401234 /* Screen_Splash_320_480.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B21F8AC192EA47900401234 /* Screen_Splash_320_480.png */; };
+		3B21F8AF192EA47900401234 /* Screen_Splash_640_960.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B21F8AD192EA47900401234 /* Screen_Splash_640_960.png */; };
+		3B21F8B1192ED51D00401234 /* tile_bottomleft_dotted.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B21F8B0192ED51D00401234 /* tile_bottomleft_dotted.png */; };
 		3B2361FF190020FA00056AE2 /* MenuStartVS.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B2361FE190020FA00056AE2 /* MenuStartVS.m */; };
 		3B247D821922A26000A6EFDB /* Background_05_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D6C1922A26000A6EFDB /* Background_05_13.png */; };
 		3B247D831922A26000A6EFDB /* ButtonNikeConnect.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D6D1922A26000A6EFDB /* ButtonNikeConnect.png */; };
@@ -497,6 +500,10 @@
 		3B21F898192D092300401234 /* FactionKinforceHome_ON.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FactionKinforceHome_ON.png; sourceTree = "<group>"; };
 		3B21F899192D092300401234 /* FactionSentionHome_ON.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FactionSentionHome_ON.png; sourceTree = "<group>"; };
 		3B21F89A192D092300401234 /* FactionGenmodHome_ON.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FactionGenmodHome_ON.png; sourceTree = "<group>"; };
+		3B21F8AB192E81F100401234 /* MYRIADPRO-REGULAR.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MYRIADPRO-REGULAR.OTF"; sourceTree = "<group>"; };
+		3B21F8AC192EA47900401234 /* Screen_Splash_320_480.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Splash_320_480.png; sourceTree = "<group>"; };
+		3B21F8AD192EA47900401234 /* Screen_Splash_640_960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Splash_640_960.png; sourceTree = "<group>"; };
+		3B21F8B0192ED51D00401234 /* tile_bottomleft_dotted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tile_bottomleft_dotted.png; sourceTree = "<group>"; };
 		3B2361FD190020E500056AE2 /* MenuStartVS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuStartVS.h; sourceTree = "<group>"; };
 		3B2361FE190020FA00056AE2 /* MenuStartVS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuStartVS.m; sourceTree = "<group>"; };
 		3B247D6C1922A26000A6EFDB /* Background_05_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background_05_13.png; sourceTree = "<group>"; };
@@ -710,6 +717,7 @@
 			isa = PBXGroup;
 			children = (
 				3B6BF2421911396E0082628E /* Coe.otf */,
+				3B21F8AB192E81F100401234 /* MYRIADPRO-REGULAR.OTF */,
 				29090EF0190EEC4200BE6B92 /* Arial Black.ttf */,
 			);
 			path = Fonts;
@@ -1322,6 +1330,8 @@
 				3B247D7C1922A26000A6EFDB /* Screen_RecapLostNoText.png */,
 				3B247D7D1922A26000A6EFDB /* Screen_RecapWinNoText.png */,
 				3B247D7E1922A26000A6EFDB /* Screen_Splash.png */,
+				3B21F8AC192EA47900401234 /* Screen_Splash_320_480.png */,
+				3B21F8AD192EA47900401234 /* Screen_Splash_640_960.png */,
 				3B34229319242048000AAC68 /* Screen_UXReview_05_14.png */,
 				3B247D7F1922A26000A6EFDB /* ScreenSync_01A.png */,
 				3B247D801922A26000A6EFDB /* ScreenSync_02A.png */,
@@ -1350,6 +1360,7 @@
 				61D6E6EF18FDB5B70017A389 /* tile_bottom.png */,
 				3B27D3A81925BDEF00782A12 /* tile_bottom_dotted.png */,
 				61D6E6F018FDB5B70017A389 /* tile_bottomleft.png */,
+				3B21F8B0192ED51D00401234 /* tile_bottomleft_dotted.png */,
 				61D6E6F118FDB5B70017A389 /* tile_bottomright.png */,
 				3B27D3BE1926736C00782A12 /* tile_bottomright_dotted.png */,
 				61D6E6F218FDB5B70017A389 /* tile_horizontal.png */,
@@ -1657,6 +1668,7 @@
 				3B247D971922A26000A6EFDB /* ScreenSync_03A.png in Resources */,
 				3B6BF246191144280082628E /* LOGO_Icon_Bola_small.png in Resources */,
 				61A257DC18FDE998001B7F67 /* skysphere.png in Resources */,
+				3B21F8AF192EA47900401234 /* Screen_Splash_640_960.png in Resources */,
 				3B27D3B01925BDEF00782A12 /* tile_top.png in Resources */,
 				3B21F8AA192D092300401234 /* FactionGenmodHome_ON.png in Resources */,
 				29C42BEA19105C0600441639 /* PlucknWiggleA#3.wav in Resources */,
@@ -1666,6 +1678,7 @@
 				3B6BF248191149A70082628E /* GOAL_text.png in Resources */,
 				61D6E80118FDB5B70017A389 /* tile_left.png in Resources */,
 				297CEA161924BDAF0043542D /* SpecialCards_Kick.png in Resources */,
+				3B21F8B1192ED51D00401234 /* tile_bottomleft_dotted.png in Resources */,
 				61D6E7FC18FDB5B70017A389 /* tile_all.png in Resources */,
 				297E6C2519097F4F00369BDF /* blank_texture.png in Resources */,
 				3B21F8A7192D092300401234 /* FactionPsykeHome_ON.png in Resources */,
@@ -1729,6 +1742,7 @@
 				297CEA131924BDAF0043542D /* Special_L3b.png in Resources */,
 				29C42BF219105C0600441639 /* slope-rattle.wav in Resources */,
 				3B247D8F1922A26000A6EFDB /* Screen_Menu.png in Resources */,
+				3B21F8AE192EA47900401234 /* Screen_Splash_320_480.png in Resources */,
 				297CEA121924BDAF0043542D /* Special_L3a.png in Resources */,
 				3B247D8D1922A26000A6EFDB /* LevelBarEmpty.png in Resources */,
 				2902A06E190C7BAE008D0092 /* Faction_Kinforce_ON.png in Resources */,

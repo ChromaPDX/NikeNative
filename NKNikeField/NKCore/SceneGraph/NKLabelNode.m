@@ -39,7 +39,7 @@
         [self setSize:size];
         
         if (!fontName) {
-            _fontName = @"Arial Black";
+            _fontName = @"Arial Black.ttf";
         }
         else{
             _fontName = fontName;

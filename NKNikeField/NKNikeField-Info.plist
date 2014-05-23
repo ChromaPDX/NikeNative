@@ -57,6 +57,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Arial Black.ttf</string>
+		<string>MYRIADPRO-REGULAR.OTF</string>
 		<string>Coe.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
