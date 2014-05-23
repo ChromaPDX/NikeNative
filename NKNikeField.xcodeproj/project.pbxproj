@@ -98,6 +98,7 @@
 		29C42BF619105C0600441639 /* DotMatrix-Pang-84.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BD619105C0600441639 /* DotMatrix-Pang-84.wav */; };
 		29C42BF719105C0600441639 /* Androyd-Alert-84.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BD819105C0600441639 /* Androyd-Alert-84.wav */; };
 		29C42BF819105C0600441639 /* Androyd-Bulbtone-41.wav in Resources */ = {isa = PBXBuildFile; fileRef = 29C42BDA19105C0600441639 /* Androyd-Bulbtone-41.wav */; };
+		29CFBE86192FCC8A0097D23E /* NSString+ShaderTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFBE85192FCC8A0097D23E /* NSString+ShaderTools.m */; };
 		29D89247190AA5CB008FBD5F /* GameStatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D89246190AA5CB008FBD5F /* GameStatsViewController.m */; };
 		29D89266190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D8924A190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m */; };
 		29D89267190AA65E008FBD5F /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = 29D8924C190AA65E008FBD5F /* adler32.c */; };
@@ -412,6 +413,8 @@
 		29C42BD619105C0600441639 /* DotMatrix-Pang-84.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "DotMatrix-Pang-84.wav"; sourceTree = "<group>"; };
 		29C42BD819105C0600441639 /* Androyd-Alert-84.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Androyd-Alert-84.wav"; sourceTree = "<group>"; };
 		29C42BDA19105C0600441639 /* Androyd-Bulbtone-41.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Androyd-Bulbtone-41.wav"; sourceTree = "<group>"; };
+		29CFBE84192FCC8A0097D23E /* NSString+ShaderTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+ShaderTools.h"; path = "NKNikeField/NKCore/UIKitExtensions/NSString+ShaderTools.h"; sourceTree = SOURCE_ROOT; };
+		29CFBE85192FCC8A0097D23E /* NSString+ShaderTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+ShaderTools.m"; path = "NKNikeField/NKCore/UIKitExtensions/NSString+ShaderTools.m"; sourceTree = SOURCE_ROOT; };
 		29D89245190AA5CB008FBD5F /* GameStatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameStatsViewController.h; sourceTree = "<group>"; };
 		29D89246190AA5CB008FBD5F /* GameStatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameStatsViewController.m; sourceTree = "<group>"; };
 		29D89249190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CocoaDevUsersAdditions.h"; sourceTree = "<group>"; };
@@ -752,6 +755,8 @@
 		29BF47F51911666500487EBD /* UIKitExtensions */ = {
 			isa = PBXGroup;
 			children = (
+				29CFBE84192FCC8A0097D23E /* NSString+ShaderTools.h */,
+				29CFBE85192FCC8A0097D23E /* NSString+ShaderTools.m */,
 				29DC2089192A2DB400CFA405 /* NKColor.h */,
 				29DC2088192A2DB400CFA405 /* NKColor.m */,
 				298B4E7F1927742C00153229 /* NKFont+CoreText.h */,
@@ -1861,6 +1866,7 @@
 				61D6E89218FDB5B70017A389 /* Player.m in Sources */,
 				61A257DA18FDE998001B7F67 /* NKTexture.m in Sources */,
 				29D89266190AA65E008FBD5F /* NSData+CocoaDevUsersAdditions.m in Sources */,
+				29CFBE86192FCC8A0097D23E /* NSString+ShaderTools.m in Sources */,
 				61D6E88718FDB5B70017A389 /* Deck.m in Sources */,
 				295EE912192D23BD00D592B4 /* NKUIViewController.m in Sources */,
 				61A257D518FDE998001B7F67 /* NKZBlur.m in Sources */,
