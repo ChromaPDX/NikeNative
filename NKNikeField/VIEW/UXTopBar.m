@@ -138,7 +138,7 @@
     
     // NSLog(@"** adding card %@ from %@", card.name, card.deck.name);
     
-    PlayerSprite* ps = [[PlayerSprite alloc] initWithTexture:nil color:NKCLEAR size:cardSize];
+    PlayerSprite* ps = [[PlayerSprite alloc] initWithTexture:nil color:NULL size:cardSize];
     
     ps.userInteractionEnabled = true;
     

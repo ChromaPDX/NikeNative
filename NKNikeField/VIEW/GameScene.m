@@ -178,7 +178,7 @@ float PARTICLE_SCALE;
     [_pivot setPosition3d:(V3Make(0,-h*.5,0))];
     
     
-    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:[NKByteColor colorWithRed:0. green:0. blue:0. alpha:200] size:S2Make(w, h*.15)];
+    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:NULL size:S2Make(w, h*.15)];
     [_uxWindow setPosition3d:V3Make(0,-h*.42,30)];
     _uxWindow.delegate = self;
     [self addChild:_uxWindow];
