@@ -19,6 +19,7 @@
     NKSpriteNode *cardImg;
     NKNode *rotate;
     NKSpriteNode *halo;
+    NKSpriteNode *effectSprite;
 }
 
 @property (nonatomic, strong) NKSpriteNode *ballTarget;
@@ -36,6 +37,7 @@
 -(void)getReadyForPosession:(void (^)())block;
 -(void)stopPosession:(void (^)())block;
 -(void)startPossession;
+-(void)showEffects;
 
 // FOR UX WINDOW
 

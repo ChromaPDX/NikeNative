@@ -913,18 +913,13 @@
         for (Player* p in event.manager.players.inGame) {
             
             if (p.effects[Card_NoLegs]){
-                int noLegs = [p.effects[Card_NoLegs] intValue];
-                
-                if(noLegs <= 0){
-                    [p.effects removeObjectForKey:Card_NoLegs];
-                }
-                else{
-                    [p.effects setObject:@(noLegs-1) forKey:Card_NoLegs];
-                }
+                [p.effects removeObjectForKey:Card_NoLegs];
+                p.noLegs = true;
             }
-            
+        
             if(p.effects[Card_Freeze]){
                 [p.effects removeObjectForKey:Card_Freeze];
+                p.frozen = true;
             }
             else{
                 p.used = false;

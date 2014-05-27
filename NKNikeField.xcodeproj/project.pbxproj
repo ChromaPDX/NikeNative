@@ -208,6 +208,7 @@
 		3B6BF248191149A70082628E /* GOAL_text.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF247191149A70082628E /* GOAL_text.png */; };
 		3B9275DF191D12D400381A52 /* FakeFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B9275DE191D12D400381A52 /* FakeFriends.m */; };
 		3B9275E3191D16DB00381A52 /* RecapMenuLoss.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B9275E2191D16DB00381A52 /* RecapMenuLoss.m */; };
+		3BC1A4C9193455160089C953 /* player_effect.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC1A4C8193455160089C953 /* player_effect.png */; };
 		3BC5A7CF19193E9600414544 /* FuelBar_Container.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7CE19193E9600414544 /* FuelBar_Container.png */; };
 		3BC5A7D21919914800414544 /* FuelBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5A7D11919914800414544 /* FuelBar.m */; };
 		3BC5A7DB191ABEE200414544 /* RecapMenuWin.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5A7DA191ABEE200414544 /* RecapMenuWin.m */; };
@@ -561,6 +562,7 @@
 		3B9275E0191D12EA00381A52 /* FakeFriends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeFriends.h; sourceTree = "<group>"; };
 		3B9275E1191D16D300381A52 /* RecapMenuLoss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecapMenuLoss.h; sourceTree = "<group>"; };
 		3B9275E2191D16DB00381A52 /* RecapMenuLoss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecapMenuLoss.m; sourceTree = "<group>"; };
+		3BC1A4C8193455160089C953 /* player_effect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = player_effect.png; sourceTree = "<group>"; };
 		3BC5A7CE19193E9600414544 /* FuelBar_Container.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelBar_Container.png; sourceTree = "<group>"; };
 		3BC5A7D0191990EA00414544 /* FuelBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuelBar.h; sourceTree = "<group>"; };
 		3BC5A7D11919914800414544 /* FuelBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuelBar.m; sourceTree = "<group>"; };
@@ -1448,6 +1450,7 @@
 				2902A069190C7BAE008D0092 /* Faction_Psyke_ON.png */,
 				2902A06A190C7BAE008D0092 /* Faction_Sention_ON.png */,
 				2902A06B190C7BAE008D0092 /* Faction_Sention_OFF.png */,
+				3BC1A4C8193455160089C953 /* player_effect.png */,
 				61D6E77918FDB5B70017A389 /* PlayerIndicator_HUD.png */,
 				61D6E77A18FDB5B70017A389 /* PlayerIndicator_Layer01.png */,
 				61D6E77D18FDB5B70017A389 /* PlayerIndicator_PlayerSHADOW.png */,
@@ -1626,6 +1629,7 @@
 				297CEA171924BDAF0043542D /* SpecialCards_Move.png in Resources */,
 				29C42BF119105C0600441639 /* anomaly_7.wav in Resources */,
 				3B21F89C192D092300401234 /* FactionKinforceAway_OFF.png in Resources */,
+				3BC1A4C9193455160089C953 /* player_effect.png in Resources */,
 				29C42BE519105C0600441639 /* 178993__glitchedtones__glitchedtones-rise.wav in Resources */,
 				2902A073190C7BAE008D0092 /* Faction_Sention_ON.png in Resources */,
 				61D6E87A18FDB5B70017A389 /* Field_Layer03.png in Resources */,

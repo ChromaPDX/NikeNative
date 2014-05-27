@@ -1,4 +1,4 @@
-//
+    //
 //  NKGameScene.m
 //  nike3dField
 //
@@ -589,6 +589,22 @@ float PARTICLE_SCALE;
     PlayerSprite* player = [playerSprites objectForKey:event.playerPerforming];
     
     if (event.type == kEventStartTurn){
+        for(Player *p in self.game.players){
+            PlayerSprite *ps = [playerSprites objectForKey:p];
+            if(ps){
+                if(p.frozen){
+                    [ps showEffects];
+                    p.frozen = false;
+                }
+                else if (p.noLegs){
+                    [ps showEffects];
+                    p.noLegs = false;
+                }
+                else{
+                    [ps showEffects];
+                }
+            }
+        }
         if (_selectedPlayer) {
             [_gameBoardNode removeAllActions];
             PlayerSprite* p2 = [playerSprites objectForKey:_selectedPlayer];
@@ -929,9 +945,13 @@ float PARTICLE_SCALE;
         }
     }
     else if(event.type == kEventFreeze){
-        //PlayerSprite *ps = [playerSprites objectForKey:event.playerReceiving];
-        //NKByteColor *color = V2BLUE;
-        //[ps setColor:color];
+        event.playerReceiving.frozen = true;
+        [[playerSprites objectForKey:event.playerReceiving] showEffects];
+        block();
+    }
+    else if(event.type == kEventNoLegs){
+        event.playerReceiving.noLegs = true;
+        [[playerSprites objectForKey:event.playerReceiving] showEffects];
         block();
     }
     else if (event.type == kEventBlock){
@@ -944,7 +964,6 @@ float PARTICLE_SCALE;
                 block();
             }];
         }];
-
     }
     
     else if (event.type == kEventAddSpecial) {
