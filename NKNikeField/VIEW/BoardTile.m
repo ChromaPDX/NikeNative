@@ -117,7 +117,7 @@
     _overlay = [[NKSpriteNode alloc] initWithTexture:texture color:NKWHITE size:self.size];
     [self addChild:_overlay];
     [_overlay setZPosition:2];
-    _overlay.alpha = .5;
+    _overlay.alpha = .8;
     //[_overlay setZPosition:3];
 }
 

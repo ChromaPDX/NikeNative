@@ -88,9 +88,8 @@
     
     if(effectFound){
         [self addChild:effectSprite];
-        [effectSprite setTransparency:.6];
-        //[effectSprite setBlendMode:NKBlendModeScreen];
-        //[effectSprite setZPosition:3];
+        // @leif : not sure why this isn't working?
+        effectSprite.alpha = .5;
         [self fadeInChild:effectSprite duration:FAST_ANIM_DUR withCompletion:^{
             
         }];
