@@ -374,7 +374,6 @@ float PARTICLE_SCALE;
             
             //[tile setColor:V2GREEN];
             [tile.location setBorderShapeInContext:set];
-            [tile setOverlayTextureForBorder:tile.location.borderShape];
             [tile showOverlay];
 
             [tile removeAllActions];
@@ -414,7 +413,7 @@ float PARTICLE_SCALE;
     
     
     [self revealBlocksForManager:player.manager];
-    //[self showPossibleKickForManager:player.manager];
+    [self showPossibleKickForManager:player.manager];
 
 
 }

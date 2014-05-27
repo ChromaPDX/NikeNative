@@ -16,11 +16,7 @@
 
     if (self){
         
-        _overlay = [[NKSpriteNode alloc] initWithTexture:texture color:color size:size];
-        //[_overlay setZPosition:2];
-        _overlay.hidden = TRUE;
-        _overlay.alpha = 1;
-        //[_overlay setZPosition:3];
+       
         
       // box = (ofPlanePrimitive*)new ofBoxPrimitive(size.width, size.height, 4);
     }
@@ -112,15 +108,23 @@
 }
 
 -(void)setOverlayTextureForBorder:(BorderMask)border {
-    _overlay = [NKTexture textureWithImageNamed:[self stringForOverlayTex:border]];
+    _overlay.texture = [NKTexture textureWithImageNamed:[self stringForOverlayTex:border]];
 }
 
 -(void)showOverlay{
-    _overlay.hidden = FALSE;
+    NKTexture *texture = [NKTexture textureWithImageNamed:[self stringForOverlayTex:self.location.borderShape]];
+    
+    _overlay = [[NKSpriteNode alloc] initWithTexture:texture color:NKWHITE size:self.size];
+    [self addChild:_overlay];
+    [_overlay setZPosition:2];
+    _overlay.alpha = .5;
+    //[_overlay setZPosition:3];
 }
 
 -(void)hideOverlay{
+    [self removeChild:_overlay];
     _overlay.hidden = TRUE;
+    _overlay = nil;
 }
 
 @end
