@@ -24,11 +24,15 @@
 // BOARD + GEOMETRY
 
 
-#define BOARD_WIDTH 7
-#define BOARD_LENGTH 10
+#define BOARD_WIDTH 1
+#define BOARD_LENGTH 1
 
-static int TILE_WIDTH = 96;
-static int TILE_HEIGHT = 116;
+static int OLD_TILE_WIDTH = 96;
+static int OLD_TILE_HEIGHT = 116;
+
+static int TILE_WIDTH = 672;
+static int TILE_HEIGHT = 1160;
+
 //#define TILE_WIDTH 96
 //#define TILE_HEIGHT 116
 

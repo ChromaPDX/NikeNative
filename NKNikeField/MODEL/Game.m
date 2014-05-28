@@ -2240,7 +2240,6 @@
     [_gameScene addCardToBoardScene:c];
 }
 
-
 -(void) setupCoinTossPositionsForSequence:(GameSequence*)sequence {
     
     // automated loop, finds your first 3 player cards
@@ -2248,15 +2247,26 @@
     // CHECK WE HAVE PLAYERS
     
     for (int i = 0; i<3; i++) {
+//        GameEvent* spawn = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:0] toLocation:[BoardLocation pX:((i*2+1))  Y:((OLD_TILE_HEIGHT*2.0))]  withType:kEventAddPlayer];
+//        
+//        GameEvent* spawn2 = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:1] toLocation:[BoardLocation pX:(i*2+1)*OLD_TILE_WIDTH  Y:-OLD_TILE_HEIGHT*2.0 ]  withType:kEventAddPlayer];
         
-        GameEvent* spawn = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:0] toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)+1]  withType:kEventAddPlayer];
-        
-        GameEvent* spawn2 = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:1] toLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-2]  withType:kEventAddPlayer];
-        
+        GameEvent* spawn =  [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:0] toLocation:[BoardLocation pX:1  Y:1]  withType:kEventAddPlayer];
+        GameEvent* spawn2 = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:1] toLocation:[BoardLocation  pX:0.0  Y:0.0] withType:kEventAddPlayer];
+
         if (i == 1) {
-            [spawn2 setLocation:[BoardLocation pX:i*2+1 Y:(BOARD_LENGTH/2)-1]];
+            //[spawn2 setLocation:[BoardLocation pX:(i*2+1)*OLD_TILE_WIDTH Y:-OLD_TILE_HEIGHT ]];
+            [spawn2 setLocation:[BoardLocation pX:50 Y:50 ]];
             //spawn2.ball = _ball;
         }
+//        GameEvent* spawn = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:0] toLocation:[BoardLocation pX:((i*2+1)*OLD_TILE_WIDTH - TILE_WIDTH/2.0)  Y:((OLD_TILE_HEIGHT*2.0))- TILE_HEIGHT/2.0]  withType:kEventAddPlayer];
+//        
+//        GameEvent* spawn2 = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:1] toLocation:[BoardLocation pX:(i*2+1)*OLD_TILE_WIDTH - TILE_WIDTH/2.0 Y:-OLD_TILE_HEIGHT*2.0 - TILE_HEIGHT/2.0]  withType:kEventAddPlayer];
+//        
+//        if (i == 1) {
+//            [spawn2 setLocation:[BoardLocation pX:(i*2+1)*OLD_TILE_WIDTH - TILE_WIDTH/2.0 Y:-OLD_TILE_HEIGHT - TILE_HEIGHT/2.0]];
+//            //spawn2.ball = _ball;
+//        }
         
     }
     

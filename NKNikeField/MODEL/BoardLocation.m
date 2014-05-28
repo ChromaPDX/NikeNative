@@ -12,7 +12,7 @@
 
 @implementation BoardLocation
 
--(id)initWithX:(NSInteger)x Y:(NSInteger)y{
+-(id)initWithX:(CGFloat)x Y:(CGFloat)y{
     self = [super init];
     if(self){
         [self setX:x];
@@ -25,7 +25,7 @@
     return [[BoardLocation alloc] initWithX:point.x Y:point.y];
 }
 
-+(instancetype)pX:(int)x Y:(int)y{
++(instancetype)pX:(float)x Y:(float)y{
     return [[BoardLocation alloc] initWithX:x Y:y];
 }
 

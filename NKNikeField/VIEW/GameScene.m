@@ -83,8 +83,8 @@ float PARTICLE_SCALE;
         PARTICLE_SCALE = 2.;
 #endif
         
-        TILE_WIDTH = self.size.height / 12.;
-        TILE_HEIGHT = self.size.height / 10.;
+//        TILE_WIDTH = self.size.height / 12.;
+//        TILE_HEIGHT = self.size.height / 10.;
 
         boardScale = 1.;
         
@@ -1256,7 +1256,7 @@ float PARTICLE_SCALE;
 
 -(void)addPlayerToBoardScene:(Player *)player animated:(BOOL)animated withCompletionBlock:(void (^)())block{
     
-    PlayerSprite *person = [[PlayerSprite alloc] initWithTexture: Nil color:nil size:S2Make(TILE_WIDTH, TILE_WIDTH * (67./65.))];
+    PlayerSprite *person = [[PlayerSprite alloc] initWithTexture: Nil color:nil size:S2Make(OLD_TILE_WIDTH, OLD_TILE_WIDTH * (67./65.))];
     
     person.delegate = self;
     
@@ -1264,7 +1264,7 @@ float PARTICLE_SCALE;
     
     [playerSprites setObject:person forKey:person.model];
     
-    BoardTile* tile = [_gameTiles objectForKey:player.location];
+    //BoardTile* tile = [_gameTiles objectForKey:player.location];
     
     [[_gameBoardNode childNodeWithName:@"playerLayer" ] addChild:person];
     
@@ -1274,7 +1274,7 @@ float PARTICLE_SCALE;
     
     if (!animated){
         
-        [person setPosition:tile.position];
+        [person setPosition:P2Make(player.location.x, player.location.y)];
         
         block();
     }
@@ -1283,16 +1283,16 @@ float PARTICLE_SCALE;
         
         [self playSoundWithKey:@"playerDeploy"];
         
-        int newY = tile.position.y + TILE_HEIGHT*10;
+        int newY = player.location.y + OLD_TILE_HEIGHT*10;
         if (!_game.me.teamSide) {
-            newY = tile.position.y - TILE_HEIGHT*10;
+            newY = player.location.y - OLD_TILE_HEIGHT*10;
         }
         
-        [person setPosition3d:V3Make(tile.position.x, newY, 200)];
+        [person setPosition3d:V3Make(player.location.x, player.location.y, 200)];
         [person setXScale:.33];
         
         
-        V3t target = tile.position3d;
+        V3t target = V3Make(player.location.x, player.location.y, 0);
         target.z += 2;
         
         [person runAction:[NKAction move3dTo:target duration:.2] completion:^{

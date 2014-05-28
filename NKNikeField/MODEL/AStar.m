@@ -42,7 +42,7 @@
         obstacleCells[i] = false;
     
     for(BoardLocation *obstacle in obstacles)
-        obstacleCells[ obstacle.x + obstacle.y*columns ] = true;
+        obstacleCells[ (int) obstacle.x + (int) obstacle.y*columns ] = true;
 }
 
 -(BoardLocation*)LocationFromIndex:(int)index{
