@@ -166,7 +166,6 @@
 		3B247D8C1922A26000A6EFDB /* FuelRingColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D761922A26000A6EFDB /* FuelRingColor.png */; };
 		3B247D8D1922A26000A6EFDB /* LevelBarEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D771922A26000A6EFDB /* LevelBarEmpty.png */; };
 		3B247D8E1922A26000A6EFDB /* LevelBarFull.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D781922A26000A6EFDB /* LevelBarFull.png */; };
-		3B247D8F1922A26000A6EFDB /* Screen_Menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D791922A26000A6EFDB /* Screen_Menu.png */; };
 		3B247D901922A26000A6EFDB /* Screen_MenuEnergy.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7A1922A26000A6EFDB /* Screen_MenuEnergy.png */; };
 		3B247D911922A26000A6EFDB /* Screen_Pregame.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7B1922A26000A6EFDB /* Screen_Pregame.png */; };
 		3B247D921922A26000A6EFDB /* Screen_RecapLostNoText.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B247D7C1922A26000A6EFDB /* Screen_RecapLostNoText.png */; };
@@ -198,7 +197,6 @@
 		3B34229E19242048000AAC68 /* TopSelectionHUD.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B34229419242048000AAC68 /* TopSelectionHUD.png */; };
 		3B34229F19242048000AAC68 /* UXSample_PopupInGame.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B34229519242048000AAC68 /* UXSample_PopupInGame.png */; };
 		3B3422A019242048000AAC68 /* UXSample_PopupOffGame.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B34229619242048000AAC68 /* UXSample_PopupOffGame.png */; };
-		3B3422A119242048000AAC68 /* Screen_Menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B34229719242048000AAC68 /* Screen_Menu.png */; };
 		3B41EE0F190C0FFC00837DC0 /* MainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B41EE0E190C0FFC00837DC0 /* MainMenu.m */; };
 		3B6BF23B190E854F0082628E /* RecapMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6BF23A190E854F0082628E /* RecapMenu.m */; };
 		3B6BF23D191016200082628E /* fuelbar_fuel.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B6BF23C191016200082628E /* fuelbar_fuel.png */; };
@@ -211,6 +209,15 @@
 		3B96C7C61937AC8A00B60B12 /* NikePlusSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7C51937AC8A00B60B12 /* NikePlusSDK.bundle */; };
 		3B96C7C71937B3B000B60B12 /* NikePlusSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B96C7C11936950800B60B12 /* NikePlusSDK.framework */; };
 		3B96C7C81937B44600B60B12 /* libNike.1.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D89282190AC3B0008FBD5F /* libNike.1.1.a */; };
+		3B96C7CC1937B6CE00B60B12 /* Screen_Menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7CB1937B6CE00B60B12 /* Screen_Menu.png */; };
+		3B96C7CE1937B6F800B60B12 /* Screen_Pregame_960.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7CD1937B6F800B60B12 /* Screen_Pregame_960.png */; };
+		3B96C7D01937B70A00B60B12 /* Screen_MainMenu_960.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7CF1937B70A00B60B12 /* Screen_MainMenu_960.png */; };
+		3B96C7D21937B72000B60B12 /* Screen_MainMenu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7D11937B72000B60B12 /* Screen_MainMenu.png */; };
+		3B96C7D81937B7BC00B60B12 /* Screen_RecapLoose_960.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7D31937B7BC00B60B12 /* Screen_RecapLoose_960.png */; };
+		3B96C7D91937B7BC00B60B12 /* Screen_RecapWin_960.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7D41937B7BC00B60B12 /* Screen_RecapWin_960.png */; };
+		3B96C7DA1937B7BC00B60B12 /* Screen_Splash_320_480.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7D51937B7BC00B60B12 /* Screen_Splash_320_480.png */; };
+		3B96C7DB1937B7BC00B60B12 /* Screen_Splash_640_960.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7D61937B7BC00B60B12 /* Screen_Splash_640_960.png */; };
+		3B96C7DC1937B7BC00B60B12 /* Screen_Splash_960.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7D71937B7BC00B60B12 /* Screen_Splash_960.png */; };
 		3BC1A4C9193455160089C953 /* player_effect.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC1A4C8193455160089C953 /* player_effect.png */; };
 		3BC5A7CF19193E9600414544 /* FuelBar_Container.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7CE19193E9600414544 /* FuelBar_Container.png */; };
 		3BC5A7D21919914800414544 /* FuelBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5A7D11919914800414544 /* FuelBar.m */; };
@@ -519,7 +526,6 @@
 		3B247D761922A26000A6EFDB /* FuelRingColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelRingColor.png; sourceTree = "<group>"; };
 		3B247D771922A26000A6EFDB /* LevelBarEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LevelBarEmpty.png; sourceTree = "<group>"; };
 		3B247D781922A26000A6EFDB /* LevelBarFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LevelBarFull.png; sourceTree = "<group>"; };
-		3B247D791922A26000A6EFDB /* Screen_Menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Menu.png; sourceTree = "<group>"; };
 		3B247D7A1922A26000A6EFDB /* Screen_MenuEnergy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_MenuEnergy.png; sourceTree = "<group>"; };
 		3B247D7B1922A26000A6EFDB /* Screen_Pregame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Pregame.png; sourceTree = "<group>"; };
 		3B247D7C1922A26000A6EFDB /* Screen_RecapLostNoText.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_RecapLostNoText.png; sourceTree = "<group>"; };
@@ -551,7 +557,6 @@
 		3B34229419242048000AAC68 /* TopSelectionHUD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TopSelectionHUD.png; sourceTree = "<group>"; };
 		3B34229519242048000AAC68 /* UXSample_PopupInGame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UXSample_PopupInGame.png; sourceTree = "<group>"; };
 		3B34229619242048000AAC68 /* UXSample_PopupOffGame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UXSample_PopupOffGame.png; sourceTree = "<group>"; };
-		3B34229719242048000AAC68 /* Screen_Menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Menu.png; sourceTree = "<group>"; };
 		3B41EE0D190C0FF200837DC0 /* MainMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenu.h; sourceTree = "<group>"; };
 		3B41EE0E190C0FFC00837DC0 /* MainMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenu.m; sourceTree = "<group>"; };
 		3B6BF239190E85410082628E /* RecapMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecapMenu.h; sourceTree = "<group>"; };
@@ -568,6 +573,15 @@
 		3B96C7C11936950800B60B12 /* NikePlusSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NikePlusSDK.framework; sourceTree = "<group>"; };
 		3B96C7C31936A6CC00B60B12 /* Card_Icon_ChalDiag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Card_Icon_ChalDiag.png; sourceTree = "<group>"; };
 		3B96C7C51937AC8A00B60B12 /* NikePlusSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = NikePlusSDK.bundle; path = NikePlusSDK.framework/Versions/A/Resources/NikePlusSDK.bundle; sourceTree = "<group>"; };
+		3B96C7CB1937B6CE00B60B12 /* Screen_Menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Menu.png; sourceTree = "<group>"; };
+		3B96C7CD1937B6F800B60B12 /* Screen_Pregame_960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Pregame_960.png; sourceTree = "<group>"; };
+		3B96C7CF1937B70A00B60B12 /* Screen_MainMenu_960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_MainMenu_960.png; sourceTree = "<group>"; };
+		3B96C7D11937B72000B60B12 /* Screen_MainMenu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_MainMenu.png; sourceTree = "<group>"; };
+		3B96C7D31937B7BC00B60B12 /* Screen_RecapLoose_960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_RecapLoose_960.png; sourceTree = "<group>"; };
+		3B96C7D41937B7BC00B60B12 /* Screen_RecapWin_960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_RecapWin_960.png; sourceTree = "<group>"; };
+		3B96C7D51937B7BC00B60B12 /* Screen_Splash_320_480.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Splash_320_480.png; sourceTree = "<group>"; };
+		3B96C7D61937B7BC00B60B12 /* Screen_Splash_640_960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Splash_640_960.png; sourceTree = "<group>"; };
+		3B96C7D71937B7BC00B60B12 /* Screen_Splash_960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Splash_960.png; sourceTree = "<group>"; };
 		3BC1A4C8193455160089C953 /* player_effect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = player_effect.png; sourceTree = "<group>"; };
 		3BC5A7CE19193E9600414544 /* FuelBar_Container.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelBar_Container.png; sourceTree = "<group>"; };
 		3BC5A7D0191990EA00414544 /* FuelBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuelBar.h; sourceTree = "<group>"; };
@@ -1340,10 +1354,18 @@
 				3B247D781922A26000A6EFDB /* LevelBarFull.png */,
 				3B34229219242048000AAC68 /* PopUp.png */,
 				3B34229019242048000AAC68 /* Notification_MoreE.png */,
+				3B96C7D31937B7BC00B60B12 /* Screen_RecapLoose_960.png */,
+				3B96C7D41937B7BC00B60B12 /* Screen_RecapWin_960.png */,
+				3B96C7D51937B7BC00B60B12 /* Screen_Splash_320_480.png */,
+				3B96C7D61937B7BC00B60B12 /* Screen_Splash_640_960.png */,
+				3B96C7D71937B7BC00B60B12 /* Screen_Splash_960.png */,
 				3B34229119242048000AAC68 /* Notification_MoreEGame.png */,
-				3B34229719242048000AAC68 /* Screen_Menu.png */,
+				3B96C7CB1937B6CE00B60B12 /* Screen_Menu.png */,
+				3B96C7D11937B72000B60B12 /* Screen_MainMenu.png */,
+				3B96C7CF1937B70A00B60B12 /* Screen_MainMenu_960.png */,
 				3B247D7A1922A26000A6EFDB /* Screen_MenuEnergy.png */,
 				3B247D7B1922A26000A6EFDB /* Screen_Pregame.png */,
+				3B96C7CD1937B6F800B60B12 /* Screen_Pregame_960.png */,
 				3B247D7C1922A26000A6EFDB /* Screen_RecapLostNoText.png */,
 				3B247D7D1922A26000A6EFDB /* Screen_RecapWinNoText.png */,
 				3B247D7E1922A26000A6EFDB /* Screen_Splash.png */,
@@ -1356,7 +1378,6 @@
 				3B34229419242048000AAC68 /* TopSelectionHUD.png */,
 				3B34229519242048000AAC68 /* UXSample_PopupInGame.png */,
 				3B34229619242048000AAC68 /* UXSample_PopupOffGame.png */,
-				3B247D791922A26000A6EFDB /* Screen_Menu.png */,
 			);
 			path = Menus;
 			sourceTree = "<group>";
@@ -1641,6 +1662,7 @@
 				29C42BF119105C0600441639 /* anomaly_7.wav in Resources */,
 				3B21F89C192D092300401234 /* FactionKinforceAway_OFF.png in Resources */,
 				3BC1A4C9193455160089C953 /* player_effect.png in Resources */,
+				3B96C7CC1937B6CE00B60B12 /* Screen_Menu.png in Resources */,
 				29C42BE519105C0600441639 /* 178993__glitchedtones__glitchedtones-rise.wav in Resources */,
 				2902A073190C7BAE008D0092 /* Faction_Sention_ON.png in Resources */,
 				61D6E87A18FDB5B70017A389 /* Field_Layer03.png in Resources */,
@@ -1668,6 +1690,7 @@
 				297CEA0A1924BDAF0043542D /* Kick_L1a.png in Resources */,
 				3B247D831922A26000A6EFDB /* ButtonNikeConnect.png in Resources */,
 				3B6BF23D191016200082628E /* fuelbar_fuel.png in Resources */,
+				3B96C7D01937B70A00B60B12 /* Screen_MainMenu_960.png in Resources */,
 				3B21F8A8192D092300401234 /* FactionKinforceHome_ON.png in Resources */,
 				61D6E87C18FDB5B70017A389 /* PlayerIndicator_HUD.png in Resources */,
 				3B27D3BB1925BDEF00782A12 /* tile_all_dotted.png in Resources */,
@@ -1683,12 +1706,14 @@
 				3B247D931922A26000A6EFDB /* Screen_RecapWinNoText.png in Resources */,
 				297CEA0B1924BDAF0043542D /* Kick_L2a.png in Resources */,
 				61D6E87618FDB5B70017A389 /* CardType_HUD.png in Resources */,
+				3B96C7D81937B7BC00B60B12 /* Screen_RecapLoose_960.png in Resources */,
 				3B21F8A1192D092300401234 /* FactionKinforceHome_OFF.png in Resources */,
 				29D89292190AC3B0008FBD5F /* diagonals@2x.png in Resources */,
 				3B34229C19242048000AAC68 /* PopUp.png in Resources */,
 				3B247D971922A26000A6EFDB /* ScreenSync_03A.png in Resources */,
 				3B6BF246191144280082628E /* LOGO_Icon_Bola_small.png in Resources */,
 				61A257DC18FDE998001B7F67 /* skysphere.png in Resources */,
+				3B96C7CE1937B6F800B60B12 /* Screen_Pregame_960.png in Resources */,
 				3B21F8AF192EA47900401234 /* Screen_Splash_640_960.png in Resources */,
 				3B27D3B01925BDEF00782A12 /* tile_top.png in Resources */,
 				3B21F8AA192D092300401234 /* FactionGenmodHome_ON.png in Resources */,
@@ -1716,6 +1741,7 @@
 				61D6E87D18FDB5B70017A389 /* PlayerIndicator_Layer01.png in Resources */,
 				29C42BED19105C0600441639 /* anomaly_19.wav in Resources */,
 				29C42BF519105C0600441639 /* DeStablizer-MetalBowl-41.wav in Resources */,
+				3B96C7DA1937B7BC00B60B12 /* Screen_Splash_320_480.png in Resources */,
 				61D6E87B18FDB5B70017A389 /* CardType_PlayerSign.png in Resources */,
 				61D6E80518FDB5B70017A389 /* tile_topleft.png in Resources */,
 				29C42BE019105C0600441639 /* goal_easter_egg.mp3 in Resources */,
@@ -1752,6 +1778,7 @@
 				29C42BE219105C0600441639 /* swish.aiff in Resources */,
 				297CE9FD1924BDAF0043542D /* Card_Icon_SpecChal.png in Resources */,
 				29C42BDE19105C0600441639 /* 03 Bass [A$AP Rocky].mp3 in Resources */,
+				3B96C7DC1937B7BC00B60B12 /* Screen_Splash_960.png in Resources */,
 				2902A06C190C7BAE008D0092 /* Faction_Genmod_OFF.png in Resources */,
 				297CEA071924BDAF0043542D /* Challenge_L1a.png in Resources */,
 				29D89297190AC3B0008FBD5F /* nike.sqlite in Resources */,
@@ -1762,11 +1789,11 @@
 				61D6E80218FDB5B70017A389 /* tile_none.png in Resources */,
 				297CEA131924BDAF0043542D /* Special_L3b.png in Resources */,
 				29C42BF219105C0600441639 /* slope-rattle.wav in Resources */,
-				3B247D8F1922A26000A6EFDB /* Screen_Menu.png in Resources */,
 				3B21F8AE192EA47900401234 /* Screen_Splash_320_480.png in Resources */,
 				297CEA121924BDAF0043542D /* Special_L3a.png in Resources */,
 				3B247D8D1922A26000A6EFDB /* LevelBarEmpty.png in Resources */,
 				2902A06E190C7BAE008D0092 /* Faction_Kinforce_ON.png in Resources */,
+				3B96C7DB1937B7BC00B60B12 /* Screen_Splash_640_960.png in Resources */,
 				3B21F8A6192D092300401234 /* FactionGenmodAway_ON.png in Resources */,
 				2902A074190C7BAE008D0092 /* Faction_Sention_OFF.png in Resources */,
 				29C42BF319105C0600441639 /* Androyd-Uck-41.wav in Resources */,
@@ -1777,13 +1804,14 @@
 				29C42BF719105C0600441639 /* Androyd-Alert-84.wav in Resources */,
 				3B21F89F192D092300401234 /* FactionSentionHome_OFF.png in Resources */,
 				3B21F8A4192D092300401234 /* FactionKinforceAway_ON.png in Resources */,
+				3B96C7D21937B72000B60B12 /* Screen_MainMenu.png in Resources */,
+				3B96C7D91937B7BC00B60B12 /* Screen_RecapWin_960.png in Resources */,
 				3B247D901922A26000A6EFDB /* Screen_MenuEnergy.png in Resources */,
 				61A257D818FDE998001B7F67 /* moon.png in Resources */,
 				3B21F89D192D092300401234 /* FactionSentionAway_OFF.png in Resources */,
 				297CEA101924BDAF0043542D /* Special_L1a.png in Resources */,
 				3B27D3AF1925BDEF00782A12 /* tile_topleft_dotted.png in Resources */,
 				297CEA091924BDAF0043542D /* Challenge_L3a.png in Resources */,
-				3B3422A119242048000AAC68 /* Screen_Menu.png in Resources */,
 				29C42BEF19105C0600441639 /* high6-b.wav in Resources */,
 				2902A071190C7BAE008D0092 /* Faction_Psyke_OFF.png in Resources */,
 				3B27D3B21925BDEF00782A12 /* tile_horizontal_dotted.png in Resources */,
