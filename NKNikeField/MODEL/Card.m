@@ -257,7 +257,17 @@
     switch (_deck.category) {
         case CardCategoryMove: return @"Move";
         case CardCategoryKick: return @"Kick";
-        case CardCategoryChallenge: return @"Chal";
+        case CardCategoryChallenge:
+            if(self.challengeCategory == CardChallengeCategoryBishop){
+                return @"ChalDiag";
+            }
+            else if(self.challengeCategory == CardChallengeCategoryHorizantal){
+                return @"ChalHoriz";
+            }
+            else if(self.challengeCategory == CardChallengeCategoryVertical){
+                return @"ChalVert";
+            }
+            //return @"Chal";
         case CardCategorySpecial:
             switch (_specialCategory) {
                 case CardCategoryMove: return @"SpecGeneral";
@@ -286,7 +296,7 @@
 
 -(NSString*)fileNameForThumbnail {
     NSString *fileName;
-    if(_deck.category == CardCategorySpecial){
+    if(_deck.category == CardCategorySpecial || self.category == CardCategoryChallenge){
         fileName = [NSString stringWithFormat:@"Card_Icon_%@", [self thumbnailImageString]];
     }
     else{
