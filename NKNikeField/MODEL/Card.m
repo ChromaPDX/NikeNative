@@ -264,7 +264,7 @@
                 case CardCategoryKick: return @"SpecGeneral";
                 case CardCategoryChallenge: return @"SpecGeneral";
                 case CardCategoryGeneral: return @"SpecGeneral";
-               // case CardCategoryGeneral: return
+               // case CardCategoryGeneral: return;
                 default: break;
             }
         default:
@@ -306,7 +306,6 @@
 }
 
 -(void)discard {
-    
     if ([_deck.inGame containsObject:self]) {
           [_deck discardCardFromGame:self];
     }
@@ -319,7 +318,6 @@
     else {
         NSLog(@"discarding card that isn't located anywhere . . .");
     }
-  
 }
 
 -(NSString*)name {

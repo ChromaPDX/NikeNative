@@ -2164,9 +2164,7 @@ static inline M16t M16InvertColumnMajor(M16t M16, bool *isInvertible)
 //                OffD[p] += s*(OffDq   - tau*OffD[p]);
 //                for (j=Z; j>=X; j--) {
 //                    a = U[j][p]; b = U[j][q];
-//                    U[j][p] -= s*(b + tau*a);
-//                    U[j][q] += s*(a - tau*b);
-//                }
+//                    U[j][p] -= s*(b + tau*a); //                }
 //            }
 //        }
 //    }

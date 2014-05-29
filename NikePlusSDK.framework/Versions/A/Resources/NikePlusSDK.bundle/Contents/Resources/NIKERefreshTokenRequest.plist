@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>scheme</key>
+	<string>https</string>
+	<key>host</key>
+	<string>api.nike.com</string>
+	<key>path</key>
+	<string>/oauth/2.0/token</string>
+	<key>method</key>
+	<string>POST</string>
+	<key>formBody</key>
+	<dict>
+		<key>client_id</key>
+		<string></string>
+		<key>grant_type</key>
+		<string>refresh_token</string>
+		<key>refresh_token</key>
+		<string></string>
+	</dict>
+	<key>headers</key>
+	<dict>
+		<key>Content-type</key>
+		<string>application/x-www-form-urlencoded</string>
+		<key>Accept</key>
+		<string>application/json</string>
+	</dict>
+</dict>
+</plist>
