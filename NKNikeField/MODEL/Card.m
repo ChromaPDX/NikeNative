@@ -530,7 +530,7 @@
         if (self.challengeCategory == CardChallengeCategoryBishop){
             accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range] mutableCopy];
         }
-        else if (self.challengeCategory == CardChallengeCategoryHorizantal){
+        else if (self.challengeCategory == CardChallengeCategoryVertical){
             accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
             BoardLocation *WLoc = [self.location stepInDirection:WEST];
             BoardLocation *ELoc = [self.location stepInDirection:EAST];
@@ -541,11 +541,10 @@
                 [accessible removeObject:ELoc];
             }
         }
-        else if (self.challengeCategory == CardChallengeCategoryVertical){
+        else if (self.challengeCategory == CardChallengeCategoryHorizantal){
             accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
-            accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
-            BoardLocation *NLoc = [self.location stepInDirection:WEST];
-            BoardLocation *SLoc = [self.location stepInDirection:EAST];
+            BoardLocation *NLoc = [self.location stepInDirection:NORTH];
+            BoardLocation *SLoc = [self.location stepInDirection:SOUTH];
             if(NLoc){
                 [accessible removeObject:NLoc];
             }
