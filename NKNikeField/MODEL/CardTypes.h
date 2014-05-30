@@ -36,6 +36,7 @@ typedef NS_ENUM(int32_t, CardKickCategory) {
     CardKickCategoryLob = 2,
     CardKickCategoryBeckem = 3,
     CardKickCategoryDrop = 4,
+    CardKickCategoryQueen = 5
 };
 
 typedef NS_ENUM(int32_t, CardChallengeCategory) {

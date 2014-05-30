@@ -566,6 +566,8 @@
             case CardKickCategoryBeckem:
                 accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeKnightStraight walkDistance:_range] mutableCopy];
                 break;
+            case CardKickCategoryQueen:
+                accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:2] mutableCopy];
             default:
                 accessible = NULL;
                 break;

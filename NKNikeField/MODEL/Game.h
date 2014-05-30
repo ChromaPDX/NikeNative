@@ -76,6 +76,8 @@ typedef enum RTMessageType {
 @property (nonatomic, weak) BoardLocation *selectedLocation;
 @property (nonatomic, strong) Card *lastKickCardSelected;
 
+@property (nonatomic, strong) Card *challengeKickCard;
+
 
 @property (nonatomic, strong) NSMutableArray *players;
 
