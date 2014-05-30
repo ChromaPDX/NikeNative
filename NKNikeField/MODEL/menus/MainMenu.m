@@ -26,6 +26,15 @@
         
         [self addChild:bg];
         
+        fuelBar = [[FuelBar alloc] init];
+        [fuelBar setPosition:P2Make(-72*w/640, 500*h/1136)];
+        // @LEIF - not sure why the animation isn't working here?
+        [self addChild:fuelBar];
+        // @Eric - add as child before setFill, needs parent for animation otherwise doesn't get animation updates.
+        // also we need a way to snap and animate so I added 'animated' boolean.
+        [fuelBar setFill:0 animated:false];
+        [fuelBar setFill:1 animated:true];
+
 //        NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size];
 //        [self addChild:table];
 //        [table setPadding:P2Make(0,0)];
