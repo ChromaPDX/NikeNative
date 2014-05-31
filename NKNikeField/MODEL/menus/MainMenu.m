@@ -99,6 +99,10 @@
         NSLog(@"start button pressed, starting game...");
           Pregame* newScene = [[Pregame alloc] initWithSize:self.size];
          [self.nkView setScene:newScene];
+        
+        //RecapMenuLoss *recapMenu = [[RecapMenuLoss alloc] init];
+        //[self.nkView setScene:[recapMenu initWithSize:self.size]];
+
 //        NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
 //        [[(GameScene*)newScene game] startSinglePlayerGame];
 //        self.nkView.scene = newScene;

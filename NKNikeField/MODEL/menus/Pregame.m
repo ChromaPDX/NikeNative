@@ -35,7 +35,7 @@
         [text setZPosition:1];
         // [text setText:[listOfNames objectAtIndex:0]];
         [text setText:@"1000E"];
-        [text setPosition:P2Make(-81*w/640, 370*h/1136)];
+        [text setPosition:P2Make(-81*w/640, 374*h/1136)];
         [self addChild:text];
         
         
