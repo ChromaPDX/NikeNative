@@ -503,6 +503,12 @@
     glBindTexture(GL_TEXTURE_2D, texture[0]);
 }
 
+- (void)bindToUniform:(GLuint)uniform {
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glUniform1i(uniform, 0);
+}
+
 - (void)enableAndBindToUniform:(GLuint)uniformSamplerLocation
 {
     glActiveTexture(GL_TEXTURE0);

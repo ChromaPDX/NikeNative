@@ -34,7 +34,7 @@ static inline float cblend(F1t col, F1t bl){
 @class NKTexture;
 @class NKVertexBuffer;
 
-@interface NKSpriteNode : NKNode
+@interface NKSpriteNode : NKMeshNode
 
 // INIT
 
@@ -49,12 +49,5 @@ static inline float cblend(F1t col, F1t bl){
 - (instancetype)initWithColor:(NKByteColor *)color size:(S2t)size;
 
 @property (nonatomic) R4t centerRect;
-
-
-@property (nonatomic) float colorBlendFactor;
-@property (nonatomic, strong) NKByteColor* color;
-@property (nonatomic, strong) NKTexture *texture;
-@property (nonatomic, strong) NKVertexBuffer *vert;
-@property (nonatomic) GLenum drawMode;
 
 @end

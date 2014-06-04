@@ -7,11 +7,18 @@
 //
 //test
 #import "NKNode.h"
+#import <GLKit/GLKit.h>
 
 @class NKSceneNode;
 
 @interface NKCamera : NKNode {
-    M16t cachedMatrix;
+    M16t viewMatrix;
+    M16t projectionMatrix;
+    M16t viewProjectionMatrix;
+    
+    bool vDirty;
+    bool pDirty;
+    bool vpDirty;
 }
 
 @property F1t fovVertRadians;
@@ -19,12 +26,13 @@
 @property F1t nearZ;
 @property F1t farZ;
 
-//@property (nonatomic, assign) V3t target;
 @property (nonatomic, strong) NKNode *target;
 
+- (M16t)viewMatrix;
 - (M16t)projectionMatrix;
+- (M16t)viewProjectionMatrix;
 
-@property (nonatomic) M9t normalMatrix;
+- (V3t)eyeDirection;
 
 -(instancetype)initWithScene:(NKSceneNode*)scene;
 -(P2t)screenToWorld:(P2t)p;

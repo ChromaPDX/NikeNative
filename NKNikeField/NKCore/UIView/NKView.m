@@ -17,6 +17,7 @@
 #pragma mark -
 
 -(void)setScene:(NKSceneNode *)scene {
+
     _scene = scene;
     scene.nkView = self;
     
@@ -33,6 +34,8 @@
 
 -(void)drawScene {
     
+    if (_scene) {
+        
     if (_scene.hitQueue.count) {
         [_scene processHitBuffer];
     }
@@ -40,7 +43,7 @@
     glViewport(0, 0, self.visibleRect.size.width, self.visibleRect.size.height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    if (_scene) {
+    
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         
         //NSLog(@"draw scene");
@@ -52,13 +55,13 @@
         [_scene draw];
     }
     else {
+        glViewport(0, 0, self.visibleRect.size.width, self.visibleRect.size.height);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     }
     
 }
-
-
-
 
 
 // OS X
@@ -73,44 +76,55 @@
     self = [super initWithCoder:aDecoder];
     
     if (self) {
-        self = [self initWithFrame:self.frame shareContext:nil];
+        
+        NSLog(@"NKView initWith Coder");
+        //self = [self initWithFrame:self.frame shareContext:nil];
+        [self becomeFirstResponder];
     }
     
     return self;
     
 }
 
-- (id) initWithFrame:(NSRect)frameRect
-{
-	self = [self initWithFrame:frameRect shareContext:nil];
-	return self;
-}
+//- (id) initWithFrame:(NSRect)frameRect
+//{
+//	self = [self initWithFrame:frameRect shareContext:nil];
+//	return self;
+//}
 
-- (id) initWithFrame:(NSRect)frameRect shareContext:(NSOpenGLContext*)context
-{
-    NSOpenGLPixelFormatAttribute attribs[] =
-    {
-		NSOpenGLPFADoubleBuffer,
-		NSOpenGLPFADepthSize, 24,
-    };
-    
-	NSOpenGLPixelFormat *pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
-    
-	if (!pixelFormat)
-		NSLog(@"No OpenGL pixel format");
-    
-	if( (self = [super initWithFrame:frameRect pixelFormat:pixelFormat]) ) {
-        
-		if( context ){
-			[self setOpenGLContext:context];
-        }
-        
-        NSLog(@"NK GLView init %1.0f %1.0f", frameRect.size.width, frameRect.size.height);
-        
-	}
-    
-	return self;
-}
+//- (id) initWithFrame:(NSRect)frameRect shareContext:(NSOpenGLContext*)context
+//{
+//    NSOpenGLPixelFormatAttribute attribs[] =
+//    {
+//		NSOpenGLPFADoubleBuffer,
+//		NSOpenGLPFADepthSize, 24,
+//        NSOpenGLPFAOpenGLProfile,
+//		NSOpenGLProfileVersion3_2Core, 0
+//    };
+//    
+//    NSLog(@"pixel flags: %d %d %d %d %d %d",				NSOpenGLPFADoubleBuffer,
+//          NSOpenGLPFADepthSize, 24,NSOpenGLPFAOpenGLProfile,
+//          NSOpenGLProfileVersion3_2Core, 0 );
+//
+//	NSOpenGLPixelFormat *pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
+//    
+//    NSAssert(pixelFormat, @"No OpenGL pixel format");
+//	//if (!pixelFormat)
+//	//	NSLog(@"No OpenGL pixel format");
+//    
+//	if( (self = [super initWithFrame:frameRect pixelFormat:pixelFormat]) ) {
+//        
+//		if( context ){
+//			[self setOpenGLContext:context];
+//        }
+//        //[self setPixelFormat:pixelFormat];
+//        
+//         NSLog(@"NK GLView init %1.0f %1.0f", frameRect.size.width, frameRect.size.height);
+//        
+//	}
+//    
+//	return self;
+//}
 
 - (void) update
 {
@@ -120,15 +134,17 @@
 
 - (void) awakeFromNib
 {
+    NSLog(@"awake from nib");
+    
+    
+    
     NSOpenGLPixelFormatAttribute attrs[] =
 	{
-		NSOpenGLPFADoubleBuffer,
+        NSOpenGLPFATripleBuffer,
 		NSOpenGLPFADepthSize, 24,
 		// Must specify the 3.2 Core Profile to use OpenGL 3.2
-#if ESSENTIAL_GL_PRACTICES_SUPPORT_GL3
-		NSOpenGLPFAOpenGLProfile,
-		NSOpenGLProfileVersion3_2Core,
-#endif
+//		NSOpenGLPFAOpenGLProfile,
+//		NSOpenGLProfileVersionLegacy,
 		0
 	};
 	
@@ -139,15 +155,20 @@
 		NSLog(@"No OpenGL pixel format");
 	}
     
+    NSLog(@"pixel flags: %d %d %d %d %d %d",				NSOpenGLPFADoubleBuffer,
+          NSOpenGLPFADepthSize, 24,NSOpenGLPFAOpenGLProfile,
+          NSOpenGLProfileVersion3_2Core, 0 );
+
+    
     NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
     
-#if ESSENTIAL_GL_PRACTICES_SUPPORT_GL3 && defined(DEBUG)
+#ifdef NK_GL_DEBUG
 	// When we're using a CoreProfile context, crash if we call a legacy OpenGL function
 	// This will make it much more obvious where and when such a function call is made so
 	// that we can remove such calls.
 	// Without this we'd simply get GL_INVALID_OPERATION error for calling legacy functions
 	// but it would be more difficult to see where that function was called.
-	CGLEnable([context CGLContextObj], kCGLCECrashOnRemovedFunctions);
+	//CGLEnable([context CGLContextObj], kCGLCECrashOnRemovedFunctions);
 #endif
 	
     [self setPixelFormat:pf];
@@ -158,6 +179,18 @@
     // Opt-In to Retina resolution
     [self setWantsBestResolutionOpenGLSurface:YES];
 #endif // SUPPORT_RETINA_RESOLUTION
+
+    
+    [self prepareOpenGL];
+    
+    GLint maj;
+    GLint min;
+    
+    
+    CGLGetVersion(&maj, &min);
+    NSLog(@"NK GLView awake %1.0f %1.0f", self.visibleRect.size.width, self.visibleRect.size.height);
+    NSLog(@"NK GLView using GL Version: %d.%d", maj, min);
+    
 }
 
 - (void) prepareOpenGL
@@ -167,9 +200,15 @@
 	// Make all the OpenGL calls to setup rendering
 	//  and build the necessary rendering objects
 	[self initGL];
-	
-    //displayThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
     
+
+    //displayThread = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+
+}
+
+-(void)startAnimation {
+    if (animating) return;
+    animating = true;
 #if USE_CV_DISPLAY_LINK
 	// Create a display link capable of being used with all active displays
 	CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
@@ -190,6 +229,8 @@
     displayTimer = [NSTimer timerWithTimeInterval:.015 target:self selector:@selector(drawView) userInfo:nil repeats:YES];
     
     [[NSRunLoop mainRunLoop] addTimer:displayTimer forMode:NSDefaultRunLoopMode];
+    
+    NSLog(@"start animation");
 #endif
     
 	// Register to be notified when the window closes so we can stop the displaylink
@@ -197,6 +238,15 @@
 											 selector:@selector(windowWillClose:)
 												 name:NSWindowWillCloseNotification
 											   object:[self window]];
+}
+
+-(void)stopAnimation {
+    if (!animating) return;
+    animating = false;
+    #if USE_CV_DISPLAY_LINK
+    #else
+    
+    #endif
 }
 
 - (void) initGL
@@ -309,7 +359,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
     CGLLockContext([[self openGLContext] CGLContextObj]);
 #endif
     [self drawScene];
-    
+
     CGLFlushDrawable([[self openGLContext] CGLContextObj]);
     
 #if USE_CV_DISPLAY_LINK
@@ -373,6 +423,13 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
  
     return P2Make(mouseIn.x * _mscale * wMult, mouseIn.y * _mscale * hMult);
     
+}
+
+-(void)keyDown:(NSEvent *)theEvent {
+    //if (theEvent.keyCode == NSUpArrowFunctionKey){
+    [_scene keyPressed:theEvent.keyCode];
+
+    //}
 }
 
 - (void)mouseDown:(NSEvent *)theEvent

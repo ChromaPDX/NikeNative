@@ -6,12 +6,12 @@
 //
 //
 
-#import "NKSceneNode.h"
+#import "NikeBaseScene.h"
 #import "NKScrollNode.h"
 
 @class FuelBar;
 
-@interface Pregame : NKSceneNode <NKTableCellDelegate>
+@interface Pregame : NikeBaseScene <NKTableCellDelegate>
 {
     FuelBar *fuelBar;
 }

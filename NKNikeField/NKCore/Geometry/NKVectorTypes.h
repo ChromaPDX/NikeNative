@@ -2,46 +2,7 @@
 //*  NODE KITTEN
 //*
 
-
-#if defined(__ARM_NEON__)
-#import <arm_neon.h>
-#endif
-
-
-#if TARGET_OS_IPHONE
-
-#import <UIKit/UIKit.h>
-
-
-#define NKColor UIColor
-#define NKImage UIImage
-#define NKFont  UIFont
-#define NKDisplayLink CADisplayLink *
-#define NK_NONATOMIC_IOSONLY nonatomic
-
-#else // TARGET DESKTOP
-
-#import <AppKit/AppKit.h>
-
-#define NKColor NSColor
-#define NKImage NSImage
-#define NKFont  NSFont
-#define NKDisplayLink CVDisplayLinkRef
-
-#define NK_NONATOMIC_IOSONLY atomic
-
-#endif
-
-#if NK_USE_GLES
-
-#import <OpenGLES/EAGL.h>
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
-#else
-#import <OpenGL/OpenGL.h>
-#import <OpenGl/gl.h>
-#import <OpenGl/glext.h>
-#endif
+#import "NKMacro.h"
 
 #pragma mark -
 #pragma mark NK VECTOR TYPES
@@ -51,6 +12,7 @@
 #define CONVERT_UV_U_TO_ST_S(u) ((2*u) / M_PI)
 
 typedef GLubyte U1t;
+typedef int32_t I1t;
 typedef GLfloat F1t;
 
 union _V2t {
@@ -78,9 +40,11 @@ typedef V3t HSVcolor;
 union _V4t
 {
     struct { F1t x, y, z, w; };
+    struct { V3t xyz; F1t extra;};
     struct { P2t origin; S2t size;};
     struct { F1t r, g, b, a; };
     struct { F1t s, t, p, q; };
+    struct { F1t m00, m01, m10, m11;};
     F1t v[4];
 } __attribute__((aligned(16)));
 
@@ -89,6 +53,7 @@ typedef union _V4t V4t;
 typedef V4t Q4t;
 typedef V4t C4t;
 typedef V4t R4t;
+typedef V4t M4t;
 
 union _UB3t
 {
@@ -139,9 +104,17 @@ union _M9t
 {
     struct
     {
-        F1t m00, m01, m02;
-        F1t m10, m11, m12;
-        F1t m20, m21, m22;
+        V3t v[3];
+    };
+    struct
+    {
+        F1t colRow[3][3];
+    };
+    struct
+    {
+        F1t m00, m01, m02; //  c1r1 c1r2 c1r3
+        F1t m10, m11, m12; //  c2r1 c2r2 c3r3
+        F1t m20, m21, m22; //  c3r1 c3r2 c3r3
     };
     F1t m[9];
 };
@@ -158,15 +131,22 @@ union _M16t
     };
     struct
     {
-        F1t a[4][4];
+        F1t colRow[4][4];
+    };
+    struct
+    {
+        V4t v[4];
     };
     
     F1t m[16];
+    
 } __attribute__((aligned(16)));
 
 typedef union _M16t M16t;
 
 #pragma MAKE FUNCTIONS
+
+
 
 static inline V3t  V3MakeF(F1t x)
 {
@@ -174,9 +154,14 @@ static inline V3t  V3MakeF(F1t x)
 	return ret;
 }
 
-static inline V3t  V3Make(F1t x, F1t y, F1t z)
+static inline V3t V3Make(F1t x, F1t y, F1t z)
 {
 	V3t  ret = {x,y,z};
+	return ret;
+}
+
+static inline V3t V3Origin(){
+    V3t  ret = {0,0,0};
 	return ret;
 }
 
@@ -200,6 +185,11 @@ static inline Q4t Q4Make(F1t x,F1t y,F1t z,F1t w)
 
 static inline Q4t Q4MakeIdentity(){
     return Q4Make(0,0,0,1.);
+}
+
+static inline V4t V4Make(F1t x, F1t y, F1t z, F1t w){
+    V4t v = {x,y,z,w};
+    return v;
 }
 
 static inline C4t C4Make(F1t r,F1t g,F1t b,F1t a)
@@ -314,6 +304,7 @@ static inline bool P2GreaterFloat(P2t a, F1t b){
     return false;
 }
 
+
 #pragma mark - Vector 3 Type
 
 static inline V3t V3FromQ4(Q4t q1) {
@@ -366,16 +357,16 @@ static inline V3t V3Add(V3t vectorLeft, V3t vectorRight)
 static inline V3t V3Subtract(V3t vectorLeft, V3t vectorRight)
 {
     V3t v = { vectorLeft.x - vectorRight.x,
-        vectorLeft.y - vectorRight.y,
-        vectorLeft.z - vectorRight.z };
+              vectorLeft.y - vectorRight.y,
+              vectorLeft.z - vectorRight.z };
     return v;
 }
 
 static inline V3t V3Multiply(V3t vectorLeft, V3t vectorRight)
 {
     V3t v = { vectorLeft.x * vectorRight.x,
-        vectorLeft.y * vectorRight.y,
-        vectorLeft.z * vectorRight.z };
+              vectorLeft.y * vectorRight.y,
+              vectorLeft.z * vectorRight.z };
     return v;
 }
 
@@ -510,7 +501,7 @@ static inline F1t V3FastInverseMagnitude(V3t vector)
 {
 	return InvSqrt((vector.x * vector.x) + (vector.y * vector.y) + (vector.z * vector.z));
 }
-static inline void V3FastNormalize(V3t *vector)
+static inline void V3SetFastNormalize(V3t *vector)
 {
 	F1t vecInverseMag = V3FastInverseMagnitude(*vector);
 	if (vecInverseMag == 0.0)
@@ -522,6 +513,22 @@ static inline void V3FastNormalize(V3t *vector)
 	vector->x *= vecInverseMag;
 	vector->y *= vecInverseMag;
 	vector->z *= vecInverseMag;
+}
+
+static inline V3t V3FastNormalize(V3t vector)
+{
+	F1t vecInverseMag = V3FastInverseMagnitude(vector);
+	if (vecInverseMag == 0.0)
+	{
+		vector.x = 1.0;
+		vector.y = 0.0;
+		vector.z = 0.0;
+	}
+	vector.x *= vecInverseMag;
+	vector.y *= vecInverseMag;
+	vector.z *= vecInverseMag;
+    
+    return vector;
 }
 
 static inline V3t V3RotatePoint(V3t p, float angle, V3t axis){
@@ -642,6 +649,16 @@ static inline bool V4Equal(V4t l, V4t r){
     if (l.z != r.z) return false;
     if (l.w != r.w) return false;
     return true;
+}
+
+/**
+ * Returns the determinant of the specified 2x2 matrix values.
+ *
+ *   | a1 b1 |
+ *   | a2 b2 |
+ */
+static inline F1t M4Det(F1t a1, F1t a2, F1t b1, F1t b2) {
+	return a1 * b2 - b1 * a2;
 }
 
 #define C4Equal V4Equal
@@ -940,23 +957,23 @@ static inline Q4t Q4FromMatrix(M16t mat)
     {
         int h = 0;
         if (mat.m11 > mat.m00) h = 1;
-        if (mat.m22 > mat.a[h][h]) h = 2;
+        if (mat.m22 > mat.colRow[h][h]) h = 2;
         switch (h) {
 #define caseMacro(i,j,k,I,J,K) \
 case I:\
-s = sqrt( (mat.a[I][I] - (mat.a[J][J]+mat.a[K][K])) + mat.a[3][3] );\
+s = sqrt( (mat.colRow[I][I] - (mat.colRow[J][J]+mat.colRow[K][K])) + mat.colRow[3][3] );\
 qu.i = s*0.5;\
 s = 0.5 / s;\
-qu.j = (mat.a[I][J] + mat.a[J][I]) * s;\
-qu.k = (mat.a[K][I] + mat.a[I][K]) * s;\
-qu.w = (mat.a[K][J] - mat.a[J][K]) * s;\
+qu.j = (mat.colRow[I][J] + mat.colRow[J][I]) * s;\
+qu.k = (mat.colRow[K][I] + mat.colRow[I][K]) * s;\
+qu.w = (mat.colRow[K][J] - mat.colRow[J][K]) * s;\
 break
                 caseMacro(x,y,z,0,1,2);
                 caseMacro(y,z,x,1,2,0);
                 caseMacro(z,x,y,2,0,1);
         }
     }
-    if (mat.a[3][3] != 1.0) qu = Q4Scale(qu, 1/sqrt(mat.a[3][3]));
+    if (mat.colRow[3][3] != 1.0) qu = Q4Scale(qu, 1/sqrt(mat.colRow[3][3]));
     return (qu);
 }
 
@@ -1243,6 +1260,58 @@ static inline A4t A4FromQuat(Q4t q1) {
     
 }
 
+#pragma mark - M9 - MATRIX 3x3 Type 
+
+/**
+ * Returns the determinant of the specified 3x3 matrix values.
+ *
+ *  | a1 b1 c1 |
+ *  | a2 b2 c2 |
+ *  | a3 b3 c3 |
+ */
+static inline GLfloat M9Det(GLfloat a1, GLfloat a2, GLfloat a3,
+                            GLfloat b1, GLfloat b2, GLfloat b3,
+                            GLfloat c1, GLfloat c2, GLfloat c3) {
+	return	a1 * M4Det(b2, b3, c2, c3) -
+	b1 * M4Det(a2, a3, c2, c3) +
+	c1 * M4Det(a2, a3, b2, b3);
+}
+
+static inline M9t M16GetM9(M16t matrix)
+{
+    M9t m = { matrix.m[0], matrix.m[1], matrix.m[2],
+        matrix.m[4], matrix.m[5], matrix.m[6],
+        matrix.m[8], matrix.m[9], matrix.m[10] };
+    return m;
+}
+
+static inline void M9Transpose(M9t* mtx) {
+	F1t tmp;
+	tmp = mtx->m01;   mtx->m01 = mtx->m10;   mtx->m10 = tmp;
+	tmp = mtx->m02;   mtx->m02 = mtx->m20;   mtx->m20 = tmp;
+	tmp = mtx->m12;   mtx->m12 = mtx->m21;   mtx->m21 = tmp;
+}
+
+static inline V3t M9TransformV3(M9t* mtx, V3t v) {
+	V3t vOut;
+	vOut.x = (mtx->m00 * v.x) + (mtx->m10 * v.y) + (mtx->m20 * v.z);
+	vOut.y = (mtx->m01 * v.x) + (mtx->m11 * v.y) + (mtx->m21 * v.z);
+	vOut.z = (mtx->m02 * v.x) + (mtx->m12 * v.y) + (mtx->m22 * v.z);
+	return vOut;
+}
+
+static inline M9t M9Multiply(M9t l, M9t r){
+    M9t res = { l.m[0]*r.m[0],
+        l.m[1]*r.m[1],
+        l.m[2]*r.m[2],
+        l.m[3]*r.m[3],
+        l.m[4]*r.m[4],
+        l.m[5]*r.m[5],
+        l.m[6]*r.m[6],
+        l.m[7]*r.m[7],
+        l.m[8]*r.m[8]};
+    return res;
+}
 
 #pragma mark - M16 - MATRIX 4x4 TYPE
 
@@ -1592,42 +1661,75 @@ static inline M16t M16MakeRotateZ(F1t degrees)
     return M16;
 }
 
+static inline V4t M16MultiplyV4(M16t matrixLeft, V4t vectorRight)
+{
+#if defined(__ARM_NEON__)
+    float32x4x4_t iMatrix = *(float32x4x4_t *)&matrixLeft;
+    float32x4_t v;
+    
+    iMatrix.val[0] = vmulq_n_f32(iMatrix.val[0], (float32_t)vectorRight.v[0]);
+    iMatrix.val[1] = vmulq_n_f32(iMatrix.val[1], (float32_t)vectorRight.v[1]);
+    iMatrix.val[2] = vmulq_n_f32(iMatrix.val[2], (float32_t)vectorRight.v[2]);
+    iMatrix.val[3] = vmulq_n_f32(iMatrix.val[3], (float32_t)vectorRight.v[3]);
+    
+    iMatrix.val[0] = vaddq_f32(iMatrix.val[0], iMatrix.val[1]);
+    iMatrix.val[2] = vaddq_f32(iMatrix.val[2], iMatrix.val[3]);
+    
+    v = vaddq_f32(iMatrix.val[0], iMatrix.val[2]);
+    
+    return *(V4t *)&v;
+#elif defined(GLK_SSE3_INTRINSICS)
+	const __m128 v = _mm_load_ps(&vectorRight.v[0]);
+    
+	const __m128 r = _mm_load_ps(&matrixLeft.m[0])  * _mm_shuffle_ps(v, v, _MM_SHUFFLE(0, 0, 0, 0))
+    + _mm_load_ps(&matrixLeft.m[4])  * _mm_shuffle_ps(v, v, _MM_SHUFFLE(1, 1, 1, 1))
+    + _mm_load_ps(&matrixLeft.m[8])  * _mm_shuffle_ps(v, v, _MM_SHUFFLE(2, 2, 2, 2))
+    + _mm_load_ps(&matrixLeft.m[12]) * _mm_shuffle_ps(v, v, _MM_SHUFFLE(3, 3, 3, 3));
+    
+	V4t ret;
+	*(__m128*)&ret = r;
+    return ret;
+#else
+    V4t v = { matrixLeft.m[0] * vectorRight.v[0] + matrixLeft.m[4] * vectorRight.v[1] + matrixLeft.m[8] * vectorRight.v[2] + matrixLeft.m[12] * vectorRight.v[3],
+        matrixLeft.m[1] * vectorRight.v[0] + matrixLeft.m[5] * vectorRight.v[1] + matrixLeft.m[9] * vectorRight.v[2] + matrixLeft.m[13] * vectorRight.v[3],
+        matrixLeft.m[2] * vectorRight.v[0] + matrixLeft.m[6] * vectorRight.v[1] + matrixLeft.m[10] * vectorRight.v[2] + matrixLeft.m[14] * vectorRight.v[3],
+        matrixLeft.m[3] * vectorRight.v[0] + matrixLeft.m[7] * vectorRight.v[1] + matrixLeft.m[11] * vectorRight.v[2] + matrixLeft.m[15] * vectorRight.v[3] };
+    return v;
+#endif
+}
 
-//static inline M16t M16Multiply(M16t m1, M16t m2)
-//{
-//    M16t result;
-//    // First Column
-//    result.m[0] = m1.m[0]*m2.m[0] + m1.m[4]*m2.m[1] + m1.m[8]*m2.m[2] + m1.m[12]*m2.m[3];
-//    result.m[1] = m1.m[1]*m2.m[0] + m1.m[5]*m2.m[1] + m1.m[9]*m2.m[2] + m1.m[13]*m2.m[3];
-//    result.m[2] = m1.m[2]*m2.m[0] + m1.m[6]*m2.m[1] + m1.m[10]*m2.m[2] + m1.m[14]*m2.m[3];
-//    result.m[3] = m1.m[3]*m2.m[0] + m1.m[7]*m2.m[1] + m1.m[11]*m2.m[2] + m1.m[15]*m2.m[3];
-//
-//    // Second Column
-//    result.m[4] = m1.m[0]*m2.m[4] + m1.m[4]*m2.m[5] + m1.m[8]*m2.m[6] + m1.m[12]*m2.m[7];
-//    result.m[5] = m1.m[1]*m2.m[4] + m1.m[5]*m2.m[5] + m1.m[9]*m2.m[6] + m1.m[13]*m2.m[7];
-//    result.m[6] = m1.m[2]*m2.m[4] + m1.m[6]*m2.m[5] + m1.m[10]*m2.m[6] + m1.m[14]*m2.m[7];
-//    result.m[7] = m1.m[3]*m2.m[4] + m1.m[7]*m2.m[5] + m1.m[11]*m2.m[6] + m1.m[15]*m2.m[7];
-//
-//    // Third Column
-//    result.m[8] = m1.m[0]*m2.m[8] + m1.m[4]*m2.m[9] + m1.m[8]*m2.m[10] + m1.m[12]*m2.m[11];
-//    result.m[9] = m1.m[1]*m2.m[8] + m1.m[5]*m2.m[9] + m1.m[9]*m2.m[10] + m1.m[13]*m2.m[11];
-//    result.m[10] = m1.m[2]*m2.m[8] + m1.m[6]*m2.m[9] + m1.m[10]*m2.m[10] + m1.m[14]*m2.m[11];
-//    result.m[11] = m1.m[3]*m2.m[8] + m1.m[7]*m2.m[9] + m1.m[11]*m2.m[10] + m1.m[15]*m2.m[11];
-//
-//    // Fourth Column
-//    result.m[12] = m1.m[0]*m2.m[12] + m1.m[4]*m2.m[13] + m1.m[8]*m2.m[14] + m1.m[12]*m2.m[15];
-//    result.m[13] = m1.m[1]*m2.m[12] + m1.m[5]*m2.m[13] + m1.m[9]*m2.m[14] + m1.m[13]*m2.m[15];
-//    result.m[14] = m1.m[2]*m2.m[12] + m1.m[6]*m2.m[13] + m1.m[10]*m2.m[14] + m1.m[14]*m2.m[15];
-//    result.m[15] = m1.m[3]*m2.m[12] + m1.m[7]*m2.m[13] + m1.m[11]*m2.m[14] + m1.m[15]*m2.m[15];
-//    return result;
-//
-//}
 
 static inline V3t V3MultiplyM16(M16t matrixLeft, V3t vectorRight)
 {
-    Q4t Q4 = Q4MultiplyM16(matrixLeft, Q4Make(vectorRight.x, vectorRight.y,vectorRight.z, 0));
-    return V3Make(Q4.x, Q4.y, Q4.z);
+   return M16MultiplyV4(matrixLeft, V4Make(vectorRight.v[0], vectorRight.v[1], vectorRight.v[2], 0.0f)).xyz;
 }
+
+
+
+static inline V3t V3MultiplyM16WithTranslation(M16t matrixLeft, V3t vectorRight)
+{
+    return M16MultiplyV4(matrixLeft, V4Make(vectorRight.v[0], vectorRight.v[1], vectorRight.v[2], 1.0f)).xyz;
+}
+
+
+//static inline V3t V3MultiplyM16(M16t m, V3t v)
+//{
+//    V3t res;
+//    
+//	res.x = ( v.x * m.v[ 0 ].x ) +
+//    ( v.y * m.v[ 1 ].x ) +
+//    ( v.z * m.v[ 2 ].x );
+//    
+//	res.y = ( v.x * m.v[ 0 ].y ) +
+//    ( v.y * m.v[ 1 ].y ) +
+//    ( v.z * m.v[ 2 ].y );
+//    
+//	res.z = ( v.x * m.v[ 0 ].z ) +
+//    ( v.y * m.v[ 1 ].z ) +
+//    ( v.z * m.v[ 2 ].z );
+//    
+//    return res;
+//}
 
 static inline V3t EulerMultiplyM16(M16t matrixLeft, V3t vectorRight)
 
@@ -1638,8 +1740,6 @@ static inline V3t EulerMultiplyM16(M16t matrixLeft, V3t vectorRight)
 
 
 // from http://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions
-
-
 
 static inline M16t M16MakeAngleAxis(F1t radians, V3t  V3){
     
@@ -1755,49 +1855,66 @@ static inline M16t M16MakeOrtho(F1t left,F1t right,
     return m;
 }
 
-static inline M16t M16MakeLookAt(F1t eyeX,F1t eyeY,F1t eyeZ,
-                                 F1t centerX,F1t centerY,F1t centerZ,
-                                 F1t upX,F1t upY,F1t upZ)
+static inline void M16LookAt(M16t *mat, V3t eye, V3t center, V3t up )
 {
-    V3t ev = { eyeX, eyeY, eyeZ };
-    V3t cv = { centerX, centerY, centerZ };
-    V3t uv = { upX, upY, upZ };
+	V3t f,s,u;
     
-    V3t n = V3Normalize(V3Add(ev, V3Negate(cv)));
+    f = V3FastNormalize(V3Subtract(eye,center));
+	//vec3_diff( &f, center, eye );
+    
+    u = V3FastNormalize(V3CrossProduct(up,f));
+    
+    s = V3FastNormalize(V3CrossProduct(f,s));
+    
+    mat->m00 = u.x;
+    mat->m01 = u.y;
+    mat->m02 = u.z;
+    
+    mat->m10 = f.x;
+    mat->m11 = f.y;
+    mat->m12 = f.z;
+    
+    mat->m20 = s.x;
+    mat->m21 = s.y;
+    mat->m22 = s.z;
+    
+
+}
+
+static inline M16t M16MakeLookAt(V3t ev,V3t cv, V3t uv)
+{
+//    V3t ev = { eyeX, eyeY, eyeZ };
+//    V3t cv = { centerX, centerY, centerZ };
+//    V3t uv = { upX, upY, upZ };
+    
+    V3t n = V3Normalize(V3Subtract(ev, cv));
     V3t u = V3Normalize(V3CrossProduct(uv, n));
     V3t v = V3CrossProduct(n, u);
     
+//    M16t m = { u.x, v.x, n.x, 0.0f,
+//        u.y, v.y, n.y, 0.0f,
+//        u.z, v.z, n.z, 0.0f,
+//        ev.x,
+//        ev.y,
+//        ev.z,
+//        1.0f };
+    
     M16t m = { u.x, v.x, n.x, 0.0f,
-        u.y, v.y, n.y, 0.0f,
-        u.z, v.z, n.z, 0.0f,
-        V3DotProduct(V3Negate(u), ev),
-        V3DotProduct(V3Negate(v), ev),
-        V3DotProduct(V3Negate(n), ev),
-        1.0f };
+               u.y, v.y, n.y, 0.0f,
+               u.z, v.z, n.z, 0.0f,
+               V3DotProduct(V3Negate(u), ev),
+               V3DotProduct(V3Negate(v), ev),
+               V3DotProduct(V3Negate(n), ev),
+                1.0f };
     
     return m;
 }
 
-static inline M9t M16GetM9(M16t matrix)
-{
-    M9t m = { matrix.m[0], matrix.m[1], matrix.m[2],
-        matrix.m[4], matrix.m[5], matrix.m[6],
-        matrix.m[8], matrix.m[9], matrix.m[10] };
-    return m;
-}
-
-//GLK_INLINE GLKMatrix2 GLKMatrix4GetMatrix2(GLKMatrix4 matrix)
+//static inline V4t M16GetRow(M16t matrix, int row)
 //{
-//    GLKMatrix2 m = { matrix.m[0], matrix.m[1],
-//        matrix.m[4], matrix.m[5] };
-//    return m;
+//    V4t v = { matrix.m[row], matrix.m[4 + row], matrix.m[8 + row], matrix.m[12 + row] };
+//    return v;
 //}
-
-static inline V4t M16GetRow(M16t matrix, int row)
-{
-    V4t v = { matrix.m[row], matrix.m[4 + row], matrix.m[8 + row], matrix.m[12 + row] };
-    return v;
-}
 
 static inline V4t M16GetColumn(M16t matrix, int column)
 {
@@ -1813,14 +1930,32 @@ static inline V4t M16GetColumn(M16t matrix, int column)
 #endif
 }
 
-static inline M16t M16SetRow(M16t matrix, int row, V4t vector)
-{
-    matrix.m[row] = vector.v[0];
-    matrix.m[row + 4] = vector.v[1];
-    matrix.m[row + 8] = vector.v[2];
-    matrix.m[row + 12] = vector.v[3];
-    
-    return matrix;
+//static inline M16t M16SetRow(M16t matrix, int row, V4t vector)
+//{
+//    matrix.m[row] = vector.v[0];
+//    matrix.m[row + 4] = vector.v[1];
+//    matrix.m[row + 8] = vector.v[2];
+//    matrix.m[row + 12] = vector.v[3];
+//    
+//    return matrix;
+//}
+
+static inline M16t M16FromM9(M9t* m9){
+    M16t m16;
+    for (int i = 0; i < 3; i++) {
+        m16.m[i * 4 + 0] = m9->v[i].x;
+        m16.m[i * 4 + 1] = m9->v[i].y;
+        m16.m[i * 4 + 2] = m9->v[i].z;
+    }
+    return m16;
+}
+
+static inline void M16SetM9(M16t* m16, M9t* m9){
+    for (int i = 0; i < 3; i++) {
+        m16->m[i * 4 + 0] = m9->v[i].x;
+        m16->m[i * 4 + 1] = m9->v[i].y;
+        m16->m[i * 4 + 2] = m9->v[i].z;
+    }
 }
 
 static inline M16t M16SetColumn(M16t matrix, int column, V4t vector)
@@ -1841,46 +1976,355 @@ static inline M16t M16SetColumn(M16t matrix, int column, V4t vector)
     return matrix;
 #endif
 }
-// from
-static inline M16t M16InvertColumnMajor(M16t M16, bool *isInvertible)
+
+
+/*!
+ Invert a 4x4 matrix fast.
+ 
+ \param[in,out] m A valid 4x4 matrix that will be used for the inverse operation.
+ 
+ \return Return 1 if the inverse is successfull, instead return 0.
+ 
+ \sa mat4_invert_full
+ */
+static inline unsigned char M16Invert( M16t *m )
 {
-    M16t invOut;
-    F1t det;
-    int i;
+	M16t mat;
+	
+	float d = ( m->v[ 0 ].x * m->v[ 0 ].x +
+               m->v[ 1 ].x * m->v[ 1 ].x +
+               m->v[ 2 ].x * m->v[ 2 ].x );
     
-    invOut.m[ 0] =  M16.m[5] * M16.m[10] * M16.m[15] - M16.m[5] * M16.m[11] * M16.m[14] - M16.m[9] * M16.m[6] * M16.m[15] + M16.m[9] * M16.m[7] * M16.m[14] + M16.m[13] * M16.m[6] * M16.m[11] - M16.m[13] * M16.m[7] * M16.m[10];
-    invOut.m[ 4] = -M16.m[4] * M16.m[10] * M16.m[15] + M16.m[4] * M16.m[11] * M16.m[14] + M16.m[8] * M16.m[6] * M16.m[15] - M16.m[8] * M16.m[7] * M16.m[14] - M16.m[12] * M16.m[6] * M16.m[11] + M16.m[12] * M16.m[7] * M16.m[10];
-    invOut.m[ 8] =  M16.m[4] * M16.m[ 9] * M16.m[15] - M16.m[4] * M16.m[11] * M16.m[13] - M16.m[8] * M16.m[5] * M16.m[15] + M16.m[8] * M16.m[7] * M16.m[13] + M16.m[12] * M16.m[5] * M16.m[11] - M16.m[12] * M16.m[7] * M16.m[ 9];
-    invOut.m[12] = -M16.m[4] * M16.m[ 9] * M16.m[14] + M16.m[4] * M16.m[10] * M16.m[13] + M16.m[8] * M16.m[5] * M16.m[14] - M16.m[8] * M16.m[6] * M16.m[13] - M16.m[12] * M16.m[5] * M16.m[10] + M16.m[12] * M16.m[6] * M16.m[ 9];
-    invOut.m[ 1] = -M16.m[1] * M16.m[10] * M16.m[15] + M16.m[1] * M16.m[11] * M16.m[14] + M16.m[9] * M16.m[2] * M16.m[15] - M16.m[9] * M16.m[3] * M16.m[14] - M16.m[13] * M16.m[2] * M16.m[11] + M16.m[13] * M16.m[3] * M16.m[10];
-    invOut.m[ 5] =  M16.m[0] * M16.m[10] * M16.m[15] - M16.m[0] * M16.m[11] * M16.m[14] - M16.m[8] * M16.m[2] * M16.m[15] + M16.m[8] * M16.m[3] * M16.m[14] + M16.m[12] * M16.m[2] * M16.m[11] - M16.m[12] * M16.m[3] * M16.m[10];
-    invOut.m[ 9] = -M16.m[0] * M16.m[ 9] * M16.m[15] + M16.m[0] * M16.m[11] * M16.m[13] + M16.m[8] * M16.m[1] * M16.m[15] - M16.m[8] * M16.m[3] * M16.m[13] - M16.m[12] * M16.m[1] * M16.m[11] + M16.m[12] * M16.m[3] * M16.m[ 9];
-    invOut.m[13] =  M16.m[0] * M16.m[ 9] * M16.m[14] - M16.m[0] * M16.m[10] * M16.m[13] - M16.m[8] * M16.m[1] * M16.m[14] + M16.m[8] * M16.m[2] * M16.m[13] + M16.m[12] * M16.m[1] * M16.m[10] - M16.m[12] * M16.m[2] * M16.m[ 9];
-    invOut.m[ 2] =  M16.m[1] * M16.m[ 6] * M16.m[15] - M16.m[1] * M16.m[ 7] * M16.m[14] - M16.m[5] * M16.m[2] * M16.m[15] + M16.m[5] * M16.m[3] * M16.m[14] + M16.m[13] * M16.m[2] * M16.m[ 7] - M16.m[13] * M16.m[3] * M16.m[ 6];
-    invOut.m[ 6] = -M16.m[0] * M16.m[ 6] * M16.m[15] + M16.m[0] * M16.m[ 7] * M16.m[14] + M16.m[4] * M16.m[2] * M16.m[15] - M16.m[4] * M16.m[3] * M16.m[14] - M16.m[12] * M16.m[2] * M16.m[ 7] + M16.m[12] * M16.m[3] * M16.m[ 6];
-    invOut.m[10] =  M16.m[0] * M16.m[ 5] * M16.m[15] - M16.m[0] * M16.m[ 7] * M16.m[13] - M16.m[4] * M16.m[1] * M16.m[15] + M16.m[4] * M16.m[3] * M16.m[13] + M16.m[12] * M16.m[1] * M16.m[ 7] - M16.m[12] * M16.m[3] * M16.m[ 5];
-    invOut.m[14] = -M16.m[0] * M16.m[ 5] * M16.m[14] + M16.m[0] * M16.m[ 6] * M16.m[13] + M16.m[4] * M16.m[1] * M16.m[14] - M16.m[4] * M16.m[2] * M16.m[13] - M16.m[12] * M16.m[1] * M16.m[ 6] + M16.m[12] * M16.m[2] * M16.m[ 5];
-    invOut.m[ 3] = -M16.m[1] * M16.m[ 6] * M16.m[11] + M16.m[1] * M16.m[ 7] * M16.m[10] + M16.m[5] * M16.m[2] * M16.m[11] - M16.m[5] * M16.m[3] * M16.m[10] - M16.m[ 9] * M16.m[2] * M16.m[ 7] + M16.m[ 9] * M16.m[3] * M16.m[ 6];
-    invOut.m[ 7] =  M16.m[0] * M16.m[ 6] * M16.m[11] - M16.m[0] * M16.m[ 7] * M16.m[10] - M16.m[4] * M16.m[2] * M16.m[11] + M16.m[4] * M16.m[3] * M16.m[10] + M16.m[ 8] * M16.m[2] * M16.m[ 7] - M16.m[ 8] * M16.m[3] * M16.m[ 6];
-    invOut.m[11] = -M16.m[0] * M16.m[ 5] * M16.m[11] + M16.m[0] * M16.m[ 7] * M16.m[ 9] + M16.m[4] * M16.m[1] * M16.m[11] - M16.m[4] * M16.m[3] * M16.m[ 9] - M16.m[ 8] * M16.m[1] * M16.m[ 7] + M16.m[ 8] * M16.m[3] * M16.m[ 5];
-    invOut.m[15] =  M16.m[0] * M16.m[ 5] * M16.m[10] - M16.m[0] * M16.m[ 6] * M16.m[ 9] - M16.m[4] * M16.m[1] * M16.m[10] + M16.m[4] * M16.m[2] * M16.m[ 9] + M16.m[ 8] * M16.m[1] * M16.m[ 6] - M16.m[ 8] * M16.m[2] * M16.m[ 5];
+	if( !d ) return 0;
+	
+	d = 1.0f / d;
     
-    det = M16.m[0] * invOut.m[0] + M16.m[1] * invOut.m[4] + M16.m[2] * invOut.m[8] + M16.m[3] * invOut.m[12];
+	mat.v[ 0 ].x = d * m->v[ 0 ].x;
+	mat.v[ 0 ].y = d * m->v[ 1 ].x;
+	mat.v[ 0 ].z = d * m->v[ 2 ].x;
     
-    if(det == 0){
-        if(isInvertible)*isInvertible = false;
-        NSLog(@"Error inverting matrix");
-        return M16;
-    }
-    det = 1.f / det;
+	mat.v[ 1 ].x = d * m->v[ 0 ].y;
+	mat.v[ 1 ].y = d * m->v[ 1 ].y;
+	mat.v[ 1 ].z = d * m->v[ 2 ].y;
     
-    for(i = 0; i < 16; i++)
-        invOut.m[i] = invOut.m[i] * det;
+	mat.v[ 2 ].x = d * m->v[ 0 ].z;
+	mat.v[ 2 ].y = d * m->v[ 1 ].z;
+	mat.v[ 2 ].z = d * m->v[ 2 ].z;
     
-    if(isInvertible)*isInvertible = true;
-    return invOut;
+	mat.v[ 3 ].x = -( mat.v[ 0 ].x * m->v[ 3 ].x + mat.v[ 1 ].x * m->v[ 3 ].y + mat.v[ 2 ].x * m->v[ 3 ].z );
+	mat.v[ 3 ].y = -( mat.v[ 0 ].y * m->v[ 3 ].x + mat.v[ 1 ].y * m->v[ 3 ].y + mat.v[ 2 ].y * m->v[ 3 ].z );
+	mat.v[ 3 ].z = -( mat.v[ 0 ].z * m->v[ 3 ].x + mat.v[ 1 ].z * m->v[ 3 ].y + mat.v[ 2 ].z * m->v[ 3 ].z );
+    
+	mat.v[ 0 ].w =
+	mat.v[ 1 ].w =
+	mat.v[ 2 ].w = 0.0f;
+	mat.v[ 3 ].w = 1.0f;
+    
+    memcpy(m->m, mat.m,sizeof(M16t));
+	
+	return 1;
 }
 
+static inline bool M16InvertAdjoint(M16t* m) {
+	M16t adj;	// The adjoint matrix (inverse after dividing by determinant)
+	
+	// Create the transpose of the cofactors, as the classical adjoint of the matrix.
+    adj.m00 =  M9Det(m->m11, m->m12, m->m13, m->m21, m->m22, m->m23, m->m31, m->m32, m->m33);
+    adj.m01 = -M9Det(m->m01, m->m02, m->m03, m->m21, m->m22, m->m23, m->m31, m->m32, m->m33);
+    adj.m02 =  M9Det(m->m01, m->m02, m->m03, m->m11, m->m12, m->m13, m->m31, m->m32, m->m33);
+    adj.m03 = -M9Det(m->m01, m->m02, m->m03, m->m11, m->m12, m->m13, m->m21, m->m22, m->m23);
+	
+    adj.m10 = -M9Det(m->m10, m->m12, m->m13, m->m20, m->m22, m->m23, m->m30, m->m32, m->m33);
+    adj.m11 =  M9Det(m->m00, m->m02, m->m03, m->m20, m->m22, m->m23, m->m30, m->m32, m->m33);
+    adj.m12 = -M9Det(m->m00, m->m02, m->m03, m->m10, m->m12, m->m13, m->m30, m->m32, m->m33);
+    adj.m13 =  M9Det(m->m00, m->m02, m->m03, m->m10, m->m12, m->m13, m->m20, m->m22, m->m23);
+	
+    adj.m20 =  M9Det(m->m10, m->m11, m->m13, m->m20, m->m21, m->m23, m->m30, m->m31, m->m33);
+    adj.m21 = -M9Det(m->m00, m->m01, m->m03, m->m20, m->m21, m->m23, m->m30, m->m31, m->m33);
+    adj.m22 =  M9Det(m->m00, m->m01, m->m03, m->m10, m->m11, m->m13, m->m30, m->m31, m->m33);
+    adj.m23 = -M9Det(m->m00, m->m01, m->m03, m->m10, m->m11, m->m13, m->m20, m->m21, m->m23);
+	
+    adj.m30 = -M9Det(m->m10, m->m11, m->m12, m->m20, m->m21, m->m22, m->m30, m->m31, m->m32);
+    adj.m31 =  M9Det(m->m00, m->m01, m->m02, m->m20, m->m21, m->m22, m->m30, m->m31, m->m32);
+    adj.m32 = -M9Det(m->m00, m->m01, m->m02, m->m10, m->m11, m->m12, m->m30, m->m31, m->m32);
+    adj.m33 =  M9Det(m->m00, m->m01, m->m02, m->m10, m->m11, m->m12, m->m20, m->m21, m->m22);
+	
+	// Calculate the determinant as a combination of the cofactors of the first row.
+	GLfloat det = (adj.m00 * m->m00) + (adj.m01 * m->m10) + (adj.m02 * m->m20) + (adj.m03 * m->m30);
+    
+	// If determinant is zero, matrix is not invertable.
+	//CC3AssertC(det != 0.0f, @"%@ is singular and cannot be inverted", NSStringFromCC3Matrix4x4(m));
+	if (det == 0.0f) return NO;
+	
+	// Divide the classical adjoint matrix by the determinant and set back into original matrix.
+	GLfloat ooDet = 1.0 / det;		// Turn div into mult for speed
+	m->m00 = adj.m00 * ooDet;
+	m->m01 = adj.m01 * ooDet;
+	m->m02 = adj.m02 * ooDet;
+	m->m03 = adj.m03 * ooDet;
+	m->m10 = adj.m10 * ooDet;
+	m->m11 = adj.m11 * ooDet;
+	m->m12 = adj.m12 * ooDet;
+	m->m13 = adj.m13 * ooDet;
+	m->m20 = adj.m20 * ooDet;
+	m->m21 = adj.m21 * ooDet;
+	m->m22 = adj.m22 * ooDet;
+	m->m23 = adj.m23 * ooDet;
+	m->m30 = adj.m30 * ooDet;
+	m->m31 = adj.m31 * ooDet;
+	m->m32 = adj.m32 * ooDet;
+	m->m33 = adj.m33 * ooDet;
+	
+	return YES;
+}
+
+static inline void M16InvertRigid(M16t* mtx) {
+	// Extract and transpose the 3x3 linear matrix
+	M9t linMtx = M16GetM9(*mtx);
+    M9Transpose(&linMtx);
+	// Extract the translation and transform it by the transposed linear matrix
+    V3t t = M16GetColumn(*mtx, 3).xyz;
+    t = M9TransformV3(&linMtx, V3Negate(t));
+    
+	// Populate the 4x4 matrix with the transposed rotation and transformed translation
+    M16SetM9(mtx, &linMtx);
+	mtx->m30 = t.x;
+	mtx->m31 = t.y;
+	mtx->m32 = t.z;
+}
+
+
+/*!
+ Invert a 4x4 matrix fast.
+ 
+ \param[in,out] m A valid 4x4 matrix that will be used for the inverse operation.
+ 
+ \return Return 1 if the inverse is successfull, instead return 0.
+ 
+ \sa mat4_invert
+ */
+static inline unsigned char M16FullInvert( M16t *m )
+{
+	M16t inv;
+    
+	float d;
+    
+	inv.v[ 0 ].x = m->v[ 1 ].y * m->v[ 2 ].z * m->v[ 3 ].w -
+    m->v[ 1 ].y * m->v[ 2 ].w * m->v[ 3 ].z -
+    m->v[ 2 ].y * m->v[ 1 ].z * m->v[ 3 ].w +
+    m->v[ 2 ].y * m->v[ 1 ].w * m->v[ 3 ].z +
+    m->v[ 3 ].y * m->v[ 1 ].z * m->v[ 2 ].w -
+    m->v[ 3 ].y * m->v[ 1 ].w * m->v[ 2 ].z;
+    
+	inv.v[ 1 ].x = -m->v[ 1 ].x * m->v[ 2 ].z * m->v[ 3 ].w +
+    m->v[ 1 ].x * m->v[ 2 ].w * m->v[ 3 ].z +
+    m->v[ 2 ].x * m->v[ 1 ].z * m->v[ 3 ].w -
+    m->v[ 2 ].x * m->v[ 1 ].w * m->v[ 3 ].z -
+    m->v[ 3 ].x * m->v[ 1 ].z * m->v[ 2 ].w +
+    m->v[ 3 ].x * m->v[ 1 ].w * m->v[ 2 ].z;
+    
+	inv.v[ 2 ].x = m->v[ 1 ].x * m->v[ 2 ].y * m->v[ 3 ].w -
+    m->v[ 1 ].x * m->v[ 2 ].w * m->v[ 3 ].y -
+    m->v[ 2 ].x * m->v[ 1 ].y * m->v[ 3 ].w +
+    m->v[ 2 ].x * m->v[ 1 ].w * m->v[ 3 ].y +
+    m->v[ 3 ].x * m->v[ 1 ].y * m->v[ 2 ].w -
+    m->v[ 3 ].x * m->v[ 1 ].w * m->v[ 2 ].y;
+    
+	inv.v[ 3 ].x = -m->v[ 1 ].x * m->v[ 2 ].y * m->v[ 3 ].z +
+    m->v[ 1 ].x * m->v[ 2 ].z * m->v[ 3 ].y +
+    m->v[ 2 ].x * m->v[ 1 ].y * m->v[ 3 ].z -
+    m->v[ 2 ].x * m->v[ 1 ].z * m->v[ 3 ].y -
+    m->v[ 3 ].x * m->v[ 1 ].y * m->v[ 2 ].z +
+    m->v[ 3 ].x * m->v[ 1 ].z * m->v[ 2 ].y;
+    
+	inv.v[ 0 ].y = -m->v[ 0 ].y * m->v[ 2 ].z * m->v[ 3 ].w +
+    m->v[ 0 ].y * m->v[ 2 ].w * m->v[ 3 ].z +
+    m->v[ 2 ].y * m->v[ 0 ].z * m->v[ 3 ].w -
+    m->v[ 2 ].y * m->v[ 0 ].w * m->v[ 3 ].z -
+    m->v[ 3 ].y * m->v[ 0 ].z * m->v[ 2 ].w +
+    m->v[ 3 ].y * m->v[ 0 ].w * m->v[ 2 ].z;
+    
+	inv.v[ 1 ].y = m->v[ 0 ].x * m->v[ 2 ].z * m->v[ 3 ].w -
+    m->v[ 0 ].x * m->v[ 2 ].w * m->v[ 3 ].z -
+    m->v[ 2 ].x * m->v[ 0 ].z * m->v[ 3 ].w +
+    m->v[ 2 ].x * m->v[ 0 ].w * m->v[ 3 ].z +
+    m->v[ 3 ].x * m->v[ 0 ].z * m->v[ 2 ].w -
+    m->v[ 3 ].x * m->v[ 0 ].w * m->v[ 2 ].z;
+    
+	inv.v[ 2 ].y = -m->v[ 0 ].x * m->v[ 2 ].y * m->v[ 3 ].w +
+    m->v[ 0 ].x * m->v[ 2 ].w * m->v[ 3 ].y +
+    m->v[ 2 ].x * m->v[ 0 ].y * m->v[ 3 ].w -
+    m->v[ 2 ].x * m->v[ 0 ].w * m->v[ 3 ].y -
+    m->v[ 3 ].x * m->v[ 0 ].y * m->v[ 2 ].w +
+    m->v[ 3 ].x * m->v[ 0 ].w * m->v[ 2 ].y;
+    
+	inv.v[ 3 ].y = m->v[ 0 ].x * m->v[ 2 ].y * m->v[ 3 ].z -
+    m->v[ 0 ].x * m->v[ 2 ].z * m->v[ 3 ].y -
+    m->v[ 2 ].x * m->v[ 0 ].y * m->v[ 3 ].z +
+    m->v[ 2 ].x * m->v[ 0 ].z * m->v[ 3 ].y +
+    m->v[ 3 ].x * m->v[ 0 ].y * m->v[ 2 ].z -
+    m->v[ 3 ].x * m->v[ 0 ].z * m->v[ 2 ].y;
+    
+	inv.v[ 0 ].z = m->v[ 0 ].y * m->v[ 1 ].z * m->v[ 3 ].w -
+    m->v[ 0 ].y * m->v[ 1 ].w * m->v[ 3 ].z -
+    m->v[ 1 ].y * m->v[ 0 ].z * m->v[ 3 ].w +
+    m->v[ 1 ].y * m->v[ 0 ].w * m->v[ 3 ].z +
+    m->v[ 3 ].y * m->v[ 0 ].z * m->v[ 1 ].w -
+    m->v[ 3 ].y * m->v[ 0 ].w * m->v[ 1 ].z;
+    
+	inv.v[ 1 ].z = -m->v[ 0 ].x * m->v[ 1 ].z * m->v[ 3 ].w +
+    m->v[ 0 ].x * m->v[ 1 ].w * m->v[ 3 ].z +
+    m->v[ 1 ].x * m->v[ 0 ].z * m->v[ 3 ].w -
+    m->v[ 1 ].x * m->v[ 0 ].w * m->v[ 3 ].z -
+    m->v[ 3 ].x * m->v[ 0 ].z * m->v[ 1 ].w +
+    m->v[ 3 ].x * m->v[ 0 ].w * m->v[ 1 ].z;
+    
+	inv.v[ 2 ].z = m->v[ 0 ].x * m->v[ 1 ].y * m->v[ 3 ].w -
+    m->v[ 0 ].x * m->v[ 1 ].w * m->v[ 3 ].y -
+    m->v[ 1 ].x * m->v[ 0 ].y * m->v[ 3 ].w +
+    m->v[ 1 ].x * m->v[ 0 ].w * m->v[ 3 ].y +
+    m->v[ 3 ].x * m->v[ 0 ].y * m->v[ 1 ].w -
+    m->v[ 3 ].x * m->v[ 0 ].w * m->v[ 1 ].y;
+    
+	inv.v[ 3 ].z = -m->v[ 0 ].x * m->v[ 1 ].y * m->v[ 3 ].z +
+    m->v[ 0 ].x * m->v[ 1 ].z * m->v[ 3 ].y +
+    m->v[ 1 ].x * m->v[ 0 ].y * m->v[ 3 ].z -
+    m->v[ 1 ].x * m->v[ 0 ].z * m->v[ 3 ].y -
+    m->v[ 3 ].x * m->v[ 0 ].y * m->v[ 1 ].z +
+    m->v[ 3 ].x * m->v[ 0 ].z * m->v[ 1 ].y;
+    
+	inv.v[ 0 ].w = -m->v[ 0 ].y * m->v[ 1 ].z * m->v[ 2 ].w +
+    m->v[ 0 ].y * m->v[ 1 ].w * m->v[ 2 ].z +
+    m->v[ 1 ].y * m->v[ 0 ].z * m->v[ 2 ].w -
+    m->v[ 1 ].y * m->v[ 0 ].w * m->v[ 2 ].z -
+    m->v[ 2 ].y * m->v[ 0 ].z * m->v[ 1 ].w +
+    m->v[ 2 ].y * m->v[ 0 ].w * m->v[ 1 ].z;
+    
+	inv.v[ 1 ].w = m->v[ 0 ].x * m->v[ 1 ].z * m->v[ 2 ].w -
+    m->v[ 0 ].x * m->v[ 1 ].w * m->v[ 2 ].z -
+    m->v[ 1 ].x * m->v[ 0 ].z * m->v[ 2 ].w +
+    m->v[ 1 ].x * m->v[ 0 ].w * m->v[ 2 ].z +
+    m->v[ 2 ].x * m->v[ 0 ].z * m->v[ 1 ].w -
+    m->v[ 2 ].x * m->v[ 0 ].w * m->v[ 1 ].z;
+    
+	inv.v[ 2 ].w = -m->v[ 0 ].x * m->v[ 1 ].y * m->v[ 2 ].w +
+    m->v[ 0 ].x * m->v[ 1 ].w * m->v[ 2 ].y +
+    m->v[ 1 ].x * m->v[ 0 ].y * m->v[ 2 ].w -
+    m->v[ 1 ].x * m->v[ 0 ].w * m->v[ 2 ].y -
+    m->v[ 2 ].x * m->v[ 0 ].y * m->v[ 1 ].w +
+    m->v[ 2 ].x * m->v[ 0 ].w * m->v[ 1 ].y;
+    
+	inv.v[ 3 ].w = m->v[ 0 ].x * m->v[ 1 ].y * m->v[ 2 ].z -
+    m->v[ 0 ].x * m->v[ 1 ].z * m->v[ 2 ].y -
+    m->v[ 1 ].x * m->v[ 0 ].y * m->v[ 2 ].z +
+    m->v[ 1 ].x * m->v[ 0 ].z * m->v[ 2 ].y +
+    m->v[ 2 ].x * m->v[ 0 ].y * m->v[ 1 ].z -
+    m->v[ 2 ].x * m->v[ 0 ].z * m->v[ 1 ].y;
+    
+	d = m->v[ 0 ].x * inv.v[ 0 ].x +
+    m->v[ 0 ].y * inv.v[ 1 ].x +
+    m->v[ 0 ].z * inv.v[ 2 ].x +
+    m->v[ 0 ].w * inv.v[ 3 ].x;
+	
+	if( !d ) return 0;
+    
+	d = 1.0f / d;
+    
+	inv.v[ 0 ].x *= d;
+	inv.v[ 0 ].y *= d;
+	inv.v[ 0 ].z *= d;
+	inv.v[ 0 ].w *= d;
+    
+	inv.v[ 1 ].x *= d;
+	inv.v[ 1 ].y *= d;
+	inv.v[ 1 ].z *= d;
+	inv.v[ 1 ].w *= d;
+    
+	inv.v[ 2 ].x *= d;
+	inv.v[ 2 ].y *= d;
+	inv.v[ 2 ].z *= d;
+	inv.v[ 2 ].w *= d;
+    
+	inv.v[ 3 ].x *= d;
+	inv.v[ 3 ].y *= d;
+	inv.v[ 3 ].z *= d;
+	inv.v[ 3 ].w *= d;
+	
+	memcpy(m->m, inv.m,sizeof(M16t));
+	
+	return 1;
+}
+
+
+/*!
+ Transpose a 4x4 matrix.
+ 
+ \param[in,out] m A valid 4x4 matrix pointer to use as the source and destination of the transpose operation.
+ */
+static inline void M16Transpose( M16t *m )
+{
+	float t;
+    
+	t			= m->v[ 0 ].y;
+	m->v[ 0 ].y = m->v[ 1 ].x;
+	m->v[ 1 ].x = t;
+	
+	t			= m->v[ 0 ].z;
+	m->v[ 0 ].z = m->v[ 2 ].x;
+	m->v[ 2 ].x = t;
+	
+	t			= m->v[ 0 ].w;
+	m->v[ 0 ].w = m->v[ 3 ].x;
+	m->v[ 3 ].x = t;
+    
+	t			= m->v[ 1 ].z;
+	m->v[ 1 ].z = m->v[ 2 ].y;
+	m->v[ 2 ].y = t;
+	
+	t			= m->v[ 1 ].w ;
+	m->v[ 1 ].w = m->v[ 3 ].y ;
+	m->v[ 3 ].y = t;
+    
+	t			= m->v[ 2 ].w ;
+	m->v[ 2 ].w = m->v[ 3 ].z ;
+	m->v[ 3 ].z = t;
+}
+
+
+static inline M9t M16GetInverseNormalMatrix(M16t modelViewMatrix){
+    
+	M16t copy = modelViewMatrix;
+    
+    M16FullInvert(&copy);
+    
+    M16Transpose(&copy);
+    
+    return M16GetM9(copy);
+}
+
+
+#pragma mark - Logging Functions
+
+static inline void NKLogV3(NSString* name, V3t vec){
+    NSLog(@"%@ : %f %f %f", name, vec.x, vec.y, vec.z);
+}
+
+static inline void NKLogV4(NSString* name, V4t vec){
+    NSLog(@"%@ : %f %f %f %f", name, vec.x, vec.y, vec.z, vec.w);
+}
+
+static inline void NKLogM16(NSString* name, M16t mat){
+    NSLog(@"matrix %@ \n \
+          %f %f %f %f \n \
+          %f %f %f %f \n \
+          %f %f %f %f \n \
+          %f %f %f %f ",
+          name,
+          mat.m00, mat.m10, mat.m20, mat.m30,
+          mat.m01, mat.m11, mat.m21, mat.m31,
+          mat.m02, mat.m12, mat.m22, mat.m32,
+          mat.m03, mat.m13, mat.m23, mat.m33);
+}
 
 #pragma mark MATRIX - DECOMPOSITION - ported FROM OpenFrameworks, untested
 

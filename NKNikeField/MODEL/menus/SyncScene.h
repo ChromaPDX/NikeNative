@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Chroma Developer. All rights reserved.
 //
 
-#import "NKSceneNode.h"
+#import "NikeBaseScene.h"
 
-@interface SyncScene : NKSceneNode
-
+@interface SyncScene : NikeBaseScene
 @end

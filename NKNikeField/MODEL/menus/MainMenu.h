@@ -6,9 +6,8 @@
 //
 //
 
-#import "NKSceneNode.h"
-#import "NKScrollNode.h"
+#import "NikeBaseScene.h"
 
-@interface MainMenu : NKSceneNode <NKTableCellDelegate>
+@interface MainMenu : NikeBaseScene <NKTableCellDelegate>
 
 @end

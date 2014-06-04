@@ -21,45 +21,19 @@
     self = [super initWithSize:size];
     
     if (self) {
+
         
-        NKSpriteNode *bg = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_Menu.png"] ] color:nil size:self.size];
-        
+        NKSpriteNode *bg = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Screen_Menu.png"] color:NKWHITE size:self.size];
         [self addChild:bg];
-        
-//        NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size];
-//        [self addChild:table];
-//        [table setPadding:P2Make(0,0)];
-//        // table.scrollingEnabled = true;
-//        table.scale = 1.02;  // to correct for image...this needs to be fixed
-//        table.name = @"table";
-//        table.delegate = self;
-//        //V3t rot =
-//        //table.node->setOrientation
+   
 //        
-//        NKTexture *image = ];
-//        [table setTexture:image];
-//        [table setHighlightColor:NKBLACK];
-//        table.color = NKWHITE;
-        
-//       [table repeatAction:[NKAction rotateYByAngle:90 duration:2.]];
-//        [table repeatAction:[NKAction sequence:@[[NKAction move3dBy:V3Make(0, .1, 1.) duration:.25],
-//                             [NKAction move3dBy:V3Make(0, -.1, -1.) duration:.25],
-//                                                 [NKAction rotateYByAngle:33 duration:.5]
-//                             ]]];
+//        NKMeshNode *s = [[NKMeshNode alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"Screen_Menu.png"] color:NKWHITE size:V3MakeF(100.)];
+//        [self addChild:s];
         
         [NKSoundManager loadSoundFileNamed:@"Androyd-Bulbtone-41.wav"];
         [NKSoundManager loadSoundFileNamed:@"03 Bass [A$AP Rocky].mp3"];
         [NKSoundManager playMusicNamed:@"03 Bass [A$AP Rocky].mp3"];
     }
-    
-    /*
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button addTarget:self action:@selector(buttonPushed)
-     forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:@"Show View" forState:UIControlStateNormal];
-    button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
-    [self.view addSubview:button];
-    */
     
     NSLog(@"initmainmenu");
     return self;

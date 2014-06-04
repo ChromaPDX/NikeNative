@@ -1,4 +1,4 @@
-#import "NKSceneNode.h"
+#import "NikeBaseScene.h"
 #import "NKScrollNode.h"
 
 @interface FakeFriends:NSObject

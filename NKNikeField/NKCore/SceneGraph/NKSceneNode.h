@@ -30,7 +30,6 @@
 #import "NKNode.h"
 #import "NKAlertSprite.h"
 
-//#define DRAW_HIT_BUFFER
 
 #if TARGET_OS_IPHONE
 @class NKUIView;
@@ -43,28 +42,24 @@
 @class NKVertexBuffer;
 @class NKAlertSprite;
 @class NKFrameBuffer;
+@class NKMatrixStack;
+
+@class NKBulletWorld;
 
 typedef void (^CallBack)();
+
 
 @interface NKSceneNode : NKNode <NKAlertSpriteDelegate>
 
 {
     int fps;
-    M16t *matrixStack;
-    UInt32 matrixBlockSize;
-    UInt32 matrixCount;
-    
-    M16t modelMatrix;
     
     NKVertexBuffer *axes;
-    NKVertexBuffer *sphere;
     
+   
 }
 
-
 @property (nonatomic, strong) NSMutableArray *hitQueue;
-
-@property (nonatomic, strong) NSMutableDictionary* hitColorMap;
 @property (nonatomic) void *view;
 
 @property (nonatomic) BOOL shouldRasterize;
@@ -72,16 +67,21 @@ typedef void (^CallBack)();
 @property (nonatomic) NKByteColor *borderColor;
 
 @property (nonatomic, strong) NKCamera *camera;
+@property (nonatomic, strong) NKMatrixStack *stack;
 @property (nonatomic, weak) NKAlertSprite *alertSprite;
+
+@property (nonatomic) BOOL drawLights;
+@property (nonatomic, strong) NSMutableArray *lights;
 
 #if TARGET_OS_IPHONE
 @property (nonatomic, weak)   NKUIView *nkView;
 #else
 @property (nonatomic, weak)   NKView *nkView;
 #endif
-@property (nonatomic, strong) NKShaderProgram *activeShader;
+@property (nonatomic, weak) NKShaderProgram *activeShader;
 
 @property (nonatomic, strong) NKShaderProgram *hitDetectShader;
+
 @property (nonatomic, strong) NKFrameBuffer *hitDetectBuffer;
 
 
@@ -107,17 +107,70 @@ typedef void (^CallBack)();
 
 // HIT BUFFER
 
--(void)getUidColorForNode:(NKNode*)node;
-
 -(void)processHitBuffer;
 -(void)drawHitBuffer;
 
 -(void)dispatchTouchRequestForLocation:(P2t)location type:(NKEventType)eventType;
+-(void)keyPressed:(NSUInteger)key;
 
 // DRAW STATE SHADOWING
 @property (nonatomic, weak) NKVertexBuffer *boundVertexBuffer;
 @property (nonatomic, weak) NKTexture *boundTexture;
 @property (nonatomic) NKBlendMode blendModeState;
 @property (nonatomic) bool fill;
+
+@end
+
+@interface NKMatrixStack : NSObject
+
+{
+    M16t *matrixStack;
+    UInt32 matrixBlockSize;
+    UInt32 matrixCount;
+}
+
+//@property (nonatomic) M16t currentMatrix;
+
+-(M16t*)data;
+-(M16t)currentMatrix;
+
+-(void)pushMultiplyMatrix:(M16t)matrix;
+-(void)pushMatrix:(M16t)matrix;
+-(void)pushScale:(V3t)scale;
+-(void)popMatrix;
+-(void)reset;
+
+@end
+
+@interface NKM9Stack : NSObject
+
+{
+    M9t *matrixStack;
+    UInt32 matrixBlockSize;
+    UInt32 matrixCount;
+}
+
+@property (nonatomic) M9t currentMatrix;
+
+-(M9t*)data;
+-(void)pushMatrix:(M9t)matrix;
+-(void)reset;
+
+@end
+
+
+@interface NKVector4Stack : NSObject
+{
+    V4t *vectorStack;
+    UInt32 vectorBlockSize;
+    UInt32 vectorCount;
+}
+
+
+@property (nonatomic) M16t currentVector;
+
+-(V4t*)data;
+-(void)pushVector:(V4t)vector;
+-(void)reset;
 
 @end

@@ -217,9 +217,9 @@ static NKSoundManager *sharedObject = nil;
 
 +(NKAction*)playSound {
     
-    NKAction *action = [[NKAction alloc]initWithDuration:10.];
+    NKAction *newAction = [[NKAction alloc]initWithDuration:10.];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.duration = [(NKSoundNode*)node duration];
@@ -229,13 +229,13 @@ static NKSoundManager *sharedObject = nil;
         
     };
     
-    return action;
+    return newAction;
 }
 
 +(NKAction*)fadeInSoundWithDuration:(F1t)sec {
-    NKAction *action = [[NKAction alloc]initWithDuration:sec];
+    NKAction *newAction = [[NKAction alloc]initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             if (![(NKSoundNode*)node isPlaying]) {
@@ -250,13 +250,13 @@ static NKSoundManager *sharedObject = nil;
         
     };
     
-    return action;
+    return newAction;
 }
 
 +(NKAction*)fadeOutSoundWithDuration:(F1t)sec {
-    NKAction *action = [[NKAction alloc]initWithDuration:sec];
+    NKAction *newAction = [[NKAction alloc]initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.reset = false;
@@ -270,7 +270,7 @@ static NKSoundManager *sharedObject = nil;
         
     };
     
-    return action;
+    return newAction;
 }
 
 @end

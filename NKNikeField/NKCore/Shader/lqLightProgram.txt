@@ -1,0 +1,72 @@
+@interface
+
+struct LightProperties {
+    vec3 position;
+    vec3 ambient;
+    vec3 color;
+    
+    vec3 halfVector;
+    vec3 coneDirection;
+    
+    float spotCosCutoff;
+    float spotExponent;
+    float constantAttenuation;
+    float linearAttenuation;
+    float quadraticAttenuation;
+    
+    bool isEnabled;
+    bool isLocal;
+    bool isSpot;
+};
+
+@interface
+
+@vertex
+
+v_lightDirection = u_light.position - vec3(a_position);
+
+if (u_light.isLocal) {
+    v_lightDirection = v_lightDirection - vec3(v_position);
+    float lightDistance = length(v_lightDirection);
+    v_lightDirection = v_lightDirection / lightDistance; // (normalize) ? ;
+    v_attenuation = 1.0 / (u_light.constantAttenuation + (u_light.linearAttenuation * lightDistance) + (u_light.quadraticAttenuation * lightDistance * lightDistance));
+    if (u_light.isSpot) {
+        float spotCos = dot(v_lightDirection,-u_light.coneDirection);
+        if (spotCos < u_light.spotCosCutoff) v_attenuation = 0.0;
+        else v_attenuation *= pow(spotCos,u_light.spotExponent);
+    }
+    v_halfVector = normalize(v_lightDirection + u_eyeDirection);
+}
+else {
+    v_halfVector = u_light.halfVector;
+}
+
+@vertex
+
+@frag
+//
+// LIGHT PROGRAM
+//
+
+vec3 scatteredLight = vec3(0.0);
+vec3 reflectedLight = vec3(0.0);
+
+float Strength = 4.;
+float Shininess = 10.;
+
+float diffuse = max(0.0, dot(v_normal, v_lightDirection));
+float specular = max(0.0, dot(v_normal, v_halfVector));
+
+//if (diffuse == 0.0) specular = 0.0;
+specular = pow(specular, Shininess) * Strength * diffuse;
+// Accumulate all the u_lights’ effects
+scatteredLight += u_light.ambient * v_attenuation + u_light.color * diffuse * v_attenuation;
+reflectedLight += u_light.color * specular * v_attenuation;
+
+//vec3 rgb = min(Color.rgb * scatteredLight + reflectedLight, vec3(1.0));
+//FragColor = vec4(rgb, Color.a);
+
+lightColor = vec4(min(scatteredLight + reflectedLight,vec3(1.0)), 1.0);
+
+@frag
+

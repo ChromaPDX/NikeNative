@@ -589,10 +589,6 @@
     [_delegate hideBigCards];
 }
 
-
-
-
-
 @end
 
 @implementation BigCards

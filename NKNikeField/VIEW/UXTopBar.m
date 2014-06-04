@@ -110,7 +110,6 @@
 
 -(void)setPlayer:(Player *)p WithCompletionBlock:(void (^)())block {
     if (p) {
-        
         if (![p.manager isEqual:_manager]) {
             [self setManager:p.manager];
         }
@@ -132,9 +131,7 @@
         [self sortPlayers];
         
     }
-//    else {
-//        [self removeCards];
-//    }
+
 }
 
 -(void)addPlayer:(Player*)p animated:(BOOL)animated withCompletionBlock:(void (^)())block{

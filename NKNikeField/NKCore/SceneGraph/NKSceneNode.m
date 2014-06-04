@@ -10,50 +10,67 @@
 
 @implementation NKSceneNode
 
-
 -(instancetype)initWithSize:(S2t)size {
     
-    self = [super init];
+    self = [super initWithSize:V3Make(size.x, size.y, 1.)];
     
     if (self){
         
-        self.size3d = V3Make(size.width, size.height, 1);
+#ifdef NK_GL_DEBUG
         
+        // Obtain iOS version
+		int OSVersion_ = 0;
+#if TARGET_OS_IPHONE
+		NSString *OSVer = [[UIDevice currentDevice] systemVersion];
+#else
+        SInt32 versionMajor, versionMinor, versionBugFix;
+        Gestalt(gestaltSystemVersionMajor, &versionMajor);
+        Gestalt(gestaltSystemVersionMinor, &versionMinor);
+        Gestalt(gestaltSystemVersionBugFix, &versionBugFix);
+        
+        NSString *OSVer = [NSString stringWithFormat:@"%d.%d.%d", versionMajor, versionMinor, versionBugFix];
+#endif
+        
+		NSArray *arr = [OSVer componentsSeparatedByString:@"."];
+		int idx = 0x01000000;
+		for( NSString *str in arr ) {
+			int value = [str intValue];
+			OSVersion_ += value * idx;
+			idx = idx >> 8;
+		}
+        
+        NSLog(@"OS version: %@ (0x%08x)", OSVer, OSVersion_);
+        
+		 NSLog(@"GL_VENDOR:   %s", glGetString(GL_VENDOR) );
+		 NSLog(@"GL_RENDERER: %s", glGetString ( GL_RENDERER   ) );
+		 NSLog(@"GL_VERSION:  %s", glGetString ( GL_VERSION    ) );
+        
+		char* glExtensions = (char*)glGetString(GL_EXTENSIONS);
+        
+        NSLog(@"GL EXT: %@",[NSString stringWithCString:glExtensions encoding: NSASCIIStringEncoding]);
+
+#endif
         self.name = @"SCENE";
- //       [self logCoords];
         
         self.backgroundColor = [NKByteColor colorWithRed:50 green:50 blue:50 alpha:255];
         self.shouldRasterize = false;
-        useShader = false;
         self.userInteractionEnabled = true;
         
         _hitQueue = [NSMutableArray array];
+        _lights = [NSMutableArray array];
         
-        self.blendMode = 0;
-        self.cullFace = 0;
+        self.blendMode = NKBlendModeNone;
+        self.cullFace = NKCullFaceNone;
         
         _camera = [[NKCamera alloc]initWithScene:self];
+        
         self.scene = self;
         
-      
-            
-            matrixStack = malloc(sizeof(M16t)*32);
-            matrixBlockSize = 32;
-            matrixCount = 0;
-            
-            modelMatrix = M16IdentityMake();
-            
-            memcpy(matrixStack+matrixCount, modelMatrix.m, sizeof(M16t));
-            
-            self.shader = [NKShaderProgram defaultShader];
-            [self.shader load];
-            
-            _hitDetectBuffer = [[NKFrameBuffer alloc] initWithWidth:self.size.width height:self.size.height];
-            
-            _hitDetectShader = [[NKShaderProgram alloc]initWithVertexSource:nkHitDetectVertexShader fragmentSource:nkHitDetectFragmentShader];
-            [_hitDetectShader load];
-    
+        _stack = [[NKMatrixStack alloc]init];
         
+        _hitDetectBuffer = [[NKFrameBuffer alloc] initWithWidth:self.size.width height:self.size.height];
+            
+        _hitDetectShader = [NKShaderProgram newShaderNamed:@"hitShaderSingle" colorMode:NKS_COLOR_MODE_UNIFORM numTextures:0 lightNodes:nil withBatchSize:0];
         
         NSLog(@"init scene with size, %f %f", size.width, size.height);
         
@@ -63,76 +80,27 @@
 }
 
 -(void)updateWithTimeSinceLast:(F1t)dt {
+    _camera.dirty = true;
+    
     fps = (int)(1000./dt);
     
-    [_camera updateWithTimeSinceLast:dt];
     [NKSoundManager updateWithTimeSinceLast:dt];
     
+    [[NKBulletWorld sharedInstance] updateWithTimeSinceLast:dt];
+    //[_world updateWithTimeSinceLast:dt];
+    
+    [_camera updateWithTimeSinceLast:dt];
+    
     [super updateWithTimeSinceLast:dt];
-}
-
--(void)pushMatrix{
     
-    matrixCount++;
     
-    if (matrixBlockSize <= matrixCount) {
-        NSLog(@"Expanding MATRIX STACK allocation size");
-        M16t* copyBlock = malloc(sizeof(M16t) * (matrixCount*2));
-        memcpy(copyBlock, matrixStack, sizeof(M16t) * (matrixCount));
-        free(matrixStack);
-        matrixStack = copyBlock;
-        matrixBlockSize = matrixCount * 2;
-    }
-
     
-}
--(void)pushMultiplyMatrix:(M16t)matrix {
-    
-    [self pushMatrix];
-    
-    modelMatrix = M16Multiply(modelMatrix, matrix);
-    
-    memcpy(matrixStack+matrixCount, modelMatrix.m, sizeof(M16t));
-    
-    //NSLog(@"push M %lu", matrixCount);
-    
-    //[_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
-    
-    [_activeShader setMatrix4:modelMatrix forUniform:NKS_UNIFORM_MODELVIEWPROJECTION_MATRIX];
-   
-}
-
--(void)pushScale:(V3t)nscale {
-    
-    [self pushMatrix];
-    
-    modelMatrix = M16ScaleWithV3(modelMatrix, nscale);
-    
-    memcpy(matrixStack+matrixCount, modelMatrix.m, sizeof(M16t));
-    
-    //NSLog(@"push M %lu", matrixCount);
-    
-    //[_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
-    [_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:NKS_UNIFORM_MODELVIEWPROJECTION_MATRIX];
+//    for (NKLightNode* light in _lights) {
+//        [light updateWithTimeSinceLast:dt];
+//    }
     
 }
 
--(void)popMatrix {
-    if (matrixCount > 0) {
-        matrixCount--;
-        
-        memcpy(modelMatrix.m, matrixStack+matrixCount, sizeof(M16t));
-        
-        //NSLog(@"pop M %lu", matrixCount);
-    }
-    else {
-        NSLog(@"MATRIX STACK UNDERFLOW");
-    }
-    
-    //[_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
-    
-    //[_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
-}
 
 -(void)drawHitBuffer {
     
@@ -143,7 +111,6 @@
     [_activeShader use];
     
     [super drawWithHitShader];
-
 }
 
 -(void)processHitBuffer {
@@ -157,12 +124,9 @@
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
     [self drawHitBuffer];
-
-    NSArray* queue = [_hitQueue copy];
     
-    for (CallBack b in queue) {
+    for (CallBack b in _hitQueue) {
         b();
-        //NSLog(@"process hit block");
     }
     
     [_hitQueue removeAllObjects];
@@ -171,19 +135,57 @@
     
 }
 
--(void)draw {
+-(void)setActiveShader:(NKShaderProgram *)activeShader {
+ 
+    if (!activeShader) {
+        _activeShader = activeShader;
+        glUseProgram(0);
+    }
+    
+    else if (![_activeShader isEqual:activeShader]) {
         
+        _activeShader = activeShader;
         [_activeShader use];
+        
+        // prep globals
+        
+        if ([_activeShader uniformNamed:NKS_LIGHT]){
+            [[_activeShader uniformNamed:NKS_LIGHT] bindLightProperties:[(NKLightNode*)_lights[0] pointer] count:1];
+        }
+        
+        if ([_activeShader uniformNamed:NKS_V3_EYE_DIRECTION]){
+            [[_activeShader uniformNamed:NKS_V3_EYE_DIRECTION] bindV3:self.scene.camera.eyeDirection];
+        }
+       
+    }
+    
+}
 
-        _camera.dirty = true;
-        //[_camera begin];
+//-(M16t)getGlobalTransformMatrix {
+//    return M16IdentityMake();
+//}
+
+-(void)begin {
+    //[_camera begin];
+    [super begin];
+}
+
+-(void)end {
+    //[_camera end];
+    [super end];
+}
+
+-(void)draw {
+
+
 #ifdef DRAW_HIT_BUFFER
+    
         [self drawHitBuffer];
 #else
         [super draw];
 #endif
-        //[_camera end];
-    
+        _activeShader = nil;
+        glUseProgram(0);
         [_boundTexture unbind];
         _boundTexture = nil;
         [_boundVertexBuffer unbind];
@@ -192,13 +194,21 @@
 }
 
 -(void)setUniformIdentity {
-    [self.activeShader setInt:0 forUniform:NKS_UNIFORM_NUM_TEXTURES];
-    [self.activeShader setMatrix4:M16IdentityMake() forUniform:NKS_UNIFORM_MODELVIEWPROJECTION_MATRIX];
-    [self.activeShader setMatrix3:M9IdentityMake() forUniform:NKS_UNIFORM_NORMAL_MATRIX];
+    NKS_SCALAR s;
+    
+    s.I1[0] = 0;
+    [[self.activeShader uniformNamed:NKS_INT_NUM_TEXTURES] pushValue:s];
+    
+   // [self.activeShader setInt:0 forUniform:[nksf:@"u_%@",nks(NKS_INT_NUM_TEXTURES)]];
+    
+    s.M16 = M16IdentityMake();
+    [[self.activeShader uniformNamed:NKS_INT_NUM_TEXTURES] pushValue:s];
+    
+    //[self.activeShader setMatrix4:M16IdentityMake() forUniform:[nksf:@"u_%@",nks(NKS_M16_MVP)]];
+    //[self.activeShader setMatrix3:M9IdentityMake() forUniform:[nksf:@"u_%@",nks(NKS_M9_NORMAL)]];
 }
 
 -(void)drawAxes {
-    
         if (!axes) {
              axes = [NKVertexBuffer axes];
         }
@@ -213,8 +223,6 @@
             glDrawArrays(GL_LINES, 0, axes.numberOfElements);
             [self popMatrix];
         }];
-        
-
 }
 
 //-(void)end {
@@ -306,44 +314,63 @@
     }
 }
 
--(void)getUidColorForNode:(NKNode*)node {
-    
-    if (!_hitColorMap) {
-        _hitColorMap = [[NSMutableDictionary alloc]init];
-    }
-    
-    NKByteColor *color;
-    
-    while (!color) {
-        NKByteColor *test = [NKByteColor colorWithRed:arc4random() % 255 green:arc4random() % 255 blue:arc4random() % 255 alpha:255];
-        
-        if (![_hitColorMap objectForKey:test]) {
-            color = test;
-            node.uidColor = test;
-            [_hitColorMap setObject:node forKey:node.uidColor];
-            //[color log];
-        }
-    }
-    
+-(void)pushMultiplyMatrix:(M16t)matrix {
+    [_stack pushMultiplyMatrix:matrix];
 }
 
+-(void)pushScale:(V3t)scale {
+    [_stack pushScale:scale];
+}
+
+-(void)popMatrix {
+    [_stack popMatrix];
+}
+
+-(void)keyPressed:(NSUInteger)key {
+
+    NSLog(@"key down %d", key);
+    
+    V3t p = position;
+    
+    switch (key) {
+            
+        case 123:
+            
+            [self setPosition3d:V3Make(p.x-1, p.y, p.z)];
+            break;
+        case 124:
+            
+            [self setPosition3d:V3Make(p.x+1, p.y, p.z)];
+            break;
+            
+        case 126: //up arrow
+        
+            [self setPosition3d:V3Make(p.x, p.y, p.z+1)];
+            break;
+            
+        case 125: // down arrow
+            [self setPosition3d:V3Make(p.x, p.y, p.z-1)];
+            break;
+            
+        default:
+            break;
+    }
+}
 -(void)dispatchTouchRequestForLocation:(P2t)location type:(NKEventType)eventType{
     
     CallBack callBack = ^{
-        
         NKByteColor *hc = [[NKByteColor alloc]init];
         glReadPixels(location.x, location.y,
                      1, 1,
                      GL_RGBA, GL_UNSIGNED_BYTE, hc.bytes);
-        NKNode *hit = [_hitColorMap objectForKey:hc];
-        //[hc log];
+        NKNode *hit = [NKShaderManager nodeForColor:hc];
+
         if (!hit){
             hit = self;
         }
         
         [hit handleEventWithType:eventType forLocation:location];
-        
-        //NSLog(@"%f:%f hit node: %@", location.x, location.y, hit.name);
+
         switch (eventType) {
             case NKEventTypeBegin:
                 [hit touchDown:location id:0];
@@ -400,16 +427,194 @@
         return [_alertSprite touchUp:location id:touchId];
     }
     
-    [self dispatchTouchRequestForLocation:location type:NKEventTypeEnd];
+    //[self dispatchTouchRequestForLocation:location type:NKEventTypeEnd];
     
     return false;
 }
-//
+
+@end
+
+@implementation NKMatrixStack
+
+-(instancetype)init {
+    self = [super init];
+    if (self) {
+        matrixStack = malloc(sizeof(M16t)*NK_BATCH_SIZE);
+        matrixBlockSize = NK_BATCH_SIZE;
+        matrixCount = 0;
+        
+        //memcpy(matrixStack+matrixCount, _currentMatrix.m, sizeof(M16t));
+    }
+    
+    return self;
+}
+
+-(M16t*)data {
+    return matrixStack;
+}
+
+-(void)pushMatrix{
+   
+    if (matrixBlockSize <= matrixCount) {
+        NSLog(@"Expanding MATRIX STACK allocation size");
+        M16t* copyBlock = malloc(sizeof(M16t) * (matrixCount*2));
+        memcpy(copyBlock, matrixStack, sizeof(M16t) * (matrixCount));
+        free(matrixStack);
+        matrixStack = copyBlock;
+        matrixBlockSize = matrixCount * 2;
+    }
+     matrixCount++;
+}
+
+-(void)pushMultiplyMatrix:(M16t)matrix {
+    if (matrixCount > 0) {
+         *(matrixStack+matrixCount) = M16Multiply(*(matrixStack+matrixCount-1), matrix);
+    }
+    else {
+        *(matrixStack+matrixCount) = matrix;
+    }
+    
+    //memcpy(matrixStack+matrixCount, _currentMatrix.m, sizeof(M16t));
+    [self pushMatrix];
+}
+
+-(void)pushMatrix:(M16t)matrix {
+    *(matrixStack+matrixCount) = matrix;
+    //memcpy(matrixStack+matrixCount, matrix.m, sizeof(M16t));
+    [self pushMatrix];
+}
+
+-(void)pushScale:(V3t)nscale {
+    //_currentMatrix = M16ScaleWithV3(_currentMatrix, nscale);
+    if (matrixCount > 0) {
+    *(matrixStack+matrixCount) = M16ScaleWithV3(*(matrixStack+matrixCount-1), nscale);
+    }
+    //memcpy(matrixStack+matrixCount, _currentMatrix.m, sizeof(M16t));
+    [self pushMatrix];
+}
+
+-(M16t)currentMatrix {
+    return *(matrixStack+matrixCount-1);
+}
+
+-(void)popMatrix {
+    if (matrixCount > 0) {
+        matrixCount--;
+        //_currentMatrix = *(matrixStack+matrixCount-1);
+        //memcpy(_currentMatrix.m, matrixStack+matrixCount, sizeof(M16t));
+        //NSLog(@"pop M %lu", matrixCount);
+    }
+    // else _currentMatrix = M16IdentityMake();
+    else {
+        NSLog(@"MATRIX STACK UNDERFLOW");
+    }
+    
+    //[_activeShader setMatrix4:modelMatrix forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+    
+    //[_activeShader setMatrix4:M16Multiply(_camera.projectionMatrix,modelMatrix) forUniform:UNIFORM_MODELVIEWPROJECTION_MATRIX];
+}
+
+-(void)reset {
+    matrixCount = 0;
+}
+
 -(void)dealloc {
     if (matrixStack) {
         free(matrixStack);
     }
+}
+
+@end
+
+@implementation NKM9Stack
+
+-(instancetype)init {
+    self = [super init];
+    if (self) {
+        matrixStack = malloc(sizeof(M9t)*NK_BATCH_SIZE);
+        matrixBlockSize = NK_BATCH_SIZE;
+        matrixCount = 0;
+    }
     
+    return self;
+}
+
+-(M9t*)data {
+    return matrixStack;
+}
+
+-(void)pushMatrix{
+    matrixCount++;
+    
+    if (matrixBlockSize <= matrixCount) {
+        NSLog(@"Expanding MATRIX STACK allocation size");
+        M9t* copyBlock = malloc(sizeof(M9t) * (matrixCount*2));
+        memcpy(copyBlock, matrixStack, sizeof(M9t) * (matrixCount));
+        free(matrixStack);
+        matrixStack = copyBlock;
+        matrixBlockSize = matrixCount * 2;
+    }
+}
+
+-(void)pushMatrix:(M9t)matrix {
+    memcpy(matrixStack+matrixCount, matrix.m, sizeof(M9t));
+     [self pushMatrix];
+}
+
+-(void)reset {
+    matrixCount = 0;
+}
+
+-(void)dealloc {
+    if (matrixStack) {
+        free(matrixStack);
+    }
+}
+
+@end
+
+@implementation NKVector4Stack
+
+-(instancetype)init {
+    self = [super init];
+    if (self) {
+        vectorStack = malloc(sizeof(V4t)*NK_BATCH_SIZE);
+        vectorBlockSize = NK_BATCH_SIZE;
+        vectorCount = 0;
+    }
+    
+    return self;
+}
+
+-(V4t*)data {
+    return vectorStack;
+}
+
+-(void)pushVector{
+    if (vectorBlockSize <= vectorCount) {
+        NSLog(@"Expanding MATRIX STACK allocation size");
+        V4t* copyBlock = malloc(sizeof(V4t) * (vectorCount*2));
+        memcpy(copyBlock, vectorStack, sizeof(V4t) * (vectorCount));
+        free(vectorStack);
+        vectorStack = copyBlock;
+        vectorBlockSize = vectorCount * 2;
+    }
+    vectorCount++;
+}
+
+-(void)pushVector:(V4t)vector {
+    memcpy(vectorStack+vectorCount, vector.v, sizeof(V4t));
+     [self pushVector];
+}
+
+-(void)reset {
+    vectorCount = 0;
+}
+
+-(void)dealloc {
+    if (vectorStack) {
+        free(vectorStack);
+    }
 }
 
 @end

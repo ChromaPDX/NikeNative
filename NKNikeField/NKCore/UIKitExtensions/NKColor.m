@@ -90,6 +90,14 @@
     return col;
 }
 
+-(V3t)RGBColor {
+    V3t col;
+    col.r = color.r div255;
+    col.g = color.g div255;
+    col.b = color.b div255;
+    return col;
+}
+
 -(NKColor*)NKColor {
     return [NKColor colorWithRed:color.r div255 green:color.g div255 blue:color.b div255 alpha:color.a div255];
 }

@@ -14,19 +14,23 @@
 #pragma mark - init
 
 -(instancetype)init {
+    return [self initWithSize:V3Make(1., 1., 1.)];
+}
+
+-(instancetype)initWithSize:(V3t)size {
     self = [super init];
+    
     if (self){
         
         self.name = @"NEW NODE";
         
-        [self setSize3d:V3Make(1., 1., 1.)];
+        [self setSize3d:size];
         [self setScale:1.];
         [self setOrientationEuler:V3Make(0, 0, 0)];
         [self setPosition3d:V3Make(0, 0, 0)];
         
         _upVector = V3Make(0, 1, 0);
         
-        _anchorPoint3d = V3Make(.5, .5, .5);
         _hidden = false;
         intAlpha = 1.;
         _alpha = 1.;
@@ -34,15 +38,23 @@
         _blendMode = NKBlendModeAlpha;
         _cullFace = NKCullFaceFront;
         
-        animationHandler = [[NodeAnimationHandler alloc]initWithNode:self];
-        
         _userInteractionEnabled = false;
-        _useShaderOnSelfOnly = false;
         
     }
     
     return self;
 }
+
+//-(instancetype)initWithSize:(V3t)size {
+//    
+//    self = [super init];
+//    
+//    if (self) {
+//        _size3d = size;
+//    }
+//    
+//    return self;
+//}
 
 #pragma mark - Node Hierarchy
 
@@ -55,7 +67,6 @@
 }
 
 - (void)addChild:(NKNode *)child {
-    
     
     if (!intChildren) {
         intChildren = [[NSMutableArray alloc]init];
@@ -76,17 +87,17 @@
     
     if (!_scene) { // CACHE POINTER
         
+        if (_parent) {
+            _scene = _parent.scene;
+            return _parent.scene;
+        }
+        
         if ([self isKindOfClass:[NKSceneNode class]]) {
             _scene = (NKSceneNode*) self;
             return (NKSceneNode*) self;
         }
         
-        _scene = _parent.scene;
-        
-        [_scene getUidColorForNode:self];
-        
-        //NSLog(@"hit color: %@", self.uidColor);
-        return _parent.scene;
+        return nil;
     }
     
     return _scene;
@@ -129,8 +140,11 @@
 -(void)setUserInteractionEnabled:(bool)userInteractionEnabled {
     
     _userInteractionEnabled = userInteractionEnabled;
-    
+
     if (_userInteractionEnabled && _parent) {
+        if (!_uidColor) {
+            [NKShaderManager newUIDColorForNode:self];
+        }
         [_parent setUserInteractionEnabled:true];
     }
     
@@ -139,11 +153,23 @@
 
 -(void)setParent:(NKNode *)parent {
     
-    _parent = parent;
+    if (_parent) {
+        V3t p = self.getGlobalPosition;
+        //NKLogV3(@"global position", p);
+        [_parent removeChild:self];
+        _parent = parent;
+        [self setGlobalPosition:p];
+    }
+    else {
+        _parent = parent;
+    }
     
     self.scene;
     
     if (self.userInteractionEnabled && _parent) {
+        if (!_uidColor) {
+            [NKShaderManager newUIDColorForNode:self];
+        }
         [_parent setUserInteractionEnabled:true];
     }
 }
@@ -291,25 +317,6 @@
     [_parent removeChildrenInArray:@[self]];
 }
 
-#pragma mark - SHADER
-
--(void)loadShaderNamed:(NSString *)name {
-    if (!_shader) {
-        _shader = [[NKShaderProgram alloc]initWithName:name];
-        [_shader load];
-    }
-    
-    useShader = true;
-}
-
-//-(void)loadShader:(NKShaderNode*)shader {
-//    if (!_shader) {
-//        _shader = shader;
-//    }
-//
-//    useShader = true;
-//}
-
 #pragma mark - Actions
 
 -(int)hasActions {
@@ -317,14 +324,23 @@
 }
 
 - (void)runAction:(NKAction*)action {
+    if (!animationHandler) {
+        animationHandler = [[NodeAnimationHandler alloc]initWithNode:self];
+    }
     [animationHandler runAction:action];
 }
 
 -(void)repeatAction:(NKAction*)action {
+    if (!animationHandler) {
+        animationHandler = [[NodeAnimationHandler alloc]initWithNode:self];
+    }
     [animationHandler runAction:[NKAction repeatActionForever:action]];
 }
 
 - (void)runAction:(NKAction *)action completion:(void (^)())block {
+    if (!animationHandler) {
+        animationHandler = [[NodeAnimationHandler alloc]initWithNode:self];
+    }
     [animationHandler runAction:action completion:block];
 }
 
@@ -333,11 +349,17 @@
 - (void)updateWithTimeSinceLast:(F1t) dt {
     // IF OVERRIDE, CALL SUPER
     
+    if (_body){
+        [_body getPhysicsMatrix:&localTransformMatrix];
+    }
+    
     [animationHandler updateWithTimeSinceLast:dt];
     
     for (NKNode *child in intChildren) {
         [child updateWithTimeSinceLast:dt];
     }
+    
+    _dirty = false;
 }
 
 
@@ -501,10 +523,6 @@
 }
 
 -(void)begin {
-    if (_shader){
-        self.scene.activeShader = _shader;
-        [_shader use];
-    }
     
     [self.scene pushMultiplyMatrix:localTransformMatrix];
     
@@ -526,17 +544,17 @@
 
 -(void)drawWithHitShader {
     
-    [self.scene pushMultiplyMatrix:localTransformMatrix];
+    [self begin];
     
-    if (self.userInteractionEnabled) {
-        [self customdrawWithHitShader];
+    if (_userInteractionEnabled) {
+         [self customdrawWithHitShader];
     }
     
     for (NKNode *child in intChildren) {
         [child drawWithHitShader];
     }
     
-    [self.scene popMatrix];
+    [self end];
 }
 
 -(void)customDraw {
@@ -772,8 +790,11 @@
 	if(_parent == NULL) {
 		[self setPosition3d:p];
 	} else {
-        [self setPosition3d:
-         V3MultiplyM16(M16InvertColumnMajor([_parent getGlobalTransformMatrix], 0), p)];
+        M16t global = [_parent getGlobalTransformMatrix];
+        M16Invert(&global);
+        [self setPosition3d:V3MultiplyM16WithTranslation(global, p)];
+        NKLogV3(@"new global position", self.getGlobalPosition);
+        //[self setPosition3d:V3Subtract(p, _parent.getGlobalPosition)];
 	}
 }
 
@@ -842,15 +863,6 @@
     //[self rotateMatrix:M16MakeEuler(eulerAngles)];
 }
 
--(void) setGlobalOrientation:(const Q4t) q {
-	if(!_parent) {
-		[self setOrientation:q];
-	} else {
-		M16t invParent = M16InvertColumnMajor(([_parent getGlobalTransformMatrix]), 0);
-        [self setOrientation:Q4MultiplyM16(invParent,q)];
-	}
-}
-
 -(Q4t) orientation{
 	return orientation;
 }
@@ -870,88 +882,55 @@
     
 }
 
+-(void)setOrbit:(V3t)orbit {
+    _longitude = orbit.x;
+    _latitude = orbit.y;
+    _radius = orbit.z;
+    
+    if (_latitude >= 360) _latitude-=360.;
+    else if (_latitude <= -360) _latitude+=360.;
+    if (_longitude >= 360) _longitude-=360.;
+    else if (_longitude <= -360) _longitude+=360.;
+}
+
+-(V3t)currentOrbit {
+    return [self orbitForLongitude:_longitude latitude:_latitude radius:_radius];
+}
+
 -(V3t)orbitForLongitude:(float)longitude latitude:(float)latitude radius:(float)radius { //centerPoint:(V3t)centerPoint {
-	// find position
-    
-    _latitude = latitude;
-    _longitude = longitude;
-    _radius = radius;
-    
-    if (_latitude > 360) _latitude-=360.;
-    if (_latitude < -360) _latitude+=360.;
-    if (_longitude > 360) _longitude-=360.;
-    if (_longitude < -360) _longitude+=360.;
-    
-	V3t p = V3Make(0, 0, radius);
-    
-    p = V3RotatePoint(p, latitude, V3Make(1, 0, 0));
-    p = V3RotatePoint(p, longitude, V3Make(0, 1, 0));
-    
-    return p;
-    
+    V3t p = V3RotatePoint(V3Make(0, 0, radius), latitude, V3Make(1, 0, 0));
+    return V3RotatePoint(p, longitude, V3Make(0, 1, 0));
 }
 
 -(void)rotateMatrix:(M16t)M16 {
     M16t m = M16MakeScale(scale);
     localTransformMatrix = M16Multiply(m,M16);
-    //localTransformMatrix = M16TranslateWithV3(localTransformMatrix, position);
     M16SetV3Translation(&localTransformMatrix, position);
 }
 
--(void)globalRotateMatrix:(M16t)M16 {
-    M16t m = M16MakeScale(scale);
-    //localTransformMatrix = M16TranslateWithV3(localTransformMatrix, position);
-    M16SetV3Translation(&m, position);
-    m = M16Multiply(m, M16);
-    localTransformMatrix = M16Multiply(m, M16InvertColumnMajor([_parent getGlobalTransformMatrix], 0));
-}
+//-(void)globalRotateMatrix:(M16t)M16 {
+//    M16t m = M16MakeScale(scale);
+//    //localTransformMatrix = M16TranslateWithV3(localTransformMatrix, position);
+//    M16SetV3Translation(&m, position);
+//    m = M16Multiply(m, M16);
+//    localTransformMatrix = M16Multiply(m, M16InvertColumnMajor([_parent getGlobalTransformMatrix], 0));
+//}
 
 -(void)lookAtNode:(NKNode*)node {
     [self lookAtPoint:[node getGlobalPosition]];
 }
 
 -(void)lookAtPoint:(V3t)point {
-    
-    
-    // NSLog(@"look at: %f %f %f,", point.x,point.y,point.z);
-    //Q4t newRotation = Q4FromMatrix([self getLookMatrix:[node getGlobalPosition]]);
-    
-    //NSLog(@"look at: %f %f %f, %f", newRotation.x, newRotation.y,newRotation.z,newRotation.w);
+
     M16t new = [self getLookMatrix:point];
-    
-    //            [self logMatrix:new];
+
     [self rotateMatrix:new];
 }
 
 -(M16t)getLookMatrix:(V3t)lookAtPosition {
+
+   return M16MakeLookAt(self.getGlobalPosition, lookAtPosition, [self upVector]);
     
-    V3t me = self.getGlobalPosition;
-    
-    return M16MakeLookAt(me.x, me.y, me.z, lookAtPosition.x, lookAtPosition.y, lookAtPosition.z, _upVector.x, _upVector.y, _upVector.z);
-    
-//    V3t forward = V3Normalize(V3Subtract(lookAtPosition, self.getGlobalPosition));
-//    
-//    if (V3Length(forward)> 0.) {
-//        V3t side = V3Normalize(V3CrossProduct([self upVector], forward));
-//        V3t up = V3CrossProduct(forward,side);
-//        
-//        M16t m = self.localTransformMatrix;
-//        
-//        m.m00 = side.x;
-//        m.m01 = side.y;
-//        m.m02 = side.z;
-//        m.m10 = up.x;
-//        m.m11 = up.y;
-//        m.m12 = up.z;
-//        m.m20 = forward.x;
-//        m.m21 = forward.y;
-//        m.m22 = forward.z;
-//        
-//        //[self logMatrix:m];
-//        
-//        return m;
-//    }
-//    return M16IdentityMake();
 }
 
 -(V3t)upVector {
@@ -1008,16 +987,17 @@
 -(void)recursiveAlpha:(F1t)alpha{
     _alpha = intAlpha * alpha;
     
-    //    if (_alpha < .01) {
-    //        [self setHidden:true];
-    //    }
-    //    else {
-    //        [self setHidden:false];
-    //    }
-    
     for (NKNode* n in intChildren) {
         [n recursiveAlpha:(_alpha)];
     }
+}
+
+-(void)setColor:(NKByteColor*)color {
+    _color = color;
+}
+
+-(NKByteColor*)color {
+    return _color;
 }
 
 #pragma mark - ACTIONS
@@ -1117,10 +1097,9 @@
 #pragma mark - DEALLOC C++ Objectes
 
 -(void)dealloc {
-    if (_scene) {
-        [_scene.hitColorMap removeObjectForKey:self.uidColor];
+    if (self.uidColor) {
+        [[NKShaderManager uidColors] removeObjectForKey:self.uidColor];
     }
-    
     [animationHandler removeAllActions];
     animationHandler = NULL;
 }

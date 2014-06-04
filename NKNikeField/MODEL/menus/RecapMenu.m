@@ -32,7 +32,7 @@
        // UIColor *highlightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
         [table setTexture:image];
         [table setHighlightColor:NKBLACK];
-        table.color = NKWHITE;
+        [table setColor:NKWHITE];
     }
 
     return self;

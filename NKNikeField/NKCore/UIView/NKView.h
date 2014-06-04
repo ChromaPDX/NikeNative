@@ -62,9 +62,8 @@
 @property (nonatomic, strong) NKSceneNode *scene;
 @property (nonatomic) float mscale;
 
-
-/** initializes the CCGLView with a frame rect and an OpenGL context */
-- (id) initWithFrame:(NSRect)frameRect shareContext:(NSOpenGLContext*)context;
+-(void)startAnimation;
+-(void)stopAnimation;
 
 /** uses and locks the OpenGL context */
 -(void) lockOpenGLContext;
