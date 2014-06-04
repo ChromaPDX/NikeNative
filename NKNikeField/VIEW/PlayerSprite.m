@@ -65,6 +65,40 @@
     }
 }
 
+-(void)showEffects {
+    bool effectFound = false;
+    
+    if(effectSprite){
+        [effectSprite setColor:nil];
+        effectSprite.hidden = true;
+        [self removeChild:effectSprite];
+        effectSprite = nil;
+    }
+    
+    if(self.model.noLegs){
+        effectSprite = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"player_effect.png"] color:V2RED size:S2Make(h, h)];
+        effectFound = true;
+    }
+    
+    if(self.model.frozen){
+        effectSprite = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"player_effect.png"] color:V2BLUE size:S2Make(h, h)];
+        effectFound = true;
+        
+    }
+    
+    if(effectFound){
+        [self addChild:effectSprite];
+        // @leif : not sure why this isn't working?
+        effectSprite.alpha = .5;
+        [self fadeInChild:effectSprite duration:FAST_ANIM_DUR withCompletion:^{
+            
+        }];
+    }
+    
+    
+    
+}
+
 -(void)setModel:(Player *)model {
     
     if (model) {

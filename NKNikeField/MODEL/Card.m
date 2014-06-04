@@ -257,14 +257,24 @@
     switch (_deck.category) {
         case CardCategoryMove: return @"Move";
         case CardCategoryKick: return @"Kick";
-        case CardCategoryChallenge: return @"Chal";
+        case CardCategoryChallenge:
+            if(self.challengeCategory == CardChallengeCategoryBishop){
+                return @"ChalDiag";
+            }
+            else if(self.challengeCategory == CardChallengeCategoryHorizantal){
+                return @"ChalHoriz";
+            }
+            else if(self.challengeCategory == CardChallengeCategoryVertical){
+                return @"ChalVert";
+            }
+            //return @"Chal";
         case CardCategorySpecial:
             switch (_specialCategory) {
                 case CardCategoryMove: return @"SpecGeneral";
                 case CardCategoryKick: return @"SpecGeneral";
                 case CardCategoryChallenge: return @"SpecGeneral";
                 case CardCategoryGeneral: return @"SpecGeneral";
-               // case CardCategoryGeneral: return
+               // case CardCategoryGeneral: return;
                 default: break;
             }
         default:
@@ -286,7 +296,7 @@
 
 -(NSString*)fileNameForThumbnail {
     NSString *fileName;
-    if(_deck.category == CardCategorySpecial){
+    if(_deck.category == CardCategorySpecial || self.category == CardCategoryChallenge){
         fileName = [NSString stringWithFormat:@"Card_Icon_%@", [self thumbnailImageString]];
     }
     else{
@@ -306,7 +316,6 @@
 }
 
 -(void)discard {
-    
     if ([_deck.inGame containsObject:self]) {
           [_deck discardCardFromGame:self];
     }
@@ -319,7 +328,6 @@
     else {
         NSLog(@"discarding card that isn't located anywhere . . .");
     }
-  
 }
 
 -(NSString*)name {
@@ -345,7 +353,7 @@
     if(self.category == CardCategorySpecial){
         switch (self.specialTypeCategory) {
             case CardSpecialCategoryNoLegs:
-                return @"NO LEGS";
+                return @"NO KICK";
                 break;
             case CardSpecialCategoryFreeze:
                 return @"FREEZE";
@@ -522,7 +530,7 @@
         if (self.challengeCategory == CardChallengeCategoryBishop){
             accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range] mutableCopy];
         }
-        else if (self.challengeCategory == CardChallengeCategoryHorizantal){
+        else if (self.challengeCategory == CardChallengeCategoryVertical){
             accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
             BoardLocation *WLoc = [self.location stepInDirection:WEST];
             BoardLocation *ELoc = [self.location stepInDirection:EAST];
@@ -533,11 +541,10 @@
                 [accessible removeObject:ELoc];
             }
         }
-        else if (self.challengeCategory == CardChallengeCategoryVertical){
+        else if (self.challengeCategory == CardChallengeCategoryHorizantal){
             accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
-            accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
-            BoardLocation *NLoc = [self.location stepInDirection:WEST];
-            BoardLocation *SLoc = [self.location stepInDirection:EAST];
+            BoardLocation *NLoc = [self.location stepInDirection:NORTH];
+            BoardLocation *SLoc = [self.location stepInDirection:SOUTH];
             if(NLoc){
                 [accessible removeObject:NLoc];
             }
@@ -558,6 +565,8 @@
             case CardKickCategoryBeckem:
                 accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeKnightStraight walkDistance:_range] mutableCopy];
                 break;
+            case CardKickCategoryQueen:
+                accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:2] mutableCopy];
             default:
                 accessible = NULL;
                 break;
@@ -567,7 +576,7 @@
         switch(self.specialTypeCategory){
                 
             // @Eric did Mike ask for these to be whole board selection, that doesn't make any sense to me?
-            // @Leif Yes he and Marcus both did.  It follows the pattern of other games, seems more intuitive to me since these cards don't act on a manager and not players.
+            // @Leif Yes he and Marcus both did.  It follows the pattern of other games, seems more intuitive to me since these cards act on the whole team and not individual players.
                 
             // CASES FOR MY WHOLE FIELD
             

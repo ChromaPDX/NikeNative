@@ -1,4 +1,4 @@
-//
+    //
 //  NKGameScene.m
 //  nike3dField
 //
@@ -178,7 +178,7 @@ float PARTICLE_SCALE;
     [_pivot setPosition3d:(V3Make(0,-h*.5,0))];
     
     
-    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:[NKByteColor colorWithRed:0. green:0. blue:0. alpha:200] size:S2Make(w, h*.15)];
+    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:NULL size:S2Make(w, h*.15)];
     [_uxWindow setPosition3d:V3Make(0,-h*.42,30)];
     _uxWindow.delegate = self;
     [self addChild:_uxWindow];
@@ -246,8 +246,8 @@ float PARTICLE_SCALE;
     [_gameBoardNode addChild:glow];
     [glow setPosition3d:V3Make(0,0,4)];
     
-    [_pivot runAction:[NKAction rotate3dToAngle:V3Make(-26, 0,0) duration:2.]];
-    [_pivot runAction:[NKAction move3dTo:V3Make(0,-h*.25,0) duration:2.]];
+    [_pivot runAction:[NKAction rotate3dToAngle:V3Make(-26, 0,0) duration:1.0]];
+    [_pivot runAction:[NKAction move3dTo:V3Make(0,-h*.25,0) duration:1.0]];
     
     [self playMusicWithKey:@"fieldSong"];
 }
@@ -372,11 +372,9 @@ float PARTICLE_SCALE;
             BoardTile* tile = [_gameTiles objectForKey:loc];
             
             
-            [tile setColor:V2GREEN];
-            tile.isDottedBorder = true;
-
+            //[tile setColor:V2GREEN];
             [tile.location setBorderShapeInContext:set];
-            [tile setTextureForBorder:tile.location.borderShape];
+            [tile showOverlay];
 
             [tile removeAllActions];
             [tile runAction:[NKAction fadeAlphaTo:1 duration:FAST_ANIM_DUR]];
@@ -392,7 +390,7 @@ float PARTICLE_SCALE;
         [tile setColor:nil];
         [tile setTexture:nil];
         [tile setUserInteractionEnabled:false];
-        [tile setIsDottedBorder:false];
+        [tile hideOverlay];
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
     
@@ -412,6 +410,8 @@ float PARTICLE_SCALE;
     
     
     [self revealBlocksForManager:player.manager];
+    [self showPossibleKickForManager:player.manager];
+
 
 }
 
@@ -451,9 +451,10 @@ float PARTICLE_SCALE;
     if (![selectedPlayer.manager isEqual:_game.me]) {
         [self playSoundWithKey:@"enemyTap"];
     }
-    
     else {
         if ([_game canUsePlayer:selectedPlayer]) {
+            
+            [_uxTopBar setPlayer:selectedPlayer WithCompletionBlock:^{}];
             
             [self playSoundWithKey:@"playerTap"];
             
@@ -580,6 +581,22 @@ float PARTICLE_SCALE;
     PlayerSprite* player = [playerSprites objectForKey:event.playerPerforming];
     
     if (event.type == kEventStartTurn){
+        for(Player *p in self.game.players){
+            PlayerSprite *ps = [playerSprites objectForKey:p];
+            if(ps){
+                if(p.frozen){
+                    [ps showEffects];
+                    p.frozen = false;
+                }
+                else if (p.noLegs){
+                    [ps showEffects];
+                    p.noLegs = false;
+                }
+                else{
+                    [ps showEffects];
+                }
+            }
+        }
         if (_selectedPlayer) {
             [_gameBoardNode removeAllActions];
             PlayerSprite* p2 = [playerSprites objectForKey:_selectedPlayer];
@@ -919,6 +936,16 @@ float PARTICLE_SCALE;
             }];
         }
     }
+    else if(event.type == kEventFreeze){
+        event.playerReceiving.frozen = true;
+        [[playerSprites objectForKey:event.playerReceiving] showEffects];
+        block();
+    }
+    else if(event.type == kEventNoLegs){
+        event.playerReceiving.noLegs = true;
+        [[playerSprites objectForKey:event.playerReceiving] showEffects];
+        block();
+    }
     else if (event.type == kEventBlock){
         block();
     }
@@ -929,7 +956,6 @@ float PARTICLE_SCALE;
                 block();
             }];
         }];
-
     }
     
     else if (event.type == kEventAddSpecial) {
@@ -1262,7 +1288,7 @@ float PARTICLE_SCALE;
         V3t target = tile.position3d;
         target.z += 2;
         
-        [person runAction:[NKAction move3dTo:target duration:.4] completion:^{
+        [person runAction:[NKAction move3dTo:target duration:.2] completion:^{
             
             NKEmitterNode *enchant = [[NKEmitterNode alloc]init];
             //            NKEmitterNode *enchant = [NNKeyedUnarchiver unarchiveObjectWithFile:[[NSBundle mainBundle] pathForResource:@"Enchant" ofType:@"sks"]];

@@ -23,13 +23,14 @@
 // VIEW
 @property (nonatomic, weak) GameScene *delegate;
 
-@property (atomic) BOOL isDottedBorder;
-
 @property (nonatomic, strong) NKMeshNode *block;
 
-@property (nonatomic, strong) NKSpriteNode *borderSprite;
+@property (nonatomic, strong) NKSpriteNode *overlay;
 
 -(void)setTextureForBorder:(BorderMask)border;
+-(void)setOverlayTextureForBorder:(BorderMask)border;
+-(void)showOverlay;
+-(void)hideOverlay;
 
 
 @end

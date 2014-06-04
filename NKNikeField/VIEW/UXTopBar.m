@@ -12,6 +12,13 @@
 
 @implementation UXTopBar
 
+-(void)setEnergyLabelForManager:(Manager *) manager {
+    [fuelLabel setColor:V2YELLOW];
+   // [fuelLabel setZPosition:3];
+    [fuelLabel setText:[NSString stringWithFormat:@"%dE",manager.energy]];
+    [_fuelBar setFill:((float)manager.energy)/1000.00 animated:true];
+}
+
 -(instancetype) initWithTexture:(NKTexture *)texture color:(NKByteColor *)color size:(S2t)size {
 
     self = [super initWithTexture:texture color:color size:size];
@@ -31,22 +38,17 @@
         [_fuelBar setPosition:P2Make(-82, -13.5)];
         [_fuelBar setFill:0 animated:false];
        
+        //fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
         
-        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
-        fuelLabel.fontSize = 10;
-        [fuelLabel setColor:V2YELLOW];
-        [fuelLabel setText:[NSString stringWithFormat:@"%dE",self.manager.game.me.energy]];
-        [fuelLabel setPosition:P2Make(-60+fuelLabel.size.width/2, -51)];
-        [fuelLabel setZPosition:3];
-        [fuelLabel setScale3d:V3Make(.9, .6, 1)];
-       /*
-        NKTexture *logoImage = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"LOGO_Icon_Bola_small.png"]];
-        logo = [[NKSpriteNode alloc] initWithTexture:logoImage];
-        //[logo setScale:.33];
-        [logo setPosition:P2Make(-270, -5)];
-        [logo setZPosition:4];
-*/
-        
+        ///@Leif : this font doesn't load corecctly on first display, but updates correclty after first special card played, can't figure out why...
+        fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"MYRIADPRO-REGULAR.OTF"];
+        //fuelLabel = [NKLabelNode labelNodeWithFontNamed:NULL];
+        [fuelLabel setPosition:P2Make(-60+fuelLabel.size.width/2, -61)];
+        //[fuelLabel setFontSize:12.0];
+
+        [self setEnergyLabelForManager:self.manager.game.me];
+        //[fuelLabel setText:@"0"];
+
         NKTexture *logoImage = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"TopCornerLockupEnergy"]];
         logo = [[NKSpriteNode alloc] initWithTexture:logoImage];
         [logo setPosition:P2Make(-118, 0)];
@@ -61,6 +63,7 @@
     
     return self;
 }
+
 
 -(void)setFuel:(int)fuel {
     
@@ -105,7 +108,6 @@
     for (Player*p in _manager.players.inGame) {
         [self addPlayer:p animated:true withCompletionBlock:^{}];
     }
-    
 }
 
 -(void)setPlayer:(Player *)p WithCompletionBlock:(void (^)())block {
@@ -113,9 +115,7 @@
         if (![p.manager isEqual:_manager]) {
             [self setManager:p.manager];
         }
-        [fuelLabel setText:[NSString stringWithFormat:@"%dE",p.manager.energy]];
-        [_fuelBar setFill:((float)p.manager.energy)/1000.00 animated:true];
-        
+        [self setEnergyLabelForManager:p.manager];
         for (PlayerSprite* ps in _playerSprites) {
             
              [ps setStateForBar];
@@ -127,9 +127,7 @@
                 [ps setHighlighted:false];
             }
         }
-        
         [self sortPlayers];
-        
     }
 
 }
@@ -138,7 +136,7 @@
     
     // NSLog(@"** adding card %@ from %@", card.name, card.deck.name);
     
-    PlayerSprite* ps = [[PlayerSprite alloc] initWithTexture:nil color:NKCLEAR size:cardSize];
+    PlayerSprite* ps = [[PlayerSprite alloc] initWithTexture:nil color:NULL size:cardSize];
     
     ps.userInteractionEnabled = true;
     
@@ -156,9 +154,12 @@
 }
 
 -(void)sortPlayers {
+    Player* p;
     for (int i = 0; i < _playerSprites.count; i++){
         [(PlayerSprite*)_playerSprites[i] setPosition:P2Make(110 + i*(cardSize.width+25), 0)];
+        p = ((PlayerSprite*)_playerSprites[i]).model;
     }
+    [self setEnergyLabelForManager:p.manager];
 }
 
 -(NKTouchState) touchUp:(P2t)location id:(int)touchId {
@@ -184,8 +185,12 @@
     R4t menuButton = R4Make(17, 1042, 70, 70);
     if(R4ContainsPoint(menuButton, location)){
         // @eric uncomment to switch back
-        [self.scene.nkView setScene:[[MainMenu alloc]initWithSize:self.scene.size]];
-        
+        // @leif : not sure why this is causing a crash??
+     //   [self.scene.nkView setScene:[[MainMenu alloc]initWithSize:self.scene.size]];
+//        self.scene = [[MainMenu alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
+        NSLog(@"init first scene");
+        return true;
+
        // recomment this
        // pop-up example
        // NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];

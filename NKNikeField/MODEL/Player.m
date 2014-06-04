@@ -17,6 +17,8 @@
         _faction = rand()%4 + 1;
         _effects = [[NSMutableDictionary alloc]init];
     }
+    _noLegs = false;
+    _frozen = false;
     return self;
 }
 

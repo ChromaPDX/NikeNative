@@ -36,7 +36,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2.0</string>
+	<string>4.0</string>
 	<key>FacebookAppID</key>
 	<string>274442572706946</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -57,6 +57,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Arial Black.ttf</string>
+		<string>MYRIADPRO-REGULAR.OTF</string>
 		<string>Coe.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>

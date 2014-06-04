@@ -23,10 +23,12 @@
 @property (nonatomic, weak) Manager *manager;
 @property (nonatomic, strong) NSMutableArray* playerSprites;
 @property (nonatomic, strong) FuelBar *fuelBar;
+@property (nonatomic, strong) NKLabelNode *fuelLabel;
 
 
 @property (nonatomic) int fuel;
 
 -(void)setPlayer:(Player*)p WithCompletionBlock:(void (^)())block;
+-(void)setEnergyLabelForManager:(Manager*)manager;
 
 @end

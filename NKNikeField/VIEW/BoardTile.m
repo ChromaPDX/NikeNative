@@ -16,11 +16,7 @@
 
     if (self){
         
-        _borderSprite = [[NKSpriteNode alloc] initWithTexture:texture color:V2GREEN size:size];
-        //[_borderSprite setZPosition:2];
-        _borderSprite.hidden = TRUE;
-        _borderSprite.alpha = .5;
-        
+       
         
       // box = (ofPlanePrimitive*)new ofBoxPrimitive(size.width, size.height, 4);
     }
@@ -100,7 +96,7 @@
     return retval;
 }
 
--(NSString*)stringForDottedBorderTex:(BorderMask)border {
+-(NSString*)stringForOverlayTex:(BorderMask)border {
     NSMutableString *retVal = [[self stringForBorderTex:border] mutableCopy];
     [retVal appendString:@"_dotted"];
     NSLog(@"stringForBorderText dotted value = %@", retVal);
@@ -109,15 +105,26 @@
 
 -(void)setTextureForBorder:(BorderMask)border {
     self.texture = [NKTexture textureWithImageNamed:[self stringForBorderTex:border]];
+}
 
-    if(self.isDottedBorder){
-        self.borderSprite.texture = [NKTexture textureWithImageNamed:[self stringForDottedBorderTex:border]];
-        self.borderSprite.hidden = FALSE;
-    }
-    else{
-        self.borderSprite.hidden = TRUE;
-    }
+-(void)setOverlayTextureForBorder:(BorderMask)border {
+    _overlay.texture = [NKTexture textureWithImageNamed:[self stringForOverlayTex:border]];
+}
+
+-(void)showOverlay{
+    NKTexture *texture = [NKTexture textureWithImageNamed:[self stringForOverlayTex:self.location.borderShape]];
     
+    _overlay = [[NKSpriteNode alloc] initWithTexture:texture color:NKWHITE size:self.size];
+    [self addChild:_overlay];
+    [_overlay setZPosition:2];
+    _overlay.alpha = .8;
+    //[_overlay setZPosition:3];
+}
+
+-(void)hideOverlay{
+    [self removeChild:_overlay];
+    _overlay.hidden = TRUE;
+    _overlay = nil;
 }
 
 @end

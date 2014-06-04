@@ -2608,9 +2608,7 @@ static inline void NKLogM16(NSString* name, M16t mat){
 //                OffD[p] += s*(OffDq   - tau*OffD[p]);
 //                for (j=Z; j>=X; j--) {
 //                    a = U[j][p]; b = U[j][q];
-//                    U[j][p] -= s*(b + tau*a);
-//                    U[j][q] += s*(a - tau*b);
-//                }
+//                    U[j][p] -= s*(b + tau*a); //                }
 //            }
 //        }
 //    }

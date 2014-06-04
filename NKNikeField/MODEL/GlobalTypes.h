@@ -37,7 +37,7 @@ static int TILE_HEIGHT = 116;
 
 #define FAST_ANIM_DUR .2
 #define CAM_SPEED 1.
-#define CARD_ANIM_DUR .3
+#define CARD_ANIM_DUR .2
 
 // UI COLORS - FROM V2 NON NORMALIZED
 
