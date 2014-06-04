@@ -353,7 +353,7 @@
     if(self.category == CardCategorySpecial){
         switch (self.specialTypeCategory) {
             case CardSpecialCategoryNoLegs:
-                return @"NO LEGS";
+                return @"NO KICK";
                 break;
             case CardSpecialCategoryFreeze:
                 return @"FREEZE";

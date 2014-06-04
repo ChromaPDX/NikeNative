@@ -97,8 +97,8 @@
     }
     else if(R4ContainsPoint(startButtonRect, location)){
         NSLog(@"start button pressed, starting game...");
-          Pregame* newScene = [[Pregame alloc] initWithSize:self.size];
-         [self.nkView setScene:newScene];
+        Pregame* newScene = [[Pregame alloc] initWithSize:self.size];
+        [self.nkView setScene:newScene];
         
         //RecapMenuLoss *recapMenu = [[RecapMenuLoss alloc] init];
         //[self.nkView setScene:[recapMenu initWithSize:self.size]];

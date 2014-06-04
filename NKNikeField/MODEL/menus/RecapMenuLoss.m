@@ -67,6 +67,8 @@
     return self;
 }
 
+
+
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchUp:P2Make(location.x, location.y) id:touchId];
     
