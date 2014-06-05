@@ -45,6 +45,7 @@ typedef NS_OPTIONS(UInt8, NKTextureMapStyle) {
 -(void)updateWithTimeSinceLast:(F1t) dt;
 
 -(void)bind;
+-(void)bindToUniform:(GLuint)uniform;
 -(void)enableAndBind:(int)textureLoc;
 -(void)enableAndBindToUniform:(GLuint)uniformSamplerLocation;
 -(void)enableAndBindToUniform:(GLuint)uniformSamplerLocation atPosition:(int)textureNum;

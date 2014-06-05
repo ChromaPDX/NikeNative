@@ -129,9 +129,7 @@
         }
         [self sortPlayers];
     }
-//    else {
-//        [self removeCards];
-//    }
+
 }
 
 -(void)addPlayer:(Player*)p animated:(BOOL)animated withCompletionBlock:(void (^)())block{
@@ -187,8 +185,12 @@
     R4t menuButton = R4Make(17, 1042, 70, 70);
     if(R4ContainsPoint(menuButton, location)){
         // @eric uncomment to switch back
-        [self.scene.nkView setScene:[[MainMenu alloc]initWithSize:self.scene.size]];
-        
+        // @leif : not sure why this is causing a crash??
+     //   [self.scene.nkView setScene:[[MainMenu alloc]initWithSize:self.scene.size]];
+//        self.scene = [[MainMenu alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
+        NSLog(@"init first scene");
+        return true;
+
        // recomment this
        // pop-up example
        // NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];

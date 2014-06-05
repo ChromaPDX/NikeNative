@@ -321,6 +321,7 @@
             
             else if (_selectedCard.category == CardCategoryChallenge){
                 playerEvent.type = kEventChallenge;
+                playerEvent.playerPerforming.used = false;
             }
             
             else if (_selectedCard.category == CardCategorySpecial){
@@ -1158,6 +1159,7 @@
                 
                 event.playerPerforming.ball = _ball;
                 
+                event.playerPerforming.used = false;
                 // MOVE OPPONENT TO MY SQUARE
                 
             }

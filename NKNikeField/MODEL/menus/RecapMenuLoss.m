@@ -40,7 +40,7 @@
         [bigText setSize:S2Make(500,100)];
         [bigText setZPosition:1];
         [bigText setText:[listOfNames objectAtIndex:0]];
-        [bigText setPosition:P2Make(-190, 250)];
+        [bigText setPosition:P2Make(-190, 250*h/1136)];
         [self addChild:bigText];
         
         NKLabelNode *bigText2 = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
@@ -50,7 +50,7 @@
         [bigText2 setSize:S2Make(500, 100)];
         [bigText2 setZPosition:2];
         [bigText2 setText:[listOfNames objectAtIndex:1]];
-        [bigText2 setPosition:P2Make(0, 350)];
+        [bigText2 setPosition:P2Make(0, 350*h/1136)];
         [self addChild:bigText2];
         
         NKLabelNode *bigText3 = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
@@ -60,21 +60,24 @@
         [bigText3 setSize:S2Make(500,100)];
         [bigText3 setZPosition:3];
         [bigText3 setText:[listOfNames objectAtIndex:2]];
-        [bigText3 setPosition:P2Make(190, 250)];
+        [bigText3 setPosition:P2Make(190, 250*h/1136)];
         [self addChild:bigText3];
     }
 
     return self;
 }
 
--(NKTouchState)touchUp:(CGPoint)location id:(int)touchId {
+
+
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchUp:P2Make(location.x, location.y) id:touchId];
     
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
     NSLog(@"RecapMenu touchUP location = %f,%f", location.x, location.y);
     CGRect startButtonRect = CGRectMake(201, 100, 220, 300);
-    if(CGRectContainsPoint(startButtonRect, location)){
+    CGPoint rect = CGPointMake(location.x, location.y);
+    if(CGRectContainsPoint(startButtonRect, rect)){
         NKSceneNode* newScene = [[MainMenu alloc]initWithSize:self.size];
         self.nkView.scene = newScene;
     }

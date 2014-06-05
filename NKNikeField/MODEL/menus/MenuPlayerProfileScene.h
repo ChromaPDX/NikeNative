@@ -6,11 +6,11 @@
 //
 //
 
-#import "NKSceneNode.h"
+#import "NikeBaseScene.h"
 #import "NKScrollNode.h"
 #include "Menus.h"
 
 
-@interface MenuPlayerProfileScene : NKSceneNode <NKTableCellDelegate>
+@interface MenuPlayerProfileScene : NikeBaseScene <NKTableCellDelegate>
 
 @end

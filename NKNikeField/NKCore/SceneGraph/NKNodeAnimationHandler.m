@@ -41,21 +41,24 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
 
 -(void)stop {
-
+    for (NKAction *a in _children) {
+        [a stop];
+    }
+    _children = nil;
+    _actions = nil;
+    _repeats = 0;
     _completionBlock = nil;
     _actionBlock = nil;
     
 }
 
 -(void)removeAction:(NKAction*)action {
-    
     if (_actions.count) {
         [_actions removeObject:action];
         if (!_actions.count) {
             [self completeOrRepeat];
         }
     }
-    
 }
 
 -(void)sharedReset {
@@ -74,27 +77,20 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
 -(bool)completeOrRepeat {
     if (_repeats == 0) {
-        
         if (_completionBlock) {
             [self.handler runCompletionBlockForAction:self];
-            //_completionBlock();
         }
-        
         [_parentAction removeAction:self];
         return 0;
     }
     
     else {
-        
-        
         if (_repeats > 0){
             _repeats -= 1;
         }
         [self sharedReset];
         return 1;
- 
     }
-
 }
 
 -(void)completeWithTimeSinceLast:(F1t)dt forNode:(NKNode*)node {
@@ -109,40 +105,36 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
 + (NKAction *)group:(NSArray *)actions {
     
-    NKAction * action = [[NKAction alloc] init];
+    NKAction * newAction = [[NKAction alloc] init];
     
-    action.children = [actions mutableCopy];
+    newAction.children = [actions mutableCopy];
     
-    for (NKAction *a in action.children) {
-        a.parentAction = action;
+    for (NKAction *a in newAction.children) {
+        a.parentAction = newAction;
         a.reset = true;
     }
     
-    return action;
+    return newAction;
     
 }
 
 + (NKAction *)sequence:(NSArray *)actions {
     
-    NKAction * action = [NKAction group:actions];
-    action.serial = true;
-    return action;
+    NKAction * newAction = [NKAction group:actions];
+    newAction.serial = true;
+    return newAction;
     
 }
 
 + (NKAction *)delayFor:(F1t)sec {
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
-    
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
-        
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         if (action.reset) {
             action.reset = false;
-            //NSLog(@"action end %f %f %f",action.endPos.x,action.endPos.y,action.endPos.z);
         }
     };
-    return action;
-    
+    return newAction;
 }
 
 + (NKAction *)repeatAction:(NKAction *)action count:(NSUInteger)count{
@@ -180,9 +172,9 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
 + (NKAction *)move3dByX:(CGFloat)x Y:(CGFloat)y Z:(CGFloat)z duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.startPos = node.position3d;
@@ -198,7 +190,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         
     };
     
-    return action;
+    return newAction;
     
 }
 
@@ -206,9 +198,9 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
 + (NKAction *)move3dTo:(V3t)location duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.startPos = node.position3d;
@@ -220,15 +212,15 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         
     };
     
-    return action;
+    return newAction;
     
 }
 
 + (NKAction *)moveToX:(CGFloat)x y:(CGFloat)y duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.startPos = node.position3d;
@@ -242,7 +234,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
     };
     
-    return action;
+    return newAction;
 }
 
 + (NKAction *)moveTo:(P2t)location duration:(F1t)sec {
@@ -252,9 +244,9 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 }
 
 + (NKAction *)moveToX:(CGFloat)x duration:(F1t)sec {
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.startPos = node.position3d;
@@ -267,13 +259,13 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
     };
     
-    return action;
+    return newAction;
 }
 
 + (NKAction *)moveToY:(CGFloat)y duration:(F1t)sec {
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.startPos = node.position3d;
@@ -288,15 +280,15 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         
     };
     
-    return action;
+    return newAction;
     
 }
 
 + (NKAction *)moveToFollowNode:(NKNode*)target duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.startPos = node.position3d;
@@ -308,15 +300,15 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         
     };
     
-    return action;
+    return newAction;
     
 }
 
 + (NKAction *)followNode:(NKNode*)target duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.reset = false;
@@ -326,7 +318,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         //[node setPosition3d:getTweenPoint(action.startPos, target.getGlobalPosition, completion )];
     };
     
-    return action;
+    return newAction;
     
 }
 
@@ -334,9 +326,9 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
 +(NKAction *)rotate3dByAngle:(V3t)angles duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.reset = false;
@@ -353,15 +345,15 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         
     };
     
-    return action;
+    return newAction;
     
 }
 
 +(NKAction *)rotate3dToAngle:(V3t)angles duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.reset = false;
@@ -376,7 +368,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     [node setOrientation:QuatSlerp(action.startOrientation, action.endOrientation,completion)];
     };
     
-    return action;
+    return newAction;
     
 }
 
@@ -401,9 +393,9 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
 +(NKAction *)rotateAxis:(V3t)axis byAngle:(CGFloat)radians duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.reset = false;
@@ -417,15 +409,15 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         
     };
     
-    return action;
+    return newAction;
     
 }
 
 + (NKAction *)rotateToAngle:(CGFloat)radians duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
 
@@ -441,61 +433,72 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         
     };
     
-    return action;
+    return newAction;
     
 }
 
 #pragma mark - GL LOOK AT
 
-+ (NKAction *)enterOrbitForNode:(NKNode*)target longitude:(float)longitude latitude:(float)latitude radius:(float)radius duration:(F1t)sec {
++ (NKAction *)enterOrbitAtLongitude:(float)longitude latitude:(float)latitude radius:(float)radius duration:(F1t)sec {
+    return [NKAction enterOrbitAtLongitude:longitude latitude:latitude radius:radius offset:V3MakeF(0) duration:sec];
+}
+
++ (NKAction *)enterOrbitAtLongitude:(float)longitude latitude:(float)latitude radius:(float)radius offset:(V3t)offset duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.reset = false;
             action.startPos = [node position3d];
-            action.endPos = V3Make(longitude,latitude,radius);
+            [node setOrbit:V3Make(longitude,latitude,radius)];
+            action.endPos = V3Add([node currentOrbit],offset);
+           
+//            if ([node.name isEqualToString:@"CAMERA"]) {
+//                NKLogV3(@"enter orbit from" , action.startPos);
+//                NKLogV3(@"enter orbit to" , action.endPos);
+//            }
         }
-        
-        [node setPosition3d:getTweenPoint(action.startPos, [node orbitForLongitude:action.endPos.x latitude:action.endPos.y radius:action.endPos.z], completion)];
+       
+        [node setPosition3d:getTweenPoint(action.startPos, action.endPos, completion)];
         
     };
     
-    return action;
+    return newAction;
 }
 
-+ (NKAction *)maintainOrbitForNode:(NKNode*)target longitude:(float)deltaLongitude latitude:(float)deltaLatitude radius:(float)deltaRadius duration:(F1t)sec {
++(NKAction *)maintainOrbitDeltaLongitude:(float)deltaLongitude latitude:(float)deltaLatitude radius:(float)deltaRadius duration:(F1t)sec {
+    return [NKAction maintainOrbitDeltaLongitude:deltaLongitude latitude:deltaLatitude radius:deltaRadius offset:V3MakeF(0) duration:sec];
+}
+
++ (NKAction *)maintainOrbitDeltaLongitude:(float)deltaLongitude latitude:(float)deltaLatitude radius:(float)deltaRadius offset:(V3t)offset duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.reset = false;
+
             action.startPos = V3Make(node.longitude, node.latitude, node.radius);
-            V3t delta = V3Make(deltaLongitude, deltaLatitude, deltaRadius);
-            action.endPos = V3Add(action.startPos, delta);
+            action.endPos = V3Add(action.startPos, V3Make(deltaLongitude, deltaLatitude, deltaRadius));
+            
+            [node setOrbit:action.endPos];
         }
-        
-        V3t orbit = getTweenPoint(action.startPos, action.endPos, completion);
-        
-        [node setPosition3d:[node orbitForLongitude:orbit.x latitude:orbit.y radius:orbit.z]];
-        
-        //NSLog(@"orbiting, %f, %f, %f", node.latitude, node.longitude, node.radius);
-        
+        [node setOrbit:getTweenPoint(action.startPos, action.endPos, completion)];
+        [node setPosition3d:V3Add(offset, [node currentOrbit])];
     };
     
-    return action;
+    return newAction;
 }
 
 + (NKAction*)panTolookAtNode:(NKNode*)target duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
-    action.target = target;
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
+    newAction.target = target;
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.reset = false;
@@ -508,16 +511,16 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         
     };
     
-    return action;
+    return newAction;
     
 }
 
 + (NKAction*)snapLookToNode:(NKNode*)target forDuration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
-    action.target = target;
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
+    newAction.target = target;
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         if (action.reset) {
             action.reset = false;
         }
@@ -526,7 +529,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         
     };
     
-    return action;
+    return newAction;
     
 }
 
@@ -534,8 +537,8 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 #pragma mark - SCALE
 
 +(NKAction *)scaleBy:(CGFloat)scale duration:(F1t)sec {
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         if (action.reset) {
             action.reset = false;
             action.startPos = node.scale3d;
@@ -543,12 +546,12 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         }
         [node setScale3d:getTweenPoint(action.startPos, action.endPos, completion)];
     };
-    return action;
+    return newAction;
 }
 
 + (NKAction *)scaleXBy:(CGFloat)xScale y:(CGFloat)yScale duration:(F1t)sec {
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         if (action.reset) {
             action.reset = false;
             action.startPos = node.scale3d;
@@ -556,12 +559,12 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         }
        [node setScale3d:getTweenPoint(action.startPos, action.endPos, completion)];
     };
-    return action;
+    return newAction;
 }
 
 + (NKAction *)scaleTo:(CGFloat)scale duration:(F1t)sec {
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         if (action.reset) {
             action.reset = false;
             action.startPos = node.scale3d;
@@ -569,12 +572,12 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         }
        [node setScale3d:getTweenPoint(action.startPos, action.endPos, completion)];
     };
-    return action;
+    return newAction;
 }
 
 + (NKAction *)scaleXTo:(CGFloat)xScale y:(CGFloat)yScale duration:(F1t)sec {
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         if (action.reset) {
             action.reset = false;
             action.startPos = node.scale3d;
@@ -582,13 +585,13 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         }
         [node setScale3d:getTweenPoint(action.startPos, action.endPos, completion)];
     };
-    return action;
+    return newAction;
 
 }
 
 + (NKAction *)scaleXTo:(CGFloat)scale duration:(F1t)sec {
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         if (action.reset) {
             action.reset = false;
             action.startPos = node.scale3d;
@@ -596,12 +599,12 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         }
         [node setScale3d:getTweenPoint(action.startPos, action.endPos, completion)];
     };
-    return action;
+    return newAction;
 }
 
 + (NKAction *)scaleYTo:(CGFloat)scale duration:(F1t)sec {
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         if (action.reset) {
             action.reset = false;
             action.startPos = node.scale3d;
@@ -609,14 +612,15 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         }
        [node setScale3d:getTweenPoint(action.startPos, action.endPos, completion)];
     };
-    return action;
+    return newAction;
 }
+
 
 + (NKAction *)resizeToWidth:(CGFloat)width height:(CGFloat)height duration:(F1t)duration {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:duration];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:duration];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.reset = false;
@@ -628,8 +632,29 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         node.size3d = getTweenPoint(action.startPos, action.endPos, completion);
     };
     
-    return action;
+    return newAction;
 
+    
+}
+
++ (NKAction *)resize3d:(V3t)newSize duration:(F1t)duration {
+    
+    NKAction * newAction = [[NKAction alloc] initWithDuration:duration];
+    
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
+        
+        if (action.reset) {
+            action.reset = false;
+            action.startPos = node.size3d;
+            action.endPos = newSize;
+        }
+        
+        
+        node.size3d = getTweenPoint(action.startPos, action.endPos, completion);
+    };
+    
+    return newAction;
+    
     
 }
 
@@ -637,9 +662,9 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
 + (NKAction *)fadeAlphaTo:(F1t)alpha duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             action.reset = false;
@@ -651,7 +676,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
     };
     
-    return action;
+    return newAction;
 
     
 }
@@ -660,9 +685,9 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
 +(NKAction*)scrollToPoint:(P2t)point duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             P2t p2 = [(NKScrollNode*)node scrollPosition];
@@ -676,15 +701,15 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         
     };
     
-    return action;
+    return newAction;
     
 }
 
 +(NKAction*)scrollToChild:(NKNode*)child duration:(F1t)sec {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:sec];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:sec];
     
-    action.actionBlock = (ActionBlock)^(NKNode *node, F1t completion){
+    newAction.actionBlock = (ActionBlock)^(NKAction *action, NKNode* node, F1t completion){
         
         if (action.reset) {
             P2t p2 = [(NKScrollNode*)node scrollPosition];
@@ -698,7 +723,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
         
     };
     
-    return action;
+    return newAction;
     
 }
 
@@ -706,11 +731,11 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
 +(NKAction*)customActionWithDuration:(F1t)seconds actionBlock:(ActionBlock)block {
     
-    NKAction * action = [[NKAction alloc] initWithDuration:seconds];
+    NKAction * newAction = [[NKAction alloc] initWithDuration:seconds];
     
-    action.actionBlock = block;
+    newAction.actionBlock = block;
     
-    return action;
+    return newAction;
     
     
 }
@@ -724,7 +749,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     if (completion < 1.) {
         
         if (_actionBlock){
-            _actionBlock(node, completion);
+            _actionBlock(self, node, completion);
         }
         
         _progress += (F1t)dt;
@@ -734,7 +759,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     }
     
     else {
-        _actionBlock(node, 1);
+        _actionBlock(self, node, 1);
         return 1;
     }
 
@@ -750,6 +775,53 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 @end
 
 #pragma mark - ANIMATION HANDLER
+
+
+void excecuteAction(NKAction *action, NKNode* node, F1t dt){
+
+    if (action.children) { // GROUPS
+        
+        if (action.children.count) {
+            
+            if (action.reset) {
+                action.actions = [action.children mutableCopy];
+                
+                for (NKAction *a in action.actions) {
+                    a.reset = true;
+                }
+                
+                action.reset = false;
+            }
+            
+            if (action.serial) {
+                excecuteAction(action.actions[0],node,  dt);
+                //[self executeAction:action.actions[0] dt:dt];
+            }
+            
+            else { // parallel
+                for (NKAction* ac in action.children) {
+                    excecuteAction(ac, node, dt);
+                    //[self executeAction:ac dt:dt];
+                }
+            }
+            
+            if (!action.actions.count) {
+                
+                [action completeWithTimeSinceLast:dt forNode:node];
+            }
+            
+        }
+        
+    }
+    
+    else {
+
+        if ([action updateWithTimeSinceLast:dt forNode:node]){
+            [action completeWithTimeSinceLast:dt forNode:node];
+        }
+        
+    }
+}
 
 @implementation NodeAnimationHandler
 
@@ -772,7 +844,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
     
     if (actions.count) {
         for (int i = 0; i < actions.count; i++){
-             [self executeAction:actions[i] dt:dt];
+            excecuteAction(actions[i], _node, dt);
         }
     }
     
@@ -780,51 +852,6 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 
 
 
--(void)executeAction:(NKAction *)action dt:(F1t) dt{
-    
-    if (action.children) { // GROUPS
-
-        if (action.children.count) {
-            
-            if (action.reset) {
-                action.actions = [action.children mutableCopy];
-                
-                for (NKAction *a in action.actions) {
-                    a.reset = true;
-                }
-                
-                action.reset = false;
-            }
-            
-            if (action.serial) {
-                [self executeAction:action.actions[0] dt:dt];
-            }
-            
-            else { // parallel
-                for (NKAction* ac in action.children) {
-                    [self executeAction:ac dt:dt];
-                }
-            }
-            
-            if (!action.actions.count) {
-                [action completeWithTimeSinceLast:dt forNode:_node];
-            }
-            
-        }
-
-    }
-    
-    else {
-        
-        bool complete = [action updateWithTimeSinceLast:dt forNode:_node];
-        
-        if (complete){
-            [action completeWithTimeSinceLast:dt forNode:_node];
-        }
-        
-    }
-    
-}
 
 -(void)removeAction:(NKAction*)action {
     
@@ -835,34 +862,24 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 }
 
 -(void)runCompletionBlockForAction:(NKAction*)action {
-
-    ////^return_type (var_type varName)
     void (^block)(void) = action.completionBlock;
-    
     block();
-    
 }
 
 - (void)runAction:(NKAction *)action { // MASTER
-
-    NSMutableArray* mut = actions.mutableCopy;
-    [mut addObject:action];
-    actions = mut;
-    
-    action.parentAction = (NKAction*)self;
-    [action sharedReset];
-    
+    if (action) {
+        NSMutableArray* mut = actions.mutableCopy;
+        [mut addObject:action];
+        actions = mut;
+        
+        action.parentAction = (NKAction*)self;
+        [action sharedReset];
+    }
 }
 
 - (void)runAction:(NKAction *)action completion:(void (^)())block {
-    
     action.completionBlock = block;
     [self runAction:action];
-    
-}
-
-- (void)runAction:(NKAction *)action withKey:(NSString *)key {
-    
 }
 
 - (int)hasActions {
@@ -880,6 +897,7 @@ inline F1t logAverage (F1t src, F1t dst, F1t d){
 -(NodeAnimationHandler*)handler {
     return self;
 }
+
 -(void)stop {
     
 }

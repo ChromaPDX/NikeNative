@@ -10,7 +10,6 @@
 
 @implementation NKShaderProgram
 {
-    NSDictionary *_uniformLocations;
     NSString *_vertShaderPath;
     NSString *_fragShaderPath;
 }
@@ -67,6 +66,32 @@
     return self;
 }
 
+- (id)initWithDictionary:(NSDictionary*)shaderDict name:(NSString*)name{
+    
+    NSAssert(shaderDict, @"ERROR no shaderDict");
+    
+    self = [super init];
+    
+    if (self) {
+ 
+        _name = name;
+        
+        _nkShaderDictionary = [shaderDict mutableCopy];
+        
+        _vertexSource = [self vertexStringFromShaderDictionary:_nkShaderDictionary];
+        
+        _fragmentSource = [self fragmentStringFromShaderDictionary:_nkShaderDictionary];
+        
+#ifdef NK_GL_DEBUG
+        NSLog(@"%@",_vertexSource);
+        NSLog(@"%@",_fragmentSource);
+#endif
+    }
+    
+    return self;
+}
+
+
 -(instancetype)initWithVertexSource:(NSString *)vertexSource fragmentSource:(NSString *)fragmentSource {
     self = [super init];
     if(self)
@@ -77,120 +102,314 @@
     return self;
 }
 
-+ (instancetype)defaultShader {
-    NKShaderProgram* newShader = [[NKShaderProgram alloc] initWithVertexSource:nkDefaultTextureVertexShader fragmentSource:nkDefaultTextureFragmentShader];
-    
-    return newShader;
++(instancetype)shaderNamed:(NSString*)name {
+    if ([NKShaderManager programCache][name]) {
+        return [NKShaderManager programCache][name];
+    }
+    NSLog(@"ERROR shader program named: %@ not found", name);
+    return nil;
 }
 
-                                
-- (NSDictionary*) defaultAttributeLocations {
++(instancetype)newShaderNamed:(NSString*)name colorMode:(NKS_COLOR_MODE)colorMode numTextures:(int)numTex lightNodes:(NSArray*)lightNodes withBatchSize:(int)batchSize {
     
-    return @{ @"a_postion"   : @(NKVertexAttribPosition),
-             @"a_normal"    : @(NKVertexAttribNormal),
-              @"a_color"      : @(NKVertexAttribColor),
-              @"a_texCoord0"  : @(NKVertexAttribTexCoord0),
-              @"a_texCoord1"  : @(NKVertexAttribTexCoord1),
-              };
-}
-
-
-
-//static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
-//(
-// //precision highp float;
-// 
-// attribute vec4 a_position;
-// attribute vec3 a_normal;
-// attribute vec4 a_color;
-// attribute vec2 a_texCoord0;
-// attribute vec2 a_texCoord1;
-// 
-// 
-// uniform highp mat4 u_modelViewProjectionMatrix;
-// uniform highp mat3 u_normalMatrix;
-// uniform lowp int u_useUniformColor;
-// uniform lowp int u_numTextures;
-// uniform vec4 u_color;
-// 
-// uniform sampler2D tex0;
-// 
-// varying mediump vec2 v_texCoord0;
-// varying mediump vec2 v_texCoord1;
-// varying lowp vec4 v_color;
-// 
-// void main()
-//{
-//    vec3 eyeNormal = normalize(u_normalMatrix * a_normal);
-//    //    vec3 lightPosition = vec3(0.5, 1.5, -1.0);
-//    vec4 diffuseColor;
-//    //
-//    if (u_useUniformColor == 1){
-//        diffuseColor = u_color;
-//    }
-//    else {
-//        if (a_color.a > 0.){
-//            diffuseColor = a_color;
-//        }
-//        else {
-//            diffuseColor = vec4(1.,1.,1.,1.);
-//        }
-//    }
-//    
-//    //    float nDotVP = max(0.0, dot(eyeNormal, normalize(lightPosition)));
-//    //
-//    //    v_color = diffuseColor * nDotVP;
-//    
-//    v_color = diffuseColor;
-//    
-//    if (u_numTextures > 0){
-//        v_texCoord0 = a_texCoord0;
-//        if (u_numTextures > 1){
-//            v_texCoord1 = a_texCoord1;
-//        }
-//    }
-//    
-//    gl_Position = u_modelViewProjectionMatrix * a_position;
-//}
-// 
-// );
-
-
-//-(NSDictionary*)defaultShader {
-//
-//    return @{@"uniforms":  @[NSString nksVariable:<#(NKS_VARIABLE)#> precision:<#(NKS_PRECISION)#> type:<#(NKS_TYPE)#>
-//                                  
-//}
-
--(NSString*)vertexStringFromShaderDictionary:(NSDictionary*)dict {
-    NSString *base = @"#version 430";
+    if ([NKShaderManager programCache][name]) {
+        return [NKShaderManager programCache][name];
+    }
     
+    NSLog(@"new shader dict");
+    
+    NSMutableDictionary* shaderDict = [[NSMutableDictionary alloc]init];
+    
+    // ALLOCATE ARRAYS
+    
+    shaderDict[NKS_ATTRIBUTES] = [[NSMutableArray alloc]init];
+    shaderDict[NKS_UNIFORMS] = [[NSMutableArray alloc]init];
+    shaderDict[NKS_VARYINGS] = [[NSMutableArray alloc]init];
+    shaderDict[NKS_VERTEX_MAIN] = [NSMutableArray array];
+    shaderDict[NKS_FRAG_INLINE] = [[NSMutableArray alloc]init];
+    shaderDict[NKS_PROGRAMS] = [[NSMutableArray alloc]init];
+    
+    // ADD BASICS
+    
+    [shaderDict[NKS_ATTRIBUTES] addObject:nksa(NKS_TYPE_V4, NKS_V4_POSITION)];
+    [shaderDict[NKS_ATTRIBUTES] addObject:nksa(NKS_TYPE_V3, NKS_V3_NORMAL)];
+    [shaderDict[NKS_ATTRIBUTES] addObject:nksa(NKS_TYPE_V2, NKS_V2_TEXCOORD)];
+    [shaderDict[NKS_ATTRIBUTES] addObject:nksa(NKS_TYPE_V4, NKS_V4_COLOR)];
+    
+    if (batchSize) {
+        [shaderDict[NKS_UNIFORMS] addObject:nksua(NKS_PRECISION_HIGH, NKS_TYPE_M16, NKS_M16_MVP, batchSize)];
+    }
+    else {
+        [shaderDict[NKS_UNIFORMS] addObject:nksu(NKS_PRECISION_HIGH, NKS_TYPE_M16, NKS_M16_MVP)];
+    }
+    
+    // INSTANCE ID's for batch
+    
+    if (batchSize) {
+        shaderDict[NKS_EXTENSIONS]=@[nks(NKS_EXT_DRAW_INSTANCED),nks(NKS_EXT_GPU_SHADER)];
+    }
+    // ADD COLOR
+    
+    if (colorMode == NKS_COLOR_MODE_UNIFORM) {
+        if (batchSize) {
+            [shaderDict[NKS_UNIFORMS] addObject:nksua(NKS_PRECISION_MEDIUM, NKS_TYPE_V4, NKS_V4_COLOR, batchSize)];
+        }
+        else {
+            [shaderDict[NKS_UNIFORMS] addObject:nksu(NKS_PRECISION_MEDIUM, NKS_TYPE_V4, NKS_V4_COLOR)];
+        }
+    }
+
+    
+    if (colorMode != NKS_COLOR_MODE_NONE) {
+        [shaderDict[NKS_VARYINGS] addObject:nksv(NKS_PRECISION_MEDIUM, NKS_TYPE_V4, NKS_V4_COLOR)];
+    }
+    
+    if (lightNodes && lightNodes.count) {
+        
+        [shaderDict[NKS_UNIFORMS] addObjectsFromArray:@[
+                                                        nksu(NKS_PRECISION_NONE, NKS_STRUCT_LIGHT, NKS_LIGHT),
+                                                        nksu(NKS_PRECISION_MEDIUM, NKS_TYPE_V3, NKS_V3_EYE_DIRECTION)]];
+        
+        if (batchSize) {
+            [shaderDict[NKS_UNIFORMS] addObject:nksua(NKS_PRECISION_HIGH, NKS_TYPE_M16, NKS_M16_MV, batchSize)];
+            [shaderDict[NKS_UNIFORMS] addObject:nksua(NKS_PRECISION_MEDIUM, NKS_TYPE_M9, NKS_M9_NORMAL, batchSize)];
+        }
+        else {
+            [shaderDict[NKS_UNIFORMS] addObject:nksu(NKS_PRECISION_HIGH, NKS_TYPE_M16, NKS_M16_MV)];
+            [shaderDict[NKS_UNIFORMS] addObject:nksu(NKS_PRECISION_MEDIUM, NKS_TYPE_M9, NKS_M9_NORMAL)];
+        }
+        if (![shaderDict varyingNamed:NKS_V3_NORMAL]) {
+            [shaderDict[NKS_VARYINGS] addObject:nksv(NKS_PRECISION_MEDIUM, NKS_TYPE_V3, NKS_V3_NORMAL)];
+        }
+        if (![shaderDict varyingNamed:NKS_V4_POSITION]) {
+            [shaderDict[NKS_VARYINGS] addObject:nksv(NKS_PRECISION_MEDIUM, NKS_TYPE_V4, NKS_V4_POSITION)];
+        }
+        
+        [shaderDict[NKS_VARYINGS] addObject:nksv(NKS_PRECISION_LOW, NKS_TYPE_V3, NKS_V3_LIGHT_DIRECTION)];
+        [shaderDict[NKS_VARYINGS] addObject:nksv(NKS_PRECISION_LOW, NKS_TYPE_V3, NKS_V3_LIGHT_HALF_VECTOR)];
+        [shaderDict[NKS_VARYINGS] addObject:nksv(NKS_PRECISION_LOW, NKS_TYPE_F1, NKS_F1_ATTENUATION)];
+        
+        [shaderDict[NKS_FRAG_INLINE] addObject:nksi(NKS_PRECISION_LOW, NKS_TYPE_V4, NKS_V4_LIGHT_COLOR)];
+        
+        [shaderDict[NKS_PROGRAMS] addObject:@"lqLightProgram"];
+        
+    }
+    
+    if (numTex) {
+        [shaderDict[NKS_UNIFORMS] addObject: nksu(NKS_PRECISION_LOW, NKS_TYPE_SAMPLER_2D, NKS_S2D_TEXTURE)];
+        [shaderDict[NKS_VARYINGS] addObject: nksv(NKS_PRECISION_MEDIUM, NKS_TYPE_V2, NKS_V2_TEXCOORD)];
+        [shaderDict[NKS_FRAG_INLINE] addObject:nksi(NKS_PRECISION_LOW, NKS_TYPE_V4, NKS_V4_TEX_COLOR)];
+    }
+    
+    // VERTEX main()
+    
+
+    if (colorMode == NKS_COLOR_MODE_UNIFORM) {
+        if (batchSize) {
 #if NK_USE_GLES
-    [base appendNewLine:@"precision highp float;"];
+            [shaderDict[NKS_VERTEX_MAIN] addObject:@"v_color = u_color[gl_InstanceIDEXT];"];
+#else
+            [shaderDict[NKS_VERTEX_MAIN] addObject:@"v_color = u_color[gl_InstanceID];"];
 #endif
-    if (dict[@"uniforms"]) {
-        for (NSDictionary* u in dict[@"uniforms"]) {
-            [base appendNewLine:[base shaderUniformString:u]];
+        }
+        else {
+            [shaderDict[NKS_VERTEX_MAIN] addObject:shaderLineWithArray(@[[shaderDict varyingNamed:NKS_V4_COLOR],@"=",[shaderDict uniformNamed:NKS_V4_COLOR]])];
+        }
+    }
+    else if (colorMode == NKS_COLOR_MODE_VERTEX){
+            [shaderDict[NKS_VERTEX_MAIN] addObject:shaderLineWithArray(@[[shaderDict varyingNamed:NKS_V4_COLOR],@"=",[shaderDict attributeNamed:NKS_V4_COLOR]])];
+    }
+    
+    if ([shaderDict uniformNamed:NKS_S2D_TEXTURE]) {
+        [shaderDict[NKS_VERTEX_MAIN] addObject:shaderLineWithArray(@[[shaderDict varyingNamed:NKS_V2_TEXCOORD],@"=",[shaderDict attributeNamed:NKS_V2_TEXCOORD]])];
+    }
+    
+    if ([shaderDict uniformNamed:NKS_M9_NORMAL]) {
+        if (batchSize) {
+#if NK_USE_GLES
+            [shaderDict[NKS_VERTEX_MAIN] addObject:@"v_normal = normalize(u_normalMatrix[gl_InstanceIDEXT] * a_normal);"];
+#else
+            [shaderDict[NKS_VERTEX_MAIN] addObject:@"v_normal = normalize(u_normalMatrix[gl_InstanceID] * a_normal);"];
+#endif
+        }
+        else {
+            [shaderDict[NKS_VERTEX_MAIN] addObject:@"v_normal = normalize(u_normalMatrix * a_normal);"];
         }
     }
     
-    return base;
+    // do EYE space postion
+    
+    if ([shaderDict uniformNamed:NKS_M16_MV]) {
+        if (batchSize) {
+#if NK_USE_GLES
+            [shaderDict[NKS_VERTEX_MAIN] addObject:@"v_position = u_modelViewMatrix[gl_InstanceIDEXT] * a_position;"];
+#else
+            [shaderDict[NKS_VERTEX_MAIN] addObject:@"v_position = u_modelViewMatrix[gl_InstanceID] * a_position;"];
+#endif
+        }
+        else {
+            [shaderDict[NKS_VERTEX_MAIN] addObject:@"v_position = u_modelViewMatrix * a_position;"];
+        }
+    }
+    
+    // last do RASTER space position
+    
+    if ([shaderDict uniformNamed:NKS_M16_MVP]) {
+        
+        if (batchSize) {
+#if NK_USE_GLES
+            [shaderDict[NKS_VERTEX_MAIN] addObject:@"gl_Position = u_modelViewProjectionMatrix[gl_InstanceIDEXT] * a_position;"];
+#else
+            [shaderDict[NKS_VERTEX_MAIN] addObject:@"gl_Position = u_modelViewProjectionMatrix[gl_InstanceID] * a_position;"];
+#endif
+        }
+        else {
+            [shaderDict[NKS_VERTEX_MAIN] addObject:@"gl_Position = u_modelViewProjectionMatrix * a_position;"];
+        }
+        
+    }
+   
+   
+    
+    NKShaderProgram *newShader = [[NKShaderProgram alloc] initWithDictionary:shaderDict name:name];
+    
+    if ([newShader load]) {
+        [NKShaderManager programCache][name]=newShader;
+         NSLog(@"*** generate shader *%d* named: %@ ***", newShader.glPointer, name);
+    }
+    else {
+        NSLog(@"ERROR LOADING SHADER");
+    }
+    
+    return newShader;
+
 }
 
-- (NSArray*)defaultUniformNames {
-    return @[NKS_UNIFORM_MODELVIEWPROJECTION_MATRIX, NKS_UNIFORM_NORMAL_MATRIX, NKS_USE_UNIFORM_COLOR, NKS_UNIFORM_COLOR, NKS_UNIFORM_NUM_TEXTURES];
+-(NSArray*)uniformNames {
+    NSMutableArray *names = [NSMutableArray array];
+    
+    for (NKShaderVariable *v in _nkShaderDictionary[NKS_UNIFORMS]) {
+        [names addObject:v.nameString];
+    }
+    
+    return names;
+    
 }
+
+-(NSString*)vertexStringFromShaderDictionary:(NSDictionary*)dict {
+    NSMutableString *shader = [NKS_GLSL_VERSION mutableCopy];
+    [shader appendNewLine:@"\n //***"];
+    [shader appendNewLine:@"//NK VERTEX SHADER"];
+    [shader appendNewLine:@"//***"];
+    for (NSString* s in dict[NKS_EXTENSIONS]) {
+        [shader appendNewLine:s];
+    }
+#if NK_USE_GLES
+    [shader appendNewLine:@"precision highp float;"];
+#else
+  
+#endif
+    
+    for (NSString*s in dict[NKS_PROGRAMS]) {
+        [shader appendString:shaderStringWithDirective(s, @"@interface")];
+    }
+    
+    for (NKShaderVariable* v in dict[NKS_ATTRIBUTES]) {
+        [shader appendNewLine:[v declarationString]];
+    }
+    for (NKShaderVariable* v in dict[NKS_UNIFORMS]) {
+        [shader appendNewLine:[v declarationString]];
+    }
+    for (NKShaderVariable* v in dict[NKS_VARYINGS]) {
+        [shader appendNewLine:[v declarationString]];
+    }
+    
+
+    
+    [shader appendNewLine:@"void main() {"];
+    
+    for (NSString* s in dict[NKS_VERTEX_MAIN]) {
+        [shader appendNewLine:s];
+    }
+    
+    for (NSString*s in dict[NKS_PROGRAMS]) {
+        [shader appendString:shaderStringWithDirective(s, @"@vertex")];
+    }
+    
+    [shader appendNewLine:@"}"];
+    
+    return shader;
+}
+
+-(NSString*)fragmentStringFromShaderDictionary:(NSDictionary *)dict {
+    
+    NSMutableString *shader = [NKS_GLSL_VERSION mutableCopy];
+    [shader appendNewLine:@"//***"];
+    [shader appendNewLine:@"//NK FRAGMENT SHADER"];
+    [shader appendNewLine:@"//***"];
+    for (NSString* s in dict[NKS_EXTENSIONS]) {
+        [shader appendNewLine:s];
+    }
+#if NK_USE_GLES
+    [shader appendNewLine:@"precision highp float;"];
+#else
+   // [shader appendNewLine:@"#version 320 core"];
+#endif
+    
+    for (NSString*s in dict[NKS_PROGRAMS]) {
+        [shader appendString:shaderStringWithDirective(s, @"@interface")];
+    }
+    
+    for (NKShaderVariable* v in dict[NKS_UNIFORMS]) {
+        [shader appendNewLine:[v declarationString]];
+    }
+    for (NKShaderVariable* v in dict[NKS_VARYINGS]) {
+        [shader appendNewLine:[v declarationString]];
+    }
+    
+    [shader appendNewLine:@"void main() {"];
+    
+    [shader appendNewLine:@"//GENERATED INLINES"];
+    
+    for (NKShaderVariable* v in dict[NKS_FRAG_INLINE]) {
+        [shader appendNewLine:v.declarationString];
+    }
+    if ([dict uniformNamed:NKS_S2D_TEXTURE]) {
+        [shader appendString:textureFragmentFunction(dict)];
+        [shader appendString:shaderLineWithArray(@[@" if (",[dict fragVarNamed:NKS_V4_TEX_COLOR], @".a < .1) discard;"])];
+    }
+    
+    for (NSString*s in dict[NKS_PROGRAMS]) {
+        [shader appendString:shaderStringWithDirective(s, @"@frag")];
+    }
+    
+    for (NSString* s in dict[NKS_FRAGMENT_MAIN]) {
+        [shader appendNewLine:s];
+    }
+    
+    NSMutableArray *colorMults = [NSMutableArray array];
+    
+    if ([dict varyingNamed:NKS_V4_COLOR]) {
+        [colorMults addObject:[dict varyingNamed:NKS_V4_COLOR]];
+    }
+    if ([dict uniformNamed:NKS_S2D_TEXTURE]) {
+        [colorMults addObject:[dict fragVarNamed:NKS_V4_TEX_COLOR]];
+    }
+    if ([dict uniformNamed:NKS_LIGHT]) {
+        [colorMults addObject:[dict fragVarNamed:NKS_V4_LIGHT_COLOR]];
+    }
+    
+    [shader appendString:shaderLineWithArray(@[nks(NKS_V4_GL_FRAG_COLOR), @" = ", operatorString(colorMults, @"*"),@";"])];
+                                               
+    [shader appendNewLine:@"}"];
+    
+    return shader;
+
+}
+
 
 - (BOOL)load
 {
-    
-    if (!_attributes) {
-        _attributes = [[self defaultAttributeLocations] mutableCopy];
-    }
-    
-    if (!_uniformNames) {
-        _uniformNames = [self defaultUniformNames];
-    }
     
     GLuint vertShader, fragShader;
     
@@ -200,6 +419,8 @@
     // Create and compile vertex shader.
     if ( ![self compileShader:&vertShader type:GL_VERTEX_SHADER shaderSource:_vertexSource] )
     {
+        NSLog(@"%@",_vertexSource);
+        NSAssert(0,@"Failed to compile VERTEX shader: %@", self.name);
         NSLog(@"Failed to compile VERTEX shader: %@", self.name);
         return NO;
     }
@@ -207,6 +428,8 @@
     // Create and compile fragment shader.
     if ( ![self compileShader:&fragShader type:GL_FRAGMENT_SHADER shaderSource:_fragmentSource] )
     {
+        NSLog(@"%@",_fragmentSource);
+        NSAssert(0,@"Failed to compile FRAGMENT shader: %@", self.name);
         NSLog(@"Failed to compile FRAGMENT shader: %@", self.name);
         return NO;
     }
@@ -217,12 +440,13 @@
     // Attach fragment shader to program.
     glAttachShader(self.glPointer, fragShader);
     
-    for( NSString *attrName in self.attributes.allKeys )
-    {
-        // PUSH METHOD
-        NSNumber *attrType = self.attributes[attrName];
-        glEnableVertexAttribArray([attrType intValue]);
-        glBindAttribLocation(self.glPointer, [attrType intValue], [attrName UTF8String]);
+    numAttributes = 0;
+    
+    for (NKShaderVariable *v in _nkShaderDictionary[NKS_ATTRIBUTES]) {
+        NSString *attrName = v.nameString;
+        glEnableVertexAttribArray(numAttributes);
+        glBindAttribLocation(self.glPointer, numAttributes, [attrName UTF8String]);
+        numAttributes++;
     }
     
     // Link program.
@@ -250,33 +474,58 @@
         return NO;
     }
     
-    for( NSString *attrName in self.attributes.allKeys )
-    {
-        // PULL METHOD
-        GLint glName = glGetAttribLocation(self.glPointer, [attrName UTF8String]);
-        glEnableVertexAttribArray(glName);
-        [_attributes setValue:@(glName) forKey:attrName];
+    for (NKShaderVariable *v in _nkShaderDictionary[NKS_ATTRIBUTES]) {
+
+//        switch (v.name) {
+//            case NKS_V2_TEXCOORD:
+//                v.glLocation = NKS_TEX
+//                break;
+//                
+//            default:
+//                break;
+//        }
+        v.glLocation = glGetAttribLocation(self.glPointer, [v.nameString UTF8String]);
+        glEnableVertexAttribArray(v.glLocation);
         
-        //NSLog(@"shader setup slot %d, string %@",glName, attrName);
+        NSLog(@"Attribute location %d, string %@",v.glLocation, v.nameString);
+
     }
     
-    NSMutableDictionary *uniformLocations = [NSMutableDictionary dictionaryWithCapacity:self.uniformNames.count];
-    
-    for(NSString *uniName in self.uniformNames)
-    {
-        int uniLoc = glGetUniformLocation(self.glPointer, [uniName UTF8String]);
+    for (NKShaderVariable *v in _nkShaderDictionary[NKS_UNIFORMS]) {
+        int uniLoc = glGetUniformLocation(self.glPointer, [v.nameString UTF8String]);
         if (uniLoc > -1)
         {
-            uniformLocations[uniName] = @(uniLoc);
+            v.glLocation = uniLoc;//_uniformLocations[uniName] = @(uniLoc);
+               //NSLog(@"Uniform location %d, %@",v.glLocation, v.nameString);
         }
         else
         {
-            NSLog(@"WARNING: Couldn't find location for uniform named: %@", uniName);
+            NSLog(@"WARNING: Couldn't find location for uniform named: %@", v.nameString);
         }
     }
     
+    if ([_nkShaderDictionary uniformNamed:NKS_LIGHT]) {
+        
+        [_nkShaderDictionary uniformNamed:NKS_LIGHT].glLocation = glGetUniformLocation(self.glPointer, "u_light.position");
+        
+        NSArray *members = @[@"isEnabled",@"isLocal",@"isSpot",@"ambient",@"color",@"position",@"halfVector",@"coneDirection",
+                             @"spotCosCutoff", @"spotExponent",@"constantAttenuation",@"linearAttenuation",@"quadraticAttenuation"];
+                            
+        for (NSString *member in members) {
+            
+        NSString *name = [@"u_light." stringByAppendingString:member];
+        int uniLoc = glGetUniformLocation(self.glPointer, [name UTF8String]);
+        if (uniLoc > -1)
+        {
+           // NSLog(@"Uniform location %d, %@",uniLoc, name);
+        }
+            
+        }
+    }
+    
+
     // Store the locations in an immutable collection
-    _uniformLocations = [NSDictionary dictionaryWithDictionary:uniformLocations];
+    
     
     // Release vertex and fragment shaders.
     if (vertShader)
@@ -294,6 +543,7 @@
     return YES;
     
 }
+
 
 - (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file
 {
@@ -344,7 +594,7 @@
     GLint status;
     glLinkProgram(prog);
     
-#if defined(DEBUG)
+#if defined(NK_GL_DEBUG)
     GLint logLength;
     glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
     if (logLength > 0)
@@ -388,6 +638,24 @@
     return YES;
 }
 
+#pragma mark - QUERY
+
+-(BOOL)isEqual:(id)object {
+    return _glPointer == ((NKShaderProgram*)object).glPointer;
+}
+
+-(NKShaderVariable*)uniformNamed:(NKS_ENUM)name {
+    return [_nkShaderDictionary uniformNamed:name];
+}
+
+-(NKShaderVariable*)varyingNamed:(NKS_ENUM)name{
+    return [_nkShaderDictionary varyingNamed:name];
+}
+
+-(NKShaderVariable*)fragVarNamed:(NKS_ENUM)name {
+    return [_nkShaderDictionary fragVarNamed:name];
+}
+
 - (void)unload
 {
     if (self.glPointer)
@@ -408,127 +676,32 @@
     glUseProgram(self.glPointer);
 }
 
-#pragma mark - Helpers
+#define gl_debug
 
-- (void)setFloat:(const GLfloat)f forUniform:(NSString *)uniformName
-{
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    glUniform1f([uniLoc intValue], f);
-}
+//- (void)enableAttribute3D:(NSString *)attribName withArray:(const GLvoid*)arrayValues
+//{
+//    NSNumber *attrVal = self.attributes[attribName];
+//    assert(attrVal);
+//    GLuint attrLoc = [attrVal intValue];
+//    glVertexAttribPointer(attrLoc, 3, GL_FLOAT, GL_FALSE, 0, arrayValues);
+//    glEnableVertexAttribArray(attrLoc);
+//}
+//
+//- (void)enableAttribute2D:(NSString *)attribName withArray:(const GLvoid*)arrayValues
+//{
+//    NSNumber *attrVal = self.attributes[attribName];
+//    assert(attrVal);
+//    GLuint attrLoc = [attrVal intValue];
+//    glVertexAttribPointer(attrLoc, 2, GL_FLOAT, GL_FALSE, 0, arrayValues);
+//    glEnableVertexAttribArray(attrLoc);
+//}
 
-- (void)setInt:(const GLint)i forUniform:(NSString *)uniformName
-{
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    //assert(uniLoc);
-    if ([uniLoc intValue]) {
-        glUniform1i([uniLoc intValue], i);
-    }
-   
-}
-
-- (void)setMatrix3:(const M9t)mat forUniform:(NSString *)uniformName
-{
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    glUniformMatrix3fv([uniLoc intValue], 1, 0, mat.m);
-}
-
-- (void)setMatrix4:(const M16t)mat forUniform:(NSString *)uniformName
-{
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    glUniformMatrix4fv([uniLoc intValue], 1, 0, mat.m);
-}
-
-- (void)set1DFloatArray:(const GLfloat[])array withNumElements:(int)num forUniform:(NSString *)uniformName
-{
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    glUniform1fv([uniLoc intValue], num, array);
-}
-
-- (void)set2DFloatArray:(const GLfloat[])array withNumElements:(int)num forUniform:(NSString *)uniformName
-{
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    glUniform2fv([uniLoc intValue], num, array);
-}
-
-- (void)set3DFloatArray:(const GLfloat[])array withNumElements:(int)num forUniform:(NSString *)uniformName
-{
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    glUniform3fv([uniLoc intValue], num, array);
-}
-
-- (void)set4DFloatArray:(const GLfloat[])array withNumElements:(int)num forUniform:(NSString *)uniformName
-{
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    glUniform4fv([uniLoc intValue], num, array);
-}
-
-- (void)setVec4:(V4t)vec4 forUniform:(NSString *)uniformName
-{
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    glUniform4f([uniLoc intValue], vec4.x, vec4.y, vec4.z, vec4.w);
-}
-
-- (void)setVec3:(V3t)vec3 forUniform:(NSString *)uniformName
-{
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    glUniform3f([uniLoc intValue], vec3.x, vec3.y, vec3.z);
-}
-
-- (void)setVec2:(V2t)vec2 forUniform:(NSString *)uniformName
-{
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    glUniform2f([uniLoc intValue], vec2.x, vec2.y);
-}
-
-- (void)setColor:(NKByteColor *)color forUniform:(NSString *)uniformName
-{
-    C4t components = color.C4Color;
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    glUniform4f([uniLoc intValue], components.r, components.g, components.b, components.a);
-}
-
-- (void)bindTexture:(NKTexture *)texture forUniform:(NSString *)uniformName
-{
-    NSNumber *uniLoc = self.uniformLocations[uniformName];
-    assert(uniLoc);
-    [texture enableAndBindToUniform:[uniLoc intValue]];
-}
-
-- (void)enableAttribute3D:(NSString *)attribName withArray:(const GLvoid*)arrayValues
-{
-    NSNumber *attrVal = self.attributes[attribName];
-    assert(attrVal);
-    GLuint attrLoc = [attrVal intValue];
-    glVertexAttribPointer(attrLoc, 3, GL_FLOAT, GL_FALSE, 0, arrayValues);
-    glEnableVertexAttribArray(attrLoc);
-}
-
-- (void)enableAttribute2D:(NSString *)attribName withArray:(const GLvoid*)arrayValues
-{
-    NSNumber *attrVal = self.attributes[attribName];
-    assert(attrVal);
-    GLuint attrLoc = [attrVal intValue];
-    glVertexAttribPointer(attrLoc, 2, GL_FLOAT, GL_FALSE, 0, arrayValues);
-    glEnableVertexAttribArray(attrLoc);
-}
-
-- (void)disableAttributeArray:(NSString *)attribName
-{
-    NSNumber *attrVal = self.attributes[attribName];
-    assert(attrVal);
-    GLuint attrLoc = [attrVal intValue];
-    glDisableVertexAttribArray(attrLoc);
-}
+//- (void)disableAttributeArray:(NSString *)attribName
+//{
+//    NSNumber *attrVal = self.attributes[attribName];
+//    assert(attrVal);
+//    GLuint attrLoc = [attrVal intValue];
+//    glDisableVertexAttribArray(attrLoc);
+//}
 
 @end

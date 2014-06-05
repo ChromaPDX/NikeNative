@@ -34,6 +34,7 @@
 @class NKFbo;
 @class NKShaderProgram;
 @class NKByteColor;
+@class NKBulletBody;
 
 typedef NS_ENUM(U1t, NKTouchState) {
     NKTouchNone,
@@ -67,8 +68,8 @@ typedef NS_ENUM(U1t, NKCullFaceMode) {
 
 @class NKNode;
 
-typedef void (^ActionBlock)(NKNode *node, F1t completion);
-#define newActionBlock (ActionBlock)^(NKNode *node, F1t completion)
+typedef void (^ActionBlock)(NKAction *action, NKNode* node, F1t completion);
+#define newActionBlock (ActionBlock)^(NKAction *action, NKNode* node, F1t completion)
 typedef void (^EventBlock)(NKEventType eventType, P2t location);
 #define newEventBlock (EventBlock)^(NKEventType eventType, P2t location)
 typedef void (^CompletionBlock)(void);
@@ -92,12 +93,9 @@ typedef void (^CompletionBlock)(void);
     NSMutableSet *touches;
     // of internals
 
-    NKFbo *fbo;
-    
-
+    NKByteColor *_color;
     
     NodeAnimationHandler *animationHandler;
-    bool useShader;
     
     F1t w;
     F1t h;
@@ -113,7 +111,7 @@ typedef void (^CompletionBlock)(void);
 @property (nonatomic, weak) NKNode *parent;
 @property (nonatomic, strong) NSArray *children;
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic) NKByteColor *uidColor;
+@property (nonatomic, strong) NKByteColor *uidColor;
 @property (nonatomic) bool dirty;
 
 #pragma mark - POSITION PROPERTIES
@@ -128,9 +126,11 @@ typedef void (^CompletionBlock)(void);
 @property (nonatomic, getter = isPaused) BOOL paused;
 @property (nonatomic, getter = isHidden) BOOL hidden;
 @property (nonatomic) bool userInteractionEnabled;
-@property (nonatomic) bool useShaderOnSelfOnly;
 
 #pragma mark - BLEND
+
+-(void)setColor:(NKByteColor*)color;
+-(NKByteColor*)color;
 
 @property (nonatomic) NKBlendMode blendMode;
 @property (nonatomic) NKCullFaceMode cullFace;
@@ -142,6 +142,11 @@ typedef void (^CompletionBlock)(void);
 #pragma mark - SHADER PROPERTIES
 
 @property (nonatomic, strong) NKShaderProgram *shader;
+
+#pragma mark - INIT
+
+-(instancetype) init;
+-(instancetype)initWithSize:(V3t)size;
 
 #pragma mark - HIERARCHY METHODS
 
@@ -163,6 +168,10 @@ typedef void (^CompletionBlock)(void);
 - (void)enumerateChildNodesWithName:(NSString *)name usingBlock:(void (^)(NKNode *node, BOOL *stop))block;
 - (BOOL)inParentHierarchy:(NKNode *)parent;
 
+#pragma mark - PHYSICS
+
+@property (nonatomic, strong) NKBulletBody *body;
+
 #pragma mark - GEOMETRY METHODS
 
 - (void)setZPosition:(int)zPosition;
@@ -178,24 +187,28 @@ typedef void (^CompletionBlock)(void);
 -(V3t)convertPoint3d:(V3t)point fromNode:(NKNode *)node;
 -(V3t)convertPoint3d:(V3t)point toNode:(NKNode *)node;
 
-- (instancetype) init;
+#pragma mark - UPDATE / DRAW CYCLE
+
+//**
 - (void)updateWithTimeSinceLast:(F1t) dt;
-
-#pragma mark - DRAW
-
+//**
 - (void)draw;
-// encompasses 3 states
+//**
+// draw encompasses these 3 states
 -(void)begin;
 -(void)customDraw;
 -(void)end;
+//**
 
+// drawing for hit detection
 -(void)drawWithHitShader;
+-(void)customDrawWithHitShader;
+
 
 -(bool)shouldCull;
 
 -(int)numVisibleNodes;
 -(int)numNodes;
-
 
 #pragma mark - SHADER / FBO
 
@@ -259,6 +272,8 @@ typedef void (^CompletionBlock)(void);
 @property (nonatomic) F1t longitude;
 @property (nonatomic) F1t radius;
 
+-(void)setOrbit:(V3t)orbit;
+-(V3t)currentOrbit;
 -(V3t)orbitForLongitude:(float)longitude latitude:(float)latitude radius:(float)radius;
 -(V3t) upVector;
 -(void)lookAtNode:(NKNode*)node;

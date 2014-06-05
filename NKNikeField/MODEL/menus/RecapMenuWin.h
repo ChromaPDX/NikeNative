@@ -1,7 +1,7 @@
-#import "NKSceneNode.h"
+#import "NikeBaseScene.h"
 #import "NKScrollNode.h"
 
-@interface RecapMenuWin : NKSceneNode <NKTableCellDelegate>
+@interface RecapMenuWin : NikeBaseScene <NKTableCellDelegate>
 {
 }
 

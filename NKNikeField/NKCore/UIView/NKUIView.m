@@ -66,7 +66,6 @@
     context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 
     
-    
     if(!context){
         NSLog(@"failed to create EAGL context");
         return;

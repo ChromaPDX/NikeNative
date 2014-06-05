@@ -21,11 +21,20 @@
     self = [super initWithSize:size];
     
     if (self) {
+
         
-        NKSpriteNode *bg = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_Menu.png"] ] color:nil size:self.size];
-        
+        NKSpriteNode *bg = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Screen_Menu.png"] color:NKWHITE size:self.size];
         [self addChild:bg];
         
+//        fuelBar = [[FuelBar alloc] init];
+//        [fuelBar setPosition:P2Make(-72*w/640, 500*h/1136)];
+//        // @LEIF - not sure why the animation isn't working here?
+//        [self addChild:fuelBar];
+//        // @Eric - add as child before setFill, needs parent for animation otherwise doesn't get animation updates.
+//        // also we need a way to snap and animate so I added 'animated' boolean.
+//        [fuelBar setFill:0 animated:false];
+//        [fuelBar setFill:1 animated:true];
+
 //        NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size];
 //        [self addChild:table];
 //        [table setPadding:P2Make(0,0)];
@@ -36,30 +45,13 @@
 //        //V3t rot =
 //        //table.node->setOrientation
 //        
-//        NKTexture *image = ];
-//        [table setTexture:image];
-//        [table setHighlightColor:NKBLACK];
-//        table.color = NKWHITE;
-        
-//       [table repeatAction:[NKAction rotateYByAngle:90 duration:2.]];
-//        [table repeatAction:[NKAction sequence:@[[NKAction move3dBy:V3Make(0, .1, 1.) duration:.25],
-//                             [NKAction move3dBy:V3Make(0, -.1, -1.) duration:.25],
-//                                                 [NKAction rotateYByAngle:33 duration:.5]
-//                             ]]];
+//        NKMeshNode *s = [[NKMeshNode alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"Screen_Menu.png"] color:NKWHITE size:V3MakeF(100.)];
+//        [self addChild:s];
         
         [NKSoundManager loadSoundFileNamed:@"Androyd-Bulbtone-41.wav"];
         [NKSoundManager loadSoundFileNamed:@"03 Bass [A$AP Rocky].mp3"];
         [NKSoundManager playMusicNamed:@"03 Bass [A$AP Rocky].mp3"];
     }
-    
-    /*
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [button addTarget:self action:@selector(buttonPushed)
-     forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:@"Show View" forState:UIControlStateNormal];
-    button.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
-    [self.view addSubview:button];
-    */
     
     NSLog(@"initmainmenu");
     return self;
@@ -88,8 +80,12 @@
     }
     else if(R4ContainsPoint(startButtonRect, location)){
         NSLog(@"start button pressed, starting game...");
-          Pregame* newScene = [[Pregame alloc] initWithSize:self.size];
-         [self.nkView setScene:newScene];
+        Pregame* newScene = [[Pregame alloc] initWithSize:self.size];
+        [self.nkView setScene:newScene];
+        
+        //RecapMenuLoss *recapMenu = [[RecapMenuLoss alloc] init];
+        //[self.nkView setScene:[recapMenu initWithSize:self.size]];
+
 //        NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
 //        [[(GameScene*)newScene game] startSinglePlayerGame];
 //        self.nkView.scene = newScene;

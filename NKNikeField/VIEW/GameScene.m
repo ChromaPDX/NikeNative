@@ -394,9 +394,6 @@ float PARTICLE_SCALE;
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }
     
-
-    //P2t p;
-    
     if  (path.count){
         for (BoardLocation* loc in path) {
             BoardTile* tile = [_gameTiles objectForKey:loc];
@@ -455,7 +452,6 @@ float PARTICLE_SCALE;
         [self playSoundWithKey:@"enemyTap"];
     }
     else {
-        
         if ([_game canUsePlayer:selectedPlayer]) {
             
             [_uxTopBar setPlayer:selectedPlayer WithCompletionBlock:^{}];
@@ -469,7 +465,6 @@ float PARTICLE_SCALE;
             if (!_game.selectedManager.isAI) {
                 [self moveCameraToBoundingBox:@[_selectedPlayer.location]];
             }
-            
             [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{
 
                 if (_selectedCard) {
@@ -477,12 +472,10 @@ float PARTICLE_SCALE;
                 }
                 
             }];
-            
         }
         else {
             [self playSoundWithKey:@"badTouch"];
         }
-        
     }
 }
 

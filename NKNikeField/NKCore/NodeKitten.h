@@ -26,18 +26,19 @@
  ***********************************************************************/
 
 #import "NKpch.h"
-
 // NODE
 #import "NKNode.h"
 
 // NODE SUBS
 #import "NKSceneNode.h"
-#import "NKSpriteNode.h"
 #import "NKEmitterNode.h"
 #import "NKMeshNode.h"
 #import "NKCamera.h"
+#import "NKLightNode.h"
 
-// SPRITE NODE SUBS
+// MESH NODE SUBS
+#import "NKSpriteNode.h"
+#import "NKBatchNode.h"
 #import "NKLabelNode.h"
 #import "NKScrollNode.h"
 #import "NKAlertSprite.h"
@@ -59,7 +60,9 @@
 
 // SHADERS
 
+#import "NKShaderManager.h"
 #import "NKShaderProgram.h"
+#import "NKShaderTools.h"
 
 // ANIMATION
 
@@ -70,7 +73,6 @@
 #import "NKSoundManager.h"
 
 // UIKIT EXTENSIONS
-
 
 #if TARGET_OS_IPHONE
 #import "NKUIViewController.h"
@@ -83,6 +85,8 @@
 
 #import "NKImage+Utils.h"
 #import "NKFont+CoreText.h"
-#import "NSString+ShaderTools.h"
 
+// 3rd party libraries
+
+#import "NKBulletWorld.h"
 

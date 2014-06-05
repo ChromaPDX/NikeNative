@@ -6,7 +6,7 @@
 //
 //
 
-#import "NodeKitten.h"
+#import "NikeBaseScene.h"
 
 @class GameBoardNode;
 @class BoardTile;
@@ -27,7 +27,7 @@
 
 #define AI_SPEED .5
 
-@interface GameScene : NKSceneNode
+@interface GameScene : NikeBaseScene
 
 {
 

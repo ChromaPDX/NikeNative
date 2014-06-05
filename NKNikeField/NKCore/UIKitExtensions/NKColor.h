@@ -25,6 +25,7 @@
 -(UB4t)UB4Color;
 -(NKColor*)NKColor;
 -(C4t)C4Color;
+-(V3t)RGBColor;
 
 -(C4t)colorWithBlendFactor:(F1t)blendFactor;
 -(C4t)colorWithBlendFactor:(F1t)blendFactor alpha:(F1t)alpha;

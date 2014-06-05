@@ -25,6 +25,7 @@
     if ( self )
     {
         
+        _numberOfElements = size / sizeof(NKVertexArray);
         NSLog(@"init vertex buffer with size: %ld", size);
         
         //glEnable(GL_DEPTH_TEST);
@@ -58,7 +59,6 @@
 }
 
 +(instancetype)axes {
-    
     GLfloat gCubeVertexData[7*6] =
     {
         -1.0f, 0.0f, 0.0f,      .5f, 0.0f, 0.0f, 1.0f,
@@ -70,14 +70,13 @@
     };
     
     NKVertexBuffer *buf = [[NKVertexBuffer alloc] initWithSize:sizeof(gCubeVertexData) data:gCubeVertexData setup:^{
-        glEnableVertexAttribArray(NKVertexAttribPosition);
-        glVertexAttribPointer(NKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribPosition);
+        glVertexAttribPointer(NKSVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
                               sizeof(F1t)*7, BUFFER_OFFSET(0));
         
-        glEnableVertexAttribArray(NKVertexAttribColor);
-        glVertexAttribPointer(NKVertexAttribColor, 3, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribColor);
+        glVertexAttribPointer(NKSVertexAttribColor, 3, GL_FLOAT, GL_FALSE,
                               sizeof(F1t)*7, BUFFER_OFFSET(12));
-        
     }];
     
     buf.numberOfElements = sizeof(gCubeVertexData) / (sizeof(F1t)*7.);
@@ -85,7 +84,7 @@
     return buf;
 }
 
-+(instancetype)defaultRect {
++(instancetype)defaultRect { // SPRITE
     
     GLfloat gCubeVertexData[8*6] =
     {
@@ -98,16 +97,16 @@
     };
     
     NKVertexBuffer *buf = [[NKVertexBuffer alloc] initWithSize:sizeof(gCubeVertexData) data:gCubeVertexData setup:^{
-        glEnableVertexAttribArray(NKVertexAttribPosition);
-        glVertexAttribPointer(NKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribPosition);
+        glVertexAttribPointer(NKSVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
                               sizeof(F1t)*8, BUFFER_OFFSET(0));
         
-        glEnableVertexAttribArray(NKVertexAttribNormal);
-        glVertexAttribPointer(NKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribNormal);
+        glVertexAttribPointer(NKSVertexAttribNormal, 3, GL_FLOAT, GL_FALSE,
                               sizeof(F1t)*8, BUFFER_OFFSET(sizeof(F1t)*3));
         
-        glEnableVertexAttribArray(NKVertexAttribTexCoord0);
-        glVertexAttribPointer(NKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribTexCoord0);
+        glVertexAttribPointer(NKSVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE,
                               sizeof(F1t)*8, BUFFER_OFFSET(sizeof(F1t)*6));
         
     }];
@@ -210,9 +209,7 @@
             
             if(tPtr != nil) tPtr += 2*2;
         }
-        //        blue+=colorIncrement;
-        //        red-=colorIncrement;
-        
+
         //Degenerate triangle to connect stacks and maintain winding order
         
         vPtr[0] = vPtr[3] = vPtr[-3];
@@ -236,7 +233,7 @@
         memcpy(&elements[i].vertex, &vertices[i], sizeof(V3t));
         memcpy(&elements[i].normal, &vertexNormals[i], sizeof(V3t));
         memcpy(&elements[i].texCoord, &textureCoords[i], sizeof(V2t));
-        //memcpy(&elements[i].color, &vertexColors[i], sizeof(C4t));
+        memcpy(&elements[i].color, &vertexColors[i], sizeof(C4t));
     }
     
     free(vertices);
@@ -248,20 +245,20 @@
     NSLog(@"NKVertexArraySize: %lu", sizeof(NKVertexArray));
     
     NKVertexBuffer *buf = [[NKVertexBuffer alloc] initWithSize:sizeof(NKVertexArray)*numElements data:elements setup:^{
-        glEnableVertexAttribArray(NKVertexAttribPosition);
-        glVertexAttribPointer(NKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribPosition);
+        glVertexAttribPointer(NKSVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
                               sizeof(NKVertexArray), BUFFER_OFFSET(0));
         
-        glEnableVertexAttribArray(NKVertexAttribNormal);
-        glVertexAttribPointer(NKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribNormal);
+        glVertexAttribPointer(NKSVertexAttribNormal, 3, GL_FLOAT, GL_FALSE,
                               sizeof(NKVertexArray), BUFFER_OFFSET(sizeof(V3t)));
         
-        glEnableVertexAttribArray(NKVertexAttribTexCoord0);
-        glVertexAttribPointer(NKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribTexCoord0);
+        glVertexAttribPointer(NKSVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE,
                               sizeof(NKVertexArray), BUFFER_OFFSET(sizeof(V3t)*2));
         
-        glEnableVertexAttribArray(NKVertexAttribColor);
-        glVertexAttribPointer(NKVertexAttribColor, 4, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribColor);
+        glVertexAttribPointer(NKSVertexAttribColor, 4, GL_FLOAT, GL_FALSE,
                               sizeof(NKVertexArray), BUFFER_OFFSET(sizeof(V3t)*2+sizeof(V2t)));
     }];
     
@@ -392,10 +389,11 @@
                 cPtr[0] = red;
                 cPtr[1] = green;
                 cPtr[2] = blue;
+                cPtr[3] = cPtr[7] = 1.;
                 cPtr[4] = red;
                 cPtr[5] = green;
                 cPtr[6] = blue;
-                cPtr[3] = cPtr[7] = 1.;
+                
                 
                 cPtr += 2*4;
                 vPtr += 2*3;
@@ -429,7 +427,7 @@
             memcpy(&elements[i].vertex, &vertices[(i-currentOffset)], sizeof(V3t));
             memcpy(&elements[i].normal, &vertexNormals[(i-currentOffset)], sizeof(V3t));
             memcpy(&elements[i].texCoord, &textureCoords[(i-currentOffset)], sizeof(V2t));
-            //memcpy(&elements[i].color, &vertexColors[(i-currentOffset)], sizeof(C4t));
+            memcpy(&elements[i].color, &vertexColors[(i-currentOffset)], sizeof(C4t));
         }
         
         free(vertices);
@@ -446,20 +444,20 @@
    
     
     NKVertexBuffer *buf = [[NKVertexBuffer alloc] initWithSize:sizeof(NKVertexArray)*totalCount data:elements setup:^{
-        glEnableVertexAttribArray(NKVertexAttribPosition);
-        glVertexAttribPointer(NKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribPosition);
+        glVertexAttribPointer(NKSVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
                               sizeof(NKVertexArray), BUFFER_OFFSET(0));
         
-        glEnableVertexAttribArray(NKVertexAttribNormal);
-        glVertexAttribPointer(NKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribNormal);
+        glVertexAttribPointer(NKSVertexAttribNormal, 3, GL_FLOAT, GL_FALSE,
                               sizeof(NKVertexArray), BUFFER_OFFSET(sizeof(V3t)));
         
-        glEnableVertexAttribArray(NKVertexAttribTexCoord0);
-        glVertexAttribPointer(NKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribTexCoord0);
+        glVertexAttribPointer(NKSVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE,
                               sizeof(NKVertexArray), BUFFER_OFFSET(sizeof(V3t)*2));
         
-        glEnableVertexAttribArray(NKVertexAttribColor);
-        glVertexAttribPointer(NKVertexAttribColor, 4, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribColor);
+        glVertexAttribPointer(NKSVertexAttribColor, 4, GL_FLOAT, GL_FALSE,
                               sizeof(NKVertexArray), BUFFER_OFFSET(sizeof(V3t)*2+sizeof(V2t)));
     }];
     
@@ -478,8 +476,8 @@
 +(instancetype)pointSprite {
     GLfloat point[3] = {0,0,0};
     NKVertexBuffer *buf = [[NKVertexBuffer alloc] initWithSize:sizeof(point) data:point setup:^{
-        glEnableVertexAttribArray(NKVertexAttribPosition);
-        glVertexAttribPointer(NKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribPosition);
+        glVertexAttribPointer(NKSVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
                               24, BUFFER_OFFSET(0));
     }];
     
@@ -493,56 +491,56 @@
     {
         // Data layout for each line below is:
         // positionX, positionY, positionZ,     normalX, normalY, normalZ,
-        0.5f, -0.5f, -0.5f,        1.0f, 0.0f, 0.0f,
-        0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,
-        0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,
-        0.5f, 0.5f, 0.5f,          1.0f, 0.0f, 0.0f,
+        1.f, -1.f, -1.f,        1.0f, 0.0f, 0.0f,
+        1.f, 1.f, -1.f,         1.0f, 0.0f, 0.0f,
+        1.f, -1.f, 1.f,         1.0f, 0.0f, 0.0f,
+        1.f, -1.f, 1.f,         1.0f, 0.0f, 0.0f,
+        1.f, 1.f, -1.f,         1.0f, 0.0f, 0.0f,
+        1.f, 1.f, 1.f,          1.0f, 0.0f, 0.0f,
         
-        0.5f, 0.5f, -0.5f,         0.0f, 1.0f, 0.0f,
-        -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,
-        -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f,         0.0f, 1.0f, 0.0f,
+        1.f, 1.f, -1.f,         0.0f, 1.0f, 0.0f,
+        -1.f, 1.f, -1.f,        0.0f, 1.0f, 0.0f,
+        1.f, 1.f, 1.f,          0.0f, 1.0f, 0.0f,
+        1.f, 1.f, 1.f,          0.0f, 1.0f, 0.0f,
+        -1.f, 1.f, -1.f,        0.0f, 1.0f, 0.0f,
+        -1.f, 1.f, 1.f,         0.0f, 1.0f, 0.0f,
         
-        -0.5f, 0.5f, -0.5f,        -1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, 0.5f,        -1.0f, 0.0f, 0.0f,
+        -1.f, 1.f, -1.f,        -1.0f, 0.0f, 0.0f,
+        -1.f, -1.f, -1.f,       -1.0f, 0.0f, 0.0f,
+        -1.f, 1.f, 1.f,         -1.0f, 0.0f, 0.0f,
+        -1.f, 1.f, 1.f,         -1.0f, 0.0f, 0.0f,
+        -1.f, -1.f, -1.f,       -1.0f, 0.0f, 0.0f,
+        -1.f, -1.f, 1.f,        -1.0f, 0.0f, 0.0f,
         
-        -0.5f, -0.5f, -0.5f,       0.0f, -1.0f, 0.0f,
-        0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,
-        -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,
-        -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,
-        0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,
-        0.5f, -0.5f, 0.5f,         0.0f, -1.0f, 0.0f,
+        -1.f, -1.f, -1.f,       0.0f, -1.0f, 0.0f,
+        1.f, -1.f, -1.f,        0.0f, -1.0f, 0.0f,
+        -1.f, -1.f, 1.f,        0.0f, -1.0f, 0.0f,
+        -1.f, -1.f, 1.f,        0.0f, -1.0f, 0.0f,
+        1.f, -1.f, -1.f,        0.0f, -1.0f, 0.0f,
+        1.f, -1.f, 1.f,         0.0f, -1.0f, 0.0f,
         
-        0.5f, 0.5f, 0.5f,          0.0f, 0.0f, 1.0f,
-        -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
-        0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
-        0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
-        -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.5f,        0.0f, 0.0f, 1.0f,
+        1.f, 1.f, 1.f,          0.0f, 0.0f, 1.0f,
+        -1.f, 1.f, 1.f,         0.0f, 0.0f, 1.0f,
+        1.f, -1.f, 1.f,         0.0f, 0.0f, 1.0f,
+        1.f, -1.f, 1.f,         0.0f, 0.0f, 1.0f,
+        -1.f, 1.f, 1.f,         0.0f, 0.0f, 1.0f,
+        -1.f, -1.f, 1.f,        0.0f, 0.0f, 1.0f,
         
-        0.5f, -0.5f, -0.5f,        0.0f, 0.0f, -1.0f,
-        -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,
-        0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,
-        0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,
-        -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,
-        -0.5f, 0.5f, -0.5f,        0.0f, 0.0f, -1.0f
+        1.f, -1.f, -1.f,        0.0f, 0.0f, -1.0f,
+        -1.f, -1.f, -1.f,       0.0f, 0.0f, -1.0f,
+        1.f, 1.f, -1.f,         0.0f, 0.0f, -1.0f,
+        1.f, 1.f, -1.f,         0.0f, 0.0f, -1.0f,
+        -1.f, -1.f, -1.f,       0.0f, 0.0f, -1.0f,
+        -1.f, 1.f, -1.f,        0.0f, 0.0f, -1.0f
     };
     
     NKVertexBuffer *buf = [[NKVertexBuffer alloc] initWithSize:sizeof(gCubeVertexData) data:gCubeVertexData setup:^{
-        glEnableVertexAttribArray(NKVertexAttribPosition);
-        glVertexAttribPointer(NKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribPosition);
+        glVertexAttribPointer(NKSVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
                               24, BUFFER_OFFSET(0));
         
-        glEnableVertexAttribArray(NKVertexAttribNormal);
-        glVertexAttribPointer(NKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribNormal);
+        glVertexAttribPointer(NKSVertexAttribNormal, 3, GL_FLOAT, GL_FALSE,
                               24, BUFFER_OFFSET(12));
     }];
     
@@ -551,11 +549,139 @@
     return buf;
 }
 
++(instancetype)cubeWithWidthSections:(int)resX height:(int)resY depth:(int) resZ {
+   
+    int numElements = (resX * 2) * (resY* 2) * (resZ * 2) + 3;
+ 
+    V3t *vertices = (V3t*)calloc(numElements,sizeof(V3t));
+    F1t *vPtr = (F1t*)vertices;
+    
+    V3t *normals = (V3t*)calloc(numElements,sizeof(V3t));
+    F1t *nPtr = (F1t*)normals;
+    
+    V2t *texcoords = (V2t*)calloc(numElements,sizeof(V2t));
+
+    C4t *colors = (C4t*)calloc(numElements, sizeof(C4t));
+    
+    V3t vert;
+    V2t texcoord;
+    V3t normal;
+    C4t color;
+    int vertOffset = 0;
+    
+    int elementCounter = 0;
+    
+    // TRIANGLES //
+    float rx = resX;
+    float ry = resY;
+    float rz = resZ;
+    
+    // Front Face //
+    normal = V3Make(0, 0, 1);
+    // add the vertexes //
+    for(int iy = 0; iy < resY; iy++) {
+        //for (int s = 0; s < 2; s++) {
+        for(int ix = 0; ix < resX*2; ix++) {
+            
+            switch (iy % 2) {
+                case 0:
+                    vert.x = (ix / 2) / (resX - 1) * 2 - 1.;
+                    vert.y = (iy / ry + (ix % 2) / ry) * 2 - 1.;
+                    vert.z = 1 * 2 - 1.;
+                    break;
+                    
+                case 1:
+                    vert.x = (((resX-1) - ix) / 2) / (resX - 1) * 2 - 1.;
+                    vert.y = (iy / ry + (ix % 2) / ry) * 2 - 1.;
+                    vert.z = 1 * 2 - 1;
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            texcoord.x = vert.x;
+            texcoord.y = vert.y;
+            
+            *(vertices + elementCounter) = vert;
+            *(texcoords + elementCounter) = texcoord;
+            *(normals + elementCounter) = normal;
+            
+            vPtr+=3;
+            nPtr+=3;
+            elementCounter++;
+        }
+        
+        //Degenerate triangle to connect stacks and maintain winding order
+        
+        vPtr[0] = vPtr[-1];
+        vPtr[1] = vPtr[-1];
+        vPtr[2] = vPtr[-1];
+        
+        nPtr[0] = nPtr[-1];
+        nPtr[1] = nPtr[-1];
+        nPtr[2] = nPtr[-1];
+        
+        vPtr+=3;
+        nPtr+=3;
+        
+        elementCounter++;
+    }
+   
+    numElements = elementCounter;
+    
+    NSLog(@"cube with %d vertices", numElements);
+    NKVertexArray *elements = (NKVertexArray*)calloc(numElements, sizeof(NKVertexArray));
+    
+    for (int i = 0; i < numElements; i++) {
+        memcpy(&elements[i].vertex, &vertices[i], sizeof(V3t));
+        memcpy(&elements[i].normal, &normals[i], sizeof(V3t));
+        memcpy(&elements[i].texCoord, &texcoords[i], sizeof(V2t));
+        memcpy(&elements[i].color, &colors[i], sizeof(C4t));
+    }
+    
+    free(vertices);
+    free(normals);
+    free(texcoords);
+    free(colors);
+    
+//    NSLog(@"V2t: %lu V3t: %lu V4t: %lu ", sizeof(V2t), sizeof(V3t), sizeof(V4t));
+//    NSLog(@"NKVertexArraySize: %lu", sizeof(NKVertexArray));
+    
+    NKVertexBuffer *buf = [[NKVertexBuffer alloc] initWithSize:sizeof(NKVertexArray)*numElements data:elements setup:^{
+        glEnableVertexAttribArray(NKSVertexAttribPosition);
+        glVertexAttribPointer(NKSVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
+                              sizeof(NKVertexArray), BUFFER_OFFSET(0));
+        
+        glEnableVertexAttribArray(NKSVertexAttribNormal);
+        glVertexAttribPointer(NKSVertexAttribNormal, 3, GL_FLOAT, GL_FALSE,
+                              sizeof(NKVertexArray), BUFFER_OFFSET(sizeof(V3t)));
+        
+        glEnableVertexAttribArray(NKSVertexAttribTexCoord0);
+        glVertexAttribPointer(NKSVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE,
+                              sizeof(NKVertexArray), BUFFER_OFFSET(sizeof(V3t)*2));
+        
+        glEnableVertexAttribArray(NKSVertexAttribColor);
+        glVertexAttribPointer(NKSVertexAttribColor, 4, GL_FLOAT, GL_FALSE,
+                              sizeof(NKVertexArray), BUFFER_OFFSET(sizeof(V3t)*2+sizeof(V2t)));
+    }];
+    
+    
+    //buf.drawMode = GL_LINES;
+    
+    free(elements);
+    
+    return buf;
+    
+}
+
+
+
 -(instancetype)initWithVertexData:(const GLvoid *)data ofSize:(GLsizeiptr)size {
     
     return [self initWithSize:size data:data setup:^{
-        glEnableVertexAttribArray(NKVertexAttribPosition);
-        glVertexAttribPointer(NKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
+        glEnableVertexAttribArray(NKSVertexAttribPosition);
+        glVertexAttribPointer(NKSVertexAttribPosition, 3, GL_FLOAT, GL_FALSE,
                               sizeof(V3t), BUFFER_OFFSET(0));
     }];
     
@@ -643,6 +769,7 @@
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _elementBuffer);
 }
+
 
 @end
 

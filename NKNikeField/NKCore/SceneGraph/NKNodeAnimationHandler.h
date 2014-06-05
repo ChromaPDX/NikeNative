@@ -118,7 +118,7 @@ typedef NS_ENUM(NSInteger, NKActionTimingMode) {
 //
 //+ (NKAction *)resizeByWidth:(CGFloat)width height:(CGFloat)height duration:(F1t)duration;
 + (NKAction *)resizeToWidth:(CGFloat)width height:(CGFloat)height duration:(F1t)duration;
-//
++ (NKAction *)resize3d:(V3t)newSize duration:(F1t)duration;
 //+ (NKAction *)resizeToWidth:(CGFloat)width duration:(F1t)duration;
 //+ (NKAction *)resizeToHeight:(CGFloat)height duration:(F1t)duration;
 //
@@ -180,8 +180,11 @@ typedef NS_ENUM(NSInteger, NKActionTimingMode) {
 
 + (NKAction*)panTolookAtNode:(NKNode*)target duration:(F1t)sec;
 + (NKAction*)snapLookToNode:(NKNode*)target forDuration:(F1t)sec;
-+ (NKAction*)enterOrbitForNode:(NKNode*)target longitude:(float)longitude latitude:(float)latitude radius:(float)radius duration:(F1t)sec;
-+ (NKAction*)maintainOrbitForNode:(NKNode*)target longitude:(float)longitude latitude:(float)latitude radius:(float)radius duration:(F1t)sec;
+
++ (NKAction *)enterOrbitAtLongitude:(float)longitude latitude:(float)latitude radius:(float)radius offset:(V3t)offset duration:(F1t)sec;
++ (NKAction*)enterOrbitAtLongitude:(float)longitude latitude:(float)latitude radius:(float)radius duration:(F1t)sec;
++ (NKAction *)maintainOrbitDeltaLongitude:(float)deltaLongitude latitude:(float)deltaLatitude radius:(float)deltaRadius offset:(V3t)offset duration:(F1t)sec;
++ (NKAction *)maintainOrbitDeltaLongitude:(float)deltaLongitude latitude:(float)deltaLatitude radius:(float)deltaRadius duration:(F1t)sec;
 
 @end
 
@@ -207,7 +210,7 @@ typedef NS_ENUM(NSInteger, NKActionTimingMode) {
 - (void)runAction:(NKAction *)action completion:(void (^)())block;
 - (void)runAction:(NKAction *)action withKey:(NSString *)key;
 
--(void)runCompletionBlockForAction:(NKAction*)action;
+- (void)runCompletionBlockForAction:(NKAction*)action;
 
 - (int)hasActions;
 - (NKAction *)actionForKey:(NSString *)key;

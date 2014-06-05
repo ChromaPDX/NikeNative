@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>scheme</key>
+	<string>https</string>
+	<key>host</key>
+	<string>api.nike.com</string>
+	<key>path</key>
+	<string>/oauth/2.0/authorize</string>
+	<key>query</key>
+	<dict>
+		<key>response_type</key>
+		<string>code</string>
+		<key>state</key>
+		<string></string>
+		<key>redirect_uri</key>
+		<dict>
+			<key>scheme</key>
+			<string></string>
+			<key>host</key>
+			<string>nike.com</string>
+			<key>path</key>
+			<string>/login</string>
+		</dict>
+		<key>client_id</key>
+		<string></string>
+	</dict>
+</dict>
+</plist>

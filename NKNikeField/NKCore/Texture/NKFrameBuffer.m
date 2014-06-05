@@ -205,7 +205,12 @@ static inline const char * GetGLErrorString(GLenum error)
         
         #else
         
-        [self buildFBOWithWidth:_width andHeight:height];
+        if ([self buildFBOWithWidth:_width andHeight:height]){
+            
+        }
+        else {
+            return nil;
+        }
         
         #endif
         
@@ -218,7 +223,7 @@ static inline const char * GetGLErrorString(GLenum error)
     
 }
 
--(void) buildFBOWithWidth:(GLuint)width andHeight:(GLuint) height
+-(BOOL) buildFBOWithWidth:(GLuint)width andHeight:(GLuint) height
 {
 	//GLuint fboName;
 	
@@ -261,13 +266,13 @@ static inline const char * GetGLErrorString(GLenum error)
 	{
 		NSLog(@"failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
 		[self destroyFBO:_frameBuffer];
-
+        return 0;
 	}
 	
 	GetGLError();
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
+    return 1;
 }
 
 -(void) destroyFBO:(GLuint) fboName
@@ -370,8 +375,8 @@ static inline const char * GetGLErrorString(GLenum error)
         glDeleteFramebuffers(1, &_frameBuffer);
         glDeleteRenderbuffers(1, &_renderBuffer);
 #else
-    glDeleteFramebuffersEXT(1, &_frameBuffer);
-    glDeleteRenderbuffersEXT(1, &_renderBuffer);
+    glDeleteFramebuffers(1, &_frameBuffer);
+    glDeleteRenderbuffers(1, &_renderBuffer);
 #endif
     
         if(_depthBuffer)
@@ -379,7 +384,7 @@ static inline const char * GetGLErrorString(GLenum error)
             #if NK_USE_GLES
             glDeleteRenderbuffers(1, &_depthBuffer);
             #else
-            glDeleteRenderbuffersEXT(1, &_depthBuffer);
+            glDeleteRenderbuffers(1, &_depthBuffer);
             #endif
             _depthBuffer = 0;
         }

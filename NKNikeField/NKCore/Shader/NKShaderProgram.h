@@ -7,28 +7,17 @@
 //
 
 #import "NKPch.h"
-
+#import "NKShaderTools.h"
 // ATTRIBUTES
-
-#if NK_USE_GLES
-
-#else
-
-#define highp
-#define mediump
-#define lowp
-
-#endif
 
 @class NKByteColor;
 
 typedef NS_ENUM(GLint, NKVertexAttrib)
 {
-    NKVertexAttribPosition,
-    NKVertexAttribNormal,
-    NKVertexAttribColor,
-    NKVertexAttribTexCoord0,
-    NKVertexAttribTexCoord1
+    NKSVertexAttribPosition,
+    NKSVertexAttribNormal,
+    NKSVertexAttribTexCoord0,
+    NKSVertexAttribColor,
 } NS_ENUM_AVAILABLE(10_8, 5_0);
 
 
@@ -38,21 +27,39 @@ typedef NS_ENUM(GLint, NKVertexAttrib)
 
 @interface NKShaderProgram : NSObject
 
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, assign) GLuint glPointer;
+{
+    int numAttributes;
+}
 
-@property (nonatomic, strong) NSMutableDictionary *attributes;
++(instancetype)newShaderNamed:(NSString*)name colorMode:(NKS_COLOR_MODE)colorMode numTextures:(int)numTex lightNodes:(NSArray*)lightNodes withBatchSize:(int)batchSize;
 
-@property (nonatomic, strong) NSArray *uniformNames;
-@property (nonatomic, readonly) NSDictionary *uniformLocations;
++(instancetype)shaderNamed:(NSString*)name;
 
-+ (instancetype)defaultShader;
+- (id)initWithDictionary:(NSDictionary*)shaderDict name:(NSString*)name;
+
 - (instancetype)initWithName:(NSString *)name;
 - (instancetype)initWithVertexShader:(NSString *)vertShaderName fragmentShader:(NSString *)fragShaderName;
 - (instancetype)initWithVertexSource:(NSString*)vertexSource fragmentSource:(NSString*)fragmentSource;
 
+#pragma mark - UTILS
+
+@property (nonatomic, strong) NSMutableDictionary *nkShaderDictionary;
+
 @property (nonatomic, strong) NSString *vertexSource;
 @property (nonatomic, strong) NSString *fragmentSource;
+
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, assign) GLuint glPointer;
+
+@property (nonatomic) int batchSize;
+
+-(void)addLight:(NKLightShader*)light;
+
+-(NSArray*)glslExtensions;
+
+-(NKShaderVariable*)uniformNamed:(NKS_ENUM)name;
+-(NKShaderVariable*)varyingNamed:(NKS_ENUM)name;
+-(NKShaderVariable*)fragVarNamed:(NKS_ENUM)name;
 
 - (BOOL)load;
 - (void)unload;
@@ -86,177 +93,3 @@ typedef NS_ENUM(GLint, NKVertexAttrib)
 -(NSString*)fragmentStringFromShaderDictionary:(NSDictionary*)dict;
 
 @end
-
-#pragma mark - SHADER CONST
-
-#define STRINGIZE(x) #x
-#define STRINGIZE2(x) STRINGIZE(x)
-#define SHADER_STRING(text) @ STRINGIZE2(text)
-
-static NSString *const nkImageVertexShaderString = SHADER_STRING
-(
- attribute vec4 position;
- attribute vec4 inputTextureCoordinate;
- 
- varying vec2 textureCoordinate;
- 
- void main()
- {
-     gl_Position = position;
-     textureCoordinate = inputTextureCoordinate.xy;
- }
- );
-
-
-
-
-static NSString *const nkVertexHeader = SHADER_STRING
-(
- //precision highp float;
- 
- attribute vec4 a_position;
- attribute vec3 a_normal;
- attribute vec4 a_color;
- attribute vec2 a_texCoord0;
- attribute vec2 a_texCoord1;
- 
- uniform highp mat4 u_modelViewProjectionMatrix;
- uniform highp mat3 u_normalMatrix;
- uniform lowp int u_useUniformColor;
- uniform lowp int u_numTextures;
- uniform vec4 u_color;
- 
- uniform sampler2D tex0;
- 
- varying mediump vec2 v_texCoord0;
- varying mediump vec2 v_texCoord1;
- varying lowp vec4 v_color;
- );
-
-static NSString *const nkDefaultTextureVertexShader = SHADER_STRING
-(
- //precision highp float;
- 
- attribute vec4 a_position;
- attribute vec3 a_normal;
- attribute vec4 a_color;
- attribute vec2 a_texCoord0;
- attribute vec2 a_texCoord1;
- 
-
- uniform highp mat4 u_modelViewProjectionMatrix;
- uniform highp mat3 u_normalMatrix;
- uniform lowp int u_useUniformColor;
- uniform lowp int u_numTextures;
- uniform vec4 u_color;
- 
- uniform sampler2D tex0;
- 
- varying mediump vec2 v_texCoord0;
- varying mediump vec2 v_texCoord1;
- varying lowp vec4 v_color;
- 
- void main()
-{
-      vec3 eyeNormal = normalize(u_normalMatrix * a_normal);
-//    vec3 lightPosition = vec3(0.5, 1.5, -1.0);
-      vec4 diffuseColor;
-//    
-    if (u_useUniformColor == 1){
-        diffuseColor = u_color;
-    }
-    else {
-        if (a_color.a > 0.){
-            diffuseColor = a_color;
-        }
-        else {
-            diffuseColor = vec4(1.,1.,1.,1.);
-        }
-    }
-    
-    //    float nDotVP = max(0.0, dot(eyeNormal, normalize(lightPosition)));
-    //
-    //    v_color = diffuseColor * nDotVP;
-    
-    v_color = diffuseColor;
-    
-    if (u_numTextures > 0){
-        v_texCoord0 = a_texCoord0;
-        if (u_numTextures > 1){
-            v_texCoord1 = a_texCoord1;
-        }
-    }
-    
-    gl_Position = u_modelViewProjectionMatrix * a_position;
-}
- 
- );
-
-static NSString *const nkHitDetectVertexShader = SHADER_STRING
-(
- attribute vec4 a_position;
- 
- uniform highp mat4 u_modelViewProjectionMatrix;
- uniform highp mat3 u_normalMatrix;
- uniform lowp int u_useUniformColor;
- uniform lowp int u_numTextures;
- uniform vec4 u_color;
- 
- varying lowp vec4 v_color;
- 
- void main()
-{
-    v_color = u_color;
-    gl_Position = u_modelViewProjectionMatrix * a_position;
-}
- 
- );
-
-static NSString *const nkHitDetectFragmentShader = SHADER_STRING
-(
- varying lowp vec4 v_color;
- 
- void main()
-{
-    gl_FragColor = v_color;
-}
- );
-
-static NSString *const nkDefaultTextureFragmentShader = SHADER_STRING
-(
- uniform sampler2D tex0;
- uniform lowp int u_numTextures;
- 
- varying lowp vec4 v_color;
- varying mediump vec2 v_texCoord0;
- varying mediump vec2 v_texCoord1;
- 
- void main()
-{
-    lowp vec4 final;
-    
-    if (u_numTextures > 0){
-        final = texture2D(tex0, v_texCoord0) * v_color;// * v_color;
-    }
-    else {
-        final = v_color;
-    }
-    
-    if (final.a > .1){
-        gl_FragColor = final;
-    }
-    else {
-        discard;
-    }
-}
-);
-
-static NSString *const nkFragmentHeader = SHADER_STRING
-(
- uniform sampler2D tex0;
- uniform lowp int u_numTextures;
- 
- varying lowp vec4 v_color;
- varying mediump vec2 v_texCoord0;
- varying mediump vec2 v_texCoord1;
- );
