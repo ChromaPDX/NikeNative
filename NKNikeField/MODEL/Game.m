@@ -352,6 +352,10 @@
             
             //
         }
+        else if(!_selectedPlayer.moved){
+            //GameEvent* playerEvent =  [self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventMove];
+            GameEvent* playerEvent =  [self addMoveEventToSequence:_currentEventSequence forPlayer:_selectedPlayer toLocation:selectedLocation];
+        }
     }
     
 }
@@ -460,6 +464,25 @@
     return event;
     
 }
+
+-(GameEvent*)addMoveEventToSequence:(GameSequence*)sequence forPlayer:(Player*)player toLocation:(BoardLocation*)location {
+
+    GameEvent *event = [GameEvent event];
+    
+    event.playerPerforming = player;
+    event.startingLocation = [player.location copy];
+    event.location = [location copy];
+    
+    event.type = kEventMove;
+    
+    [sequence.GameEvents addObject:event];
+    
+    event.cost = 0;
+    
+    return event;
+
+}
+
 
 -(GameEvent*)addDrawEventToSequence:(GameSequence*)sequence forManager:(Manager*)m {
     

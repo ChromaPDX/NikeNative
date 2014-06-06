@@ -24,16 +24,17 @@
 }
 
 -(NSString*)name{
-    return [NSString stringWithFormat:@"TILE: %ld %ld",(long)_location.x,(long)_location.y ];
+   // return [NSString stringWithFormat:@"TILE: %ld %ld",(long)_location.x,(long)_location.y ];
+    return @"0,0";
 }
 
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-//    NKTouchState hit = [super touchUp:location id:touchId];
-//    if (hit == 2) {
-        _delegate.selectedBoardTile = self;
-//    }
-//    return hit;
-    return false;
+-(NKTouchState)touchUp:(P2t)l id:(int)touchId {
+     NKTouchState hit = [super touchUp:l id:touchId];
+    _delegate.selectedBoardTile = self;
+    BoardLocation *bl = [[BoardLocation alloc] initWithX:l.x Y:l.y];
+    NSLog(@"touchUP in boardTile, location = %f,%f, bl = %@", l.x, l.y, bl);
+    [_delegate setSelectedBoardLocation:bl];
+    return hit;
 }
 
 

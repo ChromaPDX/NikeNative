@@ -53,8 +53,8 @@ typedef NS_ENUM(int32_t, Direction) {
 
 }
 
-@property CGFloat x;
-@property CGFloat y;
+@property float x;
+@property float y;
 @property BorderMask borderShape;
 
 +(instancetype)pX:(float)x Y:(float)y;

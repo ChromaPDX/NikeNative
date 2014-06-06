@@ -223,6 +223,8 @@ float PARTICLE_SCALE;
         for(int j = 0; j < BOARD_LENGTH; j++){
             BoardTile *square = [[BoardTile alloc] initWithTexture:Nil color:nil size:S2Make(TILE_WIDTH-2, TILE_HEIGHT-2)];
             
+            [square setUserInteractionEnabled:true];
+            
             [square setLocation:[BoardLocation pX:i Y:j]];
             
             square.delegate = self;
@@ -233,7 +235,7 @@ float PARTICLE_SCALE;
             
             [_gameTiles setObject:square forKey:square.location];
             
-            [square setPosition3d:V3Make((i+.5)*TILE_WIDTH - (TILE_WIDTH*BOARD_WIDTH*.5), ((j+.5)*TILE_HEIGHT) - (TILE_HEIGHT*BOARD_LENGTH*.5),6) ];
+            [square setPosition3d:V3Make((i+.5)*TILE_WIDTH - (TILE_WIDTH*BOARD_WIDTH*.5), ((j+.5)*TILE_HEIGHT) - (TILE_HEIGHT*BOARD_LENGTH*.5),0) ];
         }
     }
     
@@ -285,6 +287,11 @@ float PARTICLE_SCALE;
 
 #pragma mark - UX INTERACTION
 
+-(void)setSelectedBoardLocation:(BoardLocation *)SelectedBoardLocation{
+    //self.selectedBoardLocation = selectedBoardLocation;
+    [self.game setSelectedLocation:SelectedBoardLocation];
+}
+
 -(BoardLocation*)locationOnBoardFromPoint:(P2t)location {
     
     return [BoardLocation pointWithP2:P2Make((location.x + _gameBoardNode.size.width/2.) / TILE_WIDTH,(location.y + _gameBoardNode.size.height/2.) /TILE_HEIGHT)];
@@ -308,7 +315,7 @@ float PARTICLE_SCALE;
     for (BoardTile* tile in _gameTiles.allValues) {
         [tile setColor:nil];
         [tile setTexture:nil];
-        [tile setUserInteractionEnabled:false];
+       // [tile setUserInteractionEnabled:false];
     }
     [self revealBlocksForManager:sequence.manager];
 }
@@ -321,7 +328,7 @@ float PARTICLE_SCALE;
             [tile.location setBorderShapeInContext:m.effects[Card_Block]];
             [tile setTextureForBorder:tile.location.borderShape];
             [tile setColor:V2RED];
-            [tile setUserInteractionEnabled:false];
+            //[tile setUserInteractionEnabled:false];
             
             if (!tile.block) {
                 NKMeshNode *block = [[NKMeshNode alloc] initWithPrimitive:NKPrimitiveCube texture:nil color:V2RED size:V3MakeF(TILE_WIDTH*.5)];
@@ -389,7 +396,7 @@ float PARTICLE_SCALE;
         [tile setTextureForBorder:tile.location.borderShape];
         [tile setColor:nil];
         [tile setTexture:nil];
-        [tile setUserInteractionEnabled:false];
+     //   [tile setUserInteractionEnabled:false];
         [tile hideOverlay];
         [tile runAction:[NKAction fadeAlphaTo:0. duration:FAST_ANIM_DUR]];
     }

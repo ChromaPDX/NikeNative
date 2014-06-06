@@ -67,6 +67,8 @@
 -(void)gameDidFinishWithLose;
 -(void)gameDidFinishWithWin;
 
+-(void)setSelectedBoardLocation:(BoardLocation *)selectedBoardLocation;
+
 // SETUP BOARD
 
 -(void)cleanupGameBoard;

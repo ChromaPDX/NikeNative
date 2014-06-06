@@ -41,7 +41,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"BoardLocation: X:%d Y:%d",_x,_y];
+    return [NSString stringWithFormat:@"BoardLocation: X:%f Y:%f",_x,_y];
 }
 
 -(NSUInteger) hash;{
