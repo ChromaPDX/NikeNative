@@ -1620,6 +1620,15 @@ float PARTICLE_SCALE;
     [super updateWithTimeSinceLast:dt];
 }
 
+
+-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
+        NKTouchState hit = [super touchUp:location id:touchId];
+       if (hit == 2) {
+    }
+    return hit;
+}
+
+
 //-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
 //
 //    if ([super touchUp:location id:touchId] == NKTouchIsFirstResponder) {
