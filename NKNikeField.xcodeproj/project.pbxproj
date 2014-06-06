@@ -364,6 +364,7 @@
 		3B96C7DA1937B7BC00B60B12 /* Screen_Splash_320_480.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7D51937B7BC00B60B12 /* Screen_Splash_320_480.png */; };
 		3B96C7DB1937B7BC00B60B12 /* Screen_Splash_640_960.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7D61937B7BC00B60B12 /* Screen_Splash_640_960.png */; };
 		3B96C7DC1937B7BC00B60B12 /* Screen_Splash_960.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7D71937B7BC00B60B12 /* Screen_Splash_960.png */; };
+		3B96C7DE1941456900B60B12 /* move_radius.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B96C7DD1941456900B60B12 /* move_radius.png */; };
 		3BC1A4C9193455160089C953 /* player_effect.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC1A4C8193455160089C953 /* player_effect.png */; };
 		3BC5A7CF19193E9600414544 /* FuelBar_Container.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC5A7CE19193E9600414544 /* FuelBar_Container.png */; };
 		3BC5A7D21919914800414544 /* FuelBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC5A7D11919914800414544 /* FuelBar.m */; };
@@ -1072,6 +1073,7 @@
 		3B96C7D51937B7BC00B60B12 /* Screen_Splash_320_480.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Splash_320_480.png; sourceTree = "<group>"; };
 		3B96C7D61937B7BC00B60B12 /* Screen_Splash_640_960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Splash_640_960.png; sourceTree = "<group>"; };
 		3B96C7D71937B7BC00B60B12 /* Screen_Splash_960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screen_Splash_960.png; sourceTree = "<group>"; };
+		3B96C7DD1941456900B60B12 /* move_radius.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = move_radius.png; sourceTree = "<group>"; };
 		3BC1A4C8193455160089C953 /* player_effect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = player_effect.png; sourceTree = "<group>"; };
 		3BC5A7CE19193E9600414544 /* FuelBar_Container.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FuelBar_Container.png; sourceTree = "<group>"; };
 		3BC5A7D0191990EA00414544 /* FuelBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuelBar.h; sourceTree = "<group>"; };
@@ -2263,6 +2265,7 @@
 				29090EE9190ED98B00BE6B92 /* Halo_Marks_glow.png */,
 				29090EEA190ED98B00BE6B92 /* Halo_Marks.png */,
 				29090EEB190ED98B00BE6B92 /* Halo.png */,
+				3B96C7DD1941456900B60B12 /* move_radius.png */,
 				3B21F88B192D092300401234 /* FactionPsykeAway_OFF.png */,
 				3B21F88C192D092300401234 /* FactionKinforceAway_OFF.png */,
 				3B21F88D192D092300401234 /* FactionSentionAway_OFF.png */,
@@ -2501,6 +2504,7 @@
 				3B247D831922A26000A6EFDB /* ButtonNikeConnect.png in Resources */,
 				3B6BF23D191016200082628E /* fuelbar_fuel.png in Resources */,
 				3B96C7D01937B70A00B60B12 /* Screen_MainMenu_960.png in Resources */,
+				3B96C7DE1941456900B60B12 /* move_radius.png in Resources */,
 				3B21F8A8192D092300401234 /* FactionKinforceHome_ON.png in Resources */,
 				61D6E87C18FDB5B70017A389 /* PlayerIndicator_HUD.png in Resources */,
 				3B27D3BB1925BDEF00782A12 /* tile_all_dotted.png in Resources */,

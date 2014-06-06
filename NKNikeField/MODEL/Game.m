@@ -286,6 +286,7 @@
 
 -(void)setSelectedLocation:(BoardLocation *)selectedLocation {
     
+    NSLog(@"setSelectedLocation = %@", selectedLocation);
     if (_selectedPlayer) {
         if (_selectedCard) {
             _currentEventSequence = [GameSequence sequence];
@@ -882,6 +883,7 @@
 -(void)pressedEndTurn {
     for (Player*p in _selectedManager.players.inGame) {
         p.used = true;
+        p.moved = true;
     }
     [self recordSequence:[self endTurnSequenceForManager:_selectedManager] withCompletionBlock:^{
         GameSequence* passTurn = [GameSequence sequence];
@@ -924,6 +926,7 @@
             }
             else{
                 p.used = false;
+                p.moved = false;
             }
         }
         
@@ -1314,13 +1317,13 @@
 -(void)logEvent:(GameEvent*)event{
     
     if (event.playerPerforming) {
-        NSLog(@">>%d %@ is %@ >> %d,%d to %d,%d", event.index, event.playerPerforming.name, event.name, event.startingLocation.x, event.startingLocation.y, event.location.x, event.location.y);
+        NSLog(@">>%d %@ is %@ >> %f,%f to %f,%f", event.index, event.playerPerforming.name, event.name, event.startingLocation.x, event.startingLocation.y, event.location.x, event.location.y);
         if (!event.wasSuccessful) {
             NSLog(@"BUT THEY FAILED TO DO SO !!");
         }
     }
     else if (event.startingLocation) {
-        NSLog(@">>%d %@ for %@ from %d %d", event.index, event.name, event.manager.name, event.startingLocation.x, event.startingLocation.y);
+        NSLog(@">>%d %@ for %@ from %f %f", event.index, event.name, event.manager.name, event.startingLocation.x, event.startingLocation.y);
     }
     else {
         NSLog(@">>%d %@ for %@", event.index, event.name, event.manager.name);
@@ -1363,24 +1366,15 @@
         
         if (event.manager.allCardsInHand.count < 5) {
             
-            int randomDraw = [event.manager.moveDeck randomForIndex:(event.seed + i)];
+           // int randomDraw = [event.manager.moveDeck randomForIndex:(event.seed + i)];
             
-            if (randomDraw < 85) {
-                [event.manager.moveDeck turnOverNextCardForEvent:event];
+            int randomDraw = arc4random() % 100;
+            
+            if (randomDraw < 50) {
+                [event.manager.challengeDeck turnOverNextCardForEvent:event];
             }
             
-            else if (randomDraw < 170) {
-                
-                if (event.manager.hasPossesion) {
-                    [event.manager.kickDeck turnOverNextCardForEvent:event];
-                }
-                else {
-                    [event.manager.challengeDeck turnOverNextCardForEvent:event];
-                }
-                
-            }
-            
-            else {
+            else{
                 [event.manager.specialDeck turnOverNextCardForEvent:event];
             }
             

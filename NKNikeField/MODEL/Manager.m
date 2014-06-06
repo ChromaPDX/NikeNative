@@ -47,8 +47,8 @@
 
 -(void)initDecks {
 
-    _moveDeck = [[Deck alloc]initEmptyForManager:self WithType:CardCategoryMove];
-    _kickDeck = [[Deck alloc]initEmptyForManager:self WithType:CardCategoryKick];
+    //_moveDeck = [[Deck alloc]initEmptyForManager:self WithType:CardCategoryMove];
+    //_kickDeck = [[Deck alloc]initEmptyForManager:self WithType:CardCategoryKick];
     _challengeDeck = [[Deck alloc]initEmptyForManager:self WithType:CardCategoryChallenge];
     _specialDeck = [[Deck alloc]initEmptyForManager:self WithType:CardCategorySpecial];
     
@@ -190,11 +190,13 @@
 }
 
 -(NSArray*)allCardsInHand {
-    return [[[_moveDeck.inHand arrayByAddingObjectsFromArray:_kickDeck.inHand]arrayByAddingObjectsFromArray:_challengeDeck.inHand]arrayByAddingObjectsFromArray:_specialDeck.inHand];
+   // return [[[_moveDeck.inHand arrayByAddingObjectsFromArray:_kickDeck.inHand]arrayByAddingObjectsFromArray:_challengeDeck.inHand]arrayByAddingObjectsFromArray:_specialDeck.inHand];
+    return [_challengeDeck.inHand arrayByAddingObjectsFromArray:_specialDeck.inHand];
 }
 
 -(NSArray*)allCardsInDeck {
-    return [[[_moveDeck.theDeck arrayByAddingObjectsFromArray:_kickDeck.theDeck]arrayByAddingObjectsFromArray:_challengeDeck.theDeck]arrayByAddingObjectsFromArray:_specialDeck.theDeck];
+   // return [[[_moveDeck.theDeck arrayByAddingObjectsFromArray:_kickDeck.theDeck]arrayByAddingObjectsFromArray:_challengeDeck.theDeck]arrayByAddingObjectsFromArray:_specialDeck.theDeck];
+    return [_challengeDeck.theDeck arrayByAddingObjectsFromArray:_specialDeck.theDeck];
 }
 
 -(Card*)drawCard {

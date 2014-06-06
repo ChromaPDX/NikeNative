@@ -35,6 +35,7 @@
         
         switch (_category) {
             case CardCategoryKick:
+                break;
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
@@ -51,6 +52,7 @@
                 break;
                 
             case CardCategoryMove:
+                break;
                 _allCards = @[[[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],
                               [[Card alloc] initWithDeck:self],

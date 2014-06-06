@@ -37,6 +37,7 @@ typedef NS_ENUM(int32_t, FactionType) {
 
 @property (nonatomic, weak) Manager *manager;
 @property (nonatomic) bool used;
+@property (nonatomic) bool moved;
 
 @property (nonatomic,strong) NSMutableDictionary *effects;
 

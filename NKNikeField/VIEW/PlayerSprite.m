@@ -135,6 +135,7 @@
 
 -(void)setStateForBar {
     [self removeChildNamed:@"shadow"];
+    [self removeChildNamed:@"moveRadius"];
     [cardImg removeFromParent];
     
     cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:S2Make(w, h)];
@@ -168,10 +169,16 @@
         crosshairs.name = @"crosshairs";
         [self addChild:crosshairs];
         [crosshairs setZPosition: 1];
+        
+        if(!self.model.moved){
+            [self showMoveRadius];
+        }
+
     }
     
     else if (!highlighted && _highlighted){
         [self removeChildNamed:@"crosshairs"];
+        [self removeChildNamed:@"moveRadius"];
         
     }
     
@@ -179,6 +186,18 @@
     
     _highlighted = highlighted;
     
+    
+}
+
+-(void)showMoveRadius{
+    NKSpriteNode *moveRadiusSprite = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"move_radius"] color:V2GREEN size:S2Make(400,400)];
+    moveRadiusSprite.name = @"moveRadius";
+    //moveRadiusSprite.alpha = .5;
+    //[moveRadiusSprite setTransparency:.5];
+    [moveRadiusSprite setBlendMode:NKBlendModeAlpha];
+    [self addChild:moveRadiusSprite];
+    
+    [moveRadiusSprite setZPosition: 4];
 }
 
 -(void)getReadyForPosession:(void (^)())block {
