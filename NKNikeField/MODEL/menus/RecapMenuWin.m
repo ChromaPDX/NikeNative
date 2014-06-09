@@ -17,21 +17,12 @@
 
 -(instancetype)initWithSize:(S2t)size {
     self = [super initWithSize:size];
-    
     if (self) {
-        NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size];
-        [self addChild:table];
-        [table setPadding:P2Make(0,0)];
-        // table.scrollingEnabled = true;
-        table.scale = 1.02;  // to correct for image...this needs to be fixed
-        table.name = @"table";
-        table.delegate = self;
-        NKTexture *image;
-        image = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"Screen_RecapWinNoText.png"]];
+     
+        NKSpriteNode *bgSprite = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Screen_RecapWinNoText.png"] color:nil size:self.size];
+        [self addChild:bgSprite];
+       // [bgSprite setUserInteractionEnabled:true];
 
-        [table setTexture:image];
-        table.color = NKWHITE;
-        
         NSArray *listOfNames = [FakeFriends getNamesForText:3];
         NKLabelNode *bigText = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
 
@@ -62,11 +53,11 @@
         [bigText3 setText:[listOfNames objectAtIndex:2]];
         [bigText3 setPosition:P2Make(190, 250)];
         [self addChild:bigText3];
+ 
     }
 
     return self;
 }
-
 
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
     NKTouchState hit = [super touchUp:location id:touchId];
