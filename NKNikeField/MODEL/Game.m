@@ -355,6 +355,8 @@
         else if(!_selectedPlayer.moved){
             //GameEvent* playerEvent =  [self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventMove];
             GameEvent* playerEvent =  [self addMoveEventToSequence:_currentEventSequence forPlayer:_selectedPlayer toLocation:selectedLocation];
+            [playerEvent setType:kEventMove];
+            [self performSequence:_currentEventSequence record:YES animate:YES];
         }
     }
     
@@ -931,6 +933,10 @@
     [self logEvent:event];
     
     //event.manager.SequencePoints -= event.cost;
+    
+    if(event.type == kEventMove){
+        NSLog(@"kEventMove event begin");
+    }
     
     if (event.type == kEventStartTurn){
         event.manager.myTurn = true;
