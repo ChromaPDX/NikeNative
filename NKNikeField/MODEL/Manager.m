@@ -179,9 +179,9 @@
     NSMutableArray *useableInCat = [[NSMutableArray alloc] init];
     
     for (Card *c in [self cardsInHandOfCategory:thisCategory]) {
-        if ([c validatedSelectionSetForPlayer:p]) {
+       // if ([c validatedSelectionSetForPlayer:p]) {
              [useableInCat addObject:c];
-        }
+       // }
     }
     if (useableInCat.count) {
         return useableInCat;

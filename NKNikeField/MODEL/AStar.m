@@ -364,36 +364,36 @@
 }
 
 // returns a list of locations from self in a given direction.
--(NSArray*)rayFromLocation:(BoardLocation*)location inDirection:(Direction)direction{
-    NSMutableArray *retArray = [[NSMutableArray alloc] init];
-    BoardLocation *newLoc = [location stepInDirection:direction];
-    if(!newLoc) return NULL;
-    int index = newLoc.x + newLoc.y*columns;
-    if(obstacleCells[index]) return NULL;
-    while(newLoc && !obstacleCells[index]){
-        [retArray addObject:newLoc];
-        newLoc = [newLoc stepInDirection:direction];
-        index = newLoc.x + newLoc.y*columns;
-    }
-    return retArray;
-}
+//-(NSArray*)rayFromLocation:(BoardLocation*)location inDirection:(Direction)direction{
+//    NSMutableArray *retArray = [[NSMutableArray alloc] init];
+//    BoardLocation *newLoc = [location stepInDirection:direction];
+//    if(!newLoc) return NULL;
+//    int index = newLoc.x + newLoc.y*columns;
+//    if(obstacleCells[index]) return NULL;
+//    while(newLoc && !obstacleCells[index]){
+//        [retArray addObject:newLoc];
+//        newLoc = [newLoc stepInDirection:direction];
+//        index = newLoc.x + newLoc.y*columns;
+//    }
+//    return retArray;
+//}
 
 // returns a list of locations from self in a given direction.
--(NSArray*)rayFromLocation:(BoardLocation*)location inDirection:(Direction)direction walkDistance:(int)distance{
-    int stepsTaken = 0;
-    NSMutableArray *retArray = [[NSMutableArray alloc] init];
-    BoardLocation *newLoc = [location stepInDirection:direction];
-    if(!newLoc) return NULL;
-    int index = newLoc.x + newLoc.y*columns;
-    if(obstacleCells[index]) return NULL;
-    while(newLoc && !obstacleCells[index] && stepsTaken < distance){
-        [retArray addObject:newLoc];
-        stepsTaken++;
-        newLoc = [newLoc stepInDirection:direction];
-        index = newLoc.x + newLoc.y*columns;
-    }
-    return retArray;
-}
+//-(NSArray*)rayFromLocation:(BoardLocation*)location inDirection:(Direction)direction walkDistance:(int)distance{
+//    int stepsTaken = 0;
+//    NSMutableArray *retArray = [[NSMutableArray alloc] init];
+//    BoardLocation *newLoc = [location stepInDirection:direction];
+//    if(!newLoc) return NULL;
+//    int index = newLoc.x + newLoc.y*columns;
+//    if(obstacleCells[index]) return NULL;
+//    while(newLoc && !obstacleCells[index] && stepsTaken < distance){
+//        [retArray addObject:newLoc];
+//        stepsTaken++;
+//        newLoc = [newLoc stepInDirection:direction];
+//        index = newLoc.x + newLoc.y*columns;
+//    }
+//    return retArray;
+//}
 
 
 

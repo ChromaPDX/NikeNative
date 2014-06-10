@@ -16,6 +16,7 @@
     
     if (_player) {
         [self setPosition3d:[_player.ballTarget positionInNode3d:self.parent]];
+       // [self setPosition3d:_player.ballTarget.position3d];
     }
 }
 

@@ -372,21 +372,21 @@ float PARTICLE_SCALE;
 }
 
 -(void)showPossibleKickForManager:(Manager*)manager{
-    Card *kickCard = manager.game.lastKickCardSelected;
-    if(kickCard && manager.hasPossesion && kickCard.game.selectedPlayer != kickCard.game.ball.enchantee){
-        NSArray *set = [kickCard validatedSelectionSetForPlayer:self.game.ball.enchantee];
-        for (BoardLocation* loc in set) {
-            BoardTile* tile = [_gameTiles objectForKey:loc];
-            
-            
-            //[tile setColor:V2GREEN];
-            [tile.location setBorderShapeInContext:set];
-            [tile showOverlay];
-
-            [tile removeAllActions];
-            [tile runAction:[NKAction fadeAlphaTo:1 duration:FAST_ANIM_DUR]];
-        }
-    }
+//    Card *kickCard = manager.game.lastKickCardSelected;
+//    if(kickCard && manager.hasPossesion && kickCard.game.selectedPlayer != kickCard.game.ball.enchantee){
+//        NSArray *set = [kickCard validatedSelectionSetForPlayer:self.game.ball.enchantee];
+//        for (BoardLocation* loc in set) {
+//            BoardTile* tile = [_gameTiles objectForKey:loc];
+//            
+//            
+//            //[tile setColor:V2GREEN];
+//            [tile.location setBorderShapeInContext:set];
+//            [tile showOverlay];
+//
+//            [tile removeAllActions];
+//            [tile runAction:[NKAction fadeAlphaTo:1 duration:FAST_ANIM_DUR]];
+//        }
+//    }
 }
 
 -(void)showCardPath:(NSArray*)path forPlayer:(Player*)player{
@@ -474,9 +474,9 @@ float PARTICLE_SCALE;
             }
             [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{
 
-                if (_selectedCard) {
-                    [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
-                }
+//                if (_selectedCard) {
+//                    [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
+//                }
                 
             }];
         }
@@ -531,17 +531,17 @@ float PARTICLE_SCALE;
 
 -(void)AISelectedCard:(Card *)selectedCard {
     
-    _selectedCard = selectedCard;
-    _game.selectedCard = selectedCard;
-    
-    [_uxWindow setSelectedCard:selectedCard];
-    
-    [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
-    
-    [self runAction:[NKAction delayFor:AI_SPEED] completion:^{
-        [_game AIChooseLocationForCard:selectedCard];
-    }];
-    
+//    _selectedCard = selectedCard;
+//    _game.selectedCard = selectedCard;
+//    
+//    [_uxWindow setSelectedCard:selectedCard];
+//    
+//    [self showCardPath:[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
+//    
+//    [self runAction:[NKAction delayFor:AI_SPEED] completion:^{
+//        [_game AIChooseLocationForCard:selectedCard];
+//    }];
+//    
 }
 
 -(void)setSelectedBoardTile:(BoardTile *)selectedBoardTile {
@@ -637,11 +637,15 @@ float PARTICLE_SCALE;
     }
     
     else if (event.type == kEventMove){
-        [player runAction:[NKAction moveTo:[(NKNode*)[_gameTiles objectForKey:event.location] position] duration:MOVE_SPEED] completion:^(){
-            
+       NSLog(@"kEventMove starting in GameScene...");
+        
+        [player runAction:[NKAction moveTo:P2Make(event.location.x-TILE_WIDTH/2, event.location.y-TILE_HEIGHT/2) duration:MOVE_SPEED] completion:^(){
+            NSLog(@"moving player to %f,%f", player.position.x, player.position.y);
+            V3t ballPos = [player.ballTarget positionInNode3d:self.gameBoardNode];
+            NSLog(@"player.ballTarget = %f,%f", ballPos.x, ballPos.y);
             if (event.playerPerforming.ball) {
                 [player getReadyForPosession:^{
-                    [self.ballSprite runAction:[NKAction move3dTo:[player.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED] completion:^{
+                    [self.ballSprite runAction:[NKAction move3dTo:player.ballTarget.position3d duration:BALL_SPEED] completion:^{
                         [player startPossession];
                         block();
                     }];
@@ -1244,8 +1248,9 @@ float PARTICLE_SCALE;
 //}
 -(void)animateMoveBallToPlayer:(Player *)player withCompletionBlock:(void (^)())block{
     PlayerSprite* ps = [playerSprites objectForKey:player];
+    NSLog(@"moving ball to %d,%d", ps.ballTarget.position3d.x, ps.ballTarget.position3d.y);
     [ps getReadyForPosession:^{
-        [self.ballSprite runAction:[NKAction move3dTo:[ps.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED]  completion:^{
+        [self.ballSprite runAction:[NKAction move3dTo:ps.ballTarget.position3d duration:BALL_SPEED]  completion:^{
             //[_ballSprite removeAllActions];
             block();
             [ps startPossession];
@@ -1396,7 +1401,7 @@ float PARTICLE_SCALE;
 -(void)moveBallToLocation:(BoardLocation *)location {
     
     [_ballSprite setScale:BALL_SCALE_BIG];
-    [_ballSprite setPosition:[(NKNode*)[_gameTiles objectForKey:location] position]];
+    [_ballSprite setPosition:P2Make(location.x, location.y)];
     _game.ball.location = location;
     
     NSLog(@"GameScene.m :: moving ball to: %d %d", location.x, location.y);

@@ -428,284 +428,284 @@
     
 }
 
--(NSArray*)selectionSetForPlayer:(Player*)p {
-    if (!p) {
-         NSLog(@"selectionSet with no player");
-        return nil;
-    }
-    
-    if (p.manager.energy < self.energyCost) {
-        if (!p.manager.isAI) {
-            //NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];
-            //[self.game.gameScene presentAlert:test animated:true];
-            NKAlertSprite *alert = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Notification_MoreE.png"] color:NKWHITE size:self.game.gameScene.size];
-            [alert setZPosition:150];
-            [alert setScale:.88];
-            [self.game.gameScene presentAlert:alert animated:true];
-        }
-        NSLog(@"too much energy required");
-        return nil;
-    }
-    
-    NSLog(@"selectionSet... for %@", self.name);
-    
-    
-    if (self.category == CardCategoryKick) {
-        
-        if (p.effects[Card_NoLegs]){
-            return nil;
-        }
-        
-        if (!p.ball) {
-            return nil;
-        }
-    }
-    
-    NSMutableArray* obstacles = [[self rangeMaskForPlayer:p] mutableCopy];
-   // NSMutableArray* obstacles = [[NSMutableArray alloc] init];
-    
-    
-    // STEP 1:  GET BOARD OBSTACLES
-    
-    if (self.category == CardCategoryMove || self.category == CardCategoryChallenge) {
-        for (Player* p in self.game.players) {
-            [obstacles addObject:[p.location copy]];
-        }
-        if (self.category == CardCategoryChallenge) {
-            [obstacles removeObject:[self.game.ball.location copy]];
-        }
-    
-        [obstacles addObject:self.deck.manager.opponent.goal];
-        [obstacles addObject:self.deck.manager.goal];
-        
-    }
-    
-    else if (self.category == CardCategoryKick) {
-        NSLog(@"opponent count %d for %@", p.manager.opponent.players.inGame.count, p.manager.opponent.name);
-        for (Card* c in p.manager.opponent.players.inGame) {
-            NSLog(@"obstacle for %@", p.name);
-            [obstacles addObject:[c.location copy]];
-        }
-    }
-    
-    if (p.manager.effects[Card_Block]) {
-        [obstacles addObjectsFromArray:p.manager.effects[Card_Block]];
-    }
-    
-    
-    AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
-    NSMutableArray *accessible = [[NSMutableArray alloc] init];
-    
-    // STEP 2: CALCULATE ACCESSIBLE WITH RANGE
-    
-    if (self.category == CardCategoryMove){
-        switch(self.moveCategory){
-            case CardMoveCategoryBishop:
-                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range] mutableCopy];
-                break;
-            case CardMoveCategoryQueen:
-                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:_range] mutableCopy];
-                break;
-            case CardMoveCategoryRook:
-                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
-                break;
-            case CardMoveCategoryKnight:
-                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeKnightStraight walkDistance:_range]mutableCopy];
-                break;
-            case CardMoveCategoryNull:
-                accessible = NULL;
-                break;
-            default:
-                accessible = NULL;
-                break;
-        }
-        
-        accessible = [[accessible arrayByAddingObject:[p.location copy]] mutableCopy];
-    }
-    
-    else if (self.category == CardCategoryChallenge) {
-       //if(self.challengeCategory == CardChallengeCategoryRook){
-       //     accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
-       // }
-        if (self.challengeCategory == CardChallengeCategoryBishop){
-            accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range] mutableCopy];
-        }
-        else if (self.challengeCategory == CardChallengeCategoryVertical){
-            accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
-            BoardLocation *WLoc = [self.location stepInDirection:WEST];
-            BoardLocation *ELoc = [self.location stepInDirection:EAST];
-            if(WLoc){
-                [accessible removeObject:WLoc];
-            }
-            if(ELoc){
-                [accessible removeObject:ELoc];
-            }
-        }
-        else if (self.challengeCategory == CardChallengeCategoryHorizantal){
-            accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
-            BoardLocation *NLoc = [self.location stepInDirection:NORTH];
-            BoardLocation *SLoc = [self.location stepInDirection:SOUTH];
-            if(NLoc){
-                [accessible removeObject:NLoc];
-            }
-            if(SLoc){
-                [accessible removeObject:SLoc];
-            }
-
-        }
-    }
-    else if (self.category == CardCategoryKick) {
-        switch(self.kickCategory){
-            case CardKickCategoryStraight:
-                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:_range] mutableCopy];
-                break;
-            case CardKickCategoryLob:
-                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeQueenLobStraight walkDistance:_range] mutableCopy];
-                break;
-            case CardKickCategoryBeckem:
-                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeKnightStraight walkDistance:_range] mutableCopy];
-                break;
-            case CardKickCategoryQueen:
-                accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:2] mutableCopy];
-            default:
-                accessible = NULL;
-                break;
-        }
-    }
-    else if (self.category == CardCategorySpecial){
-        switch(self.specialTypeCategory){
-                
-            // @Eric did Mike ask for these to be whole board selection, that doesn't make any sense to me?
-            // @Leif Yes he and Marcus both did.  It follows the pattern of other games, seems more intuitive to me since these cards act on the whole team and not individual players.
-                
-            // CASES FOR MY WHOLE FIELD
-            
-            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
-                accessible = [[self.game allBoardLocationsButGoals] mutableCopy];
-                return accessible;
-                break;
-                
-                
-            // CASES FOR THEIR PLAYERS
-                
-            case CardSpecialCategoryNoLegs: case CardSpecialCategoryFreeze:  case CardSpecialCategoryDeRez:
-                for(Card *c in p.manager.opponent.players.inGame){
-                    if(c.location){
-                        [accessible addObject:c.location];
-                    }else{
-                        NSLog(@"**ERROR no location for player");
-                    }
-                }
-                break;
-                
-            // SPECIAL / WHOLE BOARD / CASES
-                
-            case CardSpecialCategoryBlock:
-                accessible = [[self.game allBoardLocationsButGoals] mutableCopy];
-                if(p.location){
-                    [accessible removeObject:p.location];
-                }
-                
-                else{
-                    NSLog(@"**ERROR no location for enchantee");
-                }
-                return accessible;
-                
-            default:
-                NSLog(@"**ERROR missed case");
-                break;
-                
-        }
-
-    }
-    else{
-        accessible = nil;
-    }
-    
-    return accessible;
-    
-}
-
--(NSArray*)validatedSelectionSetForPlayer:(Player*)p {
-    if (!p) {
-        NSLog(@"selectionSet with no player");
-        return nil;
-    }
-    
-    NSMutableArray* accessible = [[self selectionSetForPlayer:p] mutableCopy];
-    
-    if (!accessible) {
-        return nil;
-    }
-    // IF MOVING / KICK WE'RE DONE VALIDATING
-    
-    if (self.category == CardCategoryMove){
-        for(Player *p in self.game.players){
-            [accessible removeObject:p.location];
-        }
-    }
-    
-    if (self.category == CardCategoryMove || self.category == CardCategoryKick || self.category == CardCategorySpecial){
-        return accessible;
-    }
-    
-    // ELSE LIMIT TO POSSIBLE PLAYER TARGETS
-    
-    NSMutableArray* set = [NSMutableArray array];
-    
-    // KICK NOW SHOWS ALL ACCESSIBLE
-    
-//    if (self.category == CardCategoryKick) {
-//        for (Player* p in self.playerPerforming.manager.players.inGame) {
-//            if ([accessible containsObject:p.location]){
-//                [set addObject:p.location];
-//            }
+//-(NSArray*)selectionSetForPlayer:(Player*)p {
+//    if (!p) {
+//         NSLog(@"selectionSet with no player");
+//        return nil;
+//    }
+//    
+//    if (p.manager.energy < self.energyCost) {
+//        if (!p.manager.isAI) {
+//            //NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];
+//            //[self.game.gameScene presentAlert:test animated:true];
+//            NKAlertSprite *alert = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Notification_MoreE.png"] color:NKWHITE size:self.game.gameScene.size];
+//            [alert setZPosition:150];
+//            [alert setScale:.88];
+//            [self.game.gameScene presentAlert:alert animated:true];
 //        }
-//        if ([accessible containsObject:self.playerPerforming.manager.goal]) {
-//            [set addObject:self.playerPerforming.manager.goal];
+//        NSLog(@"too much energy required");
+//        return nil;
+//    }
+//    
+//    NSLog(@"selectionSet... for %@", self.name);
+//    
+//    
+//    if (self.category == CardCategoryKick) {
+//        
+//        if (p.effects[Card_NoLegs]){
+//            return nil;
 //        }
 //        
-//        [set removeObject:self.playerPerforming.location];
+//        if (!p.ball) {
+//            return nil;
+//        }
 //    }
-    
-    if (self.category == CardCategoryChallenge) {
-        NSLog(@"opponent count %d", p.manager.opponent.players.inGame.count);
-        for (Card* c in p.manager.opponent.players.inGame) {
-            if ([(Player*)c ball]) {
-                if ([accessible containsObject:c.location]) {
-                    [set addObject:c.location];
-                }
-            }
-        }
-    }
-    
-    if (!set.count) return nil;
-    
-    return set;
-}
+//    
+//    NSMutableArray* obstacles = [[self rangeMaskForPlayer:p] mutableCopy];
+//   // NSMutableArray* obstacles = [[NSMutableArray alloc] init];
+//    
+//    
+//    // STEP 1:  GET BOARD OBSTACLES
+//    
+//    if (self.category == CardCategoryMove || self.category == CardCategoryChallenge) {
+//        for (Player* p in self.game.players) {
+//            [obstacles addObject:[p.location copy]];
+//        }
+//        if (self.category == CardCategoryChallenge) {
+//            [obstacles removeObject:[self.game.ball.location copy]];
+//        }
+//    
+//        [obstacles addObject:self.deck.manager.opponent.goal];
+//        [obstacles addObject:self.deck.manager.goal];
+//        
+//    }
+//    
+//    else if (self.category == CardCategoryKick) {
+//        NSLog(@"opponent count %d for %@", p.manager.opponent.players.inGame.count, p.manager.opponent.name);
+//        for (Card* c in p.manager.opponent.players.inGame) {
+//            NSLog(@"obstacle for %@", p.name);
+//            [obstacles addObject:[c.location copy]];
+//        }
+//    }
+//    
+//    if (p.manager.effects[Card_Block]) {
+//        [obstacles addObjectsFromArray:p.manager.effects[Card_Block]];
+//    }
+//    
+//    
+//    AStar *aStar = [[AStar alloc]initWithColumns:7 Rows:10 ObstaclesCells:obstacles];
+//    NSMutableArray *accessible = [[NSMutableArray alloc] init];
+//    
+//    // STEP 2: CALCULATE ACCESSIBLE WITH RANGE
+//    
+//    if (self.category == CardCategoryMove){
+//        switch(self.moveCategory){
+//            case CardMoveCategoryBishop:
+//                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range] mutableCopy];
+//                break;
+//            case CardMoveCategoryQueen:
+//                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:_range] mutableCopy];
+//                break;
+//            case CardMoveCategoryRook:
+//                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
+//                break;
+//            case CardMoveCategoryKnight:
+//                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeKnightStraight walkDistance:_range]mutableCopy];
+//                break;
+//            case CardMoveCategoryNull:
+//                accessible = NULL;
+//                break;
+//            default:
+//                accessible = NULL;
+//                break;
+//        }
+//        
+//        accessible = [[accessible arrayByAddingObject:[p.location copy]] mutableCopy];
+//    }
+//    
+//    else if (self.category == CardCategoryChallenge) {
+//       //if(self.challengeCategory == CardChallengeCategoryRook){
+//       //     accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
+//       // }
+//        if (self.challengeCategory == CardChallengeCategoryBishop){
+//            accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeBishopStraight walkDistance:_range] mutableCopy];
+//        }
+//        else if (self.challengeCategory == CardChallengeCategoryVertical){
+//            accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
+//            BoardLocation *WLoc = [self.location stepInDirection:WEST];
+//            BoardLocation *ELoc = [self.location stepInDirection:EAST];
+//            if(WLoc){
+//                [accessible removeObject:WLoc];
+//            }
+//            if(ELoc){
+//                [accessible removeObject:ELoc];
+//            }
+//        }
+//        else if (self.challengeCategory == CardChallengeCategoryHorizantal){
+//            accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeRookStraight walkDistance:_range] mutableCopy];
+//            BoardLocation *NLoc = [self.location stepInDirection:NORTH];
+//            BoardLocation *SLoc = [self.location stepInDirection:SOUTH];
+//            if(NLoc){
+//                [accessible removeObject:NLoc];
+//            }
+//            if(SLoc){
+//                [accessible removeObject:SLoc];
+//            }
+//
+//        }
+//    }
+//    else if (self.category == CardCategoryKick) {
+//        switch(self.kickCategory){
+//            case CardKickCategoryStraight:
+//                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeQueenStraight walkDistance:_range] mutableCopy];
+//                break;
+//            case CardKickCategoryLob:
+//                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeQueenLobStraight walkDistance:_range] mutableCopy];
+//                break;
+//            case CardKickCategoryBeckem:
+//                accessible = [[aStar cellsAccesibleFromStraight:p.location NeighborhoodType:NeighborhoodTypeKnightStraight walkDistance:_range] mutableCopy];
+//                break;
+//            case CardKickCategoryQueen:
+//                accessible = [[aStar cellsAccesibleFrom:p.location NeighborhoodType:NeighborhoodTypeQueen walkDistance:2] mutableCopy];
+//            default:
+//                accessible = NULL;
+//                break;
+//        }
+//    }
+//    else if (self.category == CardCategorySpecial){
+//        switch(self.specialTypeCategory){
+//                
+//            // @Eric did Mike ask for these to be whole board selection, that doesn't make any sense to me?
+//            // @Leif Yes he and Marcus both did.  It follows the pattern of other games, seems more intuitive to me since these cards act on the whole team and not individual players.
+//                
+//            // CASES FOR MY WHOLE FIELD
+//            
+//            case CardSpecialCategoryNewDeal: case CardSpecialCategoryPredictiveAnalysis: case CardSpecialCategorySuccubus:
+//                accessible = [[self.game allBoardLocationsButGoals] mutableCopy];
+//                return accessible;
+//                break;
+//                
+//                
+//            // CASES FOR THEIR PLAYERS
+//                
+//            case CardSpecialCategoryNoLegs: case CardSpecialCategoryFreeze:  case CardSpecialCategoryDeRez:
+//                for(Card *c in p.manager.opponent.players.inGame){
+//                    if(c.location){
+//                        [accessible addObject:c.location];
+//                    }else{
+//                        NSLog(@"**ERROR no location for player");
+//                    }
+//                }
+//                break;
+//                
+//            // SPECIAL / WHOLE BOARD / CASES
+//                
+//            case CardSpecialCategoryBlock:
+//                accessible = [[self.game allBoardLocationsButGoals] mutableCopy];
+//                if(p.location){
+//                    [accessible removeObject:p.location];
+//                }
+//                
+//                else{
+//                    NSLog(@"**ERROR no location for enchantee");
+//                }
+//                return accessible;
+//                
+//            default:
+//                NSLog(@"**ERROR missed case");
+//                break;
+//                
+//        }
+//
+//    }
+//    else{
+//        accessible = nil;
+//    }
+//    
+//    return accessible;
+//    
+//}
 
-
--(NSArray*)validatedPath:(NSArray*)path{
-    NSLog(@"validatedPath, self.range = %d, input.count = %d", [self range], [path count]);
-    if(path){
-        // NSArray* reversedPath = [[path reverseObjectEnumerator] allObjects];
-        // NSArray* reversedPath = [[path reverseObjectEnumerator] allObjects];
-        // for(BoardLocation *l in path){
-        //     NSLog(@"%@", l);
-        // }
-        if([path count] >= [self range]){
-            NSArray *retPath = [path subarrayWithRange:NSMakeRange(0, [self range])];
-            NSLog(@"validatedPath, output.count = %d", [retPath count]);
-            return retPath;
-        }
-        else{
-            return NULL;
-        }
-    }
-    else {
-        return NULL;
-    }
-}
+//-(NSArray*)validatedSelectionSetForPlayer:(Player*)p {
+//    if (!p) {
+//        NSLog(@"selectionSet with no player");
+//        return nil;
+//    }
+//    
+//    NSMutableArray* accessible = [[self selectionSetForPlayer:p] mutableCopy];
+//    
+//    if (!accessible) {
+//        return nil;
+//    }
+//    // IF MOVING / KICK WE'RE DONE VALIDATING
+//    
+//    if (self.category == CardCategoryMove){
+//        for(Player *p in self.game.players){
+//            [accessible removeObject:p.location];
+//        }
+//    }
+//    
+//    if (self.category == CardCategoryMove || self.category == CardCategoryKick || self.category == CardCategorySpecial){
+//        return accessible;
+//    }
+//    
+//    // ELSE LIMIT TO POSSIBLE PLAYER TARGETS
+//    
+//    NSMutableArray* set = [NSMutableArray array];
+//    
+//    // KICK NOW SHOWS ALL ACCESSIBLE
+//    
+////    if (self.category == CardCategoryKick) {
+////        for (Player* p in self.playerPerforming.manager.players.inGame) {
+////            if ([accessible containsObject:p.location]){
+////                [set addObject:p.location];
+////            }
+////        }
+////        if ([accessible containsObject:self.playerPerforming.manager.goal]) {
+////            [set addObject:self.playerPerforming.manager.goal];
+////        }
+////        
+////        [set removeObject:self.playerPerforming.location];
+////    }
+//    
+//    if (self.category == CardCategoryChallenge) {
+//        NSLog(@"opponent count %d", p.manager.opponent.players.inGame.count);
+//        for (Card* c in p.manager.opponent.players.inGame) {
+//            if ([(Player*)c ball]) {
+//                if ([accessible containsObject:c.location]) {
+//                    [set addObject:c.location];
+//                }
+//            }
+//        }
+//    }
+//    
+//    if (!set.count) return nil;
+//    
+//    return set;
+//}
+//
+//
+//-(NSArray*)validatedPath:(NSArray*)path{
+//    NSLog(@"validatedPath, self.range = %d, input.count = %d", [self range], [path count]);
+//    if(path){
+//        // NSArray* reversedPath = [[path reverseObjectEnumerator] allObjects];
+//        // NSArray* reversedPath = [[path reverseObjectEnumerator] allObjects];
+//        // for(BoardLocation *l in path){
+//        //     NSLog(@"%@", l);
+//        // }
+//        if([path count] >= [self range]){
+//            NSArray *retPath = [path subarrayWithRange:NSMakeRange(0, [self range])];
+//            NSLog(@"validatedPath, output.count = %d", [retPath count]);
+//            return retPath;
+//        }
+//        else{
+//            return NULL;
+//        }
+//    }
+//    else {
+//        return NULL;
+//    }
+//}
 
 
 #pragma mark - ENCODING

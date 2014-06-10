@@ -140,6 +140,8 @@
     [self addStartTurnEventsToSequence:_currentEventSequence forManager:_me];
     [_currentEventSequence addEvent:[GameEvent eventWithType:kEventKickoff manager:_me]];
     
+    //[_ball setLocation:]
+    
     [self refreshGameBoard];
     
     NSLog(@"running new game action");
@@ -274,9 +276,9 @@
                 _selectedCard = selectedCard;
                 //_selectedCard.playerPerforming = _selectedPlayer;
                 
-                if  (selectedCard){
-                    [_gameScene showCardPath:[selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
-                }
+//                if  (selectedCard){
+//                    [_gameScene showCardPath:[selectedCard validatedSelectionSetForPlayer:_selectedPlayer] forPlayer:_selectedPlayer];
+//                }
                 
             }
             
@@ -354,9 +356,17 @@
         }
         else if(!_selectedPlayer.moved){
             //GameEvent* playerEvent =  [self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventMove];
+            //Card *moveCard = [[Card alloc] initWithDeck:[[Deck alloc] initEmptyForManager:self.me WithType:CardCategoryMove]] ;
+            //GameEvent* playerEvent =  [self addCardEventToSequence:_currentEventSequence withCard:moveCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventMove];
+            _currentEventSequence = [GameSequence sequence];
             GameEvent* playerEvent =  [self addMoveEventToSequence:_currentEventSequence forPlayer:_selectedPlayer toLocation:selectedLocation];
-            [playerEvent setType:kEventMove];
             [self performSequence:_currentEventSequence record:YES animate:YES];
+            
+//            GameEvent* ap = [GameEvent event];
+//            ap.type = kEventMove;
+//            ap.manager = m;
+//            ap.cost = 0;
+//            [sequence.GameEvents addObject:ap];
         }
     }
     
@@ -933,12 +943,14 @@
     [self logEvent:event];
     
     //event.manager.SequencePoints -= event.cost;
-    
+    NSLog(@"event of type %d", event.type);
     if(event.type == kEventMove){
-        NSLog(@"kEventMove event begin");
+//# EK this needs to be where players's new position is set
+        NSLog(@"kEventMove event in game.m begin");
     }
     
     if (event.type == kEventStartTurn){
+        _ball.enchantee = _players[2]; // @EK DEBUG
         event.manager.myTurn = true;
         _selectedManager = event.manager;
         
@@ -1516,158 +1528,158 @@
 
 -(void)AIChooseLocationForCard:(Card*) c { // called from UI after card has been selected
     
-    NSMutableArray *pathToGoal;
-    NSMutableArray *pathToBall;
-    Player *passToPlayer;
-    NSArray *playersCloserToGoal;
-    Player *p = _selectedPlayer;
-    /*
-     if(c.category == CardCategorySpecial){
-     NSArray *setSpecial = [c selectionSetForPlayer:<#(Player *)#>];
-     return;
-     }
-     */
-    
-    // NSLog(@"in AIChooseLocationForCard, aiActionType = %d", c.aiActionType);
-    switch (c.aiActionType){
-        case NONE:
-            NSLog(@"*********************************************AI: NONE!!!");
-            break;
-        case MOVE_TO_DEFENDGOAL:  // Eric I put this stuff in basically move to goal, but opponent's goal
-            NSLog(@"*********************************************AI: DEFEND GOAL");
-            pathToGoal = [[p pathToOpenFieldClosestToLocation:p.manager.opponent.goal] mutableCopy];
-            [pathToGoal removeObject:p.manager.goal];
-            [pathToGoal removeObject:p.manager.opponent.goal];
-            
-            // NSLog(@"pathToGoalVerified = ");
-            // for(BoardLocation *loc in pathToGoal){
-            //     NSLog(@"%@",loc);
-            // }
-            // NSLog(@"pathToGoal count = %d", [pathToGoal count]);
-            if(pathToGoal && [pathToGoal count]){
-                BoardLocation *newLoc;
-                newLoc = [pathToGoal objectAtIndex:[pathToGoal count] - 1];
-                NSLog(@"MOVE TO GOAL selected %@", newLoc);
-                [_gameScene AISelectedLocation:newLoc];
-                return;
-            }
-            break;
-        case MOVE_TO_GOAL:
-            NSLog(@"*********************************************AI: MOVE TO GOAL");
-            pathToGoal = [[p pathToOpenFieldClosestToLocation:p.manager.goal] mutableCopy];
-            [pathToGoal removeObject:p.manager.goal];
-            [pathToGoal removeObject:p.manager.opponent.goal];
-            
-            // NSLog(@"pathToGoalVerified = ");
-            // for(BoardLocation *loc in pathToGoal){
-            //     NSLog(@"%@",loc);
-            // }
-            // NSLog(@"pathToGoal count = %d", [pathToGoal count]);
-            if(pathToGoal && [pathToGoal count]){
-                BoardLocation *newLoc;
-                newLoc = [pathToGoal objectAtIndex:[pathToGoal count] - 1];
-                NSLog(@"MOVE TO GOAL selected %@", newLoc);
-                [_gameScene AISelectedLocation:newLoc];
-                return;
-            }
-            break;
-        case MOVE_TO_GOAL_IN_PASS_RANGE:
-            NSLog(@"*********************************************AI: MOVE TO GOAL IN PASS RANGE");
-            pathToGoal = [[p pathToOpenFieldClosestToLocationInPassRange:p.manager.goal] mutableCopy];
-            [pathToGoal removeObject:p.manager.goal];
-            [pathToGoal removeObject:p.manager.opponent.goal];
-            if(pathToGoal && [pathToGoal count]){
-                BoardLocation *newLoc;
-                newLoc = [pathToGoal objectAtIndex:[pathToGoal count] - 1];
-                NSLog(@"MOVE TO GOAL selected %@", newLoc);
-                [_gameScene AISelectedLocation:newLoc];
-                return;
-            }
-            else {
-                NSLog(@"AI HAS NO VALID MOVE: STAY");
-                [_gameScene AISelectedLocation:_selectedPlayer.location];
-                return;
-            }
-            break;
-            
-        case SHOOT_ON_GOAL:
-            NSLog(@"*********************************************AI: SHOOT ON GOAL");
-            [_gameScene AISelectedLocation:_selectedPlayer.manager.goal];
-            return;
-            break;
-        case PASS_TO_PLAYER_IN_SHOOTING_RANGE:
-            NSLog(@"*********************************************AI: PASS TO PLAYER IN SHOOTING RANGE");
-            passToPlayer = [_selectedPlayer passToAvailablePlayerInShootingRange];
-            if(passToPlayer){
-                NSLog(@"pass to player: %@", passToPlayer.name);
-                if ([[c validatedSelectionSetForPlayer:_selectedPlayer] containsObject:passToPlayer.location]) {
-                    [_gameScene AISelectedLocation:passToPlayer.location];
-                    return;
-                }
-            }
-            break;
-            
-        case PASS_TO_GOAL:
-            playersCloserToGoal = [_selectedPlayer playersAvailableInKickRangeCloserToGoal];
-            if(playersCloserToGoal){
-                Player *p = playersCloserToGoal[0];
-                NSLog(@"*********************************************AI: PASS TOWARDS GOAL");
-                [_gameScene AISelectedLocation:p.location];
-                return;
-            }
-            
-            NSLog(@"AI HAS NO VALID PASS: TRY A MOVE CARD");
-            c.AIShouldUse = false;
-            [_gameScene AISelectedCard:_selectedPlayer.manager.moveDeck.inHand[0]];
-            return;
-        case CHALLENGE:
-            NSLog(@"*********************************************AI: CHALLENGE");
-            [_gameScene AISelectedLocation: _ball.location];
-            return;
-        case MOVE_TO_CHALLENGE:
-            NSLog(@"*********************************************AI: MOVE TO CHALLENGE");
-            
-            pathToBall = [[p pathToBall] mutableCopy];
-            [pathToBall removeObject:p.manager.goal];
-            [pathToBall removeObject:p.manager.opponent.goal];
-            if(pathToBall){
-                [_gameScene AISelectedLocation:pathToBall[[pathToBall count]-1]];
-                return;
-            }
-            break;
-        case MOVE_TO_BALL:
-            NSLog(@"*********************************************AI: MOVE TO BALL");
-            
-            if ([[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] containsObject:_ball.location]) {
-                [_gameScene AISelectedLocation:_ball.location];
-                return;
-            }
-            
-            //NSArray *pathToBall = [c.playerPerforming pathToClosestAdjacentBoardLocation:_ball.location];
-            pathToBall = [[p pathToOpenFieldClosestToLocation:_ball.location] mutableCopy];
-            
-            [pathToGoal removeObject:p.manager.goal];
-            [pathToGoal removeObject:p.manager.opponent.goal];
-            
-            if(pathToBall && [pathToBall count]){
-                BoardLocation *newLoc;
-                newLoc = [pathToBall objectAtIndex:[pathToBall count]-1];
-                [_gameScene AISelectedLocation:newLoc];
-                return;
-            }
-            
-            break;
-            
-        case SPECIAL_CARD:
-            if ([self AIChooseLocationForSpecialCard:c]) {
-                return;
-            }
-            break;
-    }
-    
-    NSLog(@"AI HAS NO VALID CARD LOCATION: Try another card");
-    c.AIShouldUse = false;
-    [self AIChooseCardForPlayer:_selectedPlayer];
+//    NSMutableArray *pathToGoal;
+//    NSMutableArray *pathToBall;
+//    Player *passToPlayer;
+//    NSArray *playersCloserToGoal;
+//    Player *p = _selectedPlayer;
+//    /*
+//     if(c.category == CardCategorySpecial){
+//     NSArray *setSpecial = [c selectionSetForPlayer:<#(Player *)#>];
+//     return;
+//     }
+//     */
+//    
+//    // NSLog(@"in AIChooseLocationForCard, aiActionType = %d", c.aiActionType);
+//    switch (c.aiActionType){
+//        case NONE:
+//            NSLog(@"*********************************************AI: NONE!!!");
+//            break;
+//        case MOVE_TO_DEFENDGOAL:  // Eric I put this stuff in basically move to goal, but opponent's goal
+//            NSLog(@"*********************************************AI: DEFEND GOAL");
+//            pathToGoal = [[p pathToOpenFieldClosestToLocation:p.manager.opponent.goal] mutableCopy];
+//            [pathToGoal removeObject:p.manager.goal];
+//            [pathToGoal removeObject:p.manager.opponent.goal];
+//            
+//            // NSLog(@"pathToGoalVerified = ");
+//            // for(BoardLocation *loc in pathToGoal){
+//            //     NSLog(@"%@",loc);
+//            // }
+//            // NSLog(@"pathToGoal count = %d", [pathToGoal count]);
+//            if(pathToGoal && [pathToGoal count]){
+//                BoardLocation *newLoc;
+//                newLoc = [pathToGoal objectAtIndex:[pathToGoal count] - 1];
+//                NSLog(@"MOVE TO GOAL selected %@", newLoc);
+//                [_gameScene AISelectedLocation:newLoc];
+//                return;
+//            }
+//            break;
+//        case MOVE_TO_GOAL:
+//            NSLog(@"*********************************************AI: MOVE TO GOAL");
+//            pathToGoal = [[p pathToOpenFieldClosestToLocation:p.manager.goal] mutableCopy];
+//            [pathToGoal removeObject:p.manager.goal];
+//            [pathToGoal removeObject:p.manager.opponent.goal];
+//            
+//            // NSLog(@"pathToGoalVerified = ");
+//            // for(BoardLocation *loc in pathToGoal){
+//            //     NSLog(@"%@",loc);
+//            // }
+//            // NSLog(@"pathToGoal count = %d", [pathToGoal count]);
+//            if(pathToGoal && [pathToGoal count]){
+//                BoardLocation *newLoc;
+//                newLoc = [pathToGoal objectAtIndex:[pathToGoal count] - 1];
+//                NSLog(@"MOVE TO GOAL selected %@", newLoc);
+//                [_gameScene AISelectedLocation:newLoc];
+//                return;
+//            }
+//            break;
+//        case MOVE_TO_GOAL_IN_PASS_RANGE:
+//            NSLog(@"*********************************************AI: MOVE TO GOAL IN PASS RANGE");
+//            pathToGoal = [[p pathToOpenFieldClosestToLocationInPassRange:p.manager.goal] mutableCopy];
+//            [pathToGoal removeObject:p.manager.goal];
+//            [pathToGoal removeObject:p.manager.opponent.goal];
+//            if(pathToGoal && [pathToGoal count]){
+//                BoardLocation *newLoc;
+//                newLoc = [pathToGoal objectAtIndex:[pathToGoal count] - 1];
+//                NSLog(@"MOVE TO GOAL selected %@", newLoc);
+//                [_gameScene AISelectedLocation:newLoc];
+//                return;
+//            }
+//            else {
+//                NSLog(@"AI HAS NO VALID MOVE: STAY");
+//                [_gameScene AISelectedLocation:_selectedPlayer.location];
+//                return;
+//            }
+//            break;
+//            
+//        case SHOOT_ON_GOAL:
+//            NSLog(@"*********************************************AI: SHOOT ON GOAL");
+//            [_gameScene AISelectedLocation:_selectedPlayer.manager.goal];
+//            return;
+//            break;
+//        case PASS_TO_PLAYER_IN_SHOOTING_RANGE:
+//            NSLog(@"*********************************************AI: PASS TO PLAYER IN SHOOTING RANGE");
+//            passToPlayer = [_selectedPlayer passToAvailablePlayerInShootingRange];
+//            if(passToPlayer){
+////                NSLog(@"pass to player: %@", passToPlayer.name);
+////                if ([[c validatedSelectionSetForPlayer:_selectedPlayer] containsObject:passToPlayer.location]) {
+////                    [_gameScene AISelectedLocation:passToPlayer.location];
+////                    return;
+////                }
+//            }
+//            break;
+//            
+//        case PASS_TO_GOAL:
+//            playersCloserToGoal = [_selectedPlayer playersAvailableInKickRangeCloserToGoal];
+//            if(playersCloserToGoal){
+//                Player *p = playersCloserToGoal[0];
+//                NSLog(@"*********************************************AI: PASS TOWARDS GOAL");
+//                [_gameScene AISelectedLocation:p.location];
+//                return;
+//            }
+//            
+//            NSLog(@"AI HAS NO VALID PASS: TRY A MOVE CARD");
+//            c.AIShouldUse = false;
+//            [_gameScene AISelectedCard:_selectedPlayer.manager.moveDeck.inHand[0]];
+//            return;
+//        case CHALLENGE:
+//            NSLog(@"*********************************************AI: CHALLENGE");
+//            [_gameScene AISelectedLocation: _ball.location];
+//            return;
+//        case MOVE_TO_CHALLENGE:
+//            NSLog(@"*********************************************AI: MOVE TO CHALLENGE");
+//            
+//            pathToBall = [[p pathToBall] mutableCopy];
+//            [pathToBall removeObject:p.manager.goal];
+//            [pathToBall removeObject:p.manager.opponent.goal];
+//            if(pathToBall){
+//                [_gameScene AISelectedLocation:pathToBall[[pathToBall count]-1]];
+//                return;
+//            }
+//            break;
+//        case MOVE_TO_BALL:
+//            NSLog(@"*********************************************AI: MOVE TO BALL");
+//            
+//            if ([[_selectedCard validatedSelectionSetForPlayer:_selectedPlayer] containsObject:_ball.location]) {
+//                [_gameScene AISelectedLocation:_ball.location];
+//                return;
+//            }
+//            
+//            //NSArray *pathToBall = [c.playerPerforming pathToClosestAdjacentBoardLocation:_ball.location];
+//            pathToBall = [[p pathToOpenFieldClosestToLocation:_ball.location] mutableCopy];
+//            
+//            [pathToGoal removeObject:p.manager.goal];
+//            [pathToGoal removeObject:p.manager.opponent.goal];
+//            
+//            if(pathToBall && [pathToBall count]){
+//                BoardLocation *newLoc;
+//                newLoc = [pathToBall objectAtIndex:[pathToBall count]-1];
+//                [_gameScene AISelectedLocation:newLoc];
+//                return;
+//            }
+//            
+//            break;
+//            
+//        case SPECIAL_CARD:
+//            if ([self AIChooseLocationForSpecialCard:c]) {
+//                return;
+//            }
+//            break;
+//    }
+//    
+//    NSLog(@"AI HAS NO VALID CARD LOCATION: Try another card");
+//    c.AIShouldUse = false;
+//    [self AIChooseCardForPlayer:_selectedPlayer];
     
 }
 
@@ -1675,90 +1687,90 @@
 
 -(bool)AIChooseOffenseCardForPlayer:(Player*) p{
     
-    //Card* moveCard = [self AICheckCategoryForUsable:CardCategoryMove forPlayer:p];
-    
-    NSLog(@"AI is choosing card for Player: %@ location = %@ ballLocaiton = %@", p.name, p.location, p.manager.game.ball.location);
-    
-    // BALL CARRIER
-    if (p.ball) {
-        
-        Card* kickCard = [self AIPrioritizeCategoryForUsable:CardCategoryKick forPlayer:p];
-        
-        if (kickCard) {
-            
-            if ([p isInShootingRangeWithKickCard:kickCard]){
-                // CAN SHOOT ON GOAL
-                kickCard.aiActionType = SHOOT_ON_GOAL;
-                //[_gameScene AISelectedLocation:kickCard.playerPerforming.manager.goal];
-                [_gameScene AISelectedCard:kickCard];
-                return 1;
-                
-            }
-            else{
-                // Can't shoot looks at 2ndary options
-                
-                Player *passToPlayer = [p passToAvailablePlayerInShootingRange];
-                if(passToPlayer){
-                    // CAN PASS TO PLAYER IN SHOOTING RANGE
-                    kickCard.aiActionType = PASS_TO_PLAYER_IN_SHOOTING_RANGE;
-                    [_gameScene AISelectedCard:kickCard];
-                    return 1;
-                }
-
-                    for (Card *moveCard in [p.manager cardsInHandOfCategory:CardCategoryMove usableByPlayer:p]) {
-                        
-                        NSArray *pathToGoal = [moveCard validatedPath:[p pathToGoal]];
-                        
-                        if(pathToGoal && [self AICanUseCard:moveCard]){
-                            // CAN MOVE IN SHOOTING RANGE
-                            moveCard.aiActionType = MOVE_TO_GOAL;
-                            [_gameScene AISelectedCard:moveCard];
-                            return 1;
-                        }
-                        
-                    }
-                
-                //CAN NOT MOVE IN SHOOTING RANGE
-                NSArray *playersCloserToGoal = [p playersAvailableInKickRangeCloserToGoal];
-                
-                if(playersCloserToGoal){
-                    // CAN PASS TO AVAILABLE PLAYER CLOSER TO GOAL
-                    kickCard.aiActionType = PASS_TO_GOAL;
-                    [_gameScene AISelectedCard:kickCard];
-                    return 1;
-                }
-                
-            }
-        }
-        
-        if (p.isThreatened) {
-            for (Card *moveCard in [p.manager cardsInHandOfCategory:CardCategoryMove usableByPlayer:p]) {
-                if([self AICanUseCard:moveCard]){
-                    moveCard.aiActionType = MOVE_TO_GOAL_IN_PASS_RANGE;
-                    [_gameScene AISelectedCard:moveCard];
-                    return 1;
-                }
-            }
-        }
-        
-    }
-    
-    for (Card *specialCard in [p.manager cardsInHandOfCategory:CardCategorySpecial usableByPlayer:p]) {
-        if([self AICanUseCard:specialCard]){
-            specialCard.aiActionType = SPECIAL_CARD;
-            [_gameScene AISelectedCard:specialCard];
-            return 1;
-        }
-    }
-    
-    for (Card *moveCard in [p.manager cardsInHandOfCategory:CardCategoryMove usableByPlayer:p]) {
-        if([self AICanUseCard:moveCard]){
-            moveCard.aiActionType = MOVE_TO_GOAL_IN_PASS_RANGE;
-            [_gameScene AISelectedCard:moveCard];
-            return 1;
-        }
-    }
-    
+//    //Card* moveCard = [self AICheckCategoryForUsable:CardCategoryMove forPlayer:p];
+//    
+//    NSLog(@"AI is choosing card for Player: %@ location = %@ ballLocaiton = %@", p.name, p.location, p.manager.game.ball.location);
+//    
+//    // BALL CARRIER
+//    if (p.ball) {
+//        
+//        Card* kickCard = [self AIPrioritizeCategoryForUsable:CardCategoryKick forPlayer:p];
+//        
+//        if (kickCard) {
+//            
+//            if ([p isInShootingRangeWithKickCard:kickCard]){
+//                // CAN SHOOT ON GOAL
+//                kickCard.aiActionType = SHOOT_ON_GOAL;
+//                //[_gameScene AISelectedLocation:kickCard.playerPerforming.manager.goal];
+//                [_gameScene AISelectedCard:kickCard];
+//                return 1;
+//                
+//            }
+//            else{
+//                // Can't shoot looks at 2ndary options
+//                
+//                Player *passToPlayer = [p passToAvailablePlayerInShootingRange];
+//                if(passToPlayer){
+//                    // CAN PASS TO PLAYER IN SHOOTING RANGE
+//                    kickCard.aiActionType = PASS_TO_PLAYER_IN_SHOOTING_RANGE;
+//                    [_gameScene AISelectedCard:kickCard];
+//                    return 1;
+//                }
+//
+//                    for (Card *moveCard in [p.manager cardsInHandOfCategory:CardCategoryMove usableByPlayer:p]) {
+//                        
+//                        NSArray *pathToGoal = [moveCard validatedPath:[p pathToGoal]];
+//                        
+//                        if(pathToGoal && [self AICanUseCard:moveCard]){
+//                            // CAN MOVE IN SHOOTING RANGE
+//                            moveCard.aiActionType = MOVE_TO_GOAL;
+//                            [_gameScene AISelectedCard:moveCard];
+//                            return 1;
+//                        }
+//                        
+//                    }
+//                
+//                //CAN NOT MOVE IN SHOOTING RANGE
+//                NSArray *playersCloserToGoal = [p playersAvailableInKickRangeCloserToGoal];
+//                
+//                if(playersCloserToGoal){
+//                    // CAN PASS TO AVAILABLE PLAYER CLOSER TO GOAL
+//                    kickCard.aiActionType = PASS_TO_GOAL;
+//                    [_gameScene AISelectedCard:kickCard];
+//                    return 1;
+//                }
+//                
+//            }
+//        }
+//        
+//        if (p.isThreatened) {
+//            for (Card *moveCard in [p.manager cardsInHandOfCategory:CardCategoryMove usableByPlayer:p]) {
+//                if([self AICanUseCard:moveCard]){
+//                    moveCard.aiActionType = MOVE_TO_GOAL_IN_PASS_RANGE;
+//                    [_gameScene AISelectedCard:moveCard];
+//                    return 1;
+//                }
+//            }
+//        }
+//        
+//    }
+//    
+//    for (Card *specialCard in [p.manager cardsInHandOfCategory:CardCategorySpecial usableByPlayer:p]) {
+//        if([self AICanUseCard:specialCard]){
+//            specialCard.aiActionType = SPECIAL_CARD;
+//            [_gameScene AISelectedCard:specialCard];
+//            return 1;
+//        }
+//    }
+//    
+//    for (Card *moveCard in [p.manager cardsInHandOfCategory:CardCategoryMove usableByPlayer:p]) {
+//        if([self AICanUseCard:moveCard]){
+//            moveCard.aiActionType = MOVE_TO_GOAL_IN_PASS_RANGE;
+//            [_gameScene AISelectedCard:moveCard];
+//            return 1;
+//        }
+//    }
+//    
     return 0;
 }
 
@@ -1980,20 +1992,20 @@
 }
 
 -(bool)AICanUseCard:(Card*)card{
-    
-    if (card && !card.locked && card.AIShouldUse) {
-        if ([card validatedSelectionSetForPlayer:_selectedPlayer]) {
-            
-            // AT some point here should exist if it's a good idea or not
-            // [AIEvaluateLocations for card
-            // yada yada
-            
-            return true;
-        }
-        else {
-            card.AIShouldUse = false;
-        }
-    }
+//    
+//    if (card && !card.locked && card.AIShouldUse) {
+//        if ([card validatedSelectionSetForPlayer:_selectedPlayer]) {
+//            
+//            // AT some point here should exist if it's a good idea or not
+//            // [AIEvaluateLocations for card
+//            // yada yada
+//            
+//            return true;
+//        }
+//        else {
+//            card.AIShouldUse = false;
+//        }
+//    }
     return false;
 }
 
@@ -2188,9 +2200,15 @@
 
 -(Player*)playerAtLocation:(BoardLocation*)location {
     for (Player* inPlay in _players) {
-        if ([inPlay.location isEqual:location]) {
+        float distance = [location distanceBetweenLocations:inPlay.location];
+        if(distance < 50){
             return inPlay;
         }
+        
+//        if ([inPlay.location isEqual:location]) {  // @EK this needs to be changed to do a radius search
+//            return inPlay;
+//        }
+        
     }
     NSLog(@"ERROR: no player found at this location");
     return Nil;
@@ -2250,7 +2268,7 @@
     _currentEventSequence = [GameSequence sequence];
     
     [self addShuffleEventToSequence:_currentEventSequence forDeck:_me.players];
-    
+        
     [self addShuffleEventToSequence:_currentEventSequence forDeck:_opponent.players];
     
     [self setupCoinTossPositionsForSequence:_currentEventSequence];
@@ -2276,13 +2294,8 @@
         
         GameEvent* spawn2 = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:1] toLocation:[BoardLocation pX:((i-1))*OLD_TILE_WIDTH*2  Y:-OLD_TILE_HEIGHT*2.0 ]  withType:kEventAddPlayer];
 
-//        GameEvent* spawn =  [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:0] toLocation:[BoardLocation pX:0  Y:0]  withType:kEventAddPlayer];
-//       GameEvent* spawn2 = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:1] toLocation:[BoardLocation  pX:-TILE_WIDTH/4  Y:-TILE_HEIGHT/4] withType:kEventAddPlayer];
-
         if (i == 1) {
-            [spawn2 setLocation:[BoardLocation pX:(i-1)*2*OLD_TILE_WIDTH Y:-OLD_TILE_HEIGHT ]];
-            //[spawn2 setLocation:[BoardLocation pX:50 Y:50 ]];
-            //spawn2.ball = _ball;
+            [spawn2 setLocation:[BoardLocation pX:0 Y:0 ]];
         }
 //        GameEvent* spawn = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:0] toLocation:[BoardLocation pX:((i*2+1)*OLD_TILE_WIDTH - TILE_WIDTH/2.0)  Y:((OLD_TILE_HEIGHT*2.0))- TILE_HEIGHT/2.0]  withType:kEventAddPlayer];
 //        
@@ -2292,9 +2305,9 @@
 //            [spawn2 setLocation:[BoardLocation pX:(i*2+1)*OLD_TILE_WIDTH - TILE_WIDTH/2.0 Y:-OLD_TILE_HEIGHT - TILE_HEIGHT/2.0]];
 //            //spawn2.ball = _ball;
 //        }
+        // @EK This is the initial position
         
     }
-    
 }
 
 -(void)wipeBoard {

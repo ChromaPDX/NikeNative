@@ -12,7 +12,7 @@
 
 @implementation BoardLocation
 
--(id)initWithX:(CGFloat)x Y:(CGFloat)y{
+-(id)initWithX:(float)x Y:(float)y{
     self = [super init];
     if(self){
         [self setX:x];
@@ -141,56 +141,61 @@
     return retPath;
 }
 
--(BoardLocation*)stepInDirection:(Direction)direction{
-    int newX = 0;
-    int newY = 0;
-    switch (direction) {
-        case NORTH:
-            newX = self.x;
-            newY = self.y+1;
-            break;
-        case NORTHEAST:
-            newX = self.x+1;
-            newY = self.y+1;
-            break;
-        case EAST:
-            newX = self.x+1;
-            newY = self.y;
-            break;
-        case SOUTHEAST:
-            newX = self.x+1;
-            newY = self.y-1;
-            break;
-        case SOUTH:
-            newX = self.x;
-            newY = self.y-1;
-            break;
-        case SOUTHWEST:
-            newX = self.x-1;
-            newY = self.y-1;
-            break;
-        case WEST:
-            newX = self.x-1;
-            newY = self.y;
-            break;
-        case NORTHWEST:
-            newX = self.x-1;
-            newY = self.y+1;
-            break;
-        default:
-            break;
-    }
-    // check to see if we are off the game board.
-    if(newX < 0 || newX > BOARD_WIDTH - 1 || newY < 0 || newY > BOARD_LENGTH - 1){
-        return NULL;
-    }
-    else{
-        BoardLocation* retLocation = [[BoardLocation alloc] init];
-        retLocation = [retLocation initWithX:newX Y:newY];
-        return retLocation;
-    }
-}
+//-(BoardLocation*)stepInDirection:(Direction)direction{
+//    float newX = 0;
+//    float newY = 0;
+//    switch (direction) {
+//        case NORTH:
+//            newX = self.x;
+//            newY = self.y+1;
+//            break;
+//        case NORTHEAST:
+//            newX = self.x+1;
+//            newY = self.y+1;
+//            break;
+//        case EAST:
+//            newX = self.x+1;
+//            newY = self.y;
+//            break;
+//        case SOUTHEAST:
+//            newX = self.x+1;
+//            newY = self.y-1;
+//            break;
+//        case SOUTH:
+//            newX = self.x;
+//            newY = self.y-1;
+//            break;
+//        case SOUTHWEST:
+//            newX = self.x-1;
+//            newY = self.y-1;
+//            break;
+//        case WEST:
+//            newX = self.x-1;
+//            newY = self.y;
+//            break;
+//        case NORTHWEST:
+//            newX = self.x-1;
+//            newY = self.y+1;
+//            break;
+//        default:
+//            break;
+//    }
+//    // check to see if we are off the game board.
+//    if(newX < 0 || newX > BOARD_WIDTH - 1 || newY < 0 || newY > BOARD_LENGTH - 1){
+//        return NULL;
+//    }
+//    else{
+//        BoardLocation* retLocation = [[BoardLocation alloc] init];
+//        retLocation = [retLocation initWithX:newX Y:newY];
+//        return retLocation;
+//    }
+//}
 
+-(float)distanceBetweenLocations:(BoardLocation*)l{
+    float dx = l.x - self.x;
+    float dy = l.y - self.y;
+    return sqrt(dx*dx + dy*dy );
+}
 
 
 

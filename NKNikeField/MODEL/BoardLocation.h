@@ -59,12 +59,13 @@ typedef NS_ENUM(int32_t, Direction) {
 
 +(instancetype)pX:(float)x Y:(float)y;
 +(instancetype)pointWithP2:(P2t)point;
--(id)initWithX:(CGFloat)x Y:(CGFloat)y;
+-(id)initWithX:(float)x Y:(float)y;
 -(BOOL)isEqual:(BoardLocation*)point;
 -(int)isAdjacentTo:(BoardLocation*)b;
 -(void)setBorderShapeInContext:(NSArray*)arrayOfLocations;
 +(NSArray*)tileSetIntersect:(NSArray*)tileSetA withTileSet:(NSArray*)tileSetB;
--(BoardLocation*)stepInDirection:(Direction)direction;
+//-(BoardLocation*)stepInDirection:(Direction)direction;
 
 -(int)distanceToGoalForManager:(Manager*)m neighborhoodType:(int)type;
+-(float)distanceBetweenLocations:(BoardLocation*)l;
 @end

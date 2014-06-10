@@ -208,12 +208,19 @@
             
             rotate = [[NKNode alloc]init];
             [self addChild:rotate];
+
+         //   NKNode *boardPosition = [[NKNode alloc] init];
+         //   [boardPosition setPosition3d:self.position3d];
+            //[boardPosition addChild:rotate];
+            
+         //   [rotate addChild:boardPosition];
             
             [rotate repeatAction:[NKAction rotateByAngle:180 duration:4.]];
-            [rotate setPosition3d:V3Make(0, -20, h*.3)];
+          //  [rotate setPosition3d:V3Make(0, -20, h*.3)];
 
             halo = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:S2Make(h, h)];
             
+            //[rotate addChild:halo];
             //[halo setAlpha:.5];
             [halo setColorBlendFactor:1.];
             [halo setColor:_model.manager.color];
@@ -226,10 +233,11 @@
             [haloMarks setZPosition:2];
             
             _ballTarget = [[NKSpriteNode alloc]initWithColor:nil size:S2Make(4, 4)];
-            
             [halo addChild:_ballTarget];
             [haloMarks repeatAction:[NKAction rotateByAngle:180 duration:8.]];
             [_ballTarget setPosition3d:V3Make(0, w*.42, 0)];
+            
+            [rotate addChild:halo];
             
             [rotate fadeInChild:halo duration:FAST_ANIM_DUR withCompletion:^{
                 

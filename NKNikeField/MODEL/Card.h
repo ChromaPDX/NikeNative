@@ -93,9 +93,9 @@ enum AI_ACTION_TYPE {
 
 // AI CONVENIENCE
 
--(NSArray*)validatedSelectionSetForPlayer:(Player*)p;
--(NSArray*)selectionSetForPlayer:(Player*)p;
--(NSArray*)validatedPath:(NSArray*)path;
+//-(NSArray*)validatedSelectionSetForPlayer:(Player*)p;
+//-(NSArray*)selectionSetForPlayer:(Player*)p;
+//-(NSArray*)validatedPath:(NSArray*)path;
 
 @property (nonatomic, weak) Deck *deck;
 @property (nonatomic, weak) Player *enchantee;
