@@ -443,23 +443,30 @@ float PARTICLE_SCALE;
 -(void)playerSpriteDidSelectPlayer:(Player*)player {
     
     // ABORT IF SELECTING PLAYER AS CARD TARGET
-    BoardTile *tile = [_gameTiles objectForKey:player.location];
-    
-    if (tile.userInteractionEnabled) {
-        [self setSelectedBoardTile:tile];
-        return;
-    }
+//    BoardTile *tile = [_gameTiles objectForKey:player.location];
+//    
+//    if (tile.userInteractionEnabled) {
+//        [self setSelectedBoardTile:tile];
+//        return;
+//    }
     
     [self setSelectedPlayer:player];
 }
 
 -(void)setSelectedPlayer:(Player*)selectedPlayer {
     
+    if(!selectedPlayer){
+        
+    }
+    
     if (![selectedPlayer.manager isEqual:_game.me]) {
         [self playSoundWithKey:@"enemyTap"];
     }
     else {
-        if ([_game canUsePlayer:selectedPlayer]) {
+        if (_game.selectedPlayer == selectedPlayer && _selectedPlayer.ball){
+            [self.game startKickMode:selectedPlayer];
+        }
+        else if ([_game canUsePlayer:selectedPlayer]) {
             
             [_uxTopBar setPlayer:selectedPlayer WithCompletionBlock:^{}];
             
@@ -636,10 +643,16 @@ float PARTICLE_SCALE;
         
     }
     
+    else if (event.type == kEventKickMode){
+        PlayerSprite *ps = [playerSprites objectForKey:event.playerPerforming];
+        [ps showKickMode];
+        block();
+    }
     else if (event.type == kEventMove){
        NSLog(@"kEventMove starting in GameScene...");
         
-        [player runAction:[NKAction moveTo:P2Make(event.location.x-TILE_WIDTH/2, event.location.y-TILE_HEIGHT/2) duration:MOVE_SPEED] completion:^(){
+        //[player runAction:[NKAction moveTo:P2Make(event.location.x-TILE_WIDTH/2, event.location.y-TILE_HEIGHT/2) duration:MOVE_SPEED] completion:^(){
+        [player runAction:[NKAction moveTo:P2Make(event.location.x, event.location.y) duration:MOVE_SPEED] completion:^(){
             NSLog(@"moving player to %f,%f", player.position.x, player.position.y);
             V3t ballPos = [player.ballTarget positionInNode3d:self.gameBoardNode];
             NSLog(@"player.ballTarget = %f,%f", ballPos.x, ballPos.y);

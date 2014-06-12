@@ -286,6 +286,24 @@
     }
 }
 
+-(void)startKickMode:(Player*)p{
+    _currentEventSequence = [GameSequence sequence];
+
+    //GameEvent* kickModeEvent =  [self addCardEventToSequence:_currentEventSequence withCard:p forPlayer:p toLocation:p.location withType:kEventKickMode];
+    GameEvent *event = [GameEvent event];
+    
+    event.playerPerforming = p;
+    event.card = p; // also sets other stuff
+    event.startingLocation = [p.location copy];
+    event.location = [p.location copy];
+    event.deck = p.deck;
+    event.type = kEventKickMode;
+    event.cost = 0;
+    [_currentEventSequence.GameEvents addObject:event];
+    [self performSequence:_currentEventSequence record:YES animate:YES];
+
+}
+
 -(void)setSelectedLocation:(BoardLocation *)selectedLocation {
     
     NSLog(@"setSelectedLocation = %@", selectedLocation);
@@ -354,20 +372,19 @@
             
             //
         }
-        else if(!_selectedPlayer.moved){
-            //GameEvent* playerEvent =  [self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventMove];
-            //Card *moveCard = [[Card alloc] initWithDeck:[[Deck alloc] initEmptyForManager:self.me WithType:CardCategoryMove]] ;
-            //GameEvent* playerEvent =  [self addCardEventToSequence:_currentEventSequence withCard:moveCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventMove];
+        
+        BoardLocation *xformSelectedLocation = [selectedLocation transformOriginFromLowerLeftToCenter];
+        if([xformSelectedLocation distanceBetweenLocations:_selectedPlayer.location] < MOVE_RADIUS && !_selectedPlayer.moved){
             _currentEventSequence = [GameSequence sequence];
-            GameEvent* playerEvent =  [self addMoveEventToSequence:_currentEventSequence forPlayer:_selectedPlayer toLocation:selectedLocation];
+            GameEvent* playerEvent =  [self addMoveEventToSequence:_currentEventSequence forPlayer:_selectedPlayer toLocation:xformSelectedLocation];
             [self performSequence:_currentEventSequence record:YES animate:YES];
-            
-//            GameEvent* ap = [GameEvent event];
-//            ap.type = kEventMove;
-//            ap.manager = m;
-//            ap.cost = 0;
-//            [sequence.GameEvents addObject:ap];
         }
+        else{
+            // touch outside of move radius
+            [self.gameScene setSelectedPlayer:NULL];
+            self.selectedPlayer = NULL;
+        }
+        
     }
     
 }
@@ -807,7 +824,12 @@
                     
                     else {
                         if (sequence.manager.isAI) {
-                            [self AIChoosePlayerForManager:sequence.manager];
+                          //  [self AIChoosePlayerForManager:sequence.manager];
+//                            for(Player *p in _players){
+//                                p.used = true;
+//                                p.moved = true;
+//                            }
+                            [self pressedEndTurn];
                         }
                         
                         else {
@@ -821,7 +843,8 @@
                                 }
                             }
                             
-                            [_gameScene setSelectedPlayer:playerToSelect];
+                           // [_gameScene setSelectedPlayer:playerToSelect];
+                            // ek commented this to avoid going in to kick mode automatically.  need to fix somehow.
                             
                         }
                         
@@ -945,8 +968,12 @@
     //event.manager.SequencePoints -= event.cost;
     NSLog(@"event of type %d", event.type);
     if(event.type == kEventMove){
-//# EK this needs to be where players's new position is set
+        event.playerPerforming.moved = true;
         NSLog(@"kEventMove event in game.m begin");
+    }
+    if(event.type == kEventKickMode){
+        NSLog(@"kEventKickMode event in game.m begin");
+
     }
     
     if (event.type == kEventStartTurn){
@@ -1093,7 +1120,10 @@
     
     else if (event.type == kEventEndTurn){
         
-        
+        for (Player* p in event.manager.players.inGame) {
+            p.used = false;
+            p.moved = false;
+        }
         for (Card* c in [event.manager allCardsInHand]) {
             if (!c.locked) {
                 [c discard];
@@ -1521,7 +1551,7 @@
     
     NSLog(@"AI failed to select a card");
     _selectedPlayer.used = true;
-    [self AIChoosePlayerForManager:_selectedManager];
+  //  [self AIChoosePlayerForManager:_selectedManager];
     
 }
 

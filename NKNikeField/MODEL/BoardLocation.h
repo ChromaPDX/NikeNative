@@ -68,4 +68,6 @@ typedef NS_ENUM(int32_t, Direction) {
 
 -(int)distanceToGoalForManager:(Manager*)m neighborhoodType:(int)type;
 -(float)distanceBetweenLocations:(BoardLocation*)l;
+-(BoardLocation*)transformOriginFromLowerLeftToCenter;
+
 @end

@@ -133,6 +133,7 @@
             case kEventKickGoal: return @"SHOOTS !!";
             case kEventChallenge: return @"CHALLENGING !";
             case kEventMove: return @"MOVING";
+            case kEventKickMode: return @"KICK MODE";
             case kEventAddSpecial: return @"SPECIAL CARD";
             case kEventRemoveSpecial: return @"REMOVE SPECIAL";
             

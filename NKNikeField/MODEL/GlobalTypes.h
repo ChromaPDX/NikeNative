@@ -27,6 +27,8 @@
 #define BOARD_WIDTH 1
 #define BOARD_LENGTH 1
 
+#define MOVE_RADIUS 200
+
 static int OLD_TILE_WIDTH = 96;
 static int OLD_TILE_HEIGHT = 116;
 

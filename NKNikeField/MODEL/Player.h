@@ -39,6 +39,7 @@ typedef NS_ENUM(int32_t, FactionType) {
 @property (nonatomic) bool used;
 @property (nonatomic) bool moved;
 
+
 @property (nonatomic,strong) NSMutableDictionary *effects;
 
 //@property (nonatomic) bool deRez;

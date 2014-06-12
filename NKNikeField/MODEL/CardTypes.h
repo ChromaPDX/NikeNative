@@ -97,6 +97,7 @@ typedef NS_ENUM(int32_t, EventType) {
     kEventDeRez,
     kEventNewDeal,
     kEventPredictiveAnalysis,
+    kEventKickMode,
 
     // Deck
     kEventShuffleDeck,

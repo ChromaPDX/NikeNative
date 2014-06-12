@@ -191,6 +191,11 @@
 //    }
 //}
 
+-(BoardLocation*)transformOriginFromLowerLeftToCenter{
+    BoardLocation *retLocation = [[BoardLocation alloc]initWithX:self.x - TILE_WIDTH/2 Y:self.y - TILE_HEIGHT/2];
+    return retLocation;
+}
+
 -(float)distanceBetweenLocations:(BoardLocation*)l{
     float dx = l.x - self.x;
     float dy = l.y - self.y;

@@ -161,7 +161,10 @@
 
 -(void)setHighlighted:(bool)highlighted {
     
-   
+//    for(PlayerSprite *ps in self.delegate.){
+//        [self removeChildNamed:@"crosshairs"];
+//        [self removeChildNamed:@"moveRadius"];
+//    }
     
     if (highlighted && !_highlighted) {
        // NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:S2Make(TILE_WIDTH, TILE_HEIGHT)];
@@ -173,13 +176,13 @@
         if(!self.model.moved){
             [self showMoveRadius];
         }
-
     }
     
     else if (!highlighted && _highlighted){
         [self removeChildNamed:@"crosshairs"];
         [self removeChildNamed:@"moveRadius"];
-        
+        [self removeChildNamed:@"kickMode"];
+        moveRadiusSprite = NULL;
     }
     
      [cardImg setTexture:[NKTexture textureWithImageNamed:[self imageString]]];
@@ -189,15 +192,21 @@
     
 }
 
--(void)showMoveRadius{
-    NKSpriteNode *moveRadiusSprite = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"move_radius"] color:V2GREEN size:S2Make(400,400)];
-    moveRadiusSprite.name = @"moveRadius";
-    //moveRadiusSprite.alpha = .5;
-    //[moveRadiusSprite setTransparency:.5];
-    [moveRadiusSprite setBlendMode:NKBlendModeAlpha];
+-(void)showKickMode{
+    moveRadiusSprite = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"move_radius"] color:V2RED size:S2Make(MOVE_RADIUS,MOVE_RADIUS)];
+    moveRadiusSprite.name = @"kickMode";
     [self addChild:moveRadiusSprite];
-    
     [moveRadiusSprite setZPosition: 4];
+    [self removeChildNamed:@"moveRadius"];
+}
+
+-(void)showMoveRadius{
+    
+    moveRadiusSprite = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"move_radius"] color:V2GREEN size:S2Make(MOVE_RADIUS*2,MOVE_RADIUS*2)];
+    moveRadiusSprite.name = @"moveRadius";
+    [self addChild:moveRadiusSprite];
+    [moveRadiusSprite setZPosition: 4];
+   // [radiusRotate runAction:[NKAction rotate3dByAngle:V3Make(90, 0, 0) duration:3]];
 }
 
 -(void)getReadyForPosession:(void (^)())block {
@@ -303,7 +312,6 @@
 }
 
 -(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-    
 //    NKTouchState touchState = [super touchUp:location id:touchId];
 //    
 //    if (touchState == NKTouchIsFirstResponder){

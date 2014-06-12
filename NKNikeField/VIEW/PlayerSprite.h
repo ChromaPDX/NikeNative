@@ -20,6 +20,7 @@
     NKNode *rotate;
     NKSpriteNode *halo;
     NKSpriteNode *effectSprite;
+    NKSpriteNode *moveRadiusSprite;
 }
 
 @property (nonatomic, strong) NKSpriteNode *ballTarget;
@@ -38,6 +39,7 @@
 -(void)stopPosession:(void (^)())block;
 -(void)startPossession;
 -(void)showEffects;
+-(void)showKickMode;
 
 // FOR UX WINDOW
 
