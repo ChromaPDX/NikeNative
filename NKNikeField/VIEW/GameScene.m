@@ -1,4 +1,4 @@
-    //
+ //
 //  NKGameScene.m
 //  nike3dField
 //
@@ -456,14 +456,34 @@ float PARTICLE_SCALE;
 -(void)setSelectedPlayer:(Player*)selectedPlayer {
     
     if(!selectedPlayer){
-        
+        NSArray *keys = playerSprites.allKeys;
+        for(Player * p in keys){
+            PlayerSprite *ps = [playerSprites objectForKey:p];
+            if(ps){
+                [ps setHighlighted:false];
+                p.kickMode = false;
+            }
+        }
+        _selectedPlayer = NULL;
+        return;
+    }else if(_selectedPlayer != selectedPlayer && _selectedPlayer.kickMode){
+        [_game startKickPassToPlayer:selectedPlayer];
     }
+
+//    NSArray *keys = playerSprites.allKeys;
+//    for(Player * p in keys){
+//        PlayerSprite *ps = [playerSprites objectForKey:p];
+//        if(ps){
+//            [ps setHighlighted:false];
+//            p.kickMode = false;
+//        }
+//    }
     
-    if (![selectedPlayer.manager isEqual:_game.me]) {
+    else if (![selectedPlayer.manager isEqual:_game.me]) {
         [self playSoundWithKey:@"enemyTap"];
     }
     else {
-        if (_game.selectedPlayer == selectedPlayer && _selectedPlayer.ball){
+        if (_selectedPlayer == selectedPlayer && _selectedPlayer.ball){
             [self.game startKickMode:selectedPlayer];
         }
         else if ([_game canUsePlayer:selectedPlayer]) {
@@ -648,6 +668,9 @@ float PARTICLE_SCALE;
         [ps showKickMode];
         block();
     }
+//    else if (event.type == kEventKick){
+//        
+//    }
     else if (event.type == kEventMove){
        NSLog(@"kEventMove starting in GameScene...");
         
@@ -713,8 +736,11 @@ float PARTICLE_SCALE;
         
     }
     
-    else if (event.type == kEventKickPass || event.type == kEventKickGoal || event.type == kEventKickGoalLoss) {
-        
+    else if (event.type == kEventKick || event.type == kEventKickPass || event.type == kEventKickGoal || event.type == kEventKickGoalLoss) {
+
+        //if(event.type == kEventKick){
+        [self setSelectedPlayer:NULL];
+        //}
         NKEmitterNode *enchant = [[NKEmitterNode alloc] init];
         
         [self.ballSprite addChild:enchant];
@@ -745,17 +771,18 @@ float PARTICLE_SCALE;
                                 [receiver startPossession];
                                 [enchant runAction:[NKAction scaleTo:.01 duration:CARD_ANIM_DUR*2] completion:^{
                                     [enchant removeFromParent];
+                                    [self setSelectedPlayer:NULL];
+                                    [self setSelectedPlayer:event.playerReceiving];
                                     block();
                                 }];
                             }];
                             
                         }];
-                        
-                    }
+                                            }
                     else { // pass to board square
                         
-                        P2t dest = [(NKNode*)[_gameTiles objectForKey:_game.ball.location] position];
-                        
+                       // P2t dest = [(NKNode*)[_gameTiles objectForKey:_game.ball.location] position];
+                        P2t dest = P2Make(_game.ball.location.x, _game.ball.location.y);
                         
                         NKAction *move = [NKAction moveTo:dest duration:BALL_SPEED];
                         
@@ -830,8 +857,9 @@ float PARTICLE_SCALE;
                 }
                 
                 else { // FAILED PASS OR FAILED GOAL
-                    P2t dest = [(NKNode*)[_gameTiles objectForKey:_game.ball.location] position];
-                    
+                    //P2t dest = [(NKNode*)[_gameTiles objectForKey:_game.ball.location] position];
+                    P2t dest = P2Make(_game.ball.location.x, _game.ball.location.y);
+
                     NKAction *move = [NKAction moveTo:dest duration:BALL_SPEED];
                     
                     [move setTimingMode:NKActionTimingEaseOut];
@@ -1336,11 +1364,7 @@ float PARTICLE_SCALE;
             
             
         }];
-        
-        
-        
-        
-        
+       // [person stopPosession:^{}];
     }
     
     

@@ -17,21 +17,27 @@
     P2t origin;
     //NKLabelNode *cardName;
     NKSpriteNode *cardImg;
-    NKNode *rotate;
-    NKSpriteNode *halo;
+//    NKNode *rotate;
+//    NKSpriteNode *halo;
     NKSpriteNode *effectSprite;
     NKSpriteNode *moveRadiusSprite;
 }
 
 @property (nonatomic, strong) NKSpriteNode *ballTarget;
 
-@property (nonatomic, weak) BallSprite *ball;
-@property (nonatomic, weak) GameScene *delegate;
-@property (nonatomic, weak) Player* model;
+@property (nonatomic, strong) BallSprite *ball;
+@property (nonatomic, strong) GameScene *delegate;
+@property (nonatomic, strong) Player* model;
+
+@property (nonatomic, strong) NKSpriteNode *halo;
+@property (nonatomic, strong) NKNode *rotate;
+
+
 
 //@property (nonatomic, weak) UITouch *touch;
 
 @property (nonatomic) bool highlighted;
+@property (nonatomic) bool inTopBar;
 
 -(void)stealPossesionFromPlayer:(PlayerSprite*)player;
 
@@ -40,6 +46,7 @@
 -(void)startPossession;
 -(void)showEffects;
 -(void)showKickMode;
+-(void)setHighlighted:(bool)highlighted;
 
 // FOR UX WINDOW
 

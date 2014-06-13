@@ -38,6 +38,8 @@
 @property (nonatomic, weak) Card* selectedCard;
 @property (nonatomic, weak) Player* selectedPlayer;
 @property (nonatomic, weak) BoardTile *selectedBoardTile;
+@property (nonatomic, strong) NSMutableDictionary *playerSprites;
+
 
 @property (nonatomic, strong) NSMutableDictionary *gameTiles;  //objects:game tiles, key:location
 @property (nonatomic, strong) NSDictionary *soundFiles;

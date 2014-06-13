@@ -32,6 +32,7 @@ typedef NS_ENUM(int32_t, FactionType) {
 @property (nonatomic) FactionType faction;
 @property (nonatomic) int cardSlots;
 @property (nonatomic) BOOL female;
+@property (nonatomic) BOOL kickMode;
 
 // NON-PERSISTENT - ADDED IN REALTIME
 

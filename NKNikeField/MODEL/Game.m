@@ -240,7 +240,7 @@
                         
                     }];
                     
-                    self.selectedPlayer = player;
+                  //  self.selectedPlayer = player;
                     
                     return 1;
                 }
@@ -287,9 +287,9 @@
 }
 
 -(void)startKickMode:(Player*)p{
+    p.kickMode = TRUE;
     _currentEventSequence = [GameSequence sequence];
 
-    //GameEvent* kickModeEvent =  [self addCardEventToSequence:_currentEventSequence withCard:p forPlayer:p toLocation:p.location withType:kEventKickMode];
     GameEvent *event = [GameEvent event];
     
     event.playerPerforming = p;
@@ -304,17 +304,35 @@
 
 }
 
+-(void)startKickPassToPlayer:(Player*)p{
+    _currentEventSequence = [GameSequence sequence];
+    
+    GameEvent *event = [GameEvent event];
+    
+    event.playerPerforming = self.ball.enchantee;
+    event.playerReceiving = p;
+    event.card = p; // also sets other stuff
+    event.startingLocation = [self.ball.enchantee.location copy];
+    event.location = [p.location copy];
+    event.deck = p.deck;
+    event.type = kEventKickPass;
+    event.cost = 0;
+    [_currentEventSequence.GameEvents addObject:event];
+    [self performSequence:_currentEventSequence record:YES animate:YES];
+
+}
+
 -(void)setSelectedLocation:(BoardLocation *)selectedLocation {
     
     NSLog(@"setSelectedLocation = %@", selectedLocation);
     if (_selectedPlayer) {
         if (_selectedCard) {
-            _currentEventSequence = [GameSequence sequence];
             
             // ADD MAIN ACTION
             // ADD DISCARD EVENT
-            [self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventPlayCard];
+            //[self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventPlayCard];
             
+            _currentEventSequence = [GameSequence sequence];
             GameEvent* playerEvent =  [self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventPlayCard];
             
             if (_selectedCard.category == CardCategoryMove) {
@@ -374,7 +392,23 @@
         }
         
         BoardLocation *xformSelectedLocation = [selectedLocation transformOriginFromLowerLeftToCenter];
-        if([xformSelectedLocation distanceBetweenLocations:_selectedPlayer.location] < MOVE_RADIUS && !_selectedPlayer.moved){
+        if(_selectedPlayer.kickMode){
+            _currentEventSequence = [GameSequence sequence];
+            
+            GameEvent *event = [GameEvent event];
+            
+            event.playerPerforming = _selectedPlayer;
+            event.card = _selectedPlayer; // also sets other stuff
+            event.startingLocation = [_selectedPlayer.location copy];
+            event.location = [xformSelectedLocation copy];
+            event.deck = _selectedPlayer.deck;
+            event.type = kEventKick;
+            event.cost = 0;
+            [_currentEventSequence.GameEvents addObject:event];
+            [self performSequence:_currentEventSequence record:YES animate:YES];
+            [self setSelectedPlayer:NULL];
+        }
+        else if([xformSelectedLocation distanceBetweenLocations:_selectedPlayer.location] < MOVE_RADIUS && !_selectedPlayer.moved){
             _currentEventSequence = [GameSequence sequence];
             GameEvent* playerEvent =  [self addMoveEventToSequence:_currentEventSequence forPlayer:_selectedPlayer toLocation:xformSelectedLocation];
             [self performSequence:_currentEventSequence record:YES animate:YES];
@@ -452,16 +486,12 @@
 }
 
 -(GameEvent*)addDeployEventToSequence:(GameSequence*)sequence forManager:(Manager*)m toLocation:(BoardLocation*)location withType:(EventType)type {
-    
     GameEvent *event = [GameEvent event];
-    
-    
     
     event.manager = m;
     event.type = kEventAddPlayer;
     //event.startingLocation = [card.location copy];
     NSLog(@"adding deploy event");
-    
     
     event.location = [location copy];
     
@@ -470,7 +500,6 @@
     event.cost = 0;
     
     return event;
-    
 }
 
 -(GameEvent*)addCardEventToSequence:(GameSequence*)sequence withCard:(Card*)card forPlayer:(Player*)player toLocation:(BoardLocation*)location withType:(EventType)type {
@@ -643,7 +672,7 @@
 
 -(void)performSequence:(GameSequence*)sequence record:(BOOL)shouldRecordSequence animate:(BOOL)animate{
     
-    [self clearSelection];
+   // [self clearSelection];
     
     //[_gameScene refreshUXWindowForPlayer:nil withCompletionBlock:nil];
     
@@ -969,14 +998,17 @@
     NSLog(@"event of type %d", event.type);
     if(event.type == kEventMove){
         event.playerPerforming.moved = true;
-        NSLog(@"kEventMove event in game.m begin");
+      //  NSLog(@"kEventMove event in game.m begin");
     }
-    if(event.type == kEventKickMode){
-        NSLog(@"kEventKickMode event in game.m begin");
-
+    else if(event.type == kEventKickMode){
+      //  NSLog(@"kEventKickMode event in game.m begin");
+        event.playerPerforming.kickMode = true;
     }
     
-    if (event.type == kEventStartTurn){
+    else if (event.type == kEventKick){
+        [_ball setLocation:event.location];
+    }
+    else if (event.type == kEventStartTurn){
         _ball.enchantee = _players[2]; // @EK DEBUG
         event.manager.myTurn = true;
         _selectedManager = event.manager;
@@ -1249,7 +1281,7 @@
             //NSLog(@"pass!");
             [event.playerPerforming setBall:Nil];
             
-            event.playerReceiving = [self playerAtLocation:event.location];
+            //event.playerReceiving = [self playerAtLocation:event.location];
             if (event.playerReceiving) {
                 Player *p = event.playerReceiving;
                 [p setBall:_ball];
@@ -1257,6 +1289,8 @@
             else {
                 [_ball setLocation:event.location];
             }
+            self.selectedPlayer = NULL;
+            [self.gameScene setSelectedPlayer:NULL];
         }
         
         else if (event.type == kEventKickGoal || event.type == kEventKickGoalLoss){ // SHOOT
@@ -2305,7 +2339,6 @@
     
     [self addSetBallEventForSequence:_currentEventSequence location:[BoardLocation pX:3 Y:BOARD_LENGTH/2-1]];
     
-    
 }
 
 -(void) addCardToBoard:(Card*)c {
@@ -2327,16 +2360,6 @@
         if (i == 1) {
             [spawn2 setLocation:[BoardLocation pX:0 Y:0 ]];
         }
-//        GameEvent* spawn = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:0] toLocation:[BoardLocation pX:((i*2+1)*OLD_TILE_WIDTH - TILE_WIDTH/2.0)  Y:((OLD_TILE_HEIGHT*2.0))- TILE_HEIGHT/2.0]  withType:kEventAddPlayer];
-//        
-//        GameEvent* spawn2 = [self addDeployEventToSequence:sequence forManager:[self managerForTeamSide:1] toLocation:[BoardLocation pX:(i*2+1)*OLD_TILE_WIDTH - TILE_WIDTH/2.0 Y:-OLD_TILE_HEIGHT*2.0 - TILE_HEIGHT/2.0]  withType:kEventAddPlayer];
-//        
-//        if (i == 1) {
-//            [spawn2 setLocation:[BoardLocation pX:(i*2+1)*OLD_TILE_WIDTH - TILE_WIDTH/2.0 Y:-OLD_TILE_HEIGHT - TILE_HEIGHT/2.0]];
-//            //spawn2.ball = _ball;
-//        }
-        // @EK This is the initial position
-        
     }
 }
 

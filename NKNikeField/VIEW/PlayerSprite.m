@@ -134,6 +134,7 @@
 }
 
 -(void)setStateForBar {
+    self.inTopBar = true;
     [self removeChildNamed:@"shadow"];
     [self removeChildNamed:@"moveRadius"];
     [cardImg removeFromParent];
@@ -161,24 +162,20 @@
 
 -(void)setHighlighted:(bool)highlighted {
     
-//    for(PlayerSprite *ps in self.delegate.){
-//        [self removeChildNamed:@"crosshairs"];
-//        [self removeChildNamed:@"moveRadius"];
-//    }
     
-    if (highlighted && !_highlighted) {
+    if (highlighted) {
        // NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:S2Make(TILE_WIDTH, TILE_HEIGHT)];
         NKSpriteNode *crosshairs = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:NSFWPlayerHighlight] color:NKWHITE size:S2Make(self.size.width + 6, self.size.height + 22)];
         crosshairs.name = @"crosshairs";
         [self addChild:crosshairs];
         [crosshairs setZPosition: 1];
-        
-        if(!self.model.moved){
+        _highlighted = true;
+        if(!self.model.moved && !self.inTopBar){
             [self showMoveRadius];
         }
     }
     
-    else if (!highlighted && _highlighted){
+    else{
         [self removeChildNamed:@"crosshairs"];
         [self removeChildNamed:@"moveRadius"];
         [self removeChildNamed:@"kickMode"];
@@ -213,42 +210,36 @@
     
     if (!_ball) {
         
-        if (!rotate) {
+        if (!_rotate) {
             
-            rotate = [[NKNode alloc]init];
-            [self addChild:rotate];
+            _rotate = [[NKNode alloc]init];
+            [self addChild:_rotate];
 
-         //   NKNode *boardPosition = [[NKNode alloc] init];
-         //   [boardPosition setPosition3d:self.position3d];
-            //[boardPosition addChild:rotate];
-            
-         //   [rotate addChild:boardPosition];
-            
-            [rotate repeatAction:[NKAction rotateByAngle:180 duration:4.]];
+            [_rotate repeatAction:[NKAction rotateByAngle:180 duration:4.]];
           //  [rotate setPosition3d:V3Make(0, -20, h*.3)];
 
-            halo = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:S2Make(h, h)];
+            _halo = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:S2Make(h, h)];
             
             //[rotate addChild:halo];
             //[halo setAlpha:.5];
-            [halo setColorBlendFactor:1.];
-            [halo setColor:_model.manager.color];
-            //[halo setPosition3d:V3Make(0, -20, h*.3)];
+            [_halo setColorBlendFactor:1.];
+            [_halo setColor:_model.manager.color];
+            //[_halo setPosition3d:V3Make(0, -20, h*.3)];
             
 
             
             NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks_glow.png"] color:NKWHITE size:S2Make(h, h)];
-            [halo addChild:haloMarks];
+            [_halo addChild:haloMarks];
             [haloMarks setZPosition:2];
             
             _ballTarget = [[NKSpriteNode alloc]initWithColor:nil size:S2Make(4, 4)];
-            [halo addChild:_ballTarget];
+            [_halo addChild:_ballTarget];
             [haloMarks repeatAction:[NKAction rotateByAngle:180 duration:8.]];
             [_ballTarget setPosition3d:V3Make(0, w*.42, 0)];
             
-            [rotate addChild:halo];
+            [_rotate addChild:_halo];
             
-            [rotate fadeInChild:halo duration:FAST_ANIM_DUR withCompletion:^{
+            [_rotate fadeInChild:_halo duration:FAST_ANIM_DUR withCompletion:^{
                 
             }];
             
@@ -277,7 +268,7 @@
         
        
         
-        [halo runAction:[NKAction repeatActionForever:
+        [_halo runAction:[NKAction repeatActionForever:
                                [NKAction group:@[
                                                                       [NKAction rotateByAngle:180 duration:2.]
                                                     ]]]];
@@ -299,15 +290,19 @@
 
 -(void)stopPosession:(void (^)())block {
 
-        [self fadeOutChild:rotate duration:FAST_ANIM_DUR withCompletion:^{
+   //     [self fadeOutChild:rotate duration:FAST_ANIM_DUR withCompletion:^{
             NSLog(@"stopped possesion : %@", _model.name);
             [_ballTarget removeFromParent];
             _ball.player = nil;
             _ball = nil;
-            [rotate removeFromParent];
-            rotate = nil;
+            [_halo setHidden:true];
+            [_halo removeFromParent];
+            _halo = nil;
+            [_rotate setHidden:true];
+            [_rotate removeFromParent];
+            _rotate = nil;
             block();
-        }];
+   //     }];
 
 }
 

@@ -155,6 +155,8 @@ typedef enum RTMessageType {
 
 -(BOOL)requestDrawSequence;
 -(void)startKickMode:(Player*)p;
+-(void)startKickPassToPlayer:(Player*)p;
+
 
 -(Manager*)opponentForManager:(Manager*)m;
 -(Manager*)managerForTeamSide:(int)teamSide;
