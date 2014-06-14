@@ -2443,7 +2443,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "NKNikeField" */;
+			buildConfigurationList = 61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "Sportsball" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -3131,7 +3131,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "NKNikeField" */ = {
+		61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "Sportsball" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61D6E47E18FDAE120017A389 /* Debug */,
