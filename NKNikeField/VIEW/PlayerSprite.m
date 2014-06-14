@@ -144,20 +144,20 @@
     
     [cardImg setZPosition:2];
     
-    if (_model.ball) {
-        if (![self childNodeWithName:@"ball"]) {
-        BallSprite *ballSprite = [[BallSprite alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:nil size:V3Make(w*.25,w*.25,w*.25)];
-        ballSprite.name = @"ball";
-        [self addChild:ballSprite];
-        [ballSprite setPosition:P2Make(w*.25, h*-.25)];
-        [ballSprite repeatAction:[NKAction rotateYByAngle:120 duration:1.]];
-        }
+    if (self.model.ball) {
+            _ball = [[BallSprite alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:nil size:V3Make(w*.25,w*.25,w*.25)];
+            _ball.name = @"ball";
+            [self addChild:_ball];
+            [_ball setPosition:P2Make(w*.25, h*-.25)];
+            [_ball repeatAction:[NKAction rotateYByAngle:120 duration:1.]];
     }
-    
     else {
         [self removeChildNamed:@"ball"];
+        _ball = nil;
     }
-    //self.userInteractionEnabled = false;
+    if(!self.highlighted){
+        [self removeChildNamed:@"crosshairs"];
+    }
 }
 
 -(void)setHighlighted:(bool)highlighted {
@@ -180,11 +180,10 @@
         [self removeChildNamed:@"moveRadius"];
         [self removeChildNamed:@"kickMode"];
         moveRadiusSprite = NULL;
+        _highlighted = false;
     }
     
      [cardImg setTexture:[NKTexture textureWithImageNamed:[self imageString]]];
-    
-    _highlighted = highlighted;
     
     
 }
@@ -291,17 +290,18 @@
 -(void)stopPosession:(void (^)())block {
 
    //     [self fadeOutChild:rotate duration:FAST_ANIM_DUR withCompletion:^{
-            NSLog(@"stopped possesion : %@", _model.name);
-            [_ballTarget removeFromParent];
-            _ball.player = nil;
-            _ball = nil;
-            [_halo setHidden:true];
-            [_halo removeFromParent];
-            _halo = nil;
-            [_rotate setHidden:true];
-            [_rotate removeFromParent];
-            _rotate = nil;
-            block();
+    NSLog(@"stopped possesion : %@", _model.name);
+    [_ballTarget removeFromParent];
+    _model.ball = nil;
+    _ball.player = nil;
+    _ball = nil;
+    [_halo setHidden:true];
+    [_halo removeFromParent];
+    _halo = nil;
+    [_rotate setHidden:true];
+    [_rotate removeFromParent];
+    _rotate = nil;
+    block();
    //     }];
 
 }

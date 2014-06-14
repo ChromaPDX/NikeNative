@@ -117,19 +117,23 @@
         }
         [self setEnergyLabelForManager:p.manager];
         for (PlayerSprite* ps in _playerSprites) {
-            
-             [ps setStateForBar];
-            
             if (ps.model == p) {
                 [ps setHighlighted:true];
             }
             else {
                 [ps setHighlighted:false];
             }
+            [ps setStateForBar];
         }
-        [self sortPlayers];
     }
-
+    else{
+        for (PlayerSprite* ps in _playerSprites) {
+            [ps setHighlighted:false];
+            [ps setStateForBar];
+        }
+    }
+    [self sortPlayers];
+    block();
 }
 
 -(void)addPlayer:(Player*)p animated:(BOOL)animated withCompletionBlock:(void (^)())block{

@@ -465,6 +465,7 @@ float PARTICLE_SCALE;
             }
         }
         _selectedPlayer = NULL;
+        [_uxTopBar setPlayer:nil WithCompletionBlock:^{}];
         return;
     }else if(_selectedPlayer != selectedPlayer && _selectedPlayer.kickMode){
         [_game startKickPassToPlayer:selectedPlayer];
@@ -485,20 +486,23 @@ float PARTICLE_SCALE;
     else {
         if (_selectedPlayer == selectedPlayer && _selectedPlayer.ball){
             [self.game startKickMode:selectedPlayer];
+            [_uxTopBar setPlayer:nil WithCompletionBlock:^{}];
         }
         else if ([_game canUsePlayer:selectedPlayer]) {
             
-            [_uxTopBar setPlayer:selectedPlayer WithCompletionBlock:^{}];
+            _selectedPlayer = selectedPlayer;
+            _game.selectedPlayer = selectedPlayer;
             
             [self playSoundWithKey:@"playerTap"];
             
             [self showPlayerSelection:selectedPlayer];
             
-            _selectedPlayer = selectedPlayer;
-            
             if (!_game.selectedManager.isAI) {
                 [self moveCameraToBoundingBox:@[_selectedPlayer.location]];
             }
+
+            [_uxTopBar setPlayer:selectedPlayer WithCompletionBlock:^{}];
+
             [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{
 
 //                if (_selectedCard) {
@@ -511,6 +515,7 @@ float PARTICLE_SCALE;
             [self playSoundWithKey:@"badTouch"];
         }
     }
+    [self refreshUXWindowForPlayer:selectedPlayer withCompletionBlock:^{}];
 }
 
 -(void)showPlayerSelection:(Player*)p{
@@ -738,9 +743,9 @@ float PARTICLE_SCALE;
     
     else if (event.type == kEventKick || event.type == kEventKickPass || event.type == kEventKickGoal || event.type == kEventKickGoalLoss) {
 
-        //if(event.type == kEventKick){
-        [self setSelectedPlayer:NULL];
-        //}
+        if(event.type == kEventKick){
+            [self setSelectedPlayer:NULL];
+        }
         NKEmitterNode *enchant = [[NKEmitterNode alloc] init];
         
         [self.ballSprite addChild:enchant];
@@ -763,6 +768,10 @@ float PARTICLE_SCALE;
                     [self playSoundWithKey:@"playerPass"];
                     
                     if (receiver) {
+                        [self setSelectedPlayer:NULL];
+                        [self setSelectedPlayer:event.playerReceiving];
+                        [self.uxTopBar setPlayer:NULL WithCompletionBlock:^{}];
+                        [self.uxTopBar setPlayer:event.playerReceiving WithCompletionBlock:^{}];
                         [receiver getReadyForPosession:^{
                             NKAction *move = [NKAction move3dTo:[receiver.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED];
                             [move setTimingMode:NKActionTimingEaseOut];
@@ -771,8 +780,6 @@ float PARTICLE_SCALE;
                                 [receiver startPossession];
                                 [enchant runAction:[NKAction scaleTo:.01 duration:CARD_ANIM_DUR*2] completion:^{
                                     [enchant removeFromParent];
-                                    [self setSelectedPlayer:NULL];
-                                    [self setSelectedPlayer:event.playerReceiving];
                                     block();
                                 }];
                             }];

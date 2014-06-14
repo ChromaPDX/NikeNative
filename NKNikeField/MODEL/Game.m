@@ -309,10 +309,10 @@
     
     GameEvent *event = [GameEvent event];
     
-    event.playerPerforming = self.ball.enchantee;
+    event.playerPerforming = _selectedPlayer;
     event.playerReceiving = p;
     event.card = p; // also sets other stuff
-    event.startingLocation = [self.ball.enchantee.location copy];
+    event.startingLocation = [_selectedPlayer.location copy];
     event.location = [p.location copy];
     event.deck = p.deck;
     event.type = kEventKickPass;
@@ -326,70 +326,70 @@
     
     NSLog(@"setSelectedLocation = %@", selectedLocation);
     if (_selectedPlayer) {
-        if (_selectedCard) {
-            
-            // ADD MAIN ACTION
-            // ADD DISCARD EVENT
-            //[self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventPlayCard];
-            
-            _currentEventSequence = [GameSequence sequence];
-            GameEvent* playerEvent =  [self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventPlayCard];
-            
-            if (_selectedCard.category == CardCategoryMove) {
-                playerEvent.type = kEventMove;
-            }
-            
-            else if (_selectedCard.category == CardCategoryKick){
-                if ([selectedLocation isEqual:_selectedPlayer.manager.goal]) {
-                    if(_selectedPlayer.game.me == _selectedPlayer.manager){
-                        playerEvent.type = kEventKickGoal;
-                    }
-                    else{
-                        playerEvent.type = kEventKickGoalLoss;
-                    }
-                    
-                    GameEvent* resetPlayers = [GameEvent event];
-                    resetPlayers.type = kEventResetPlayers;
-                    resetPlayers.manager = _selectedPlayer.manager;
-                    [_currentEventSequence.GameEvents addObject:resetPlayers];
-                }
-                else {
-                    playerEvent.type = kEventKickPass;
-                }
-            }
-            
-            else if (_selectedCard.category == CardCategoryChallenge){
-                playerEvent.type = kEventChallenge;
-                playerEvent.playerPerforming.used = false;
-            }
-            
-            else if (_selectedCard.category == CardCategorySpecial){
-                if(_selectedCard.specialTypeCategory == CardSpecialCategoryFreeze){
-                    playerEvent.type = kEventFreeze;
-                }
-                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryNoLegs){
-                    playerEvent.type = kEventNoLegs;
-                }
-                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryBlock){
-                    playerEvent.type = kEventBlock;
-                }
-                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryDeRez){
-                    playerEvent.type = kEventDeRez;
-                }
-                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryNewDeal){
-                    playerEvent.type = kEventNewDeal;
-                }
-                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryPredictiveAnalysis){
-                    playerEvent.type = kEventPredictiveAnalysis;
-                }
-                else  if(_selectedCard.specialTypeCategory == CardSpecialCategorySuccubus){
-                    playerEvent.type = kEventSuccubus;
-                }
-            }
-            [self performSequence:_currentEventSequence record:YES animate:YES];
-            
-            //
-        }
+//        if (_selectedCard) {
+//            
+//            // ADD MAIN ACTION
+//            // ADD DISCARD EVENT
+//            //[self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventPlayCard];
+//            
+//            _currentEventSequence = [GameSequence sequence];
+//            GameEvent* playerEvent =  [self addCardEventToSequence:_currentEventSequence withCard:_selectedCard forPlayer:_selectedPlayer toLocation:selectedLocation withType:kEventPlayCard];
+//            
+//            if (_selectedCard.category == CardCategoryMove) {
+//                playerEvent.type = kEventMove;
+//            }
+//            
+//            else if (_selectedCard.category == CardCategoryKick){
+//                if ([selectedLocation isEqual:_selectedPlayer.manager.goal]) {
+//                    if(_selectedPlayer.game.me == _selectedPlayer.manager){
+//                        playerEvent.type = kEventKickGoal;
+//                    }
+//                    else{
+//                        playerEvent.type = kEventKickGoalLoss;
+//                    }
+//                    
+//                    GameEvent* resetPlayers = [GameEvent event];
+//                    resetPlayers.type = kEventResetPlayers;
+//                    resetPlayers.manager = _selectedPlayer.manager;
+//                    [_currentEventSequence.GameEvents addObject:resetPlayers];
+//                }
+//                else {
+//                    playerEvent.type = kEventKickPass;
+//                }
+//            }
+//            
+//            else if (_selectedCard.category == CardCategoryChallenge){
+//                playerEvent.type = kEventChallenge;
+//                playerEvent.playerPerforming.used = false;
+//            }
+//            
+//            else if (_selectedCard.category == CardCategorySpecial){
+//                if(_selectedCard.specialTypeCategory == CardSpecialCategoryFreeze){
+//                    playerEvent.type = kEventFreeze;
+//                }
+//                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryNoLegs){
+//                    playerEvent.type = kEventNoLegs;
+//                }
+//                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryBlock){
+//                    playerEvent.type = kEventBlock;
+//                }
+//                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryDeRez){
+//                    playerEvent.type = kEventDeRez;
+//                }
+//                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryNewDeal){
+//                    playerEvent.type = kEventNewDeal;
+//                }
+//                else  if(_selectedCard.specialTypeCategory == CardSpecialCategoryPredictiveAnalysis){
+//                    playerEvent.type = kEventPredictiveAnalysis;
+//                }
+//                else  if(_selectedCard.specialTypeCategory == CardSpecialCategorySuccubus){
+//                    playerEvent.type = kEventSuccubus;
+//                }
+//            }
+//            [self performSequence:_currentEventSequence record:YES animate:YES];
+//            
+//            //
+//        }
         
         BoardLocation *xformSelectedLocation = [selectedLocation transformOriginFromLowerLeftToCenter];
         if(_selectedPlayer.kickMode){
@@ -478,9 +478,9 @@
     
     else if (event.type == kEventKickPass) {
         
-        event.playerPerforming = [self playerAtLocation:event.startingLocation];
+      //  event.playerPerforming = [self playerAtLocation:event.startingLocation];
         
-        event.playerReceiving = [self playerAtLocation:event.location];
+      //  event.playerReceiving = [self playerAtLocation:event.location];
     }
     
 }
@@ -1279,18 +1279,20 @@
         
         else if (event.type == kEventKickPass){ // PASS
             //NSLog(@"pass!");
-            [event.playerPerforming setBall:Nil];
+         //   [event.playerPerforming setBall:Nil];
+            event.playerPerforming.ball = nil;
             
             //event.playerReceiving = [self playerAtLocation:event.location];
             if (event.playerReceiving) {
                 Player *p = event.playerReceiving;
-                [p setBall:_ball];
+                p.ball = _ball;
+               // [p setBall:_ball];
             }
             else {
                 [_ball setLocation:event.location];
             }
-            self.selectedPlayer = NULL;
-            [self.gameScene setSelectedPlayer:NULL];
+            [self setSelectedPlayer: event.playerReceiving];
+          //  [self.gameScene setSelectedPlayer: event.playerReceiving];
         }
         
         else if (event.type == kEventKickGoal || event.type == kEventKickGoalLoss){ // SHOOT
