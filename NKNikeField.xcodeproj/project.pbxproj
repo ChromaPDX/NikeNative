@@ -1087,10 +1087,10 @@
 		61D6E44E18FDAE110017A389 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		61D6E45018FDAE110017A389 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		61D6E45218FDAE110017A389 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		61D6E45618FDAE110017A389 /* Sportsball-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sportsball-Info.plist"; sourceTree = "<group>"; };
+		61D6E45618FDAE110017A389 /* NKNikeField-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NKNikeField-Info.plist"; sourceTree = "<group>"; };
 		61D6E45818FDAE110017A389 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		61D6E45A18FDAE110017A389 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		61D6E45C18FDAE110017A389 /* Sportsball-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sportsball-Prefix.pch"; sourceTree = "<group>"; };
+		61D6E45C18FDAE110017A389 /* NKNikeField-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NKNikeField-Prefix.pch"; sourceTree = "<group>"; };
 		61D6E45D18FDAE110017A389 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		61D6E45E18FDAE110017A389 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		61D6E46118FDAE110017A389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
@@ -2103,10 +2103,10 @@
 		61D6E45518FDAE110017A389 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				61D6E45618FDAE110017A389 /* Sportsball-Info.plist */,
+				61D6E45618FDAE110017A389 /* NKNikeField-Info.plist */,
 				61D6E45718FDAE110017A389 /* InfoPlist.strings */,
 				61D6E45A18FDAE110017A389 /* main.m */,
-				61D6E45C18FDAE110017A389 /* Sportsball-Prefix.pch */,
+				61D6E45C18FDAE110017A389 /* NKNikeField-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2387,9 +2387,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		61D6E44A18FDAE110017A389 /* Sportsball */ = {
+		61D6E44A18FDAE110017A389 /* NKNikeField */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 61D6E48018FDAE120017A389 /* Build configuration list for PBXNativeTarget "Sportsball" */;
+			buildConfigurationList = 61D6E48018FDAE120017A389 /* Build configuration list for PBXNativeTarget "NKNikeField" */;
 			buildPhases = (
 				61D6E44718FDAE110017A389 /* Sources */,
 				61D6E44818FDAE110017A389 /* Frameworks */,
@@ -2399,14 +2399,14 @@
 			);
 			dependencies = (
 			);
-			name = Sportsball;
+			name = NKNikeField;
 			productName = NKNikeField;
 			productReference = 61D6E44B18FDAE110017A389 /* Sportsball.app */;
 			productType = "com.apple.product-type.application";
 		};
-		61D6E46E18FDAE120017A389 /* SportsballTests */ = {
+		61D6E46E18FDAE120017A389 /* NKNikeFieldTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 61D6E48318FDAE120017A389 /* Build configuration list for PBXNativeTarget "SportsballTests" */;
+			buildConfigurationList = 61D6E48318FDAE120017A389 /* Build configuration list for PBXNativeTarget "NKNikeFieldTests" */;
 			buildPhases = (
 				61D6E46B18FDAE120017A389 /* Sources */,
 				61D6E46C18FDAE120017A389 /* Frameworks */,
@@ -2417,7 +2417,7 @@
 			dependencies = (
 				61D6E47518FDAE120017A389 /* PBXTargetDependency */,
 			);
-			name = SportsballTests;
+			name = NKNikeFieldTests;
 			productName = NKNikeFieldTests;
 			productReference = 61D6E46F18FDAE120017A389 /* nikecup.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -2440,7 +2440,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "Sportsball" */;
+			buildConfigurationList = 61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "NKNikeField" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -2453,8 +2453,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				61D6E44A18FDAE110017A389 /* Sportsball */,
-				61D6E46E18FDAE120017A389 /* SportsballTests */,
+				61D6E44A18FDAE110017A389 /* NKNikeField */,
+				61D6E46E18FDAE120017A389 /* NKNikeFieldTests */,
 			);
 		};
 /* End PBXProject section */
@@ -2909,7 +2909,7 @@
 /* Begin PBXTargetDependency section */
 		61D6E47518FDAE120017A389 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 61D6E44A18FDAE110017A389 /* Sportsball */;
+			target = 61D6E44A18FDAE110017A389 /* NKNikeField */;
 			targetProxy = 61D6E47418FDAE120017A389 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -3040,8 +3040,8 @@
 					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "NKNikeField/Sportsball-Prefix.pch";
-				INFOPLIST_FILE = "NKNikeField/Sportsball-Info.plist";
+				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
+				INFOPLIST_FILE = "NKNikeField/NKNikeField-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3049,7 +3049,7 @@
 					/Users/erickuehne/Downloads/nikeSdkRelease/iOSFramework/NikePlusSDK.framework/Versions/A,
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = Sportsball;
+				PRODUCT_NAME = NKNikeField;
 				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -3074,8 +3074,8 @@
 					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "NKNikeField/Sportsball-Prefix.pch";
-				INFOPLIST_FILE = "NKNikeField/Sportsball-Info.plist";
+				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
+				INFOPLIST_FILE = "NKNikeField/NKNikeField-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3083,7 +3083,7 @@
 					/Users/erickuehne/Downloads/nikeSdkRelease/iOSFramework/NikePlusSDK.framework/Versions/A,
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = Sportsball;
+				PRODUCT_NAME = NKNikeField;
 				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -3133,7 +3133,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "Sportsball" */ = {
+		61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "NKNikeField" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61D6E47E18FDAE120017A389 /* Debug */,
@@ -3142,7 +3142,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		61D6E48018FDAE120017A389 /* Build configuration list for PBXNativeTarget "Sportsball" */ = {
+		61D6E48018FDAE120017A389 /* Build configuration list for PBXNativeTarget "NKNikeField" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61D6E48118FDAE120017A389 /* Debug */,
@@ -3151,7 +3151,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		61D6E48318FDAE120017A389 /* Build configuration list for PBXNativeTarget "SportsballTests" */ = {
+		61D6E48318FDAE120017A389 /* Build configuration list for PBXNativeTarget "NKNikeFieldTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61D6E48418FDAE120017A389 /* Debug */,
