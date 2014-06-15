@@ -186,7 +186,6 @@
 		29195596193FACB100BE716C /* NKTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 291954D2193FACB100BE716C /* NKTexture.m */; };
 		29195597193FACB100BE716C /* NKTextureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 291954D4193FACB100BE716C /* NKTextureManager.m */; };
 		29195598193FACB100BE716C /* skysphere.png in Resources */ = {isa = PBXBuildFile; fileRef = 291954D5193FACB100BE716C /* skysphere.png */; };
-		29195599193FACB100BE716C /* white_texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 291954D6193FACB100BE716C /* white_texture.png */; };
 		291955A0193FACB100BE716C /* NKColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 291954E6193FACB100BE716C /* NKColor.m */; };
 		291955A1193FACB100BE716C /* NKFont+CoreText.m in Sources */ = {isa = PBXBuildFile; fileRef = 291954E8193FACB100BE716C /* NKFont+CoreText.m */; };
 		291955A2193FACB100BE716C /* NKImage+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 291954EA193FACB100BE716C /* NKImage+Utils.m */; };
@@ -852,7 +851,6 @@
 		291954D3193FACB100BE716C /* NKTextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKTextureManager.h; sourceTree = "<group>"; };
 		291954D4193FACB100BE716C /* NKTextureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKTextureManager.m; sourceTree = "<group>"; };
 		291954D5193FACB100BE716C /* skysphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skysphere.png; sourceTree = "<group>"; };
-		291954D6193FACB100BE716C /* white_texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white_texture.png; sourceTree = "<group>"; };
 		291954E5193FACB100BE716C /* NKColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NKColor.h; sourceTree = "<group>"; };
 		291954E6193FACB100BE716C /* NKColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NKColor.m; sourceTree = "<group>"; };
 		291954E7193FACB100BE716C /* NKFont+CoreText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NKFont+CoreText.h"; sourceTree = "<group>"; };
@@ -1085,14 +1083,14 @@
 		6198A357190068660083EA5D /* UXTopBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UXTopBar.h; sourceTree = "<group>"; };
 		6198A358190068660083EA5D /* UXTopBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UXTopBar.m; sourceTree = "<group>"; };
 		6198A35A1900727C0083EA5D /* lock-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lock-4.png"; sourceTree = "<group>"; };
-		61D6E44B18FDAE110017A389 /* NKNikeField.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NKNikeField.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		61D6E44B18FDAE110017A389 /* Sportsball.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sportsball.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61D6E44E18FDAE110017A389 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		61D6E45018FDAE110017A389 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		61D6E45218FDAE110017A389 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		61D6E45618FDAE110017A389 /* NKNikeField-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NKNikeField-Info.plist"; sourceTree = "<group>"; };
+		61D6E45618FDAE110017A389 /* Sportsball-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sportsball-Info.plist"; sourceTree = "<group>"; };
 		61D6E45818FDAE110017A389 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		61D6E45A18FDAE110017A389 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		61D6E45C18FDAE110017A389 /* NKNikeField-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NKNikeField-Prefix.pch"; sourceTree = "<group>"; };
+		61D6E45C18FDAE110017A389 /* Sportsball-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sportsball-Prefix.pch"; sourceTree = "<group>"; };
 		61D6E45D18FDAE110017A389 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		61D6E45E18FDAE110017A389 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		61D6E46118FDAE110017A389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
@@ -1100,7 +1098,7 @@
 		61D6E46918FDAE120017A389 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		61D6E46F18FDAE120017A389 /* nikecup.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nikecup.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		61D6E47018FDAE120017A389 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		61D6E47818FDAE120017A389 /* NKNikeFieldTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NKNikeFieldTests-Info.plist"; sourceTree = "<group>"; };
+		61D6E47818FDAE120017A389 /* SportsballTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SportsballTests-Info.plist"; sourceTree = "<group>"; };
 		61D6E47A18FDAE120017A389 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		61D6E47C18FDAE120017A389 /* NKNikeFieldTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NKNikeFieldTests.m; sourceTree = "<group>"; };
 		61D6E6C318FDAF8C0017A389 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
@@ -1660,7 +1658,6 @@
 				291954D3193FACB100BE716C /* NKTextureManager.h */,
 				291954D4193FACB100BE716C /* NKTextureManager.m */,
 				291954D5193FACB100BE716C /* skysphere.png */,
-				291954D6193FACB100BE716C /* white_texture.png */,
 			);
 			path = Texture;
 			sourceTree = "<group>";
@@ -2066,7 +2063,7 @@
 		61D6E44C18FDAE110017A389 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				61D6E44B18FDAE110017A389 /* NKNikeField.app */,
+				61D6E44B18FDAE110017A389 /* Sportsball.app */,
 				61D6E46F18FDAE120017A389 /* nikecup.xctest */,
 			);
 			name = Products;
@@ -2106,10 +2103,10 @@
 		61D6E45518FDAE110017A389 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				61D6E45618FDAE110017A389 /* NKNikeField-Info.plist */,
+				61D6E45618FDAE110017A389 /* Sportsball-Info.plist */,
 				61D6E45718FDAE110017A389 /* InfoPlist.strings */,
 				61D6E45A18FDAE110017A389 /* main.m */,
-				61D6E45C18FDAE110017A389 /* NKNikeField-Prefix.pch */,
+				61D6E45C18FDAE110017A389 /* Sportsball-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2126,7 +2123,7 @@
 		61D6E47718FDAE120017A389 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				61D6E47818FDAE120017A389 /* NKNikeFieldTests-Info.plist */,
+				61D6E47818FDAE120017A389 /* SportsballTests-Info.plist */,
 				61D6E47918FDAE120017A389 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -2390,9 +2387,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		61D6E44A18FDAE110017A389 /* NKNikeField */ = {
+		61D6E44A18FDAE110017A389 /* Sportsball */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 61D6E48018FDAE120017A389 /* Build configuration list for PBXNativeTarget "NKNikeField" */;
+			buildConfigurationList = 61D6E48018FDAE120017A389 /* Build configuration list for PBXNativeTarget "Sportsball" */;
 			buildPhases = (
 				61D6E44718FDAE110017A389 /* Sources */,
 				61D6E44818FDAE110017A389 /* Frameworks */,
@@ -2402,14 +2399,14 @@
 			);
 			dependencies = (
 			);
-			name = NKNikeField;
+			name = Sportsball;
 			productName = NKNikeField;
-			productReference = 61D6E44B18FDAE110017A389 /* NKNikeField.app */;
+			productReference = 61D6E44B18FDAE110017A389 /* Sportsball.app */;
 			productType = "com.apple.product-type.application";
 		};
-		61D6E46E18FDAE120017A389 /* NKNikeFieldTests */ = {
+		61D6E46E18FDAE120017A389 /* SportsballTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 61D6E48318FDAE120017A389 /* Build configuration list for PBXNativeTarget "NKNikeFieldTests" */;
+			buildConfigurationList = 61D6E48318FDAE120017A389 /* Build configuration list for PBXNativeTarget "SportsballTests" */;
 			buildPhases = (
 				61D6E46B18FDAE120017A389 /* Sources */,
 				61D6E46C18FDAE120017A389 /* Frameworks */,
@@ -2420,7 +2417,7 @@
 			dependencies = (
 				61D6E47518FDAE120017A389 /* PBXTargetDependency */,
 			);
-			name = NKNikeFieldTests;
+			name = SportsballTests;
 			productName = NKNikeFieldTests;
 			productReference = 61D6E46F18FDAE120017A389 /* nikecup.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -2443,7 +2440,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "NKNikeField" */;
+			buildConfigurationList = 61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "Sportsball" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -2456,8 +2453,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				61D6E44A18FDAE110017A389 /* NKNikeField */,
-				61D6E46E18FDAE120017A389 /* NKNikeFieldTests */,
+				61D6E44A18FDAE110017A389 /* Sportsball */,
+				61D6E46E18FDAE120017A389 /* SportsballTests */,
 			);
 		};
 /* End PBXProject section */
@@ -2629,7 +2626,6 @@
 				29C42BEF19105C0600441639 /* high6-b.wav in Resources */,
 				2902A071190C7BAE008D0092 /* Faction_Psyke_OFF.png in Resources */,
 				3B27D3B21925BDEF00782A12 /* tile_horizontal_dotted.png in Resources */,
-				29195599193FACB100BE716C /* white_texture.png in Resources */,
 				297CEA111924BDAF0043542D /* Special_L2a.png in Resources */,
 				297CEA061924BDAF0043542D /* Card_Icon_SpecMove.png in Resources */,
 				6198A35B1900727C0083EA5D /* lock-4.png in Resources */,
@@ -2913,7 +2909,7 @@
 /* Begin PBXTargetDependency section */
 		61D6E47518FDAE120017A389 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 61D6E44A18FDAE110017A389 /* NKNikeField */;
+			target = 61D6E44A18FDAE110017A389 /* Sportsball */;
 			targetProxy = 61D6E47418FDAE120017A389 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -3035,24 +3031,26 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: CHROMA GAMES, INC. (ZJLX8USTRZ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: CHROMA GAMES, INC. (ZJLX8USTRZ)";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NKNikeField/PARSE+FB",
 					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
-				INFOPLIST_FILE = "NKNikeField/NKNikeField-Info.plist";
+				GCC_PREFIX_HEADER = "NKNikeField/Sportsball-Prefix.pch";
+				INFOPLIST_FILE = "NKNikeField/Sportsball-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NKNikeField/NIKE",
 					/Users/erickuehne/Downloads/nikeSdkRelease/iOSFramework/NikePlusSDK.framework/Versions/A,
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "FADEBCF4-9991-443D-94B9-BF90EF1C5A43";
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = Sportsball;
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3067,25 +3065,26 @@
 				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: CHROMA GAMES, INC. (ZJLX8USTRZ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: CHROMA GAMES, INC. (ZJLX8USTRZ)";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NKNikeField/PARSE+FB",
 					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
-				INFOPLIST_FILE = "NKNikeField/NKNikeField-Info.plist";
+				GCC_PREFIX_HEADER = "NKNikeField/Sportsball-Prefix.pch";
+				INFOPLIST_FILE = "NKNikeField/Sportsball-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/NKNikeField/NIKE",
 					/Users/erickuehne/Downloads/nikeSdkRelease/iOSFramework/NikePlusSDK.framework/Versions/A,
 				);
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "FADEBCF4-9991-443D-94B9-BF90EF1C5A43";
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = Sportsball;
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -3106,7 +3105,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "NKNikeFieldTests/NKNikeFieldTests-Info.plist";
+				INFOPLIST_FILE = "NKNikeFieldTests/SportsballTests-Info.plist";
 				PRODUCT_NAME = nikecup;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -3124,7 +3123,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NKNikeField/NKNikeField-Prefix.pch";
-				INFOPLIST_FILE = "NKNikeFieldTests/NKNikeFieldTests-Info.plist";
+				INFOPLIST_FILE = "NKNikeFieldTests/SportsballTests-Info.plist";
 				PRODUCT_NAME = nikecup;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -3134,7 +3133,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "NKNikeField" */ = {
+		61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "Sportsball" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61D6E47E18FDAE120017A389 /* Debug */,
@@ -3143,7 +3142,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		61D6E48018FDAE120017A389 /* Build configuration list for PBXNativeTarget "NKNikeField" */ = {
+		61D6E48018FDAE120017A389 /* Build configuration list for PBXNativeTarget "Sportsball" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61D6E48118FDAE120017A389 /* Debug */,
@@ -3152,7 +3151,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		61D6E48318FDAE120017A389 /* Build configuration list for PBXNativeTarget "NKNikeFieldTests" */ = {
+		61D6E48318FDAE120017A389 /* Build configuration list for PBXNativeTarget "SportsballTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61D6E48418FDAE120017A389 /* Debug */,

@@ -25,6 +25,10 @@
 
 @implementation AppDelegate
 
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+    NSLog(@"WillFinishLaunchingWithOptions called");
+    return TRUE;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
