@@ -2443,7 +2443,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "Sportsball" */;
+			buildConfigurationList = 61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "NKNikeField" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -3053,6 +3053,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "FADEBCF4-9991-443D-94B9-BF90EF1C5A43";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3082,8 +3083,10 @@
 					"$(PROJECT_DIR)/NKNikeField/NIKE",
 					/Users/erickuehne/Downloads/nikeSdkRelease/iOSFramework/NikePlusSDK.framework/Versions/A,
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "FADEBCF4-9991-443D-94B9-BF90EF1C5A43";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -3131,7 +3134,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "Sportsball" */ = {
+		61D6E44618FDAE110017A389 /* Build configuration list for PBXProject "NKNikeField" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61D6E47E18FDAE120017A389 /* Debug */,
