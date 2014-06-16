@@ -392,6 +392,7 @@
 //        }
         
         BoardLocation *xformSelectedLocation = [selectedLocation transformOriginFromLowerLeftToCenter];
+        
         if(_selectedPlayer.kickMode){
             _currentEventSequence = [GameSequence sequence];
             

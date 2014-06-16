@@ -31,11 +31,11 @@
 -(void)handleEvent:(NKEvent *)event {
     
     if (NKEventPhaseEnd == event.phase) {
-//    NKTouchState hit = [super touchUp:location id:touchId];
-//    if (hit == 2) {
+
         _delegate.selectedBoardTile = self;
-//    }
-//    return hit;
+        BoardLocation *bl = [[BoardLocation alloc] initWithX:event.screenLocation.x Y:event.screenLocation.y];
+        NSLog(@"touchUP in boardTile, location = %f,%f, bl = %@", event.screenLocation.x, event.screenLocation.y, bl);
+        [_delegate setSelectedBoardLocation:bl];
     }
 }
 

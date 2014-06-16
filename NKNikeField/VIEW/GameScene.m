@@ -1677,17 +1677,4 @@ float PARTICLE_SCALE;
 }
 
 
-//-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-//
-//    if ([super touchUp:location id:touchId] == NKTouchIsFirstResponder) {
-//        if (!_miniGameNode) {
-//            [self startMiniGame];
-//        }
-//        return NKTouchIsFirstResponder;
-//    };
-//
-//    return NKTouchNone;
-//
-//}
-
 @end
