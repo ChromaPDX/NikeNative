@@ -5985,7 +5985,7 @@
 					/Users/erickuehne/Downloads/nikeSdkRelease/iOSFramework/NikePlusSDK.framework/Versions/A,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "FADEBCF4-9991-443D-94B9-BF90EF1C5A43";
+				PROVISIONING_PROFILE = "AA0C5AA7-DBF6-46D7-A8C8-046BC76BAE66";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -6016,7 +6016,7 @@
 					/Users/erickuehne/Downloads/nikeSdkRelease/iOSFramework/NikePlusSDK.framework/Versions/A,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "FADEBCF4-9991-443D-94B9-BF90EF1C5A43";
+				PROVISIONING_PROFILE = "AA0C5AA7-DBF6-46D7-A8C8-046BC76BAE66";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
