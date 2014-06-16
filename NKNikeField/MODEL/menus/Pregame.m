@@ -83,22 +83,22 @@
     return self;
 }
 
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-    NKTouchState hit = [super touchUp:location id:touchId];
+-(void)handleEvent:(NKEvent *)event {
     
-    
+    if (NKEventPhaseEnd == event.phase) {
+
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
-    NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
     R4t startButtonRect = R4Make(200, 100, 400, 200);
-
-    if(R4ContainsPoint(startButtonRect, P2Make(location.x, location.y))){
+        if(R4ContainsPoint(startButtonRect, P2Make(event.screenLocation.x, event.screenLocation.y))){
         NSLog(@"start button pressed, starting game...");
         NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startSinglePlayerGame];
         self.nkView.scene = newScene;
     }
-    return hit;
+        
+    }
+
 }
 
 -(void)cellWasSelected:(NKScrollNode *)cell {

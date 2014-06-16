@@ -69,7 +69,7 @@
     bool effectFound = false;
     
     if(effectSprite){
-        [effectSprite setColor:nil];
+        [effectSprite setColor:NKCLEAR];
         effectSprite.hidden = true;
         [self removeChild:effectSprite];
         effectSprite = nil;
@@ -221,9 +221,8 @@
             
             //[rotate addChild:halo];
             //[halo setAlpha:.5];
-            [_halo setColorBlendFactor:1.];
             [_halo setColor:_model.manager.color];
-            //[_halo setPosition3d:V3Make(0, -20, h*.3)];
+            //[halo setPosition3d:V3Make(0, -20, h*.3)];
             
 
             
@@ -306,15 +305,13 @@
 
 }
 
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-//    NKTouchState touchState = [super touchUp:location id:touchId];
-//    
-//    if (touchState == NKTouchIsFirstResponder){
+-(void)handleEvent:(NKEvent *)event {
+    
+    if (NKEventPhaseEnd == event.phase) {
+
         [_delegate playerSpriteDidSelectPlayer:self.model];
-//    }
-//
-//    return touchState;
-    return false;
+
+    }
 }
 
 

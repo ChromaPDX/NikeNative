@@ -47,18 +47,18 @@
     return self;
 }
 
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-    NKTouchState hit = [super touchUp:location id:touchId];
+-(void)handleEvent:(NKEvent *)event {
     
-   // NSLog(@"MenuStartVS.m touchUP location = %f,%f", location.x, location.y);
-    R4t buttonRect = R4Make(95, 80, 130, 55);
-    if(R4ContainsPoint(buttonRect, location)){
-        NSLog(@"start button pressed, starting game...");
-        NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
-        [[(GameScene*)newScene game] startAIGame];
-        self.nkView.scene = newScene;
+    if (NKEventPhaseEnd == event.phase) {
+        // NSLog(@"MenuStartVS.m touchUP location = %f,%f", location.x, location.y);
+        R4t buttonRect = R4Make(95, 80, 130, 55);
+        if(R4ContainsPoint(buttonRect, event.screenLocation)){
+            NSLog(@"start button pressed, starting game...");
+            NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
+            [[(GameScene*)newScene game] startAIGame];
+            self.nkView.scene = newScene;
+        }
     }
-    return hit;
 }
 
 -(void)cellWasSelected:(NKScrollNode *)cell {

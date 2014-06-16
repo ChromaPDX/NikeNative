@@ -140,7 +140,7 @@
     
     // NSLog(@"** adding card %@ from %@", card.name, card.deck.name);
     
-    PlayerSprite* ps = [[PlayerSprite alloc] initWithTexture:nil color:NULL size:cardSize];
+    PlayerSprite* ps = [[PlayerSprite alloc] initWithTexture:nil color:NKCLEAR size:cardSize];
     
     ps.userInteractionEnabled = true;
     
@@ -166,7 +166,9 @@
     [self setEnergyLabelForManager:p.manager];
 }
 
--(NKTouchState) touchUp:(P2t)location id:(int)touchId {
+-(void)handleEvent:(NKEvent *)event {
+    
+    if (NKEventPhaseBegin == event.phase) {
     //P2t myLoc = location;
     //NKTouchState hit = [super touchUp:location id:touchId];
     
@@ -187,20 +189,19 @@
 //    }
 
     R4t menuButton = R4Make(17, 1042, 70, 70);
-    if(R4ContainsPoint(menuButton, location)){
+    if(R4ContainsPoint(menuButton, event.screenLocation)){
         // @eric uncomment to switch back
         // @leif : not sure why this is causing a crash??
      //   [self.scene.nkView setScene:[[MainMenu alloc]initWithSize:self.scene.size]];
 //        self.scene = [[MainMenu alloc]initWithSize:S2Make(self.frame.size.width*scale, self.frame.size.height*scale)];
-        NSLog(@"init first scene");
-        return true;
+//        NSLog(@"init first scene");
 
        // recomment this
        // pop-up example
        // NKAlertSprite *test = [[NKAlertSprite alloc]initWithTexture:[NKTexture textureWithImageNamed:@"kitty"] color:NKWHITE size:S2Make(400, 400)];
        // [self.scene presentAlert:test animated:true];
     }
-    return false;
+    }
 }
 
 @end

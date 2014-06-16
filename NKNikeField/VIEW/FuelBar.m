@@ -28,7 +28,7 @@
     
     S2t imageSize = [imageContainer size];
     
-    self = [super initWithTexture:nil color:nil size:imageSize];
+    self = [super initWithTexture:nil color:NKCLEAR size:imageSize];
     [self setScale3d:V3Make(.98, 1, 1)];
 
    // [self addChild:fuelContainer];

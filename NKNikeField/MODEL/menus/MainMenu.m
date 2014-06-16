@@ -26,6 +26,8 @@
         NKSpriteNode *bg = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Screen_Menu.png"] color:NKWHITE size:self.size];
         [self addChild:bg];
         
+       // [bg repeatAction:[NKAction sequence:@[[NKAction fadeAlphaTo:0 duration:1.],[NKAction fadeAlphaTo:1. duration:1.]]]];
+        //[bg repeatAction:[NKAction rotateByAngle:90 duration:1]];
 //        fuelBar = [[FuelBar alloc] init];
 //        [fuelBar setPosition:P2Make(-72*w/640, 500*h/1136)];
 //        // @LEIF - not sure why the animation isn't working here?
@@ -57,19 +59,19 @@
     return self;
 }
 
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-    NKTouchState hit = [super touchUp:location id:touchId];
+-(void)handleEvent:(NKEvent *)event {
     
-  
+    if (NKEventPhaseEnd == event.phase) {
+        
     [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
     
-    NSLog(@"MainMenu touchUP location = %f,%f", location.x, location.y);
+    NSLog(@"MainMenu touchUP location = %f,%f",event.screenLocation.x, event.screenLocation.y);
     R4t syncButtonRect = R4Make(200, 500, 400, 200);
     R4t startButtonRect = R4Make(200, 200, 400, 200);
     
     R4t HiddenAIButtonRect = R4Make(200, 700, 400, 200);
     
-    if(R4ContainsPoint(syncButtonRect, location)){
+    if(R4ContainsPoint(syncButtonRect,event.screenLocation)){
         NSLog(@"*NSYNC!");
 #if TARGET_OS_IPHONE
         NikeViewController* sync = [[NikeViewController alloc]init];
@@ -78,25 +80,26 @@
         }];
 #endif
     }
-    else if(R4ContainsPoint(startButtonRect, location)){
+    else if(R4ContainsPoint(startButtonRect, event.screenLocation)){
         NSLog(@"start button pressed, starting game...");
         Pregame* newScene = [[Pregame alloc] initWithSize:self.size];
         [self.nkView setScene:newScene];
         
-        //RecapMenuLoss *recapMenu = [[RecapMenuLoss alloc] init];
-        //[self.nkView setScene:[recapMenu initWithSize:self.size]];
+   //     RecapMenuWin *recapMenuWin = [[RecapMenuWin alloc] initWithSize:self.size];
+   //     [self.nkView setScene:recapMenuWin];
 
 //        NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
 //        [[(GameScene*)newScene game] startSinglePlayerGame];
 //        self.nkView.scene = newScene;
     }
-    else if(R4ContainsPoint(HiddenAIButtonRect, location)){
+    else if(R4ContainsPoint(HiddenAIButtonRect,event.screenLocation)){
         NSLog(@"AI button pressed, starting game...");
         NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
         [[(GameScene*)newScene game] startAIGame];
         self.nkView.scene = newScene;
     }
-    return hit;
+        
+    }
 }
 
 -(void)cellWasSelected:(NKScrollNode *)cell {

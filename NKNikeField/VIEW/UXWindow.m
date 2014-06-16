@@ -324,15 +324,13 @@
 }
 
 
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
+-(void)handleEvent:(NKEvent *)event {
     
-    //NKTouchState hit = [super touchUp:location id:touchId];
-    //if (hit == 2) {
+    if (NKEventPhaseEnd == event.phase) {
+    
         [_delegate showCardPath:nil forPlayer:nil];
         [_managerHand sortCardsAnimated:true WithCompletionBlock:^{}];
-        //[[_managerHands objectForKey:_selectedCard.deck.player] sortCards];
-    //}
-    return 0;
+    }
 }
 
 @end
