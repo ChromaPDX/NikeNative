@@ -178,13 +178,13 @@ float PARTICLE_SCALE;
     [_pivot setPosition3d:(V3Make(0,-h*.5,0))];
     
     
-    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:NKCLEAR size:S2Make(w, h*.15)];
+    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:nil size:S2Make(w, h*.15)];
     [_uxWindow setPosition3d:V3Make(0,-h*.42,30)];
     _uxWindow.delegate = self;
     [self addChild:_uxWindow];
     [_uxWindow setAlpha:0];
     
-    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:NKCLEAR size:S2Make(w, h*.08)];
+    _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:nil size:S2Make(w, h*.08)];
     [_uxTopBar setPosition3d:V3Make(0,h*.45,30)];
     _uxTopBar.delegate = self;
     [self addChild:_uxTopBar];
@@ -221,7 +221,7 @@ float PARTICLE_SCALE;
     
     for(int i = 0; i < BOARD_WIDTH; i++){
         for(int j = 0; j < BOARD_LENGTH; j++){
-            BoardTile *square = [[BoardTile alloc] initWithTexture:Nil color:NKCLEAR size:S2Make(TILE_WIDTH-2, TILE_HEIGHT-2)];
+            BoardTile *square = [[BoardTile alloc] initWithTexture:Nil color:nil size:S2Make(TILE_WIDTH-2, TILE_HEIGHT-2)];
             
             [square setUserInteractionEnabled:true];
             
@@ -394,7 +394,7 @@ float PARTICLE_SCALE;
     for (BoardTile* tile in _gameTiles.allValues) {
         [tile.location setBorderShapeInContext:path];
         [tile setTextureForBorder:tile.location.borderShape];
-        [tile setColor:NKCLEAR];
+        [tile setColor:nil];
         [tile setTexture:nil];
      //   [tile setUserInteractionEnabled:false];
         [tile hideOverlay];
@@ -1309,7 +1309,7 @@ float PARTICLE_SCALE;
 
 -(void)addPlayerToBoardScene:(Player *)player animated:(BOOL)animated withCompletionBlock:(void (^)())block{
     
-    PlayerSprite *person = [[PlayerSprite alloc] initWithTexture: Nil color:NKCLEAR size:S2Make(OLD_TILE_WIDTH, OLD_TILE_WIDTH * (67./65.))];
+    PlayerSprite *person = [[PlayerSprite alloc] initWithTexture: Nil color:nil size:S2Make(OLD_TILE_WIDTH, OLD_TILE_WIDTH * (67./65.))];
     
     person.delegate = self;
     
@@ -1437,7 +1437,7 @@ float PARTICLE_SCALE;
         _ballSprite = [[BallSprite alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:nil size:V3Make(50,50,50)];
     }
     if (!_ballSprite.parent) {
-        [_gameBoardNode addChild:_ballSprite];
+        [_gameBoardNode insertChild:_ballSprite atIndex:0];
     }
     return _ballSprite;
 }

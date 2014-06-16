@@ -18,7 +18,7 @@
     button.userInteractionEnabled = YES;
     button.onTexture = textureOn;
     button.offTexture = textureOff;
-    [button setColor:NKCLEAR];
+    [button setColor:nil];
     button.type = type;
     button.state = ButtonStateOff;
     return button;

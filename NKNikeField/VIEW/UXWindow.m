@@ -192,7 +192,7 @@
     float dur = FAST_ANIM_DUR;
     
     if (!_managerHand.bigCards) {
-        BigCards* big = [[BigCards alloc]initWithColor:NKCLEAR size:S2Make(w, h*3.)];
+        BigCards* big = [[BigCards alloc]initWithColor:nil size:S2Make(w, h*3.)];
         big.delegate = _managerHand;
         
         _managerHand.bigCards = big;
