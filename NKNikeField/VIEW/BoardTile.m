@@ -27,13 +27,15 @@
     return [NSString stringWithFormat:@"TILE: %ld %ld",(long)_location.x,(long)_location.y ];
 }
 
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
+-(void)handleEvent:(NKEvent *)event {
+    
+    if (NKEventPhaseEnd == event.phase) {
 //    NKTouchState hit = [super touchUp:location id:touchId];
 //    if (hit == 2) {
         _delegate.selectedBoardTile = self;
 //    }
 //    return hit;
-    return false;
+    }
 }
 
 

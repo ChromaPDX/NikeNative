@@ -69,19 +69,22 @@
 
 
 
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-    NKTouchState hit = [super touchUp:P2Make(location.x, location.y) id:touchId];
+-(void)handleEvent:(NKEvent *)event {
     
-    [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
-    
-    NSLog(@"RecapMenu touchUP location = %f,%f", location.x, location.y);
-    CGRect startButtonRect = CGRectMake(201, 100, 220, 300);
-    CGPoint rect = CGPointMake(location.x, location.y);
-    if(CGRectContainsPoint(startButtonRect, rect)){
-        NKSceneNode* newScene = [[MainMenu alloc]initWithSize:self.size];
-        self.nkView.scene = newScene;
+    if (NKEventPhaseEnd == event.phase) {
+        
+        [NKSoundManager playSoundNamed:@"Androyd-Bulbtone-41.wav"];
+        
+        NSLog(@"RecapMenu touchUP location = %f,%f", event.screenLocation.x, event.screenLocation.y);
+        CGRect startButtonRect = CGRectMake(201, 100, 220, 300);
+        CGPoint rect = CGPointMake(event.screenLocation.x, event.screenLocation.y);
+        if(CGRectContainsPoint(startButtonRect, rect)){
+            NKSceneNode* newScene = [[MainMenu alloc]initWithSize:self.size];
+            self.nkView.scene = newScene;
+        }
+        
     }
-    return hit;
+    
 }
 
 -(void)cellWasSelected:(NKScrollNode *)cell {

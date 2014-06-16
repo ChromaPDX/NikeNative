@@ -47,61 +47,60 @@
     self.label.fontSize = fontSize;
 }
 
--(NKTouchState)touchDown:(P2t)location id:(int)touchId {
-
-    switch (self.type) {
-            
-        case ButtonTypeToggle:
-            
-            self.state = 1 - self.state;
-            
-            // *dataSource = self.state;
-            
-            if (_delegate) {
-                if (_method) {
-                    [_delegate performSelector:_method withObject:self];
-                    
+-(void)handleEvent:(NKEvent *)event {
+    
+    if (NKEventPhaseBegin == event.phase) {
+        
+        switch (self.type) {
+                
+            case ButtonTypeToggle:
+                
+                self.state = 1 - self.state;
+                
+                // *dataSource = self.state;
+                
+                if (_delegate) {
+                    if (_method) {
+                        [_delegate performSelector:_method withObject:self];
+                        
+                    }
                 }
-            }
-            
-            break;
-            
-        case ButtonTypePush:
-            self.state = 1;
-            
-            if (_delegate) {
-                if (_method) {
-                    [_delegate performSelector:_method withObject:self];
-                    
+                
+                break;
+                
+            case ButtonTypePush:
+                self.state = 1;
+                
+                if (_delegate) {
+                    if (_method) {
+                        [_delegate performSelector:_method withObject:self];
+                        
+                    }
                 }
-            }
-            
-            
-            break;
-            
-        default:
-            break;
-            
+                
+                
+                break;
+                
+            default:
+                break;
+                
+        }
+        
+    }
+    else if (NKEventPhaseEnd == event.phase) {
+        switch (self.type) {
+            case ButtonTypePush:
+                
+                self.state = 0;
+                
+                break;
+                
+            default:
+                break;
+                
+        }
     }
     
-    return false;
-    
-}
-
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-    switch (self.type) {
-        case ButtonTypePush:
-            
-            self.state = 0;
-            
-            break;
-            
-        default:
-            break;
-            
-    }
-    
-    return false;
     
 }
 

@@ -205,61 +205,61 @@
     }
 }
 
--(NKTouchState)touchDown:(P2t)location id:(int)touchId {
+-(void)handleEvent:(NKEvent *)event {
+    
+    if (NKEventPhaseBegin == event.phase) {
    // NKTouchState hit = [super touchMoved:location id:touchId];
-    
     cachedPosition = self.position;
-    lastTouch = location;
+    lastTouch = event.screenLocation;
     //return hit;
+    }
     
-    return NKTouchIsFirstResponder;
-}
-
--(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
-
-        if (location.y < lastTouch.y) {
-            self.position = P2Make(self.position.x, self.position.y - (lastTouch.y - location.y));
-            lastTouch = location;
+    else if (NKEventPhaseMove == event.phase) {
+        if (event.screenLocation.y < lastTouch.y) {
+            self.position = P2Make(self.position.x, self.position.y - (lastTouch.y - event.screenLocation.y));
+            lastTouch = event.screenLocation;
         }
-    
-    return NKTouchIsFirstResponder;
-    
-}
+    }
 
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-    
-    if (_endTurnCard) {
-        NSLog(@"end turn pressed !!");
-        [_delegate pressedEndTurn];
-        return false;
-    }
-    
-    if (self.position.y < cachedPosition.y - (h*.125)) {
-        [self toggleLocked];
-        [self runAction:[NKAction moveTo:cachedPosition duration:FAST_ANIM_DUR]];
-    }
-    else {
+    else if (NKEventPhaseEnd == event.phase) {
         
-        if (!_model.locked) {
+        if (_endTurnCard) {
+            NSLog(@"end turn pressed !!");
+            [_delegate pressedEndTurn];
+        }
+        
+        if (self.position.y < cachedPosition.y - (h*.125)) {
+            [self toggleLocked];
+            [self runAction:[NKAction moveTo:cachedPosition duration:FAST_ANIM_DUR]];
+        }
+        
+        else {
             
-            numtouches++;
-            if (numtouches > 1) {
-                numtouches = 0;
-                [_window cardDoubleTap:self];
+            if (!_model.locked) {
+//                numtouches++;
+//                if (numtouches > 1) {
+//                    numtouches = 0;
+//                    [_window cardDoubleTap:self];
+//                }
+//                else {
+                    [_window cardTouchEnded:self atPoint:event.screenLocation];
+                    [(GameScene*)self.scene playSoundWithKey:@"cardTap"];
+//                }
             }
             else {
-                [_window cardTouchEnded:self atPoint:location];
-                [(GameScene*)self.scene playSoundWithKey:@"cardTap"];
+                [(GameScene*)self.scene playSoundWithKey:@"badTouch"];
             }
-            
         }
-        else {
-            [(GameScene*)self.scene playSoundWithKey:@"badTouch"];
-        }
+        
     }
     
-    return NKTouchIsFirstResponder;
+    else if (NKEventPhaseDoubleTap == event.phase) {
+        NSLog(@"card double tap");
+        [_window cardDoubleTap:self];
+    }
+    
 }
+
 
 -(NKAction*)goBack {
     
@@ -275,12 +275,12 @@
 
 -(void)updateWithTimeSinceLast:(F1t)dt {
     
-    touchTimer -= dt;
-    if (touchTimer < 0) {
-        numtouches = 0;
-        touchTimer = 600.;
-    }
-    
+//    touchTimer -= dt;
+//    if (touchTimer < 0) {
+//        numtouches = 0;
+//        touchTimer = 600.;
+//    }
+//    
     [super updateWithTimeSinceLast:dt];
 }
 

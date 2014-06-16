@@ -69,7 +69,7 @@
     bool effectFound = false;
     
     if(effectSprite){
-        [effectSprite setColor:nil];
+        [effectSprite setColor:NKCLEAR];
         effectSprite.hidden = true;
         [self removeChild:effectSprite];
         effectSprite = nil;
@@ -196,7 +196,6 @@
             halo = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:S2Make(h, h)];
             
             //[halo setAlpha:.5];
-            [halo setColorBlendFactor:1.];
             [halo setColor:_model.manager.color];
             //[halo setPosition3d:V3Make(0, -20, h*.3)];
             
@@ -275,16 +274,13 @@
 
 }
 
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
+-(void)handleEvent:(NKEvent *)event {
     
-//    NKTouchState touchState = [super touchUp:location id:touchId];
-//    
-//    if (touchState == NKTouchIsFirstResponder){
+    if (NKEventPhaseEnd == event.phase) {
+
         [_delegate playerSpriteDidSelectPlayer:self.model];
-//    }
-//
-//    return touchState;
-    return false;
+
+    }
 }
 
 
