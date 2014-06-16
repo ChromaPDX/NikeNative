@@ -69,10 +69,7 @@
     bool effectFound = false;
     
     if(effectSprite){
-        [effectSprite setColor:NKCLEAR];
-        effectSprite.hidden = true;
-        [self removeChild:effectSprite];
-        effectSprite = nil;
+        [effectSprite removeFromParent];
     }
     
     if(self.model.noLegs){
@@ -83,16 +80,14 @@
     if(self.model.frozen){
         effectSprite = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"player_effect.png"] color:V2BLUE size:S2Make(h, h)];
         effectFound = true;
-        
     }
     
     if(effectFound){
         [self addChild:effectSprite];
         // @leif : not sure why this isn't working?
-        effectSprite.alpha = .5;
-        [self fadeInChild:effectSprite duration:FAST_ANIM_DUR withCompletion:^{
-            
-        }];
+        // @eric : was using fade in child, which fades alpha to 1. overriding the .5
+        effectSprite.alpha = .0;
+        [effectSprite runAction:[NKAction fadeAlphaTo:.5 duration:FAST_ANIM_DUR]];
     }
     
     
@@ -115,6 +110,8 @@
         */
         
         cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:S2Make(w, h)];
+        
+        cardImg.alpha = .9;
         
         [cardImg setOrientationEuler:V3Make(45,0,0)];
         float cardOffset = -20;
@@ -216,19 +213,20 @@
 
             [_rotate repeatAction:[NKAction rotateByAngle:180 duration:4.]];
           //  [rotate setPosition3d:V3Make(0, -20, h*.3)];
-
-            _halo = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:S2Make(h, h)];
+            [_rotate setPosition3d:V3Make(0, -12, 10)];
             
+            _halo = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:S2Make(h, h)];
+       
             //[rotate addChild:halo];
             //[halo setAlpha:.5];
             [_halo setColor:_model.manager.color];
             //[halo setPosition3d:V3Make(0, -20, h*.3)];
-            
 
-            
             NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks_glow.png"] color:NKWHITE size:S2Make(h, h)];
             [_halo addChild:haloMarks];
+            
             [haloMarks setZPosition:2];
+            haloMarks.alpha = .9;
             
             _ballTarget = [[NKSpriteNode alloc]initWithColor:nil size:S2Make(4, 4)];
             [_halo addChild:_ballTarget];
