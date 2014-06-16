@@ -85,8 +85,8 @@
         Pregame* newScene = [[Pregame alloc] initWithSize:self.size];
         [self.nkView setScene:newScene];
         
-        //RecapMenuLoss *recapMenu = [[RecapMenuLoss alloc] init];
-        //[self.nkView setScene:[recapMenu initWithSize:self.size]];
+   //     RecapMenuWin *recapMenuWin = [[RecapMenuWin alloc] initWithSize:self.size];
+   //     [self.nkView setScene:recapMenuWin];
 
 //        NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
 //        [[(GameScene*)newScene game] startSinglePlayerGame];
