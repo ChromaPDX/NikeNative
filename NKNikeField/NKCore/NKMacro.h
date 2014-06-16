@@ -6,6 +6,29 @@
 //  Copyright (c) 2014 EMA. All rights reserved.
 //
 
+// USER MACROS
+
+//** FOR GL RELATED LOGS
+#define NK_GL_DEBUG 0
+//**
+
+//** LOG / PRINT TIME METRICS
+#define NK_LOG_METRICS 1
+//**
+
+// SCENE DEBUG
+
+#define DRAW_HIT_BUFFER 0
+
+// SPRITES
+#if NK_USE_GLES
+#define NK_BATCH_SIZE 16
+#else
+#define NK_BATCH_SIZE 64
+#endif
+
+// SYSTEM MACROS
+
 #if defined(__ARM_NEON__)
 #import <arm_neon.h>
 #endif
@@ -25,6 +48,8 @@
 
 #import <AppKit/AppKit.h>
 
+#define NK_USE_GL3
+
 #define NKColor NSColor
 #define NKImage NSImage
 #define NKFont  NSFont
@@ -38,35 +63,26 @@
 
 #import <OpenGLES/EAGL.h>
 
+
+#ifdef NK_USE_GL3
+#import <OpenGLES/ES3/gl.h>
+#import <OpenGLES/ES3/glext.h>
+#else
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
-
-//#import <OpenGLES/ES3/gl.h>
-//#import <OpenGLES/ES3/glext.h>
+#endif
 
 #else
 
 #import <OpenGL/OpenGL.h>
 
+#ifdef NK_USE_GL3
+#import <OpenGl/gl3.h>
+#import <OpenGl/gl3ext.h>
+#else
+#define NK_USE_ARB_EXT
 #import <OpenGl/gl.h>
 #import <OpenGL/glext.h>
-
-//#import <OpenGl/gl3.h>
-//#import <OpenGl/gl3ext.h>
-
-//#import <OpenGl/gl3.h>
-//#import <OpenGl/gl3ext.h>
-
 #endif
 
-#define NK_GL_DEBUG
-
-// SCENE DEBUG
-//#define DRAW_HIT_BUFFER
-
-// SPRITES
-#if NK_USE_GLES
-#define NK_BATCH_SIZE 16
-#else
-#define NK_BATCH_SIZE 64
 #endif

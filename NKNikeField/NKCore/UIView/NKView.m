@@ -7,6 +7,7 @@
 //
 
 #import "NodeKitten.h"
+//#import <SceneKit/SceneKit.h>
 
 #if !TARGET_OS_IPHONE
 
@@ -17,7 +18,7 @@
 #pragma mark -
 
 -(void)setScene:(NKSceneNode *)scene {
-
+    
     _scene = scene;
     scene.nkView = self;
     
@@ -30,6 +31,8 @@
     _mscale = 1.;
     
     lastTime = CFAbsoluteTimeGetCurrent();
+    
+    [self startAnimation];
 }
 
 -(void)drawScene {
@@ -86,46 +89,6 @@
     
 }
 
-//- (id) initWithFrame:(NSRect)frameRect
-//{
-//	self = [self initWithFrame:frameRect shareContext:nil];
-//	return self;
-//}
-
-//- (id) initWithFrame:(NSRect)frameRect shareContext:(NSOpenGLContext*)context
-//{
-//    NSOpenGLPixelFormatAttribute attribs[] =
-//    {
-//		NSOpenGLPFADoubleBuffer,
-//		NSOpenGLPFADepthSize, 24,
-//        NSOpenGLPFAOpenGLProfile,
-//		NSOpenGLProfileVersion3_2Core, 0
-//    };
-//    
-//    NSLog(@"pixel flags: %d %d %d %d %d %d",				NSOpenGLPFADoubleBuffer,
-//          NSOpenGLPFADepthSize, 24,NSOpenGLPFAOpenGLProfile,
-//          NSOpenGLProfileVersion3_2Core, 0 );
-//
-//	NSOpenGLPixelFormat *pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
-//    
-//    NSAssert(pixelFormat, @"No OpenGL pixel format");
-//	//if (!pixelFormat)
-//	//	NSLog(@"No OpenGL pixel format");
-//    
-//	if( (self = [super initWithFrame:frameRect pixelFormat:pixelFormat]) ) {
-//        
-//		if( context ){
-//			[self setOpenGLContext:context];
-//        }
-//        //[self setPixelFormat:pixelFormat];
-//        
-//         NSLog(@"NK GLView init %1.0f %1.0f", frameRect.size.width, frameRect.size.height);
-//        
-//	}
-//    
-//	return self;
-//}
-
 - (void) update
 {
 	// XXX: Should I do something here ?
@@ -136,15 +99,17 @@
 {
     NSLog(@"awake from nib");
     
-    
+    NSLog(@"pixel flags: %d %d %d %d %d %d",				NSOpenGLPFADoubleBuffer,
+          NSOpenGLPFADepthSize, 24,NSOpenGLPFAOpenGLProfile,
+          NSOpenGLProfileVersion3_2Core, 0 );
     
     NSOpenGLPixelFormatAttribute attrs[] =
 	{
-        NSOpenGLPFATripleBuffer,
+        NSOpenGLPFADoubleBuffer,
 		NSOpenGLPFADepthSize, 24,
 		// Must specify the 3.2 Core Profile to use OpenGL 3.2
-//		NSOpenGLPFAOpenGLProfile,
-//		NSOpenGLProfileVersionLegacy,
+		NSOpenGLPFAOpenGLProfile,
+		NSOpenGLProfileVersion3_2Core,
 		0
 	};
 	
@@ -155,9 +120,7 @@
 		NSLog(@"No OpenGL pixel format");
 	}
     
-    NSLog(@"pixel flags: %d %d %d %d %d %d",				NSOpenGLPFADoubleBuffer,
-          NSOpenGLPFADepthSize, 24,NSOpenGLPFAOpenGLProfile,
-          NSOpenGLProfileVersion3_2Core, 0 );
+
 
     
     NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
@@ -225,7 +188,6 @@
 	// Activate the display link
 	CVDisplayLinkStart(displayLink);
 #else
-    
     displayTimer = [NSTimer timerWithTimeInterval:.015 target:self selector:@selector(drawView) userInfo:nil repeats:YES];
     
     [[NSRunLoop mainRunLoop] addTimer:displayTimer forMode:NSDefaultRunLoopMode];
@@ -243,10 +205,12 @@
 -(void)stopAnimation {
     if (!animating) return;
     animating = false;
+    NSLog(@"stop animation");
+    [displayTimer invalidate];
     #if USE_CV_DISPLAY_LINK
     #else
-    
     #endif
+    
 }
 
 - (void) initGL
@@ -434,35 +398,26 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-    //    dispatch_async(dispatch_get_main_queue(), ^{
-    //        [_scene touchDown:P2Make(theEvent.absoluteX, theEvent.absoluteY) id:0];
-    //    });
     [_scene dispatchTouchRequestForLocation:[self calibratedMousePoint:theEvent.locationInWindow] type:NKEventTypeBegin];
 }
 
 - (void)mouseMoved:(NSEvent *)theEvent
 {
-    //    dispatch_async(dispatch_get_main_queue(), ^{
-    //	[_scene touchMoved:P2Make(theEvent.absoluteX, theEvent.absoluteY) id:0];
-    //    });
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
      [_scene dispatchTouchRequestForLocation:[self calibratedMousePoint:theEvent.locationInWindow]  type:NKEventTypeMove];
-    //    dispatch_async(dispatch_get_main_queue(), ^{
-    //	[_scene touchMoved:P2Make(theEvent.absoluteX, theEvent.absoluteY) id:0];
-    //    });
 }
 
 - (void)mouseUp:(NSEvent *)theEvent
 {
-    
-     [_scene dispatchTouchRequestForLocation:[self calibratedMousePoint:theEvent.locationInWindow] type:NKEventTypeEnd];
-    //
-     NSLog(@"mouse up : %f %f", [self calibratedMousePoint:theEvent.locationInWindow].x, [self calibratedMousePoint:theEvent.locationInWindow].y);
-    //        //
-    //    });
+    if (theEvent.clickCount == 2) {
+       [_scene dispatchTouchRequestForLocation:[self calibratedMousePoint:theEvent.locationInWindow] type:NKEventTypeDoubleTap];
+    }
+    else {
+        [_scene dispatchTouchRequestForLocation:[self calibratedMousePoint:theEvent.locationInWindow] type:NKEventTypeEnd];
+    }
 }
 
 

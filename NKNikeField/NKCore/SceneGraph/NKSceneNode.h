@@ -52,11 +52,13 @@ typedef void (^CallBack)();
 @interface NKSceneNode : NKNode <NKAlertSpriteDelegate>
 
 {
-    int fps;
+    int frames;
     
     NKVertexBuffer *axes;
     
-   
+   #if NK_LOG_METRICS
+    NSTimer *metricsTimer;
+#endif
 }
 
 @property (nonatomic, strong) NSMutableArray *hitQueue;
@@ -84,7 +86,7 @@ typedef void (^CallBack)();
 
 @property (nonatomic, strong) NKFrameBuffer *hitDetectBuffer;
 
-
+@property (nonatomic) bool depthTest;
 
 -(instancetype) initWithSize:(S2t)size;
 

@@ -2,11 +2,15 @@
 //*  NODE KITTEN
 //*
 #import "NKPch.h"
+#import "NKVertexBuffer.h"
+
+@class NKMeshNode;
 
 @interface NKStaticDraw : NSObject
 {
     NSMutableDictionary *meshesCache;
     NSMutableDictionary *vertexCache;
+    NKVertexBuffer *primitiveCache[NKNumPrimitives];
 }
 
 + (NKStaticDraw *)sharedInstance;
@@ -14,7 +18,11 @@
 + (NSMutableDictionary*) vertexCache;
 + (NSMutableDictionary*) normalsCache;
 
++(NKVertexBuffer*)cachedPrimitive:(NKPrimitive)primitive;
+
 +(NSString*)stringForPrimitive:(NKPrimitive)primitive;
+
+@property (nonatomic, strong) NKMeshNode* boundingBoxMesh;
 
 @end
 
@@ -22,15 +30,3 @@
 - (void)setOpenGLColor;
 - (void)setColorArrayToColor:(NKColor *)toColor;
 @end
-
-
-
-/*  GLDraw Functions borrowed from:
- *  Created by Jeff LaMarche on 9/27/08.
- */
-
-void GLDrawCircle (int circleSegments, CGFloat circleSize, P2t center, bool filled);
-void GLDrawEllipse (int segments, CGFloat width, CGFloat height, P2t center, bool filled);
-void GLDrawSpokes (int spokeCount, CGFloat radius, P2t center);
-void GLDrawEllipticalSpokes(int spokeCount, CGFloat width, CGFloat height, P2t center);
-void GLDrawEllipticalSpokesWithGradient(int spokeCount, CGFloat width, CGFloat height, P2t center, NKColor *innerColor, NKColor *outerColor);

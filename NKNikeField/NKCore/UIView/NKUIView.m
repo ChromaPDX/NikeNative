@@ -75,13 +75,8 @@
     }
     else {
         NSLog(@"GLES Context && Frame Buffer loaded!");
-        
-//        if (NK_GL_VERSION == 2) {
-//            defaultShader = [[NKShaderProgram alloc]initWithVertexSource:nkDefaultTextureVertexShader fragmentSource:nkDefaultTextureFragmentShader];
-//            [defaultShader load];
-//        }
-        
     }
+    
     
     [NKTextureManager sharedInstance];
     
@@ -105,6 +100,11 @@
                                              selector:@selector(startAnimation)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
+    
+    UITapGestureRecognizer *dt = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(doubleTap:)];
+    [dt setNumberOfTapsRequired:2];
+    [self addGestureRecognizer:dt];
+    
 }
 
 -(void)layoutSubviews
@@ -130,6 +130,8 @@
     hMult = h / self.bounds.size.height;
     
     lastTime = CFAbsoluteTimeGetCurrent();
+    
+    [self startAnimation];
 }
 
 -(void)drawScene {
@@ -169,29 +171,24 @@
 
 
 - (void)startAnimation
-
 {
-    NSLog(@"Start animating");
     if (!animating) {
+        NSLog(@"Start animating");
         displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawView)];
         [displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
         
         lastTime = CFAbsoluteTimeGetCurrent();
         animating = true;
     }
-    
-    
 }
 
 - (void)stopAnimation
 {
-    NSLog(@"Stop animating");
     if (animating) {
-        
+        NSLog(@"Stop animating");
         [displayLink invalidate];
         animating = false;
     }
-    
 }
 
 - (void)drawView
@@ -256,7 +253,9 @@
     
 }
 
-
+-(void)doubleTap:(UITapGestureRecognizer*)recognizer {
+    [_scene dispatchTouchRequestForLocation:[self uiPointToNodePoint:[recognizer locationInView:self]] type:NKEventTypeDoubleTap];
+}
 
 
 @end

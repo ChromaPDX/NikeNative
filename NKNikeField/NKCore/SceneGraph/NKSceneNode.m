@@ -16,8 +16,7 @@
     
     if (self){
         
-#ifdef NK_GL_DEBUG
-        
+#if NK_GL_DEBUG
         // Obtain iOS version
 		int OSVersion_ = 0;
 #if TARGET_OS_IPHONE
@@ -30,7 +29,6 @@
         
         NSString *OSVer = [NSString stringWithFormat:@"%d.%d.%d", versionMajor, versionMinor, versionBugFix];
 #endif
-        
 		NSArray *arr = [OSVer componentsSeparatedByString:@"."];
 		int idx = 0x01000000;
 		for( NSString *str in arr ) {
@@ -38,17 +36,12 @@
 			OSVersion_ += value * idx;
 			idx = idx >> 8;
 		}
-        
         NSLog(@"OS version: %@ (0x%08x)", OSVer, OSVersion_);
-        
-		 NSLog(@"GL_VENDOR:   %s", glGetString(GL_VENDOR) );
-		 NSLog(@"GL_RENDERER: %s", glGetString ( GL_RENDERER   ) );
-		 NSLog(@"GL_VERSION:  %s", glGetString ( GL_VERSION    ) );
-        
-		char* glExtensions = (char*)glGetString(GL_EXTENSIONS);
-        
-        NSLog(@"GL EXT: %@",[NSString stringWithCString:glExtensions encoding: NSASCIIStringEncoding]);
-
+        NSLog(@"GL_VENDOR:   %s", glGetString(GL_VENDOR) );
+        NSLog(@"GL_RENDERER: %s", glGetString ( GL_RENDERER   ) );
+        NSLog(@"GL_VERSION:  %s", glGetString ( GL_VERSION    ) );
+		//char* glExtensions = (char*)glGetString(GL_EXTENSIONS);
+        //NSLog(@"GL EXT: %@",[NSString stringWithCString:glExtensions encoding: NSASCIIStringEncoding]);
 #endif
         self.name = @"SCENE";
         
@@ -70,35 +63,35 @@
         
         _hitDetectBuffer = [[NKFrameBuffer alloc] initWithWidth:self.size.width height:self.size.height];
             
-        _hitDetectShader = [NKShaderProgram newShaderNamed:@"hitShaderSingle" colorMode:NKS_COLOR_MODE_UNIFORM numTextures:0 lightNodes:nil withBatchSize:0];
-        
+        _hitDetectShader = [NKShaderProgram newShaderNamed:@"hitShaderSingle" colorMode:NKS_COLOR_MODE_UNIFORM numTextures:0 numLights:0 withBatchSize:0];
+#if NK_LOG_METRICS
+        metricsTimer = [NSTimer timerWithTimeInterval:1. target:self selector:@selector(logMetricsPerSecond) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:metricsTimer forMode:NSDefaultRunLoopMode];
+#endif
         NSLog(@"init scene with size, %f %f", size.width, size.height);
-        
     }
-    
     return self;
+}
+
+-(void)logMetricsPerSecond {
+    NSLog(@"fps %d : bBodies %lu : lights %lu", frames, (unsigned long)[[NKBulletWorld sharedInstance] nodes].count, (unsigned long)_lights.count);
+    frames = 0;
 }
 
 -(void)updateWithTimeSinceLast:(F1t)dt {
     _camera.dirty = true;
     
-    fps = (int)(1000./dt);
-    
+#if NK_LOG_METRICS
+    frames++;
+#endif
+
     [NKSoundManager updateWithTimeSinceLast:dt];
     
     [[NKBulletWorld sharedInstance] updateWithTimeSinceLast:dt];
-    //[_world updateWithTimeSinceLast:dt];
-    
+
     [_camera updateWithTimeSinceLast:dt];
     
     [super updateWithTimeSinceLast:dt];
-    
-    
-    
-//    for (NKLightNode* light in _lights) {
-//        [light updateWithTimeSinceLast:dt];
-//    }
-    
 }
 
 
@@ -150,7 +143,10 @@
         // prep globals
         
         if ([_activeShader uniformNamed:NKS_LIGHT]){
-            [[_activeShader uniformNamed:NKS_LIGHT] bindLightProperties:[(NKLightNode*)_lights[0] pointer] count:1];
+            [[_activeShader uniformNamed:NKS_I1_NUM_LIGHTS] bindI1:(int)_lights.count];
+            if (_lights.count) {
+                [[_activeShader uniformNamed:NKS_LIGHT] bindLightProperties:[(NKLightNode*)_lights[0] pointer] count:(int)_lights.count];
+            }
         }
         
         if ([_activeShader uniformNamed:NKS_V3_EYE_DIRECTION]){
@@ -161,36 +157,34 @@
     
 }
 
-//-(M16t)getGlobalTransformMatrix {
-//    return M16IdentityMake();
-//}
-
--(void)begin {
-    //[_camera begin];
-    [super begin];
-}
-
--(void)end {
-    //[_camera end];
-    [super end];
-}
-
 -(void)draw {
-
-
-#ifdef DRAW_HIT_BUFFER
-    
+        [self clear];
+#if DRAW_HIT_BUFFER
         [self drawHitBuffer];
 #else
         [super draw];
 #endif
-        _activeShader = nil;
-        glUseProgram(0);
-        [_boundTexture unbind];
-        _boundTexture = nil;
-        [_boundVertexBuffer unbind];
-        _boundVertexBuffer = nil;
+}
 
+-(void)clear {
+    _activeShader = nil;
+    glUseProgram(0);
+    [_boundTexture unbind];
+    _boundTexture = nil;
+    [_boundVertexBuffer unbind];
+    _boundVertexBuffer = nil;
+}
+
+-(void)setDepthTest:(bool)depthTest {
+    if (depthTest && !_depthTest) {
+        glEnable(GL_DEPTH_TEST);
+        //NSLog(@"enable depth");
+    }
+    else if (!depthTest && _depthTest){
+        glDisable(GL_DEPTH_TEST);
+        //NSLog(@"disable depth");
+    }
+    _depthTest = depthTest;
 }
 
 -(void)setUniformIdentity {
@@ -358,6 +352,8 @@
 }
 -(void)dispatchTouchRequestForLocation:(P2t)location type:(NKEventType)eventType{
     
+    //NSLog(@"dispatch event for location %f %f",location.x, location.y);
+    
     CallBack callBack = ^{
         NKByteColor *hc = [[NKByteColor alloc]init];
         glReadPixels(location.x, location.y,
@@ -370,66 +366,58 @@
         }
         
         [hit handleEventWithType:eventType forLocation:location];
-
-        switch (eventType) {
-            case NKEventTypeBegin:
-                [hit touchDown:location id:0];
-                break;
-                
-            case NKEventTypeMove:
-                [hit touchMoved:location id:0];
-                break;
-                
-            case NKEventTypeEnd:
-                [hit touchUp:location id:0];
-                break;
-                
-            default:
-                break;
-        }
+//        switch (eventType) {
+//            case NKEventTypeBegin:
+//                [hit touchDown:location id:0];
+//                break;
+//                
+//            case NKEventTypeMove:
+//                [hit touchMoved:location id:0];
+//                break;
+//                
+//            case NKEventTypeEnd:
+//                [hit touchUp:location id:0];
+//                break;
+//                
+//            default:
+//                break;
+//        }
     };
     
     [_hitQueue addObject:callBack];
 
 }
 
--(NKTouchState)touchDown:(P2t)location id:(int)touchId {
+-(void)unload {
+    [self.nkView stopAnimation];
     
-    if (_alertSprite) {
-        return [_alertSprite touchDown:location id:touchId];
+    [self clear];
+    
+    for (NKNode* c in self.allChildren) {
+        [[NKBulletWorld sharedInstance]removeNode:c];
+        [c removeFromParent];
     }
-    else {
-        
-        //[self dispatchTouchRequestForLocation:location type:NKEventTypeBegin];
-        
-        return NKTouchIsFirstResponder;
-    }
+    
+#if NK_LOG_METRICS
+    [metricsTimer invalidate];
+#endif
+    
+    [self setActiveShader:nil];
+    
+    [_hitDetectBuffer unload];
+    
+//
+//    for (NKShaderProgram* s in [[NKShaderManager programCache] allValues]) {
+//        [s unload];
+//    }
+//    [[NKShaderManager programCache] removeAllObjects];
+    
+    
+//    [_hitDetectShader unload];
 }
 
-//
--(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
-    
-    if (_alertSprite) {
-        return [_alertSprite touchMoved:location id:touchId];
-    }
-    else {
-        
-        //[self dispatchTouchRequestForLocation:location type:NKEventTypeMove];
-        
-        return NKTouchIsFirstResponder;
-        
-    }
-}
-//
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-
-    if (_alertSprite) {
-        return [_alertSprite touchUp:location id:touchId];
-    }
-    
-    //[self dispatchTouchRequestForLocation:location type:NKEventTypeEnd];
-    
-    return false;
+-(void)dealloc {
+    [self unload];
 }
 
 @end
@@ -442,10 +430,7 @@
         matrixStack = malloc(sizeof(M16t)*NK_BATCH_SIZE);
         matrixBlockSize = NK_BATCH_SIZE;
         matrixCount = 0;
-        
-        //memcpy(matrixStack+matrixCount, _currentMatrix.m, sizeof(M16t));
     }
-    
     return self;
 }
 
@@ -454,7 +439,6 @@
 }
 
 -(void)pushMatrix{
-   
     if (matrixBlockSize <= matrixCount) {
         NSLog(@"Expanding MATRIX STACK allocation size");
         M16t* copyBlock = malloc(sizeof(M16t) * (matrixCount*2));
@@ -473,14 +457,11 @@
     else {
         *(matrixStack+matrixCount) = matrix;
     }
-    
-    //memcpy(matrixStack+matrixCount, _currentMatrix.m, sizeof(M16t));
     [self pushMatrix];
 }
 
 -(void)pushMatrix:(M16t)matrix {
     *(matrixStack+matrixCount) = matrix;
-    //memcpy(matrixStack+matrixCount, matrix.m, sizeof(M16t));
     [self pushMatrix];
 }
 
@@ -517,7 +498,6 @@
 -(void)reset {
     matrixCount = 0;
 }
-
 -(void)dealloc {
     if (matrixStack) {
         free(matrixStack);

@@ -50,7 +50,7 @@
         
         _fontSize = size.width < size.height ? size.width/4. : size.height/4.;
         
-        self.color = NKWHITE;
+        _color = NKWHITE;
         _fontColor = NKWHITE;
         
     }
@@ -86,6 +86,10 @@
     
     _text = text;
     
+}
+
+-(void)chooseShader {
+    self.shader = [NKShaderProgram newShaderNamed:@"textureShader" colorMode:NKS_COLOR_MODE_NONE numTextures:_numTextures numLights:1 withBatchSize:0];
 }
 
 

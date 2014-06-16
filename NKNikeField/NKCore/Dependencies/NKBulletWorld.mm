@@ -61,7 +61,7 @@ static inline btVector3 btv(V3t v){
         
         dynamicsWorld->setGravity(btVector3(0,-10,0));
         
-        _collisionShapeCache = [[NSMutableSet alloc]init];
+        _btShapeCache = [[NSMutableSet alloc]init];
         
         NSLog(@"bullet dynamics loaded");
     }
@@ -69,11 +69,24 @@ static inline btVector3 btv(V3t v){
     return self;
 }
 
--(instancetype)initWithGravity:(V3t)gravity {
-    if (self = [self init]){
-        dynamicsWorld->setGravity(btVector3(gravity.x, gravity.y,gravity.z));
+-(void)setGravity:(V3t)gravity {
+    dynamicsWorld->setGravity(btVector3(gravity.x, gravity.y,gravity.z));
+}
+
++(void)setGravity:(V3t)gravity {
+    [[NKBulletWorld sharedInstance]setGravity:gravity];
+}
+
++(NKBulletShape *)cachedShapeWithShape:(NKBulletShapes)shape size:(V3t)size {
+    for (NKBulletShape* s in [[NKBulletWorld sharedInstance] btShapeCache]) {
+        if (s.shape == shape) {
+            if (V3Equal(s.size, size)) {
+                NKLogV3([NSString stringWithFormat:@"found cached: %@ : size :", s.shapeString], size);
+                return s;
+            }
+        }
     }
-    return self;
+    return nil;
 }
 
 -(void)updateWithTimeSinceLast:(F1t)dt {
@@ -108,12 +121,13 @@ static inline btVector3 btv(V3t v){
 
 -(void)removeNode:(NKNode*)node {
 
-    if (![_nodes containsObject:node]) {
+    if ([_nodes containsObject:node]) {
         dynamicsWorld->removeRigidBody((btRigidBody*)node.body.btBody);
         [_nodes removeObject:node];
     }
     
 }
+
 
 -(void)dealloc {
     //delete dynamics world
@@ -141,9 +155,19 @@ static inline btVector3 btv(V3t v){
 
 @implementation NKBulletShape
 
-
 -(instancetype)initWithType:(NKBulletShapes)shape size:(V3t)size {
+
+    NKBulletShape *cached = [NKBulletWorld cachedShapeWithShape:shape size:size];
+    
+    if (cached) {
+        return cached;
+    }
+                                     
     if (self = [super init]){
+        
+        _shape = shape;
+        _size = size;
+        
         switch (shape) {
             case NKBulletShapeBox:
                 collisionShape = new btBoxShape(btv(size));
@@ -153,11 +177,50 @@ static inline btVector3 btv(V3t v){
                 collisionShape = new btSphereShape(size.x);
                 break;
                 
+            case NKBulletShapeCylinder:
+                collisionShape = new btCylinderShape(btv(size));
+                break;
+                
+            case NKBulletShapeCone:
+                collisionShape = new btConeShape(size.x,size.y);
+                break;
+                
             default:
                 break;
         }
+        
+        [[[NKBulletWorld sharedInstance] btShapeCache] addObject:self];
     }
     return self;
+}
+
+-(NSString*)shapeString {
+    switch (_shape) {
+        case NKBulletShapeBox:
+            return @"box";
+        case NKBulletShapeSphere:
+            return @"sphere";
+        case NKBulletShapeCylinder:
+            return @"cylinder";
+        case NKBulletShapeCone:
+            return @"cone";
+        default:
+            return @"shapeError";
+    }
+}
+
+-(NSUInteger)hash {
+    return self.shape;
+}
+
+-(BOOL)isEqual:(id)object {
+    if (self.shape != ((NKBulletShape*)object).shape) {
+        return false;
+    }
+    if (V3Equal(self.size, ((NKBulletShape*)object).size)) {
+        return false;
+    }
+    return true;
 }
 
 -(void)calculateLocalInertia:(F1t)mass inertia:(V3t)localInertia {
@@ -165,17 +228,6 @@ static inline btVector3 btv(V3t v){
     collisionShape->calculateLocalInertia(mass,li);
 }
 
--(BOOL)isEqual:(id)object {
-    
-    if (self.shape != ((NKBulletShape*)object).shape) {
-        return false;
-    }
-    if (V3Equal(self.size, ((NKBulletShape*)object).size)) {
-        return false;
-    }
-    
-    return true;
-}
 
 
 -(void*)btShape {
@@ -234,6 +286,27 @@ static inline btVector3 btv(V3t v){
 
 // PROPERTIES
 
+-(void)getTransform:(M16t *)m {
+    btTransform trans;
+    body->getMotionState()->getWorldTransform(trans);
+    trans.getOpenGLMatrix(m->m);
+}
+
+-(void)setTransform:(M16t)transform {
+    btTransform tr;
+    tr.setFromOpenGLMatrix(transform.m);
+//    body->getWorldTransform().setIdentity();
+//    body->getWorldTransform().setOrigin(btv(V3GetM16Translation(transform)));
+    
+   // btTransform tr;
+   // body->getMotionState()->getWorldTransform(tr);
+   // tr.setOrigin(btv(V3GetM16Translation(transform)));
+    body->getMotionState()->setWorldTransform(tr);
+    body->setWorldTransform(tr);
+    
+}
+
+
 -(void)setMass:(F1t)mass inertia:(V3t)inertia {
     body->setMassProps(mass, btv(inertia));
 }
@@ -272,14 +345,34 @@ static inline btVector3 btv(V3t v){
     body->applyCentralForce(btv(force));
 }
 
--(void)applyDamping:(F1t)timeStep {
-    body->applyDamping(timeStep);
+-(void)setLinearVelocity:(V3t)velocity {
+    body->setLinearVelocity(btv(velocity));
 }
 
--(void)getPhysicsMatrix:(M16t *)m {
-    btTransform trans;
-    body->getMotionState()->getWorldTransform(trans);
-    trans.getOpenGLMatrix(m->m);
+-(void)setAngularVelocity:(V3t)velocity {
+    body->setAngularVelocity(btv(velocity));
+}
+
+-(V3t)getLinearVelocity {
+    btVector3 v = body->getLinearVelocity();
+    return V3Make(v.x(), v.y(), v.z());
+}
+
+-(V3t)getAngularVelocity {
+    btVector3 v = body->getAngularVelocity();
+    return V3Make(v.x(), v.y(), v.z());
+}
+
+-(void)forceAwake {
+    body->setActivationState(true);
+}
+
+-(void)forceSleep {
+    body->setActivationState(false);
+}
+
+-(void)applyDamping:(F1t)timeStep {
+    body->applyDamping(timeStep);
 }
 
 -(void)dealloc {

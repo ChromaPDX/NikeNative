@@ -20,14 +20,18 @@
 
 +(instancetype) textureWithImageNamed:(NSString*)name {
     
+    if  (!name) return nil;
+    
     if (![[NKTextureManager imageCache] objectForKey:name]) {
+        NKTexture *newTex = [[NKTexture alloc] initWithImageNamed:name];
         
-        NSLog(@"adding tex to atlas named: %@", name);
-        
-        [[NKTextureManager imageCache] setObject:[[NKTexture alloc] initWithImageNamed:name] forKey:name];
-        
-     
-        
+        if (newTex){
+            NSLog(@"adding tex to atlas named: %@", name);
+            [[NKTextureManager imageCache] setObject:newTex forKey:name];
+        }
+        else {
+            return nil;
+        }
     }
     
     return [[NKTextureManager imageCache] objectForKey:name];

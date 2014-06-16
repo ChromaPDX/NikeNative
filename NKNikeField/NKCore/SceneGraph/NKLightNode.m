@@ -52,7 +52,7 @@
 }
 
 -(void)chooseShader {
-    self.shader = [NKShaderProgram newShaderNamed:@"lightNodeShader" colorMode:NKS_COLOR_MODE_UNIFORM numTextures:0 lightNodes:nil withBatchSize:0];
+    self.shader = [NKShaderProgram newShaderNamed:@"lightNodeShader" colorMode:NKS_COLOR_MODE_UNIFORM numTextures:0 numLights:0 withBatchSize:0];
 }
 
 -(void)removeFromParent {

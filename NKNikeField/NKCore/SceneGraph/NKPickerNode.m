@@ -186,14 +186,22 @@
     
 }
 
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-    [super touchUp:location id:touchId];
-    if (self.scrollPhase == ScrollPhaseNil) {
-        if (self.selectedChild) {
-              [self.delegate cellWasSelected:self.selectedChild];
+-(void)handleEventWithType:(NKEventType)event forLocation:(P2t)location {
+    if (NKEventTypeEnd == event) {
+        if (self.scrollPhase == ScrollPhaseNil) {
+            if (self.selectedChild) {
+                [self.delegate cellWasSelected:self.selectedChild];
+            }
         }
     }
-    return false;
+    else {
+        [super handleEventWithType:event forLocation:location];
+    }
 }
+
+//-(NKTouchState)touchUp:(P2t)location id:(int)touchId {
+//
+//    return false;
+//}
 
 @end

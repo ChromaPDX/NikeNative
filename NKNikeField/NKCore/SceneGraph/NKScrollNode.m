@@ -43,7 +43,7 @@
     
     _scrollDirectionVertical = true;
     _scrollingEnabled = true;
-    _padding = P2Make(10,10);
+    _padding = P2Make(0,0);
     _fdirty = true;
     
     self.userInteractionEnabled = true;
@@ -91,8 +91,6 @@
         
         restitution = 3;
         drag = 1.5;
-        
-        self.userInteractionEnabled = false;
     }
     
     return self;
@@ -300,38 +298,31 @@
 }
 
 -(bool)shouldCull {
-    
     return [self scrollShouldCull];
-    
 }
+
 -(bool)scrollShouldCull {
-    
     return false;
     
-    R4t r = [self.parent getDrawFrame];
+    R4t r = [_parent getDrawFrame];
     
-    if ([(NKScrollNode*)self.parent scrollDirectionVertical] && (self.position3d.y + self.size.height/2. < r.y ||
-                                                                 self.position3d.y - self.position3d.y/2. > r.y + self.parent.size.height)) {
+    if ([(NKScrollNode*)_parent scrollDirectionVertical] && (self.position3d.y + self.size.height/2. < r.y ||
+                                                                 self.position3d.y - self.position3d.y/2. > r.y + _parent.size.height)) {
         return true;
     }
-    
     else if (self.position3d.x + self.size.width/2. < r.x || self.position3d.x - self.size.width/2. > r.x + r.size.width) {
         return true;
     }
-    
 }
 
 
 -(P2t)scrollPositionForChild:(int)child {
-    
     if (_scrollDirectionVertical) {
         return P2Make(0,-([(NKNode*)intChildren[child] size].height + _padding.y) * (child) + h*contentOffset.y);
     }
     else {
         return P2Make(-([(NKNode*)intChildren[child] size].width + _padding.x) * (child) + w*contentOffset.x, 0);
     }
-    
-    
 }
 
 -(void)scrollToChild:(int)child duration:(F1t)duration {
@@ -400,29 +391,32 @@
     
 }
 
+-(void)draw {
+    [self.scene setDepthTest:false];
+    [super draw];
+}
+
+-(void)drawWithHitShader {
+    [self.scene setDepthTest:false];
+    [super drawWithHitShader];
+}
+
 -(void)endScroll {
     drag = 1.04;
-    
     if (scrollVel != 0 && !P2Bool(self.outOfBounds)) {
-        
         if (_scrollDirectionVertical) {
             [self setScrollPosition:P2Make(_scrollPosition.x, _scrollPosition.y + scrollVel)];
         }
         else {
             [self setScrollPosition:P2Make(_scrollPosition.x + scrollVel, _scrollPosition.y)];
         }
-        
     }
-    
     else {
         [self shouldBeginRestitution];
-        
         _scrollPhase = ScrollPhaseRestitution;
         easeIn = 12.;
         easeOut = false;
-        //NSLog(@"start restitution");
     }
-
 }
 
 -(void)scrollRestitution {
@@ -464,27 +458,20 @@
 
 #pragma mark - Touch Handling
 
--(void)cellWasSelected:(NKScrollNode *)cell {
-    [_delegate cellWasSelected:cell];
-}
+-(void)handleEventWithType:(NKEventType)event forLocation:(P2t)location {
 
--(void)cellWasDeSelected:(NKScrollNode *)cell {
-    [_delegate cellWasDeSelected:cell];
-}
-
-// TOUCH HANDLING
-
--(NKTouchState) touchDown:(P2t)location id:(int) touchId
-{
-
-    NKTouchState hit = NKTouchNone;
+    if (_eventBlock) {
+        _eventBlock(event, location);
+    }
     
-    if (_scrollingEnabled) {
+    if (_parent && [_parent isKindOfClass:[NKScrollNode class]]) {
+        [_parent handleEventWithType:event forLocation:location];
+        return;
+    }
+    
+    if (NKEventTypeBegin == event) {
         
-        if  (self.userInteractionEnabled){
-            
-            //if ([self containsPoint:location]) {
-
+        if (_scrollingEnabled) {
                 _scrollPhase = ScrollPhaseBegan;
                 
                 xOrigin = location.x;
@@ -495,182 +482,110 @@
                 
                 drag = 1.5;
                 
-                return NKTouchIsFirstResponder;
-                
-                  NSLog(@"table touch down");
-            //}
-            
+                NSLog(@"table touch down");
         }
         
-        return NKTouchNone;
-        
     }
-    
-    else {
+    else if (NKEventTypeMove == event) {
         
+        int sDt;
+        int cDt;
+        P2t dt = P2Make(0,0);
         
-        hit = [super touchDown:location id:touchId];
-        
-        if (hit == NKTouchIsFirstResponder) {
-            NSLog(@"cell selected");
-            [self setHighlighted:true];
+        if (_scrollDirectionVertical) {
+            sDt = (location.y - yOrigin);
+            cDt = (location.x - xOrigin);
+            dt.y = sDt;
+            
         }
         else {
-            [self setHighlighted:false];
+            sDt = (location.x - xOrigin);
+            cDt = (location.y - yOrigin);
+            dt.x = sDt;
         }
-    }
         
-
-    return hit;
-    
-}
-
--(void)scrollEnded {
-    
-}
-
--(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
-    
-    NKTouchState hit = NKTouchNone;
-    
-    if  (_scrollingEnabled) {
+        xOrigin = location.x;
+        yOrigin = location.y;
         
-        if (self.userInteractionEnabled) {
+        scrollVel += sDt;
+        counterVel += cDt;
+        
+        if (_scrollPhase <= ScrollPhaseBegan){
             
-            //if ([self containsPoint:location]) {
+            if (fabs(scrollVel) > fabs(counterVel) + (restitution * 2.)){
                 
-                hit = NKTouchIsFirstResponder;
+                if ([self scrollShouldStart]) {
+                    _scrollPhase = ScrollPhaseRecognized;
+                };
+                //NSLog(@"Scroll started %f, %f", scrollVel, counterVel);
                 
-                int sDt;
-                int cDt;
-                P2t dt = P2Make(0,0);
-                
-                if (_scrollDirectionVertical) {
-                    sDt = (location.y - yOrigin);
-                    cDt = (location.x - xOrigin);
-                    dt.y = sDt;
-                    
-                }
-                else {
-                    sDt = (location.x - xOrigin);
-                    cDt = (location.y - yOrigin);
-                    dt.x = sDt;
-                }
-
-                xOrigin = location.x;
-                yOrigin = location.y;
-                
-                scrollVel += sDt;
-                counterVel += cDt;
-                
-                if (_scrollPhase <= ScrollPhaseBegan){
-                    
-                    if (fabs(scrollVel) > fabs(counterVel) + (restitution * 2.)){
-                  
-                        if ([self scrollShouldStart]) {
-                                  _scrollPhase = ScrollPhaseRecognized;
-                        };
-                        //NSLog(@"Scroll started %f, %f", scrollVel, counterVel);
-                        
-                    }
-                    
-                    else if (fabs(counterVel) > fabs(scrollVel) + (restitution)){
-                        NSLog(@"FAILED %f, %f", counterVel, scrollVel);
-                        _scrollPhase = ScrollPhaseBeginFail;
-                    }
-                    
-                }
-                
-                else if (_scrollPhase == ScrollPhaseRecognized){
-                    [self setScrollPosition:P2Add(_scrollPosition,dt) ];
-                    
-                }
-                
-                else if (_scrollPhase == ScrollPhaseBeginFail) {
-                    
-                    for (NKNode *child in intChildren) {
-                        if ([child touchDown:location id:touchId ] > 0) {
-                            hit = NKTouchContainsFirstResponder;
-                        };
-                    }
-                    _scrollPhase = ScrollPhaseFailed;
-                    
-                }
-                
-                else if (_scrollPhase == ScrollPhaseFailed) {
-                    
-                    for (NKNode *child in intChildren) {
-                        if ([child touchMoved:location id:touchId ] > 0) {
-                            hit = NKTouchContainsFirstResponder;
-                        };
-                    }
-                    
-                    
-                }
-                
-          //  }
-
+            }
+            
+            else if (fabs(counterVel) > fabs(scrollVel) + (restitution)){
+                NSLog(@"FAILED %f, %f", counterVel, scrollVel);
+                _scrollPhase = ScrollPhaseBeginFail;
+            }
+            
+        }
+        
+        else if (_scrollPhase == ScrollPhaseRecognized){
+            [self setScrollPosition:P2Add(_scrollPosition,dt) ];
+            
+        }
+        
+        else if (_scrollPhase == ScrollPhaseBeginFail) {
+            
+//            for (NKNode *child in intChildren) {
+//                if ([child touchDown:location id:touchId ] > 0) {
+//                    hit = NKTouchContainsFirstResponder;
+//                };
+//            }
+            _scrollPhase = ScrollPhaseFailed;
+            
+        }
+        
+        else if (_scrollPhase == ScrollPhaseFailed) {
+            
+//            for (NKNode *child in intChildren) {
+//                if ([child touchMoved:location id:touchId ] > 0) {
+//                    hit = NKTouchContainsFirstResponder;
+//                };
+//            }
         }
     }
-    
-    else {
-        
-        return [super touchMoved:location id:touchId];
-    }
-    
-    return hit;
-    
-}
-
--(NKTouchState)touchUp:(P2t)location id:(int)touchId    {
-    
-   
-    NKTouchState hit = NKTouchNone;
-    
-    if (_scrollingEnabled) {
-        
+    else if (NKEventTypeEnd == event){
         if (_scrollPhase == ScrollPhaseFailed || _scrollPhase == ScrollPhaseBegan || _scrollPhase == ScrollPhaseNil) {
-            for (NKNode *child in intChildren) {
-                if ([child touchUp:location id:touchId ] > 0){
-                    hit = NKTouchContainsFirstResponder;
-                    
-                      [_delegate cellWasSelected:(NKScrollNode*)child];
-                    
-                }
-            }
+//            for (NKNode *child in intChildren) {
+//                if ([child touchUp:location id:touchId ] > 0){
+//                    hit = NKTouchContainsFirstResponder;
+//                    
+//                    [_delegate cellWasSelected:(NKScrollNode*)child];
+//                    
+//                }
+//            }
             _scrollPhase = ScrollPhaseNil;
         }
         
         else {
-            hit = NKTouchIsFirstResponder;
+           // hit = NKTouchIsFirstResponder;
             _scrollPhase = ScrollPhaseEnded;
             [self scrollEnded];
         }
-        
     }
-    
-    else {
-        
-        hit = [super touchUp:location id:touchId];
-        
-        if (hit == NKTouchIsFirstResponder) {
-          
-            [self setHighlighted:true];
-        }
-        
-        else {
-            [self setHighlighted:false];
-        }
-        
-    }
-    
-    
-    
-    return hit;
-    
-    
 }
 
+-(void)cellWasSelected:(NKScrollNode *)cell {
+    [_delegate cellWasSelected:cell];
+}
 
+-(void)cellWasDeSelected:(NKScrollNode *)cell {
+    [_delegate cellWasDeSelected:cell];
+}
+
+// TOUCH HANDLING
+
+-(void)scrollEnded {
+    
+}
 
 @end

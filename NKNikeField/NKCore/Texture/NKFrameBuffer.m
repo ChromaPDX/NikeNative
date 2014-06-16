@@ -367,27 +367,24 @@ static inline const char * GetGLErrorString(GLenum error)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
--(void)dealloc {
+-(void)unload {
 
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
-#if NK_USE_GLES
-        glDeleteFramebuffers(1, &_frameBuffer);
-        glDeleteRenderbuffers(1, &_renderBuffer);
-#else
+    if (_frameBuffer) {
     glDeleteFramebuffers(1, &_frameBuffer);
+    }
+    if (_renderBuffer) {
     glDeleteRenderbuffers(1, &_renderBuffer);
-#endif
-    
-        if(_depthBuffer)
-        {
-            #if NK_USE_GLES
-            glDeleteRenderbuffers(1, &_depthBuffer);
-            #else
-            glDeleteRenderbuffers(1, &_depthBuffer);
-            #endif
-            _depthBuffer = 0;
-        }
+    }
+    if(_depthBuffer)
+    {
+        glDeleteRenderbuffers(1, &_depthBuffer);
+        _depthBuffer = 0;
+    }
+}
+-(void)dealloc {
+    [self unload];
 }
 //- (GLuint)bindTexture:(int)texLoc
 //{

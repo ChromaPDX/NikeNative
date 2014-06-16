@@ -12,15 +12,6 @@
 
 @class NKByteColor;
 
-typedef NS_ENUM(GLint, NKVertexAttrib)
-{
-    NKSVertexAttribPosition,
-    NKSVertexAttribNormal,
-    NKSVertexAttribTexCoord0,
-    NKSVertexAttribColor,
-} NS_ENUM_AVAILABLE(10_8, 5_0);
-
-
 //GLint uniforms[NUM_UNIFORMS];
 
 @class NKTexture;
@@ -29,9 +20,15 @@ typedef NS_ENUM(GLint, NKVertexAttrib)
 
 {
     int numAttributes;
+    
+    NSArray *attributes;
+    NSSet *uniforms;
+    NSSet *varyings;
+    NSSet *vertexVars;
+    NSSet *fragmentVars;
 }
 
-+(instancetype)newShaderNamed:(NSString*)name colorMode:(NKS_COLOR_MODE)colorMode numTextures:(int)numTex lightNodes:(NSArray*)lightNodes withBatchSize:(int)batchSize;
++(instancetype)newShaderNamed:(NSString*)name colorMode:(NKS_COLOR_MODE)colorMode numTextures:(NSUInteger)numTex numLights:(int)numLights withBatchSize:(int)batchSize;
 
 +(instancetype)shaderNamed:(NSString*)name;
 
@@ -42,8 +39,6 @@ typedef NS_ENUM(GLint, NKVertexAttrib)
 - (instancetype)initWithVertexSource:(NSString*)vertexSource fragmentSource:(NSString*)fragmentSource;
 
 #pragma mark - UTILS
-
-@property (nonatomic, strong) NSMutableDictionary *nkShaderDictionary;
 
 @property (nonatomic, strong) NSString *vertexSource;
 @property (nonatomic, strong) NSString *fragmentSource;

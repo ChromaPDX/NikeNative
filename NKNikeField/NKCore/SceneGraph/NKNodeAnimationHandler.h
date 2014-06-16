@@ -200,7 +200,7 @@ typedef NS_ENUM(NSInteger, NKActionTimingMode) {
 }
 
 @property (nonatomic, weak) NodeAnimationHandler *handler;
-@property (nonatomic) NKNode *node;
+@property (nonatomic, weak) NKNode *node;
 
 - (instancetype) initWithNode:(NKNode*)node;
 

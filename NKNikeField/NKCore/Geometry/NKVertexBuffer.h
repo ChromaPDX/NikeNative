@@ -17,7 +17,8 @@ typedef NS_ENUM(NSInteger, NKPrimitive) {
     NKPrimitiveRect,
     NKPrimitiveCube,
     NKPrimitiveSphere,
-    NKPrimitiveLODSphere
+    NKPrimitiveLODSphere,
+    NKNumPrimitives
 } NS_ENUM_AVAILABLE(10_9, 7_0);
 
 @interface NKVertexBuffer : NSObject
@@ -45,6 +46,7 @@ typedef NS_ENUM(NSInteger, NKPrimitive) {
 @property (nonatomic) NSUInteger numberOfElements;
 @property (nonatomic) int* elementOffset;
 @property (nonatomic) int* elementSize;
+@property (nonatomic) V3t boundingBoxSize;
 
 @end
 

@@ -34,9 +34,9 @@
 - (void)bind:(void(^)())drawingBlock;
 
 - (void)unbind;
+- (void)unload;
 - (GLuint)bindTexture:(int)texLoc;
 - (NKImage *)imageAtRect:(CGRect)cropRect;
-
 
 - (NKByteColor*)colorAtPoint:(P2t)point;
 - (void)pixelValuesInRect:(CGRect)cropRect buffer:(GLubyte *)pixelBuffer;

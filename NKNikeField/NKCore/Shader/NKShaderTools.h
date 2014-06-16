@@ -53,6 +53,12 @@ NKS_STRING_CONST NKS_FRAGMENT_MAIN = @"fragmentMain";
 
 typedef NS_ENUM(GLuint, NKS_ENUM)
 {
+    // VERTEX ATTRIBUTE POSITIONS ** THESE NEED TO STAY 0-4
+    NKS_V4_POSITION,
+    NKS_V3_NORMAL,
+    NKS_V2_TEXCOORD,
+    NKS_V4_COLOR,
+    
     // GL_EXTENSIONS
     NKS_EXT_GPU_SHADER,
     NKS_EXT_DRAW_INSTANCED,
@@ -97,23 +103,18 @@ typedef NS_ENUM(GLuint, NKS_ENUM)
     // M9
     NKS_M9_NORMAL,
     
-    // V2
-    NKS_V2_TEXCOORD,
 
     // V3
-    NKS_V3_NORMAL,
     NKS_V3_EYE_DIRECTION,
     // V4
-    NKS_V4_COLOR,
     NKS_V4_FINAL_COLOR,
-    NKS_V4_POSITION,
     
     // SAMPLER
     NKS_S2D_TEXTURE,
     
     // LIGHT
     NKS_LIGHT,
-    NKS_LIGHTS,
+    NKS_I1_NUM_LIGHTS,
     NKS_V3_LIGHT_DIRECTION,
     NKS_V3_LIGHT_HALF_VECTOR,
     NKS_F1_ATTENUATION,
@@ -221,10 +222,11 @@ typedef union _NKS_SCALAR NKS_SCALAR;
 +(instancetype)variableWith:(NKS_ENUM)variable type:(NKS_ENUM)type name:(NKS_ENUM)name;
 
 -(NSString*)nameString;
--(NSString*)declarationString;
 -(NSString*)declarationStringForSection:(NKS_ENUM)section;
 
 // BINDING UNIFORMS
+
+-(void)bindI1:(int)data;
 
 -(void)bindV3:(V3t)data;
 -(void)bindV4:(V4t)data;

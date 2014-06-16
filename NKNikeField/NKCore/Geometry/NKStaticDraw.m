@@ -80,4 +80,28 @@ static NKStaticDraw *sharedObject = nil;
     
 }
 
++(NKVertexBuffer*)cachedPrimitive:(NKPrimitive)primitive {
+    return [[NKStaticDraw sharedInstance] cachedPrimitive:primitive];
+}
+
+-(NKVertexBuffer*)cachedPrimitive:(NKPrimitive)primitive {
+    if (!primitiveCache[primitive]) {
+        primitiveCache[NKPrimitiveCube] = [NKVertexBuffer defaultCube];
+    }
+    return primitiveCache[primitive];
+}
+
++(void)drawBoundingBoxForNode:(NKNode*)node{
+    [[NKStaticDraw sharedInstance]drawBoundingBoxForNode:node];
+}
+
+-(void)drawBoundingBoxForNode:(NKNode*)node {
+    if (!_boundingBoxMesh) {
+        _boundingBoxMesh = [[NKMeshNode alloc]initWithPrimitive:NKPrimitiveCube texture:nil color:NKGREEN size:V3MakeF(1.)];
+        _boundingBoxMesh.drawMode = GL_LINES;
+    }
+    _boundingBoxMesh.localTransformMatrix = node.localTransformMatrix;
+    [_boundingBoxMesh customDraw];
+}
+
 @end

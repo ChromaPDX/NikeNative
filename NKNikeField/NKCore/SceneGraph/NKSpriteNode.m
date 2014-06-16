@@ -50,7 +50,7 @@
 
 - (instancetype)initWithImageNamed:(NSString *)name {
     NKTexture *newTex = [NKTexture textureWithImageNamed:name];
-    return [self initWithTexture:newTex color:NKWHITE size:self.texture.size];
+    return [self initWithTexture:newTex color:NKWHITE size:newTex.size];
 }
 
 - (instancetype)initWithColor:(NKByteColor*)color size:(S2t)size {

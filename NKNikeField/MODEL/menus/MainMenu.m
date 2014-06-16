@@ -26,6 +26,8 @@
         NKSpriteNode *bg = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Screen_Menu.png"] color:NKWHITE size:self.size];
         [self addChild:bg];
         
+       // [bg repeatAction:[NKAction sequence:@[[NKAction fadeAlphaTo:0 duration:1.],[NKAction fadeAlphaTo:1. duration:1.]]]];
+        //[bg repeatAction:[NKAction rotateByAngle:90 duration:1]];
 //        fuelBar = [[FuelBar alloc] init];
 //        [fuelBar setPosition:P2Make(-72*w/640, 500*h/1136)];
 //        // @LEIF - not sure why the animation isn't working here?

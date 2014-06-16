@@ -37,6 +37,8 @@ vec3 reflectedLight = vec3(0.0);
 float Strength = 4.;
 float Shininess = 10.;
 
+if (u_numLights > 0){
+for (int i = 0; i < u_numLights; i++){
 vec3 halfVector;
 vec3 lightDirection = u_light.position;
 float attenuation = 1.0;
@@ -64,10 +66,13 @@ specular = pow(specular, Shininess) * Strength * diffuse;
 // Accumulate all the u_lights’ effects
 scatteredLight += u_light.ambient * attenuation + u_light.color * diffuse * attenuation;
 reflectedLight += u_light.color * specular * attenuation;
-
+}
 //vec3 rgb = min(Color.rgb * scatteredLight + reflectedLight, vec3(1.0));
 //FragColor = vec4(rgb, Color.a);
 
 lightColor = vec4(min(scatteredLight + reflectedLight,vec3(1.0)), 1.0);
-
+}
+else {
+lightColor = vec4(1.0);
+}
 @frag

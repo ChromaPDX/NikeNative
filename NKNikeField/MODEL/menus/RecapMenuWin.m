@@ -76,6 +76,7 @@
     NSLog(@"RecapMenu touchUP location = %f,%f", location.x, location.y);
     CGRect startButtonRect = CGRectMake(201, 100, 220, 300);
     CGPoint rect = CGPointMake(location.x, location.y);
+    
     if(CGRectContainsPoint(startButtonRect, rect)){
         NKSceneNode* newScene = [[MainMenu alloc]initWithSize:self.size];
         self.nkView.scene = newScene;

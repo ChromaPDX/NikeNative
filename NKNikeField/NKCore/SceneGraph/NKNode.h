@@ -47,7 +47,8 @@ typedef NS_ENUM(U1t, NKEventType) {
     NKEventTypeBegin,
     NKEventTypeMove,
     NKEventTypeEnd,
-    NKEventTypeDrag
+    NKEventTypeDrag,
+    NKEventTypeDoubleTap
 } NS_ENUM_AVAILABLE(10_9, 7_0);
 
 typedef NS_ENUM(U1t, NKBlendMode) {
@@ -89,6 +90,7 @@ typedef void (^CompletionBlock)(void);
     
     V3t _size3d;
     
+    NKNode *_parent;
     NSMutableArray *intChildren;
     NSMutableSet *touches;
     // of internals
@@ -103,16 +105,19 @@ typedef void (^CompletionBlock)(void);
     
     // CACHED PROPS
     F1t intAlpha;
+
+    EventBlock _eventBlock;
 }
 
 #pragma mark - NODE TREE
 
 @property (nonatomic, weak) NKSceneNode* scene;
-@property (nonatomic, weak) NKNode *parent;
 @property (nonatomic, strong) NSArray *children;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, strong) NKByteColor *uidColor;
 @property (nonatomic) bool dirty;
+@property (nonatomic) V3t positionRef;
+@property (nonatomic) V3t scalarVelocity;
 
 #pragma mark - POSITION PROPERTIES
 
@@ -163,10 +168,14 @@ typedef void (^CompletionBlock)(void);
 - (void)removeAllChildren;
 - (void)removeFromParent;
 - (NKNode *)childNodeWithName:(NSString *)name;
+-(NSArray*)allChildren;
 - (NKNode *)randomChild;
 -(NKNode*)randomLeaf;
 - (void)enumerateChildNodesWithName:(NSString *)name usingBlock:(void (^)(NKNode *node, BOOL *stop))block;
+- (void)setParent:(NKNode *)parent;
 - (BOOL)inParentHierarchy:(NKNode *)parent;
+
+- (void) unload;
 
 #pragma mark - PHYSICS
 
@@ -233,6 +242,7 @@ typedef void (^CompletionBlock)(void);
 #pragma mark - MATRIX METHODS
 
 -(M16t)getGlobalTransformMatrix;
+-(void)setLocalTransformMatrix:(M16t)_localTransformMatrix;
 -(M16t)localTransformMatrix;
 
 #pragma mark - POSITION METHODS
@@ -291,13 +301,13 @@ typedef void (^CompletionBlock)(void);
 
 #pragma mark - TOUCH
 
-@property (nonatomic, strong) EventBlock eventBlock;
+-(void)setEventBlock:(EventBlock)eventBlock;
 
 -(void)handleEventWithType:(NKEventType)event forLocation:(P2t)location;
 
--(NKTouchState) touchDown:(P2t)location id:(int) touchId;
--(NKTouchState) touchMoved:(P2t)location id:(int) touchId;
--(NKTouchState) touchUp:(P2t)location id:(int) touchId;
+//-(NKTouchState) touchDown:(P2t)location id:(int) touchId;
+//-(NKTouchState) touchMoved:(P2t)location id:(int) touchId;
+//-(NKTouchState) touchUp:(P2t)location id:(int) touchId;
 
 //+(void)drawRectangle:(S2t)size;
 

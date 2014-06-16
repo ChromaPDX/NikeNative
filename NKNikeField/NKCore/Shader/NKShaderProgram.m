@@ -76,11 +76,15 @@
  
         _name = name;
         
-        _nkShaderDictionary = [shaderDict mutableCopy];
+        attributes = [shaderDict[NKS_ATTRIBUTES] copy];
+        uniforms = [shaderDict[NKS_UNIFORMS] copy];
+        varyings = [shaderDict[NKS_VARYINGS] copy];
+        vertexVars = [shaderDict[NKS_VERT_INLINE] copy];
+        fragmentVars = [shaderDict[NKS_FRAG_INLINE] copy];
         
-        _vertexSource = [self vertexStringFromShaderDictionary:_nkShaderDictionary];
+        _vertexSource = [self vertexStringFromShaderDictionary:shaderDict];
         
-        _fragmentSource = [self fragmentStringFromShaderDictionary:_nkShaderDictionary];
+        _fragmentSource = [self fragmentStringFromShaderDictionary:shaderDict];
         
 #ifdef NK_GL_DEBUG
         NSLog(@"%@",_vertexSource);
@@ -110,7 +114,7 @@
     return nil;
 }
 
-+(instancetype)newShaderNamed:(NSString*)name colorMode:(NKS_COLOR_MODE)colorMode numTextures:(int)numTex lightNodes:(NSArray*)lightNodes withBatchSize:(int)batchSize {
++(instancetype)newShaderNamed:(NSString*)name colorMode:(NKS_COLOR_MODE)colorMode numTextures:(NSUInteger)numTex numLights:(int)numLights withBatchSize:(int)batchSize {
     
     if ([NKShaderManager programCache][name]) {
         return [NKShaderManager programCache][name];
@@ -123,8 +127,8 @@
     // ALLOCATE ARRAYS
     
     shaderDict[NKS_ATTRIBUTES] = [[NSMutableArray alloc]init];
-    shaderDict[NKS_UNIFORMS] = [[NSMutableArray alloc]init];
-    shaderDict[NKS_VARYINGS] = [[NSMutableArray alloc]init];
+    shaderDict[NKS_UNIFORMS] = [[NSMutableSet alloc]init];
+    shaderDict[NKS_VARYINGS] = [[NSMutableSet alloc]init];
     shaderDict[NKS_VERTEX_MAIN] = [NSMutableArray array];
     shaderDict[NKS_FRAG_INLINE] = [[NSMutableArray alloc]init];
     shaderDict[NKS_PROGRAMS] = [[NSMutableArray alloc]init];
@@ -149,7 +153,6 @@
         shaderDict[NKS_EXTENSIONS]=@[nks(NKS_EXT_DRAW_INSTANCED),nks(NKS_EXT_GPU_SHADER)];
     }
     // ADD COLOR
-    
     if (colorMode == NKS_COLOR_MODE_UNIFORM) {
         if (batchSize) {
             [shaderDict[NKS_UNIFORMS] addObject:nksua(NKS_PRECISION_MEDIUM, NKS_TYPE_V4, NKS_V4_COLOR, batchSize)];
@@ -164,9 +167,9 @@
         [shaderDict[NKS_VARYINGS] addObject:nksv(NKS_PRECISION_MEDIUM, NKS_TYPE_V4, NKS_V4_COLOR)];
     }
     
-    if (lightNodes && lightNodes.count) {
+    if (numLights) {
         
-        [shaderDict[NKS_UNIFORMS] addObjectsFromArray:@[
+        [shaderDict[NKS_UNIFORMS] addObjectsFromArray:@[nksu(NKS_PRECISION_NONE, NKS_TYPE_INT, NKS_I1_NUM_LIGHTS),
                                                         nksu(NKS_PRECISION_NONE, NKS_STRUCT_LIGHT, NKS_LIGHT),
                                                         nksu(NKS_PRECISION_MEDIUM, NKS_TYPE_V3, NKS_V3_EYE_DIRECTION)]];
         
@@ -288,7 +291,7 @@
 -(NSArray*)uniformNames {
     NSMutableArray *names = [NSMutableArray array];
     
-    for (NKShaderVariable *v in _nkShaderDictionary[NKS_UNIFORMS]) {
+    for (NKShaderVariable *v in uniforms) {
         [names addObject:v.nameString];
     }
     
@@ -301,9 +304,16 @@
     [shader appendNewLine:@"\n //***"];
     [shader appendNewLine:@"//NK VERTEX SHADER"];
     [shader appendNewLine:@"//***"];
+    
+#ifdef NK_USE_GL3
+    [shader appendNewLine:@"#version 330 core"];
+#else
     for (NSString* s in dict[NKS_EXTENSIONS]) {
         [shader appendNewLine:s];
     }
+#endif
+
+    
 #if NK_USE_GLES
     [shader appendNewLine:@"precision highp float;"];
 #else
@@ -315,13 +325,13 @@
     }
     
     for (NKShaderVariable* v in dict[NKS_ATTRIBUTES]) {
-        [shader appendNewLine:[v declarationString]];
+        [shader appendNewLine:[v declarationStringForSection:NKS_VERTEX_SHADER]];
     }
     for (NKShaderVariable* v in dict[NKS_UNIFORMS]) {
-        [shader appendNewLine:[v declarationString]];
+        [shader appendNewLine:[v declarationStringForSection:NKS_VERTEX_SHADER]];
     }
     for (NKShaderVariable* v in dict[NKS_VARYINGS]) {
-        [shader appendNewLine:[v declarationString]];
+        [shader appendNewLine:[v declarationStringForSection:NKS_VERTEX_SHADER]];
     }
     
 
@@ -347,13 +357,21 @@
     [shader appendNewLine:@"//***"];
     [shader appendNewLine:@"//NK FRAGMENT SHADER"];
     [shader appendNewLine:@"//***"];
+    
+#ifdef NK_USE_GL3
+    [shader appendNewLine:@"#version 330 core"];
+    
+    [shader appendNewLine:@"layout ( location = 0 ) out vec4 FragColor;"];
+    
+#else
     for (NSString* s in dict[NKS_EXTENSIONS]) {
         [shader appendNewLine:s];
     }
+#endif
+    
 #if NK_USE_GLES
     [shader appendNewLine:@"precision highp float;"];
 #else
-   // [shader appendNewLine:@"#version 320 core"];
 #endif
     
     for (NSString*s in dict[NKS_PROGRAMS]) {
@@ -361,24 +379,22 @@
     }
     
     for (NKShaderVariable* v in dict[NKS_UNIFORMS]) {
-        [shader appendNewLine:[v declarationString]];
+        [shader appendNewLine:[v declarationStringForSection:NKS_FRAGMENT_SHADER]];
     }
     for (NKShaderVariable* v in dict[NKS_VARYINGS]) {
-        [shader appendNewLine:[v declarationString]];
+        [shader appendNewLine:[v declarationStringForSection:NKS_FRAGMENT_SHADER]];
     }
     
     [shader appendNewLine:@"void main() {"];
-    
     [shader appendNewLine:@"//GENERATED INLINES"];
     
     for (NKShaderVariable* v in dict[NKS_FRAG_INLINE]) {
-        [shader appendNewLine:v.declarationString];
+        [shader appendNewLine:[v declarationStringForSection:NKS_FRAGMENT_SHADER]];
     }
     if ([dict uniformNamed:NKS_S2D_TEXTURE]) {
         [shader appendString:textureFragmentFunction(dict)];
         [shader appendString:shaderLineWithArray(@[@" if (",[dict fragVarNamed:NKS_V4_TEX_COLOR], @".a < .1) discard;"])];
     }
-    
     for (NSString*s in dict[NKS_PROGRAMS]) {
         [shader appendString:shaderStringWithDirective(s, @"@frag")];
     }
@@ -442,7 +458,7 @@
     
     numAttributes = 0;
     
-    for (NKShaderVariable *v in _nkShaderDictionary[NKS_ATTRIBUTES]) {
+    for (NKShaderVariable *v in attributes) {
         NSString *attrName = v.nameString;
         glEnableVertexAttribArray(numAttributes);
         glBindAttribLocation(self.glPointer, numAttributes, [attrName UTF8String]);
@@ -474,7 +490,7 @@
         return NO;
     }
     
-    for (NKShaderVariable *v in _nkShaderDictionary[NKS_ATTRIBUTES]) {
+    for (NKShaderVariable *v in attributes) {
 
 //        switch (v.name) {
 //            case NKS_V2_TEXCOORD:
@@ -491,7 +507,7 @@
 
     }
     
-    for (NKShaderVariable *v in _nkShaderDictionary[NKS_UNIFORMS]) {
+    for (NKShaderVariable *v in uniforms) {
         int uniLoc = glGetUniformLocation(self.glPointer, [v.nameString UTF8String]);
         if (uniLoc > -1)
         {
@@ -504,9 +520,9 @@
         }
     }
     
-    if ([_nkShaderDictionary uniformNamed:NKS_LIGHT]) {
+    if ([self uniformNamed:NKS_LIGHT]) {
         
-        [_nkShaderDictionary uniformNamed:NKS_LIGHT].glLocation = glGetUniformLocation(self.glPointer, "u_light.position");
+        [self uniformNamed:NKS_LIGHT].glLocation = glGetUniformLocation(self.glPointer, "u_light.position");
         
         NSArray *members = @[@"isEnabled",@"isLocal",@"isSpot",@"ambient",@"color",@"position",@"halfVector",@"coneDirection",
                              @"spotCosCutoff", @"spotExponent",@"constantAttenuation",@"linearAttenuation",@"quadraticAttenuation"];
@@ -644,16 +660,41 @@
     return _glPointer == ((NKShaderProgram*)object).glPointer;
 }
 
+-(NKShaderVariable*)attributeNamed:(NKS_ENUM)name {
+    for (NKShaderVariable *v in attributes){
+        if (v.name == name) return v;
+    }
+    return nil;
+}
+
+
 -(NKShaderVariable*)uniformNamed:(NKS_ENUM)name {
-    return [_nkShaderDictionary uniformNamed:name];
+    for (NKShaderVariable *v in uniforms){
+        if (v.name == name) return v;
+    }
+    return nil;
 }
 
--(NKShaderVariable*)varyingNamed:(NKS_ENUM)name{
-    return [_nkShaderDictionary varyingNamed:name];
+-(NKShaderVariable*)varyingNamed:(NKS_ENUM)name {
+    for (NKShaderVariable *v in varyings){
+        if (v.name == name) return v;
+    }
+    return nil;
 }
 
--(NKShaderVariable*)fragVarNamed:(NKS_ENUM)name {
-    return [_nkShaderDictionary fragVarNamed:name];
+
+-(NKShaderVariable*)vertexVarNamed:(NKS_ENUM)name {
+    for (NKShaderVariable *v in vertexVars){
+        if (v.name == name) return v;
+    }
+    return nil;
+}
+
+-(NKShaderVariable*)fragmentVarNamed:(NKS_ENUM)name {
+    for (NKShaderVariable *v in fragmentVars){
+        if (v.name == name) return v;
+    }
+    return nil;
 }
 
 - (void)unload
@@ -667,7 +708,6 @@
 }
 
 -(void)dealloc {
-
     [self unload];
 }
 

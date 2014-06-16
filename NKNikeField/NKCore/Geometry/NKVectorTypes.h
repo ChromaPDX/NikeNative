@@ -422,6 +422,14 @@ static inline F1t V3Length(V3t vector)
     return sqrtf(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
 }
 
+static inline F1t V3Largest(V3t vector){
+    return MAX(MAX(vector.x,vector.y),vector.z);
+}
+
+static inline V3t V3UnitRetainAspect(V3t vector){
+    return V3DivideScalar(vector, V3Largest(vector));
+}
+
 static inline V3t V3Normalize(V3t vector)
 {
     F1t scale = 1.0f / V3Length(vector);

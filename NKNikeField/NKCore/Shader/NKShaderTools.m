@@ -95,8 +95,8 @@ NSString* nksString(NKS_ENUM string) {
         
         case NKS_LIGHT:
             return @"light";
-        case NKS_LIGHTS:
-            return @"lights";
+        case NKS_I1_NUM_LIGHTS:
+            return @"numLights";
         case NKS_V3_LIGHT_DIRECTION:
             return @"lightDirection";
         case NKS_V3_LIGHT_HALF_VECTOR:
@@ -111,7 +111,11 @@ NSString* nksString(NKS_ENUM string) {
         case NKS_V3_GL_POSITION:
             return @"gl_position";
         case NKS_V4_GL_FRAG_COLOR:
+#ifdef NK_USE_GL3
+            return @"FragColor";
+#else
             return @"gl_FragColor";
+#endif
             
         case NKS_UINT_GL_INSTANCE_ID:
 #if TARGET_OS_IPHONE
@@ -203,7 +207,11 @@ NSString* operatorString(NSArray* variables, NSString *operator) {
 
 
 NSString *textureFragmentFunction(NSDictionary *shaderDict){
+#ifdef NK_USE_GL3
+        return shaderLineWithArray(@[[shaderDict fragVarNamed:NKS_V4_TEX_COLOR], @" = ", @"texture(",[shaderDict uniformNamed:NKS_S2D_TEXTURE], @",",[shaderDict varyingNamed:NKS_V2_TEXCOORD],@")"]);
+#else
     return shaderLineWithArray(@[[shaderDict fragVarNamed:NKS_V4_TEX_COLOR], @" = ", @"texture2D(",[shaderDict uniformNamed:NKS_S2D_TEXTURE], @",",[shaderDict varyingNamed:NKS_V2_TEXCOORD],@")"]);
+#endif
 }
 
 @implementation NKShaderVariable
@@ -260,36 +268,36 @@ NSString *textureFragmentFunction(NSDictionary *shaderDict){
 }
 
 -(NSString*)declarationStringForSection:(NKS_ENUM)section {
+    
     NSMutableString *dec;
     
+#ifdef NK_USE_GL3
+    
     if (_variable == NKS_VARIABLE_VARYING) {
+        
         switch (section) {
             case NKS_VERTEX_SHADER:
-                dec = [@"in" mutableCopy];
+                dec = [@"out" mutableCopy];
                 break;
                 
             case NKS_FRAGMENT_SHADER:
-                dec = [@"out" mutableCopy];
+                dec = [@"in" mutableCopy];
                 break;
                 
             default:
                 break;
         }
     }
+    else if (_variable == NKS_VARIABLE_ATTRIBUTE) {
+        dec = [[NSString stringWithFormat:@"layout (location = %d) in",_name] mutableCopy];
+    }
     else {
         dec = [nks(_variable) mutableCopy];
     }
-#if NK_USE_GLES
-    [dec appendFormat:@" %@",nks(_precision)];
+    
+#else
+    dec = [nks(_variable) mutableCopy];
 #endif
-    [dec appendFormat:@" %@",nks(_type) ];
-    [dec appendFormat:@" %@",[self nameString]];
-    if (_arraySize) [dec appendFormat:@"[%d]",_arraySize];
-    [dec appendFormat:@";"];
-    return dec;
-}
--(NSString*)declarationString {
-    NSMutableString *dec = [nks(_variable) mutableCopy];
 #if NK_USE_GLES
     [dec appendFormat:@" %@",nks(_precision)];
 #endif
@@ -302,19 +310,23 @@ NSString *textureFragmentFunction(NSDictionary *shaderDict){
 
 #pragma mark - BINDING UNIFORMS
 
+-(void)bindI1:(int)data {
+    glUniform1i(_glLocation, data);
+}
+
 -(void)bindV3:(V3t)data {
-#if NK_USE_GLES
-    glUniform3fv(_glLocation, 1, data.v);
-#else
+#ifdef NK_USE_ARB_EXT
     glUniform3fvARB(_glLocation, 1, data.v);
+#else
+    glUniform3fv(_glLocation, 1, data.v);
 #endif
 }
 
 -(void)bindV4:(V4t)data {
-    #if NK_USE_GLES
-    glUniform4fv(_glLocation, 1, data.v);
-#else
+#ifdef NK_USE_ARB_EXT
     glUniform4fvARB(_glLocation, 1, data.v);
+#else
+    glUniform4fv(_glLocation, 1, data.v);
 #endif
 }
 
@@ -327,10 +339,10 @@ NSString *textureFragmentFunction(NSDictionary *shaderDict){
 }
 
 -(void)bindV4Array:(V4t*)data count:(int)count {
-#if NK_USE_GLES
-    glUniform4fv(_glLocation, count, data->v);
+#ifdef NK_USE_ARB_EXT
+    glUniform4fvARB(_glLocation, count, data->v); glUniform4fv(_glLocation, count, data->v);
 #else
-    glUniform4fvARB(_glLocation, count, data->v);
+    glUniform4fv(_glLocation, count, data->v);
 #endif
 }
 

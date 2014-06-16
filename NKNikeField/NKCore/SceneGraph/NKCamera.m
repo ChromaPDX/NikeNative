@@ -84,16 +84,11 @@
 }
 
 -(void)initGL {
-    
-    glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
-    
+    [self.scene setDepthTest:true];
     glLineWidth(1.0f);
-    
     glGetError(); // Clear error codes
-    
 }
-
 
 -(void)begin {
    // [self.scene pushMultiplyMatrix:self.viewMatrix];

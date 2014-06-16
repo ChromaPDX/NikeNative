@@ -313,6 +313,19 @@
     
 }
 
+-(NSArray*)allChildren {
+    
+    NSMutableArray* allChildren = [[NSMutableArray alloc] init];
+    
+    for (NKNode*child in intChildren) {
+        [allChildren addObject:child];
+        [allChildren addObjectsFromArray:child.children];
+    }
+    
+    return allChildren;
+    
+}
+
 - (void)removeFromParent{
     [_parent removeChildrenInArray:@[self]];
 }
@@ -350,7 +363,7 @@
     // IF OVERRIDE, CALL SUPER
     
     if (_body){
-        [_body getPhysicsMatrix:&localTransformMatrix];
+        [_body getTransform:&localTransformMatrix];
     }
     
     [animationHandler updateWithTimeSinceLast:dt];
@@ -766,6 +779,11 @@
 -(void)setPosition3d:(V3t)position3d {
     position = position3d;
     M16SetV3Translation(&localTransformMatrix, position);
+    if (_body){
+        //[[NKBulletWorld sharedInstance] removeNode:self];
+        [_body setTransform:localTransformMatrix];
+        //[[NKBulletWorld sharedInstance] addNode:self];
+    }
     if (!_dirty) {
         [self setDirty:true];
     }
@@ -829,6 +847,11 @@
 }
 
 #pragma mark - Orientation
+
+-(void)setLocalTransformMatrix:(M16t)_localTransformMatrix {
+    localTransformMatrix = _localTransformMatrix;
+    _size3d = V3GetM16Translation(localTransformMatrix);
+}
 
 -(M16t)localTransformMatrix {
     return localTransformMatrix;
@@ -1008,100 +1031,27 @@
 
 #pragma mark - EVENT HANDLING
 
+-(void)setEventBlock:(EventBlock)eventBlock {
+    _eventBlock = eventBlock;
+}
+
 -(void)handleEventWithType:(NKEventType)event forLocation:(P2t)location {
     if (_eventBlock) {
         _eventBlock(event, location);
     }
 }
 
-#pragma mark - TOUCH
--(NKTouchState)touchDown:(P2t)location id:(int)touchId {
-    // OVERRIDE, CALL SUPER
-    
-    //    NKTouchState hit = NKTouchNone;
-    //
-    //    if (_userInteractionEnabled){
-    //
-    //        if ([self containsPoint:location]) {
-    //            hit = NKTouchIsFirstResponder;
-    //        }
-    //
-    //        for (int i = intChildren.count-1; i >= 0; i--){
-    //            if ([intChildren[i] touchDown:location id:touchId] > 0) {
-    //                return NKTouchContainsFirstResponder;
-    //            }
-    //        }
-    //
-    //        if (hit == NKTouchIsFirstResponder){
-    //               NSLog(@"touch down %@ %f, %f",self.name, location.x, location.y);
-    //        }
-    //    }
-    //
-    //    return hit;
-    return false;
-}
-
--(NKTouchState)touchMoved:(P2t)location id:(int)touchId {
-    // OVERRIDE, CALL SUPER
-    
-    //    NKTouchState hit = NKTouchNone;
-    //
-    //    if (_userInteractionEnabled){
-    //
-    //        if ([self containsPoint:location]) {
-    //            hit = NKTouchIsFirstResponder;
-    //        }
-    //
-    //        for (int i = intChildren.count-1; i >= 0; i--){
-    //            if ([intChildren[i] touchMoved:location id:touchId] > 0) {
-    //                return NKTouchContainsFirstResponder;
-    //            }
-    //        }
-    //
-    //    }
-    //
-    //    return hit;
-    return false;
-}
-
--(NKTouchState)touchUp:(P2t)location id:(int)touchId {
-    // OVERRIDE, CALL SUPER
-    
-    //    NKTouchState hit = NKTouchNone;
-    //
-    //    if (_userInteractionEnabled){
-    //
-    //        if ([self containsPoint:location]) {
-    //            hit = NKTouchIsFirstResponder;
-    //        }
-    //        
-    //        for (int i = intChildren.count-1; i >= 0; i--){
-    //            if ([intChildren[i] touchUp:location id:touchId] > 0) {
-    //                return NKTouchContainsFirstResponder;
-    //            }
-    //        }
-    //        
-    //    }
-    //    
-    //    if (hit >= NKTouchIsFirstResponder){
-    //        V2t p2 = [self inverseProjectedPoint:location];
-    //        NSLog(@"touch up %@ %f, %f", self.name, p2.x, p2.y);
-    //    }
-    //    
-    //    return hit;
-    return false;
-}
-
-
-
 #pragma mark - DEALLOC C++ Objectes
-
--(void)dealloc {
+-(void)unload {
     if (self.uidColor) {
         [[NKShaderManager uidColors] removeObjectForKey:self.uidColor];
     }
     [animationHandler removeAllActions];
     animationHandler = NULL;
+}
+
+-(void)dealloc {
+    [self unload];
 }
 
 @end
