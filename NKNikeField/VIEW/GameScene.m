@@ -1435,6 +1435,14 @@ float PARTICLE_SCALE;
         //        _ballSprite = [[BallSprite alloc]init];
         //        _ballSprite.texture = [NKTexture textureWithImageNamed:@"ball_Texture.png"];
         _ballSprite = [[BallSprite alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:nil size:V3Make(50,50,50)];
+        _ballSprite.body = [[NKBulletBody alloc] initWithType:NKBulletShapeSphere Size:_ballSprite.size3d transform:_ballSprite.localTransformMatrix mass:1.];
+        [_ballSprite.body setCollisionGroup:NKCollisionFilterCharacter];
+        [_ballSprite.body setCollisionMask: NKCollisionFilterStatic | NKCollisionFilterWalls];
+        
+        [[NKBulletWorld sharedInstance] addNode:_ballSprite];
+        
+        _ballSprite.userInteractionEnabled = true;
+
     }
     if (!_ballSprite.parent) {
         [_gameBoardNode insertChild:_ballSprite atIndex:0];
