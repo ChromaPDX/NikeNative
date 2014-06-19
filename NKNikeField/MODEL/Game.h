@@ -93,6 +93,7 @@ typedef enum RTMessageType {
 // END PERSISTENT
 @property (nonatomic, strong) BoardLocation *score;
 @property (nonatomic, strong) Card *ball;
+
 @property (nonatomic, weak)   Manager *scoreBoardManager;
 
 @property (nonatomic, strong) NSMutableArray *turnHeap;

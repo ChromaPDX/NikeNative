@@ -9,6 +9,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CardTypes.h"
+#import "NodeKitten.h"
 
 #pragma mark NSCODER
 
