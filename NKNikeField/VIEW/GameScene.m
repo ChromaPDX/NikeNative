@@ -1428,14 +1428,40 @@ float PARTICLE_SCALE;
     // [_uxWindow removeCard:card];
 }
 
+// @leif : not sure why this isn't working??
+-(void)addBallToNode:(NKNode*)n {
+    NKNode *s = [[NKNode alloc]initWithSize:V3Make(_ballSprite.size.width, _ballSprite.size.height, 0)];
+    [s setPosition3d:_ballSprite.position3d];
+    s.color = NKWHITE;
+    
+    [n addChild:s];
+    
+    s.body = [[NKBulletBody alloc] initWithType:NKBulletShapeSphere Size:s.size3d transform:s.localTransformMatrix mass:.01];
+    
+    [s.body setCollisionGroup:NKCollisionFilterCharacter];
+    [s.body setCollisionMask: NKCollisionFilterStatic | NKCollisionFilterWalls];
+    
+    [[NKBulletWorld sharedInstance] addNode:s];
+    
+    s.userInteractionEnabled = true;
+
+    [s.body forceAwake];
+    //[s.body setLinearVelocity:V3Make(10,10, 0)];
+    
+    [s.body applyCentralImpulse:V3Make(500,500,500)]; // FOR TESTING
+ 
+    
+    //[n removeAllActions];
+}
+
 -(BallSprite*)ballSprite {
     if (!_ballSprite) {
-        //        _ballSprite = [[BallSprite alloc]init];
-        //        _ballSprite.texture = [NKTexture textureWithImageNamed:@"ball_Texture.png"];
+        // _ballSprite = [[BallSprite alloc]init];
+        // _ballSprite.texture = [NKTexture textureWithImageNamed:@"ball_Texture.png"];
         _ballSprite = [[BallSprite alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:nil size:V3Make(50,50,50)];
     }
     if (!_ballSprite.parent) {
-        [_gameBoardNode insertChild:_ballSprite atIndex:0];
+        [_gameBoardNode addChild:_ballSprite];
     }
     return _ballSprite;
 }

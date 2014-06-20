@@ -1008,6 +1008,7 @@
     
     else if (event.type == kEventKick){
         [_ball setLocation:event.location];
+        NSLog(@"ball location = %f,%f", event.location.x, event.location.y);
     }
     else if (event.type == kEventStartTurn){
         _ball.enchantee = _players[2]; // @EK DEBUG
