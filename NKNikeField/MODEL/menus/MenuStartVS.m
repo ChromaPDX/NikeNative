@@ -19,11 +19,11 @@
     self = [super initWithSize:size];
     
     if (self) {
-        NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size];
+        NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size2d];
         [self addChild:table];
         [table setPadding:P2Make(0,0)];
         // table.scrollingEnabled = true;
-        table.scale = 1.02;  // to correct for image...this needs to be fixed
+        table.scaleF = 1.02;  // to correct for image...this needs to be fixed
         table.name = @"table";
         table.delegate = self;
         //V3t rot =
@@ -54,7 +54,7 @@
         R4t buttonRect = R4Make(95, 80, 130, 55);
         if(R4ContainsPoint(buttonRect, event.screenLocation)){
             NSLog(@"start button pressed, starting game...");
-            NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
+            NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size2d];
             [[(GameScene*)newScene game] startAIGame];
             self.nkView.scene = newScene;
         }

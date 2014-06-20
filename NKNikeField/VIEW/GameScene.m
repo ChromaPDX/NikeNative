@@ -34,9 +34,6 @@ float PARTICLE_SCALE;
 
 @implementation GameScene
 
--(void)setOrientation:(Q4t)orientation {
-    [_pivot setOrientation:orientation];
-}
 
 -(instancetype)initWithSize:(S2t)size {
     self = [super initWithSize:size];
@@ -159,11 +156,7 @@ float PARTICLE_SCALE;
 -(void)setupGameBoard {
     
    // NKSpriteNode* bg = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"Background_Field"] size:S2Make(w*2, h*2)];
-    NKSpriteNode* bg = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"Background_InGame"] size:S2Make(w*2, h*2)];
-    [self addChild:bg];
-    [bg setZPosition:-1000];
-    
-    
+
     NSLog(@"setup gameBoard %f :%f",w,h);
     
     playerSprites = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
@@ -171,23 +164,26 @@ float PARTICLE_SCALE;
     
     _pivot = [[NKNode alloc]init];
     
-    
     _pivot.name = @"PIVOT";
+   
+    NKSpriteNode* bg = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"Background_InGame"] size:S2Make(w*25, h*3)];
+    [self addChild:bg];
     
     [self addChild:_pivot];
-    [_pivot setPosition3d:(V3Make(0,-h*.5,0))];
+    [_pivot setOrientationEuler:V3Make(-89, 0, 0)];
     
+    //[bg setTransparency:.5];
     
-    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:nil size:S2Make(w, h*.15)];
-    [_uxWindow setPosition3d:V3Make(0,-h*.42,30)];
-    _uxWindow.delegate = self;
-    [self addChild:_uxWindow];
-    [_uxWindow setAlpha:0];
+    [bg setOrientationEuler:V3Make(-45, 0, 0)];
+    [bg setPosition:V3Make(0, -700, -700)];
+    
+    [self.camera setPosition:V3Make(0, self.scene.size.height * .75, self.scene.size.height * .75)];
+    [self.camera setTarget:_pivot];
     
     _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:nil size:S2Make(w, h*.08)];
-    [_uxTopBar setPosition3d:V3Make(0,h*.45,30)];
     _uxTopBar.delegate = self;
-    [self addChild:_uxTopBar];
+    [self.camera addChild:_uxTopBar];
+     [_uxTopBar setPosition:V3Make(0,self.scene.size.height*.43,-self.scene.size.height * .95)];
     [_uxTopBar setAlpha:0];
      
     //    NKSpriteNode *logo = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"GAMELOGO.png"] color:nil size:S2Make(TILE_WIDTH*4, TILE_WIDTH*5.2)];
@@ -204,18 +200,18 @@ float PARTICLE_SCALE;
     _gameBoardNode = [[GameBoardNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer01"] color:NKWHITE size:S2Make(BOARD_WIDTH*TILE_WIDTH + (TILE_WIDTH*.7), BOARD_LENGTH*TILE_HEIGHT + (TILE_HEIGHT*.5))];
     
     [_pivot addChild:_gameBoardNode];
-    [_gameBoardNode setPosition3d:V3Make(0,h*.5,0)];
+
     _gameBoardNode.userInteractionEnabled = true;
     _gameBoardNode.name = @"Game Board";
     [_gameBoardNode setTransparency:.3];
     
-    NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer02"] color:NKWHITE size:_gameBoardNode.size];
+    NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer02"] color:NKWHITE size:_gameBoardNode.size.point];
     
     //[lines setBlendMode:NKBlendModeAdd];
     
     [_gameBoardNode addChild:lines];
     
-    [lines setPosition3d:V3Make(0,0,2)];
+    [lines setPosition:V3Make(0,0,4)];
     
     [lines setTransparency:.3];
     
@@ -235,7 +231,7 @@ float PARTICLE_SCALE;
             
             [_gameTiles setObject:square forKey:square.location];
             
-            [square setPosition3d:V3Make((i+.5)*TILE_WIDTH - (TILE_WIDTH*BOARD_WIDTH*.5), ((j+.5)*TILE_HEIGHT) - (TILE_HEIGHT*BOARD_LENGTH*.5),0) ];
+            [square setPosition:V3Make((i+.5)*TILE_WIDTH - (TILE_WIDTH*BOARD_WIDTH*.5), ((j+.5)*TILE_HEIGHT) - (TILE_HEIGHT*BOARD_LENGTH*.5),0) ];
         }
     }
     
@@ -243,15 +239,18 @@ float PARTICLE_SCALE;
     playerLayer.name = @"playerLayer";
     [_gameBoardNode addChild:playerLayer];
     
-    NKSpriteNode *glow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer03"] color:NKWHITE size:_gameBoardNode.size];
+    NKSpriteNode *glow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer03"] color:NKWHITE size:_gameBoardNode.size.point];
     [glow setBlendMode:NKBlendModeAdd];
     [_gameBoardNode addChild:glow];
-    [glow setPosition3d:V3Make(0,0,4)];
-    
-    [_pivot runAction:[NKAction rotate3dToAngle:V3Make(-26, 0,0) duration:1.0]];
-    [_pivot runAction:[NKAction move3dTo:V3Make(0,-h*.25,0) duration:1.0]];
+    [glow setPosition:V3Make(0,0,6)];
     
     [self playMusicWithKey:@"fieldSong"];
+    
+    _uxWindow = [[UXWindow alloc] initWithTexture:nil color:nil size:S2Make(w, h*.15)];
+    [_uxWindow setPosition:V3Make(0,-self.scene.size.height*.4,-self.scene.size.height * .95)];
+    _uxWindow.delegate = self;
+    [self.camera addChild:_uxWindow];
+    [_uxWindow setAlpha:0];
 }
 
 //-(void)startMiniGame {
@@ -338,7 +337,7 @@ float PARTICLE_SCALE;
                 [block setAlpha:0.];
               
                 [block repeatAction:[NKAction group: @[
-                                                            [NKAction rotate3dByAngle:V3Make(random()%120,random()%120,random()%120) duration:4.],
+                                                            [NKAction rotateByAngles:V3Make(random()%120,random()%120,random()%120) duration:4.],
                                                                [NKAction sequence:@[[NKAction fadeAlphaTo:0.7 duration:2.],
                                                                                     [NKAction fadeAlphaTo:0.2 duration:2.]]]]]];
             }
@@ -434,7 +433,7 @@ float PARTICLE_SCALE;
         
     [_gameBoardNode removeAllActions];
 
-    [_gameBoardNode runAction:[NKAction moveTo:[self boardScrollPointForPoint:p] duration:.5]];
+    [_gameBoardNode runAction:[NKAction move2dTo:[self boardScrollPointForPoint:p] duration:.5]];
 
     }
    
@@ -639,12 +638,12 @@ float PARTICLE_SCALE;
         if (_selectedPlayer) {
             [_gameBoardNode removeAllActions];
             PlayerSprite* p2 = [playerSprites objectForKey:_selectedPlayer];
-            [_gameBoardNode runAction:[NKAction moveTo:P2Make(0, -p2.position.y + h/3.) duration:1.]];
+            [_gameBoardNode runAction:[NKAction move2dTo:P2Make(0, -p2.position.y + h/3.) duration:1.]];
         }
         P2t p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:[_game allPlayerLocations]]];
         if ((-p.y + h/4.) > _gameBoardNode.position.y+100 || (-p.y + h/4.) < _gameBoardNode.position.y-100) { // filter out subtle moves
             [_gameBoardNode removeAllActions];
-            [_gameBoardNode runAction:[NKAction moveTo:P2Make(0, -p.y + h/4.) duration:1.]];
+            [_gameBoardNode runAction:[NKAction move2dTo:P2Make(0, -p.y + h/4.) duration:1.]];
         }
         
         block();
@@ -680,13 +679,13 @@ float PARTICLE_SCALE;
        NSLog(@"kEventMove starting in GameScene...");
         
         //[player runAction:[NKAction moveTo:P2Make(event.location.x-TILE_WIDTH/2, event.location.y-TILE_HEIGHT/2) duration:MOVE_SPEED] completion:^(){
-        [player runAction:[NKAction moveTo:P2Make(event.location.x, event.location.y) duration:MOVE_SPEED] completion:^(){
+        [player runAction:[NKAction move2dTo:P2Make(event.location.x, event.location.y) duration:MOVE_SPEED] completion:^(){
             NSLog(@"moving player to %f,%f", player.position.x, player.position.y);
             V3t ballPos = [player.ballTarget positionInNode3d:self.gameBoardNode];
             NSLog(@"player.ballTarget = %f,%f", ballPos.x, ballPos.y);
             if (event.playerPerforming.ball) {
                 [player getReadyForPosession:^{
-                    [self.ballSprite runAction:[NKAction move3dTo:player.ballTarget.position3d duration:BALL_SPEED] completion:^{
+                    [self.ballSprite runAction:[NKAction moveTo:player.ballTarget.position duration:BALL_SPEED] completion:^{
                         [player startPossession];
                         block();
                     }];
@@ -749,7 +748,7 @@ float PARTICLE_SCALE;
         NKEmitterNode *enchant = [[NKEmitterNode alloc] init];
         
         [self.ballSprite addChild:enchant];
-        [enchant setScale:.01];
+        [enchant setScaleF:.01];
         
         PlayerSprite* receiver = [playerSprites objectForKey:event.playerReceiving];
         
@@ -773,7 +772,7 @@ float PARTICLE_SCALE;
                         [self.uxTopBar setPlayer:NULL WithCompletionBlock:^{}];
                         [self.uxTopBar setPlayer:event.playerReceiving WithCompletionBlock:^{}];
                         [receiver getReadyForPosession:^{
-                            NKAction *move = [NKAction move3dTo:[receiver.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED];
+                            NKAction *move = [NKAction moveTo:[receiver.ballTarget positionInNode3d:_gameBoardNode] duration:BALL_SPEED];
                             [move setTimingMode:NKActionTimingEaseOut];
                             
                             [self.ballSprite runAction:move completion:^(){
@@ -791,7 +790,7 @@ float PARTICLE_SCALE;
                        // P2t dest = [(NKNode*)[_gameTiles objectForKey:_game.ball.location] position];
                         P2t dest = P2Make(_game.ball.location.x, _game.ball.location.y);
                         
-                        NKAction *move = [NKAction moveTo:dest duration:BALL_SPEED];
+                        NKAction *move = [NKAction move2dTo:dest duration:BALL_SPEED];
                         
                         [move setTimingMode:NKActionTimingEaseOut];
                         
@@ -810,7 +809,7 @@ float PARTICLE_SCALE;
                     
                     [self playSoundWithKey:@"playerShoot"];
                     
-                    P2t dest = [(NKNode*)[_gameTiles objectForKey:event.location] position];
+                    V3t dest = [(NKNode*)[_gameTiles objectForKey:event.location] position];
                     NKAction *move = [NKAction moveTo:dest duration:.3];
                     [move setTimingMode:NKActionTimingEaseOut];
                     
@@ -840,7 +839,7 @@ float PARTICLE_SCALE;
                             [self runAction:[NKAction fadeAlphaTo:0 duration:2.5] completion:^{
                                 [_game endGame];
                                 RecapMenuWin *recapMenu = [[RecapMenuWin alloc] init];
-                                [self.nkView setScene:[recapMenu initWithSize:self.size]];
+                                [self.nkView setScene:[recapMenu initWithSize:self.size.point]];
                             }];
                         }];
                     }
@@ -857,15 +856,14 @@ float PARTICLE_SCALE;
                             [self runAction:[NKAction fadeAlphaTo:0 duration:2.5] completion:^{
                                 [_game endGame];
                                 RecapMenuLoss *recapMenu = [[RecapMenuLoss alloc] init];
-                                [self.nkView setScene:[recapMenu initWithSize:self.size]];
+                                [self.nkView setScene:[recapMenu initWithSize:self.size.point]];
                             }];
                         }];
                     }
                 }
                 
                 else { // FAILED PASS OR FAILED GOAL
-                    //P2t dest = [(NKNode*)[_gameTiles objectForKey:_game.ball.location] position];
-                    P2t dest = P2Make(_game.ball.location.x, _game.ball.location.y);
+                    V3t dest = [(NKNode*)[_gameTiles objectForKey:_game.ball.location] position];
 
                     NKAction *move = [NKAction moveTo:dest duration:BALL_SPEED];
                     
@@ -907,10 +905,10 @@ float PARTICLE_SCALE;
                 
                 [_uxWindow playCard:event.card];
                 
-                V3t dest = [[_gameTiles objectForKey:event.location] getGlobalPosition];
+                V3t dest = [[_gameTiles objectForKey:event.location] globalPosition];
                 
                 NKAction *grow = [NKAction group:@[
-                                                   [NKAction move3dTo:V3Make(dest.x, dest.y - _uxWindow.position.y, 0) duration:FAST_ANIM_DUR],
+                                                   [NKAction moveTo:V3Make(dest.x, dest.y - _uxWindow.position.y, 0) duration:FAST_ANIM_DUR],
                                                    [NKAction scaleTo:1.5 duration:FAST_ANIM_DUR]]];
                 
                 [card runAction:grow completion:^{
@@ -920,8 +918,8 @@ float PARTICLE_SCALE;
                     [card runAction:[NKAction delayFor:FAST_ANIM_DUR] completion:^{
                         
                         NKAction *fall = [NKAction group:@[
-                                                           [NKAction move3dTo:V3Make(dest.x, dest.y - _uxWindow.position.y, dest.z) duration:FAST_ANIM_DUR],
-                                                           [NKAction rotate3dByAngle:V3Make(-26, 0, 0) duration:FAST_ANIM_DUR],
+                                                           [NKAction moveTo:V3Make(dest.x, dest.y - _uxWindow.position.y, dest.z) duration:FAST_ANIM_DUR],
+                                                           [NKAction rotateByAngles:V3Make(-26, 0, 0) duration:FAST_ANIM_DUR],
                                                            [NKAction scaleTo:1. duration:FAST_ANIM_DUR],
                                                            ]];
 
@@ -1028,7 +1026,7 @@ float PARTICLE_SCALE;
         //        NKKeyframeSequence *seq = [[NKKeyframeSequence alloc] initWithKeyframeValues:@[[NKColor blackColor], event.manager.color] times:@[@0,@.2]];
         //        enchant.particleColorSequence = seq;
         
-        [enchant setScale:2];
+        [enchant setScaleF:2];
         [_gameBoardNode addChild:enchant];
         [enchant setPosition:[(NKNode*)[_gameTiles objectForKey:event.location] position]];
         [enchant runAction:[NKAction fadeAlphaTo:.9 duration:CARD_ANIM_DUR] completion:^{
@@ -1177,7 +1175,7 @@ float PARTICLE_SCALE;
          
         float animateDuration = 1.1;
         [self fadeInChild:bigText duration:.1 withCompletion:^{
-            [bigText runAction:[NKAction group: @[[NKAction rotateByAngle:-90 duration:animateDuration],[NKAction scaleBy:10 duration:animateDuration],[NKAction fadeAlphaTo:0. duration:animateDuration]]] completion:^{
+            [bigText runAction:[NKAction group: @[[NKAction rotateByAngles:-90 duration:animateDuration],[NKAction scaleBy:10 duration:animateDuration],[NKAction fadeAlphaTo:0. duration:animateDuration]]] completion:^{
                 [self fadeOutChild:bigText duration:.05 withCompletion:^{
                     block();
                 }];
@@ -1296,9 +1294,9 @@ float PARTICLE_SCALE;
 //}
 -(void)animateMoveBallToPlayer:(Player *)player withCompletionBlock:(void (^)())block{
     PlayerSprite* ps = [playerSprites objectForKey:player];
-    NSLog(@"moving ball to %d,%d", ps.ballTarget.position3d.x, ps.ballTarget.position3d.y);
+    NSLog(@"moving ball to %d,%d", ps.ballTarget.position.x, ps.ballTarget.position.y);
     [ps getReadyForPosession:^{
-        [self.ballSprite runAction:[NKAction move3dTo:ps.ballTarget.position3d duration:BALL_SPEED]  completion:^{
+        [self.ballSprite runAction:[NKAction moveTo:ps.ballTarget.position duration:BALL_SPEED]  completion:^{
             //[_ballSprite removeAllActions];
             block();
             [ps startPossession];
@@ -1327,7 +1325,7 @@ float PARTICLE_SCALE;
     
     if (!animated){
         
-        [person setPosition:P2Make(player.location.x, player.location.y)];
+        [person setPosition2d:P2Make(player.location.x, player.location.y)];
         
         block();
     }
@@ -1341,14 +1339,14 @@ float PARTICLE_SCALE;
             newY = player.location.y - OLD_TILE_HEIGHT*10;
         }
         
-        [person setPosition3d:V3Make(player.location.x, player.location.y, 200)];
+        [person setPosition:V3Make(player.location.x, player.location.y, 200)];
         [person setXScale:.33];
         
         
         V3t target = V3Make(player.location.x, player.location.y, 0);
         target.z += 2;
         
-        [person runAction:[NKAction move3dTo:target duration:.2] completion:^{
+        [person runAction:[NKAction moveTo:target duration:.2] completion:^{
             
             NKEmitterNode *enchant = [[NKEmitterNode alloc]init];
             //            NKEmitterNode *enchant = [NNKeyedUnarchiver unarchiveObjectWithFile:[[NSBundle mainBundle] pathForResource:@"Enchant" ofType:@"sks"]];
@@ -1357,7 +1355,7 @@ float PARTICLE_SCALE;
             
             [person addChild:enchant];
             
-            [enchant setScale:PARTICLE_SCALE];
+            [enchant setScaleF:PARTICLE_SCALE];
             
             [enchant runAction:[NKAction fadeAlphaTo:0.01 duration:CARD_ANIM_DUR*2] completion:^{
                 [enchant removeFromParent];
@@ -1396,7 +1394,7 @@ float PARTICLE_SCALE;
                     newX = person.position.x + TILE_WIDTH*5;
                 }
                 
-                [person runAction:[NKAction moveTo:P2Make(newX, person.position.y) duration:.4] completion:^{
+                [person runAction:[NKAction move2dTo:P2Make(newX, person.position.y) duration:.4] completion:^{
                     
                     [person removeFromParent];
                     
@@ -1444,11 +1442,11 @@ float PARTICLE_SCALE;
 
 -(void)moveBallToLocation:(BoardLocation *)location {
     
-    [_ballSprite setScale:BALL_SCALE_BIG];
-    [_ballSprite setPosition:P2Make(location.x, location.y)];
+    [_ballSprite setScaleF:BALL_SCALE_BIG];
+    [_ballSprite setPosition2d:P2Make(location.x, location.y)];
     _game.ball.location = location;
     
-    NSLog(@"GameScene.m :: moving ball to: %d %d", location.x, location.y);
+    NSLog(@"GameScene.m :: moving ball to: %f %f", location.x, location.y);
 }
 
 -(void)fadeOutHUD {
@@ -1478,8 +1476,8 @@ float PARTICLE_SCALE;
     BoardTile *ll = [_gameTiles objectForKey:boundingBoxLocations[0]];
     BoardTile *ur = [_gameTiles objectForKey:boundingBoxLocations[1]];
     
-    P2t llpos = [ll position];
-    P2t urpos = [ur position];
+    V3t llpos = [ll position];
+    V3t urpos = [ur position];
     
     return P2Make((llpos.x + urpos.x) / 2., (llpos.y + urpos.y)/2.);
     
@@ -1660,8 +1658,6 @@ float PARTICLE_SCALE;
     for (NKSpriteNode *s in playerSprites.allValues)
         [s removeFromParent];
     playerSprites = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
-    
-    //[_uxWindow cleanup];
 }
 
 -(void)refreshScoreBoard {

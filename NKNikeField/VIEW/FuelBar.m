@@ -22,14 +22,14 @@
     fuelContainer = [[NKSpriteNode alloc] initWithTexture:imageContainer];
     [fuelContainer setYScale:1.15];
     [fuelContainer setXScale:1];
-    [fuelContainer setPosition:P2Make(0, .5)];
+    [fuelContainer setPosition2d:P2Make(0, .5)];
     [fuelContainer setZPosition:2];
     
     
     S2t imageSize = [imageContainer size];
     
     self = [super initWithTexture:nil color:nil size:imageSize];
-    [self setScale3d:V3Make(.98, 1, 1)];
+    [self setScale:V3Make(.98, 1, 1)];
 
    // [self addChild:fuelContainer];
     [self addChild:fuel];
@@ -42,7 +42,7 @@
     
     if(fill > 1.0)fill = 1.0;
     
-    S2t size = fuelContainer.size;
+    S2t size = fuelContainer.size.point;
     
     size.width = fuelContainer.size.width * fill;
     P2t point = P2Make((-fuelContainer.size.width/2) + (size.width/2), 0);
@@ -51,12 +51,12 @@
 
     [fuel removeAllActions];
     [fuel runAction:[NKAction group:@[[NKAction resizeToWidth:size.width height:size.height duration:1.],
-                                      [NKAction moveTo:point duration:1.]]]];
+                                      [NKAction move2dTo:point duration:1.]]]];
     }
     
     else {
-        fuel.size = size;
-        fuel.position = point;
+        fuel.size2d = size;
+        fuel.position2d = point;
     }
     
 }

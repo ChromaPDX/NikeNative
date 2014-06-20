@@ -117,7 +117,7 @@
 -(void)showOverlay{
     NKTexture *texture = [NKTexture textureWithImageNamed:[self stringForOverlayTex:self.location.borderShape]];
     
-    _overlay = [[NKSpriteNode alloc] initWithTexture:texture color:NKWHITE size:self.size];
+    _overlay = [[NKSpriteNode alloc] initWithTexture:texture color:NKWHITE size:self.size.point];
     [self addChild:_overlay];
     [_overlay setZPosition:2];
     _overlay.alpha = .8;

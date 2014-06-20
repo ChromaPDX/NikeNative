@@ -35,7 +35,7 @@
         cardSize.height = 55; //(cardSize.width * (67. / 65.));
         
         _fuelBar = [[FuelBar alloc] init];
-        [_fuelBar setPosition:P2Make(-82, -13.5)];
+        [_fuelBar setPosition2d:P2Make(-82, -13.5)];
         [_fuelBar setFill:0 animated:false];
        
         //fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
@@ -43,7 +43,7 @@
         ///@Leif : this font doesn't load corecctly on first display, but updates correclty after first special card played, can't figure out why...
         fuelLabel = [NKLabelNode labelNodeWithFontNamed:@"MYRIADPRO-REGULAR.OTF"];
         //fuelLabel = [NKLabelNode labelNodeWithFontNamed:NULL];
-        [fuelLabel setPosition:P2Make(-60+fuelLabel.size.width/2, -61)];
+        [fuelLabel setPosition2d:P2Make(-60+fuelLabel.size.width/2, -61)];
         //[fuelLabel setFontSize:12.0];
 
         [self setEnergyLabelForManager:self.manager.game.me];
@@ -51,7 +51,7 @@
 
         NKTexture *logoImage = [NKTexture textureWithImageNamed:[NSString stringWithFormat:@"TopCornerLockupEnergy"]];
         logo = [[NKSpriteNode alloc] initWithTexture:logoImage];
-        [logo setPosition:P2Make(-118, 0)];
+        [logo setPosition2d:P2Make(-118, 0)];
 
         [self addChild: logo];
         [self addChild:_fuelBar];
@@ -81,7 +81,7 @@
     [self fadeInChild:fuelPoints duration:1.];
     
     [fuelPoints setText:[NSString stringWithFormat:@"%d", fuel]];
-    [fuelPoints setPosition3d:V3Make(-w*.25, h*-.3, 2)];
+    [fuelPoints setPosition:V3Make(-w*.25, h*-.3, 2)];
 
     }
     
@@ -150,7 +150,7 @@
     [_playerSprites addObject:ps];
     
     [self addChild:ps];
-    [ps setPosition3d:V3Make(0,0,1)];
+    [ps setPosition:V3Make(0,0,1)];
     
     if (block) {
         block();
@@ -160,7 +160,7 @@
 -(void)sortPlayers {
     Player* p;
     for (int i = 0; i < _playerSprites.count; i++){
-        [(PlayerSprite*)_playerSprites[i] setPosition:P2Make(110 + i*(cardSize.width+25), 0)];
+        [(PlayerSprite*)_playerSprites[i] setPosition2d:P2Make(110 + i*(cardSize.width+25), 0)];
         p = ((PlayerSprite*)_playerSprites[i]).model;
     }
     [self setEnergyLabelForManager:p.manager];

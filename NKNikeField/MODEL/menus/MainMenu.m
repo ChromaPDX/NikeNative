@@ -21,13 +21,12 @@
     self = [super initWithSize:size];
     
     if (self) {
-
         
-        NKSpriteNode *bg = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Screen_Menu.png"] color:NKWHITE size:self.size];
+        NKSpriteNode *bg = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"Screen_Menu.png"] color:NKWHITE size:self.size2d];
         [self addChild:bg];
         
        // [bg repeatAction:[NKAction sequence:@[[NKAction fadeAlphaTo:0 duration:1.],[NKAction fadeAlphaTo:1. duration:1.]]]];
-        //[bg repeatAction:[NKAction rotateByAngle:90 duration:1]];
+        //[bg repeatAction:[NKAction rotateByAngles:90 duration:1]];
 //        fuelBar = [[FuelBar alloc] init];
 //        [fuelBar setPosition:P2Make(-72*w/640, 500*h/1136)];
 //        // @LEIF - not sure why the animation isn't working here?
@@ -82,7 +81,7 @@
     }
     else if(R4ContainsPoint(startButtonRect, event.screenLocation)){
         NSLog(@"start button pressed, starting game...");
-        Pregame* newScene = [[Pregame alloc] initWithSize:self.size];
+        Pregame* newScene = [[Pregame alloc] initWithSize:self.size2d];
         [self.nkView setScene:newScene];
         
    //     RecapMenuWin *recapMenuWin = [[RecapMenuWin alloc] initWithSize:self.size];
@@ -94,7 +93,7 @@
     }
     else if(R4ContainsPoint(HiddenAIButtonRect,event.screenLocation)){
         NSLog(@"AI button pressed, starting game...");
-        NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size];
+        NKSceneNode* newScene = [[GameScene alloc]initWithSize:self.size2d];
         [[(GameScene*)newScene game] startAIGame];
         self.nkView.scene = newScene;
     }

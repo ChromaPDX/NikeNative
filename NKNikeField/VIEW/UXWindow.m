@@ -162,15 +162,13 @@
 }
 
 
--(void)begin {
-    [super begin];
+-(void)draw {
     glDisable(GL_DEPTH_TEST);
+    //NKLogV3(@"window pos:", self.globalPosition);
+    [super draw];
+    glEnable(GL_DEPTH_TEST);
 }
 
--(void)end {
-    glEnable(GL_DEPTH_TEST);
-    [super end];
-}
 
 -(void)drawWithHitShader {
     glDisable(GL_DEPTH_TEST);
@@ -212,9 +210,9 @@
         
         [self runAction:[NKAction resizeToWidth:w height:h*7.5 duration:dur]];
         
-        [big setPosition3d:V3Make(0, -h*2.5, 0)];
+        [big setPosition:V3Make(0, -h*2.5, 0)];
         [_managerHand addChild:big];
-        [big runAction:[NKAction move3dTo:V3Make(0, h*2.15, 0) duration:dur]];
+        [big runAction:[NKAction moveTo:V3Make(0, h*2.15, 0) duration:dur]];
         
         int cardNum = [_managerHand.myCards indexOfObject:[self spriteForCard:card.model]];
         [big scrollToChild:cardNum  duration:FAST_ANIM_DUR];
@@ -236,7 +234,7 @@
     //PlayerHand* ph =   [_managerHands objectForKey:_selectedCard.deck.player];
     
     NKAction *fadeLower = [NKAction group:@[[NKAction fadeAlphaTo:0. duration:dur],
-                                            [NKAction move3dBy:V3Make(0, -h*.5, 0) duration:dur]]];
+                                            [NKAction moveBy:V3Make(0, -h*.5, 0) duration:dur]]];
     
     [_managerHand.bigCards runAction:fadeLower completion:^{
          [_managerHand.bigCards removeFromParent];
@@ -275,7 +273,7 @@
     ManagerHand *hand = _managerHand;//[_managerHands objectForKey:p];
         
     if (hand.bigCards) {
-        [hand.bigCards runAction:[NKAction move3dTo:V3Make(0, -h*2., 0) duration:FAST_ANIM_DUR] completion:^{
+        [hand.bigCards runAction:[NKAction moveTo:V3Make(0, -h*2., 0) duration:FAST_ANIM_DUR] completion:^{
             hand.bigCards = nil;
             [hand.bigCards removeFromParent];
         }];
@@ -362,7 +360,7 @@
         
        // [self addChild:_playerName];
         
-        //[_playerName setPosition3d:V3Make(w,0,2)];
+        //[_playerName setPosition:V3Make(w,0,2)];
         
         for (Card*c in m.allCardsInHand){
             [self addCard:c];
@@ -394,7 +392,7 @@
     [_myCards addObject:endTurnButton];
     [self addChild:endTurnButton];
     
-    [endTurnButton setPosition3d:V3Make(w,0,0)];
+    [endTurnButton setPosition:V3Make(w,0,0)];
     
     
 }
@@ -418,7 +416,7 @@
     [_cardSprites setObject:newCard forKey:card];
     
     [self addChild:newCard];
-    [newCard setPosition3d:V3Make(w,0,0)];
+    [newCard setPosition:V3Make(w,0,0)];
     
     [_myCards addObject:newCard];
     
@@ -493,7 +491,7 @@
         }
         
         [cs runAction:[NKAction group:@[[NKAction scaleTo:nscale duration:FAST_ANIM_DUR],
-                                        [NKAction moveTo:cs.origin duration:FAST_ANIM_DUR]]]];
+                                        [NKAction move2dTo:cs.origin duration:FAST_ANIM_DUR]]]];
         
     }
     
@@ -540,16 +538,16 @@
             }
             
             [cs runAction:[NKAction scaleTo:1. duration:CARD_ANIM_DUR]];
-            NKAction *move = [NKAction move3dTo:V3Make(cs.origin.x, cs.origin.y,2) duration:CARD_ANIM_DUR];
+            NKAction *move = [NKAction moveTo:V3Make(cs.origin.x, cs.origin.y,2) duration:CARD_ANIM_DUR];
             [move setTimingMode:NKActionTimingEaseIn];
             [cs runAction:move];
-            //           [cs setPosition3d:V3Make(cs.origin.x, cs.origin.y,2)];
+            //           [cs setPosition:V3Make(cs.origin.x, cs.origin.y,2)];
             
         }
         
         else {
-            [cs setScale:1.];
-            [cs setPosition3d:V3Make(cs.origin.x, cs.origin.y,2)];
+            [cs setScaleF:1.];
+            [cs setPosition:V3Make(cs.origin.x, cs.origin.y,2)];
         }
         
     }

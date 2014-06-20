@@ -20,11 +20,11 @@
     self = [super initWithSize:size];
     
     if (self) {
-        NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size];
+        NKScrollNode* table = [[NKScrollNode alloc] initWithColor:nil size:self.size.point];
         [self addChild:table];
         [table setPadding:P2Make(0,0)];
         // table.scrollingEnabled = true;
-        table.scale = 1.02;  // to correct for image...this needs to be fixed
+        table.scaleF = 1.02;  // to correct for image...this needs to be fixed
         table.name = @"table";
         table.delegate = self;
         NKTexture *image;
@@ -49,7 +49,7 @@
         CGRect startButtonRect = CGRectMake(201, 150, 220, 100);
         
         if(CGRectContainsPoint(startButtonRect, CGPointMake(event.screenLocation.x, event.screenLocation.y))){
-            NKSceneNode* newScene = [[MainMenu alloc]initWithSize:self.size];
+            NKSceneNode* newScene = [[MainMenu alloc]initWithSize:self.size.point];
             self.nkView.scene = newScene;
         }
     }

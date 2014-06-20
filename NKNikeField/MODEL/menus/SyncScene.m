@@ -21,13 +21,13 @@
         
         [self addChild:ballSprite];
         
-        [ballSprite setPosition:P2Make(0, 400)];
+        [ballSprite setPosition2d:P2Make(0, 400)];
         
         [ballSprite repeatAction:[NKAction rotateYByAngle:180 duration:10.]];
         
         NKMeshNode *cubeSprite = [[NKMeshNode alloc]initWithPrimitive:NKPrimitiveCube texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:NKWHITE size:V3Make(250,250,250)];
         
-        [cubeSprite setPosition:P2Make(0, 0)];
+        [cubeSprite setPosition2d:P2Make(0, 0)];
         
         [self addChild:cubeSprite];
         
@@ -35,11 +35,11 @@
         
         NKSpriteNode *testSprite = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:NKWHITE size:P2Make(250,250)];
         
-        [testSprite setPosition:P2Make(0, -400)];
+        [testSprite setPosition2d:P2Make(0, -400)];
         
         [self addChild:testSprite];
         
-        [testSprite repeatAction:[NKAction rotateByAngle:180 duration:10.]];
+        [testSprite repeatAction:[NKAction rotateZByAngle:180 duration:10.]];
         
     }
     

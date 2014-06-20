@@ -106,7 +106,7 @@
         shadow.name = @"shadow";
         
         [self addChild:shadow];
-        [shadow setPosition3d:V3Make(-self.size.width * .03, self.size.width*.03, -1)];
+        [shadow setPosition:V3Make(-self.size.width * .03, self.size.width*.03, -1)];
         */
         
         cardImg = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:[self imageString]] color:_model.manager.color size:S2Make(w, h)];
@@ -116,10 +116,10 @@
         [cardImg setOrientationEuler:V3Make(45,0,0)];
         float cardOffset = -20;
         float cardScale = .8;
-        //[shadow setPosition3d:V3Make(0,cardOffset, 0)];
-        [cardImg setPosition3d:V3Make(0,cardOffset, 0)];
-        //[shadow setScale3d:V3Make(cardScale, cardScale, 1)];
-        [cardImg setScale3d:V3Make(cardScale, cardScale, 1)];
+        //[shadow setPosition:V3Make(0,cardOffset, 0)];
+        [cardImg setPosition:V3Make(0,cardOffset, 0)];
+        //[shadow setScale:V3Make(cardScale, cardScale, 1)];
+        [cardImg setScale:V3Make(cardScale, cardScale, 1)];
         [self addChild:cardImg];
         
         [cardImg setZPosition:h*.34];
@@ -145,7 +145,7 @@
             _ball = [[BallSprite alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:nil size:V3Make(w*.25,w*.25,w*.25)];
             _ball.name = @"ball";
             [self addChild:_ball];
-            [_ball setPosition:P2Make(w*.25, h*-.25)];
+            [_ball setPosition2d:P2Make(w*.25, h*-.25)];
             [_ball repeatAction:[NKAction rotateYByAngle:120 duration:1.]];
     }
     else {
@@ -199,7 +199,7 @@
     moveRadiusSprite.name = @"moveRadius";
     [self addChild:moveRadiusSprite];
     [moveRadiusSprite setZPosition: 4];
-   // [radiusRotate runAction:[NKAction rotate3dByAngle:V3Make(90, 0, 0) duration:3]];
+   // [radiusRotate runAction:[NKAction rotateByAngles:V3Make(90, 0, 0) duration:3]];
 }
 
 -(void)getReadyForPosession:(void (^)())block {
@@ -211,16 +211,16 @@
             _rotate = [[NKNode alloc]init];
             [self addChild:_rotate];
 
-            [_rotate repeatAction:[NKAction rotateByAngle:180 duration:4.]];
-          //  [rotate setPosition3d:V3Make(0, -20, h*.3)];
-            [_rotate setPosition3d:V3Make(0, -12, 10)];
+            [_rotate repeatAction:[NKAction rotateZByAngle:180 duration:4.]];
+          //  [rotate setPosition:V3Make(0, -20, h*.3)];
+            [_rotate setPosition:V3Make(0, -12, 10)];
             
             _halo = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo.png"] color:self.model.manager.color size:S2Make(h, h)];
        
             //[rotate addChild:halo];
             //[halo setAlpha:.5];
             [_halo setColor:_model.manager.color];
-            //[halo setPosition3d:V3Make(0, -20, h*.3)];
+            //[halo setPosition:V3Make(0, -20, h*.3)];
 
             NKSpriteNode *haloMarks = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Halo_Marks_glow.png"] color:NKWHITE size:S2Make(h, h)];
             [_halo addChild:haloMarks];
@@ -230,8 +230,8 @@
             
             _ballTarget = [[NKSpriteNode alloc]initWithColor:nil size:S2Make(4, 4)];
             [_halo addChild:_ballTarget];
-            [haloMarks repeatAction:[NKAction rotateByAngle:180 duration:8.]];
-            [_ballTarget setPosition3d:V3Make(0, w*.42, 0)];
+            [haloMarks repeatAction:[NKAction rotateZByAngle:180 duration:8.]];
+            [_ballTarget setPosition:V3Make(0, w*.42, 0)];
             
             [_rotate addChild:_halo];
             
@@ -256,7 +256,7 @@
         
         _ball = _delegate.ballSprite;
         
-        [_ball runAction:[NKAction repeatActionForever:[NKAction rotateByAngle:-45 duration:.2]]];
+        [_ball runAction:[NKAction repeatActionForever:[NKAction rotateZByAngle:-45 duration:.2]]];
         
         [_ball runAction:[NKAction scaleTo:BALL_SCALE_SMALL duration:1.] completion:^{
              _ball.player = self;
@@ -266,7 +266,7 @@
         
         [_halo runAction:[NKAction repeatActionForever:
                                [NKAction group:@[
-                                                                      [NKAction rotateByAngle:180 duration:2.]
+                                                                      [NKAction rotateZByAngle:180 duration:2.]
                                                     ]]]];
 
     }
@@ -280,7 +280,7 @@
 //    
 //    P2tcp = [halo childLocationIncludingRotation:_ballTarget];
 //    
-//    return V3Make(self.position3d.x + cp.x, self.position3d.y + cp.y, halo.position3d.z + self.position3d.z);
+//    return V3Make(self.position.x + cp.x, self.position.y + cp.y, halo.position.z + self.position.z);
 //}
 
 

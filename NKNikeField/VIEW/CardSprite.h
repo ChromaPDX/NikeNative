@@ -26,7 +26,7 @@
     NKLabelNode *_doubleName;
     float touchTimer;
     int numtouches;
-    P2t cachedPosition;
+    V3t cachedPosition;
     P2t lastTouch;
 }
 

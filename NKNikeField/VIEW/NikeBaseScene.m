@@ -16,9 +16,9 @@
     if (self) {
         
         
-        self.camera.nearZ = 10;
-        self.camera.farZ = 2000;
-        [self.camera setPosition3d:V3Make(0, 0, self.scene.size.height)];
+        self.camera.nearZ = 1;
+        self.camera.farZ = 4000;
+        [self.camera setPosition:V3Make(0, 0, self.scene.size.height)];
 #if NK_USE_GLES
         if (self.scene.size.height == 1136) {
             self.camera.fovVertRadians = DEGREES_TO_RADIANS(53);

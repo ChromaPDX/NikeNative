@@ -31,7 +31,7 @@
     leif.name = @"LEIF";
 
         
-    NKLabelNode* llabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Arial Black.ttf"];
+    NKLabelNode* llabel = [[NKLabelNode alloc] initWithSize:leif.size.point FontNamed:@"Arial Black.ttf"];
     llabel.text = @"HUMAN GAME";
     [leif addChild:llabel];
     [llabel setZPosition:2];
@@ -42,7 +42,7 @@
     robby.name = @"ROBBY";
     
         
-    NKLabelNode* rlabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Arial Black.ttf"];
+    NKLabelNode* rlabel = [[NKLabelNode alloc] initWithSize:leif.size.point FontNamed:@"Arial Black.ttf"];
     rlabel.text = @"FUEL / SYNC";
     [robby addChild:rlabel];
     [rlabel setZPosition:2];
@@ -53,7 +53,7 @@
     eric.name = @"ERIC";
 
         
-    NKLabelNode* elabel = [[NKLabelNode alloc] initWithSize:leif.size FontNamed:@"Arial Black.ttf"];
+    NKLabelNode* elabel = [[NKLabelNode alloc] initWithSize:leif.size.point FontNamed:@"Arial Black.ttf"];
     elabel.text = @"AI+MENU";
     [elabel setZPosition:2];
     [eric addChild:elabel];
@@ -72,16 +72,16 @@
      //   newScene = [[MiniGameScene alloc]initWithSize:self.size];
      //   newScene = [[GameScene alloc]initWithSize:self.size];
       //  [[(GameScene*)newScene game] startAIGame];
-        newScene = [[SyncScene alloc]initWithSize:self.size];
+        newScene = [[SyncScene alloc]initWithSize:self.size.point];
     }
     else if ([cell.name isEqualToString:@"ERIC"]) {
-        newScene = [[GameScene alloc]initWithSize:self.size];
+        newScene = [[GameScene alloc]initWithSize:self.size.point];
         [[(GameScene*)newScene game] startAIGame];
     }
     else if ([cell.name isEqualToString:@"LEIF"]) {
         //newScene = [[GameScene alloc]initWithSize:self.size];
         //[[(GameScene*)newScene game] startSinglePlayerGame];
-        newScene = [[MainMenu alloc]initWithSize:self.size];
+        newScene = [[MainMenu alloc]initWithSize:self.size.point];
         //newScene = [[Pregame alloc]initWithSize:self.size];
     }
     

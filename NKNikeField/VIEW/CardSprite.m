@@ -48,9 +48,9 @@
     if (showShadow) {
         
         if (!_shadow) {
-            _shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Ipad_shadow"] color:NKBLACK size:self.size];
+            _shadow = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Card_Ipad_shadow"] color:NKBLACK size:self.size.point];
             [_shadow setZPosition:-1];
-            [_shadow setPosition:P2Make(-w*.075, h*.075)];
+            [_shadow setPosition2d:P2Make(-w*.075, h*.075)];
             [self addChild:_shadow];
         }
         [_shadow setHidden:NO];
@@ -115,19 +115,19 @@
     
     text.fontSize = 16;
     text.fontColor = V2YELLOW;
-    [text setSize:S2Make(w,100)];
+    [text setSize2d:S2Make(w,100)];
     [text setText:[self.model descriptionForCard]];
-    [text setPosition:P2Make(0, h*.075)];
+    [text setPosition2d:P2Make(0, h*.075)];
     [self addChild:text];
     
     
     text = [NKLabelNode labelNodeWithFontNamed:@"Arial Black.ttf"];
     text.fontSize = 16;
     text.fontColor = V2YELLOW;
-    [text setSize:S2Make(w,100)];
+    [text setSize2d:S2Make(w,100)];
     [text setText:[NSString stringWithFormat:@"%d", self.model.energyCost]];
 
-    [text setPosition:P2Make(0, -h*.7)];
+    [text setPosition2d:P2Make(0, -h*.7)];
     //[text setZPosition:2];
     [self addChild:text];
 }
@@ -180,7 +180,7 @@
             
             NKSpriteNode *lock =  [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"lock-4"] color:V2BLUE size:S2Make(self.size.width*.5, self.size.width*.5)];
             [self addChild:lock];
-            [lock setPosition:P2Make(w *.25, h*-.25)];
+            [lock setPosition2d:P2Make(w *.25, h*-.25)];
             lock.name = @"lock";
             
         }
@@ -216,7 +216,7 @@
     
     else if (NKEventPhaseMove == event.phase) {
         if (event.screenLocation.y < lastTouch.y) {
-            self.position = P2Make(self.position.x, self.position.y - (lastTouch.y - event.screenLocation.y));
+            self.position2d = P2Make(self.position.x, self.position.y - (lastTouch.y - event.screenLocation.y));
             lastTouch = event.screenLocation;
         }
     }
@@ -263,7 +263,7 @@
 
 -(NKAction*)goBack {
     
-    NKAction *goBack = [NKAction moveTo:_origin duration:FAST_ANIM_DUR];
+    NKAction *goBack = [NKAction move2dTo:_origin duration:FAST_ANIM_DUR];
     
     [goBack setTimingMode:NKActionTimingEaseIn];
     

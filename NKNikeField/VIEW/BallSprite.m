@@ -15,7 +15,7 @@
     [super updateWithTimeSinceLast:dt];
     
     if (_player) {
-        [self setPosition3d:[_player.ballTarget positionInNode3d:self.parent]];
+        [self setPosition:[_player.ballTarget positionInNode3d:self.parent]];
     }
 }
 
