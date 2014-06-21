@@ -125,28 +125,10 @@ float PARTICLE_SCALE;
         
         [NKSoundManager loadMultipleSoundFiles:_soundFiles.allValues];
         
-        //
-        //        _scoreBoard = [[ScoreBoard alloc] initWithTexture:nil color:nil size:S2Make(WINDOW_WIDTH*2., WINDOW_WIDTH*.5)];
-        //        [_scoreBoard setPosition:P2Make(ANCHOR_WIDTH, self.size.height*.978333)];
-        //        [_scoreBoard setDelegate:self];
-        //        [_scoreBoard setZPosition:Z_INDEX_BOARD+2];
-        //        _scoreBoard.delegate = self;
-        //
-        //        [self addChild:_scoreBoard];
-        //
-        //        _fuelBar = [[FuelBar alloc]initWithTexture:[NKTexture textureWithImageNamed:@"BoostBarFull"] color:Nil size:S2Make(size.height*.05625, size.height*.9)];
-        //        [self addChild:_fuelBar];
-        //        [_fuelBar setPosition:P2Make(WINDOW_WIDTH + size.height*.015, size.height*.49)];
-        //        [_fuelBar setZPosition:Z_INDEX_BOARD];
-        //
-        //        NSLog(@"fuelBarSize: %f %f", size.height*.05625,size.height*.5);
-        
         [self setBackgroundColor:NKBLACK];
         
         _game = [[Game alloc] init];
         _game.gameScene = self;
-        
-        
         
     }
     
@@ -157,63 +139,89 @@ float PARTICLE_SCALE;
     
    // NKSpriteNode* bg = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"Background_Field"] size:S2Make(w*2, h*2)];
 
+    NKMeshNode *ax = [[NKMeshNode alloc]initWithPrimitive:NKPrimitiveAxes texture:nil color:NKCLEAR size:V3MakeF(1000)];
+    [self addChild:ax];
+    ax.shader = [NKShaderProgram newShaderNamed:@"vertexColor" colorMode:NKS_COLOR_MODE_VERTEX numTextures:0 numLights:0 withBatchSize:0];
+    
+    ax.userInteractionEnabled = false;
+    
     NSLog(@"setup gameBoard %f :%f",w,h);
     
     playerSprites = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
     _gameTiles = [NSMutableDictionary dictionaryWithCapacity:(BOARD_LENGTH * BOARD_WIDTH)];
-    
-    _pivot = [[NKNode alloc]init];
-    
-    _pivot.name = @"PIVOT";
-   
-    NKSpriteNode* bg = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"Background_InGame"] size:S2Make(w*25, h*3)];
-    [self addChild:bg];
-    
-    [self addChild:_pivot];
-    [_pivot setOrientationEuler:V3Make(-89, 0, 0)];
-    
-    //[bg setTransparency:.5];
-    
-    [bg setOrientationEuler:V3Make(-45, 0, 0)];
-    [bg setPosition:V3Make(0, -700, -700)];
-    
+
     [self.camera setPosition:V3Make(0, self.scene.size.height * .75, self.scene.size.height * .75)];
     [self.camera setTarget:_pivot];
+    
+    NKSpriteNode* bg = [NKSpriteNode spriteNodeWithTexture:[NKTexture textureWithImageNamed:@"Background_InGame"] size:S2Make(w*2, h*2)];
+    [self.camera addChild:bg];
+
+    [bg setPosition:V3Make(0, 0, -2000)];
     
     _uxTopBar = [[UXTopBar alloc] initWithTexture:nil color:nil size:S2Make(w, h*.08)];
     _uxTopBar.delegate = self;
     [self.camera addChild:_uxTopBar];
      [_uxTopBar setPosition:V3Make(0,self.scene.size.height*.43,-self.scene.size.height * .95)];
     [_uxTopBar setAlpha:0];
-     
-    //    NKSpriteNode *logo = [[NKSpriteNode alloc]initWithTexture:[NKTexture textureWithImageNamed:@"GAMELOGO.png"] color:nil size:S2Make(TILE_WIDTH*4, TILE_WIDTH*5.2)];
-    //    [_pivot addChild:logo];
-    //    [logo setZPosition:-3];
+
+    _gameBoardNode = [[GameBoardNode alloc]initWithPrimitive:NKPrimitiveCube texture:[NKTexture textureWithImageNamed:@"Field_Layer01"]color:NKWHITE size:V3Make(OLD_TILE_WIDTH * 3.5, .01, OLD_TILE_HEIGHT*5)];
     
+    [self addChild:_gameBoardNode];
+
+    _gameBoardNode.body = [[NKBulletBody alloc]initWithType:NKBulletShapeBox Size:_gameBoardNode.size transform:_gameBoardNode.globalTransform mass:0.];
     
-    //    _boardScroll = [[NKScrollNode alloc] initWithColor:nil size:S2Make(BOARD_WIDTH*TILE_WIDTH + (TILE_WIDTH*.7), BOARD_LENGTH*TILE_HEIGHT + (TILE_HEIGHT*.5))];
-    //
-    //    [_pivot addChild:_boardScroll];
+    _gameBoardNode.body.collisionGroup = NKCollisionFilterStatic;
+    _gameBoardNode.body.collisionMask = NKCollisionFilterCharacter;
     
-    //_boardScroll.userInteractionEnabled = false;
+    [[NKBulletWorld sharedInstance] addNode:_gameBoardNode];
     
-    _gameBoardNode = [[GameBoardNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer01"] color:NKWHITE size:S2Make(BOARD_WIDTH*TILE_WIDTH + (TILE_WIDTH*.7), BOARD_LENGTH*TILE_HEIGHT + (TILE_HEIGHT*.5))];
+    NSMutableArray *walls = [[NSMutableArray alloc]initWithCapacity:4] ;
+
+    NKMeshNode *top = [[NKMeshNode alloc]initWithPrimitive:NKPrimitiveCube texture:nil color:NKWHITE size:V3Make(_gameBoardNode.size.width, 100, 1)];
+    NKMeshNode *bottom = [[NKMeshNode alloc]initWithPrimitive:NKPrimitiveCube texture:nil color:NKWHITE size:V3Make(_gameBoardNode.size.width, 100, 1)];
+    NKMeshNode *left = [[NKMeshNode alloc]initWithPrimitive:NKPrimitiveCube texture:nil color:NKWHITE size:V3Make(1, 100, _gameBoardNode.size.depth)];
     
-    [_pivot addChild:_gameBoardNode];
+    NKMeshNode *right = [[NKMeshNode alloc]initWithPrimitive:NKPrimitiveCube texture:nil color:NKWHITE size:V3Make(1, 100, _gameBoardNode.size.depth)];
+    
+    [top setZPosition:-_gameBoardNode.size.depth];
+    [bottom setZPosition:_gameBoardNode.size.depth];
+    [left setXPosition:-_gameBoardNode.size.width];
+    [right setXPosition:_gameBoardNode.size.width];
+    
+    NKLogV3(@"right wall", right.position);
+    
+    [walls addObject:top];
+    [walls addObject:bottom];
+    [walls addObject:left];
+    [walls addObject:right];
+    
+    for (NKMeshNode *node in walls) {
+        [node setAnchorPoint:V3Make(0, node.size.height*.5, 0)];
+        [self addChild:node];
+        [node setBlendMode:NKBlendModeAdd];
+        [node setTransparency:.3];
+    }
 
     _gameBoardNode.userInteractionEnabled = true;
     _gameBoardNode.name = @"Game Board";
-    [_gameBoardNode setTransparency:.3];
     
-    NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer02"] color:NKWHITE size:_gameBoardNode.size.point];
+    //[_gameBoardNode setTransparency:.3];
     
-    //[lines setBlendMode:NKBlendModeAdd];
-    
-    [_gameBoardNode addChild:lines];
-    
-    [lines setPosition:V3Make(0,0,4)];
-    
-    [lines setTransparency:.3];
+//    //NKMeshNode* lines = [[GameBoardNode alloc]initWithPrimitive:NKPrimitiveCube texture:[NKTexture textureWithImageNamed:@"Field_Layer01"]color:NKWHITE size:V3Make(self.size.width, 1, self.size.height)];
+//    
+//    NKSpriteNode *lines = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"Field_Layer02"] color:NKWHITE size:_gameBoardNode.size.point];
+//    
+//    [lines setOrientationEuler:V3Make(0, -90, 0)];
+//    
+//    [lines setPosition:V3Make(0,4,0)];
+//    
+//    //[lines setBlendMode:NKBlendModeAdd];
+//    
+//    [_gameBoardNode addChild:lines];
+//    
+// 
+//    
+//    [lines setTransparency:.3];
     
     for(int i = 0; i < BOARD_WIDTH; i++){
         for(int j = 0; j < BOARD_LENGTH; j++){
@@ -427,15 +435,15 @@ float PARTICLE_SCALE;
 
 -(void)moveCameraToBoundingBox:(NSArray*)locationSet {
     
-    P2t p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:locationSet]];
-    
-    if (_gameBoardNode.position.y > [self boardScrollPointForPoint:p].y  + 50 || _gameBoardNode.position.y < [self boardScrollPointForPoint:p].y - 50) {
-        
-    [_gameBoardNode removeAllActions];
-
-    [_gameBoardNode runAction:[NKAction move2dTo:[self boardScrollPointForPoint:p] duration:.5]];
-
-    }
+//    P2t p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:locationSet]];
+//    
+//    if (_gameBoardNode.position.y > [self boardScrollPointForPoint:p].y  + 50 || _gameBoardNode.position.y < [self boardScrollPointForPoint:p].y - 50) {
+//        
+//    [_gameBoardNode removeAllActions];
+//
+//    [_gameBoardNode runAction:[NKAction move2dTo:[self boardScrollPointForPoint:p] duration:.5]];
+//
+//    }
    
 }
 
@@ -636,14 +644,15 @@ float PARTICLE_SCALE;
             }
         }
         if (_selectedPlayer) {
-            [_gameBoardNode removeAllActions];
-            PlayerSprite* p2 = [playerSprites objectForKey:_selectedPlayer];
-            [_gameBoardNode runAction:[NKAction move2dTo:P2Make(0, -p2.position.y + h/3.) duration:1.]];
+            
+           // [_gameBoardNode removeAllActions];
+           // PlayerSprite* p2 = [playerSprites objectForKey:_selectedPlayer];
+           // [_gameBoardNode runAction:[NKAction move2dTo:P2Make(0, -p2.position.y + h/3.) duration:1.]];
         }
         P2t p = [self centerOfBoundingBox:[_game boundingBoxForLocationSet:[_game allPlayerLocations]]];
         if ((-p.y + h/4.) > _gameBoardNode.position.y+100 || (-p.y + h/4.) < _gameBoardNode.position.y-100) { // filter out subtle moves
-            [_gameBoardNode removeAllActions];
-            [_gameBoardNode runAction:[NKAction move2dTo:P2Make(0, -p.y + h/4.) duration:1.]];
+           // [_gameBoardNode removeAllActions];
+           // [_gameBoardNode runAction:[NKAction move2dTo:P2Make(0, -p.y + h/4.) duration:1.]];
         }
         
         block();
@@ -862,20 +871,9 @@ float PARTICLE_SCALE;
                     }
                 }
                 
-                else { // FAILED PASS OR FAILED GOAL
-                    V3t dest = [(NKNode*)[_gameTiles objectForKey:_game.ball.location] position];
-
-                    NKAction *move = [NKAction moveTo:dest duration:BALL_SPEED];
-                    
-                    [move setTimingMode:NKActionTimingEaseOut];
-                    
-                    [self.ballSprite runAction:move completion:^(){
-                        
-                        [self.ballSprite runAction:[NKAction scaleTo:BALL_SCALE_SMALL duration:CARD_ANIM_DUR]];
-                        
-                        block();
-                        
-                    }];
+                else { // FAILED PASS OR FAILED GOAL, FREE KICK ON FIELD
+                    [_ballSprite removeAllActions];
+                    [self addBallToNode:_ballSprite];
                 }
             }];
         }];
@@ -1325,7 +1323,7 @@ float PARTICLE_SCALE;
     
     if (!animated){
         
-        [person setPosition2d:P2Make(player.location.x, player.location.y)];
+        [person setPosition:V3Make(player.location.x, 0, player.location.y)];
         
         block();
     }
@@ -1339,19 +1337,14 @@ float PARTICLE_SCALE;
             newY = player.location.y - OLD_TILE_HEIGHT*10;
         }
         
-        [person setPosition:V3Make(player.location.x, player.location.y, 200)];
         [person setXScale:.33];
         
         
-        V3t target = V3Make(player.location.x, player.location.y, 0);
-        target.z += 2;
+        V3t target = V3Make(player.location.x, 0, -player.location.y);
         
         [person runAction:[NKAction moveTo:target duration:.2] completion:^{
             
             NKEmitterNode *enchant = [[NKEmitterNode alloc]init];
-            //            NKEmitterNode *enchant = [NNKeyedUnarchiver unarchiveObjectWithFile:[[NSBundle mainBundle] pathForResource:@"Enchant" ofType:@"sks"]];
-            //            NKKeyframeSequence *seq = [[NKKeyframeSequence alloc] initWithKeyframeValues:@[[NKColor blackColor], card.manager.color] times:@[@0,@.2]];
-            //            enchant.particleColorSequence = seq;
             
             [person addChild:enchant];
             
@@ -1430,13 +1423,15 @@ float PARTICLE_SCALE;
 
 // @leif : not sure why this isn't working??
 -(void)addBallToNode:(NKNode*)n {
-    NKNode *s = [[NKNode alloc]initWithSize:V3Make(_ballSprite.size.width, _ballSprite.size.height, 0)];
-    [s setPosition3d:_ballSprite.position3d];
-    s.color = NKWHITE;
     
-    [n addChild:s];
+    NKMeshNode *s = [[BallSprite alloc]initWithPrimitive:NKPrimitiveSphere texture:[NKTexture textureWithImageNamed:@"ball_Texture.png"] color:nil size:V3Make(50,50,50)];
     
-    s.body = [[NKBulletBody alloc] initWithType:NKBulletShapeSphere Size:s.size3d transform:s.localTransformMatrix mass:.01];
+
+    [self addChild:s];
+    
+    s.position = _ballSprite.globalPosition;
+    
+    s.body = [[NKBulletBody alloc] initWithType:NKBulletShapeSphere Size:s.size transform:s.globalTransform mass:.01];
     
     [s.body setCollisionGroup:NKCollisionFilterCharacter];
     [s.body setCollisionMask: NKCollisionFilterStatic | NKCollisionFilterWalls];
@@ -1445,13 +1440,6 @@ float PARTICLE_SCALE;
     
     s.userInteractionEnabled = true;
 
-    [s.body forceAwake];
-    //[s.body setLinearVelocity:V3Make(10,10, 0)];
-    
-    [s.body applyCentralImpulse:V3Make(500,500,500)]; // FOR TESTING
- 
-    
-    //[n removeAllActions];
 }
 
 -(BallSprite*)ballSprite {

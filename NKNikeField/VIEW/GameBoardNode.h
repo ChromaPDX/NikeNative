@@ -9,7 +9,7 @@
 #import "NKScrollNode.h"
 
 
-@interface GameBoardNode : NKSpriteNode
+@interface GameBoardNode : NKMeshNode
 
 @property (nonatomic, strong) NSArray* goalSprites;
 @property (nonatomic) NSInteger gameBoardViewScrollOffset;

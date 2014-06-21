@@ -113,16 +113,14 @@
         
         cardImg.alpha = .9;
         
-        [cardImg setOrientationEuler:V3Make(45,0,0)];
+        //[cardImg setOrientationEuler:V3Make(45,0,0)];
         float cardOffset = -20;
         float cardScale = .8;
-        //[shadow setPosition:V3Make(0,cardOffset, 0)];
-        [cardImg setPosition:V3Make(0,cardOffset, 0)];
-        //[shadow setScale:V3Make(cardScale, cardScale, 1)];
+
         [cardImg setScale:V3Make(cardScale, cardScale, 1)];
         [self addChild:cardImg];
         
-        [cardImg setZPosition:h*.34];
+        [cardImg setPosition:V3Make(0,h*.34,0)];
         self.name = model.name;
         self.userInteractionEnabled = true;
         
@@ -198,7 +196,8 @@
     moveRadiusSprite = [[NKSpriteNode alloc] initWithTexture:[NKTexture textureWithImageNamed:@"move_radius"] color:V2GREEN size:S2Make(MOVE_RADIUS*2,MOVE_RADIUS*2)];
     moveRadiusSprite.name = @"moveRadius";
     [self addChild:moveRadiusSprite];
-    [moveRadiusSprite setZPosition: 4];
+    [moveRadiusSprite setOrientationEuler:V3Make(-90, 0,0)];
+    [moveRadiusSprite setYPosition:4];
    // [radiusRotate runAction:[NKAction rotateByAngles:V3Make(90, 0, 0) duration:3]];
 }
 

@@ -28,15 +28,15 @@
     return @"0,0";
 }
 
--(void)handleEvent:(NKEvent *)event {
-    
-    if (NKEventPhaseEnd == event.phase) {
-        _delegate.selectedBoardTile = self;
-        BoardLocation *bl = [[BoardLocation alloc] initWithX:event.screenLocation.x Y:event.screenLocation.y];
-        NSLog(@"touchUP in boardTile, location = %f,%f, bl = %@", event.screenLocation.x, event.screenLocation.y, bl);
-        [_delegate setSelectedBoardLocation:bl];
-    }
-}
+//-(void)handleEvent:(NKEvent *)event {
+//    
+//    if (NKEventPhaseEnd == event.phase) {
+//        _delegate.selectedBoardTile = self;
+//        BoardLocation *bl = [[BoardLocation alloc] initWithX:event.screenLocation.x Y:event.screenLocation.y];
+//        NSLog(@"touchUP in boardTile, location = %f,%f, bl = %@", event.screenLocation.x, event.screenLocation.y, bl);
+//        [_delegate setSelectedBoardLocation:bl];
+//    }
+//}
 
 
 
